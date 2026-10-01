@@ -38,11 +38,20 @@
     .chip{font-size:12px;color:#d9d0c5;border:1px solid var(--line);background:#111b;border-radius:999px;padding:8px 11px;backdrop-filter:blur(10px)}
     #stage{height:650px;width:100%;position:relative}
     #stage canvas{display:block;width:100%!important;height:100%!important}
-    .viewer-controls{position:absolute;z-index:8;right:18px;left:18px;bottom:18px;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px;border:1px solid var(--line);border-radius:20px;background:#0c0c0cda;backdrop-filter:blur(18px)}
+    .viewer-controls{position:absolute;z-index:8;right:18px;left:18px;bottom:18px;display:grid;grid-template-columns:1fr;gap:10px;padding:13px;border:1px solid var(--line);border-radius:22px;background:#0c0c0ce8;backdrop-filter:blur(18px);box-shadow:0 18px 48px rgba(0,0,0,.32)}
     .control-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-    .control-title{font-size:12px;color:#938d85;margin-left:2px;min-width:76px}
+    .control-title{font-size:12px;color:#aaa39a;margin-left:2px;min-width:110px;font-weight:700}
     .seg{border:1px solid var(--line);background:#171717;color:#d7d2ca;border-radius:999px;padding:9px 12px;cursor:pointer;font-size:12px;transition:.2s ease}
     .seg.active{background:#f3ead8;color:#17130d;border-color:#f3ead8}
+    .swatches{display:flex;align-items:center;gap:7px;overflow-x:auto;scrollbar-width:none;padding:2px 1px 3px}
+    .swatches::-webkit-scrollbar{display:none}
+    .swatch{width:30px;height:30px;min-width:30px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:var(--swatch);cursor:pointer;box-shadow:inset 0 0 0 2px rgba(0,0,0,.18);position:relative;transition:.2s ease}
+    .swatch::after{content:"";position:absolute;inset:-4px;border:1px solid transparent;border-radius:50%;transition:.2s ease}
+    .swatch:hover{transform:translateY(-1px) scale(1.04)}
+    .swatch.active::after{border-color:var(--gold)}
+    .swatch.active{box-shadow:inset 0 0 0 2px rgba(0,0,0,.22),0 0 0 2px rgba(214,181,109,.18)}
+    .swatch-name{font-size:11px;color:#807a73;min-width:68px}
+    .viewer-note{font-size:11px;color:#77716b;line-height:1.55;padding-top:1px}
     .section{padding:105px 0}
     .section-head{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:34px}
     .kicker{color:var(--gold);font-size:13px;font-weight:700;margin-bottom:8px}
@@ -97,10 +106,13 @@
       .viewer-card{border-radius:24px;min-height:610px}
       #stage{height:610px}
       .viewer-head{right:12px;left:12px;top:12px}
-      .viewer-controls{right:10px;left:10px;bottom:10px;padding:10px;border-radius:17px;gap:8px}
+      .viewer-controls{right:10px;left:10px;bottom:10px;padding:10px;border-radius:17px;gap:8px;max-height:265px;overflow-y:auto}
       .control-group{gap:6px}
       .control-title{width:100%;min-width:0}
       .seg{padding:8px 10px;font-size:11px}
+      .swatches{width:100%;padding-bottom:4px}
+      .swatch{width:28px;height:28px;min-width:28px}
+      .swatch-name{display:none}
       .form-grid{grid-template-columns:1fr}
       label.full{grid-column:auto}
       .work-card{height:430px}
@@ -137,7 +149,7 @@
             <a class="btn btn-primary" href="#request">جهّز طلبك الآن</a>
             <a class="btn btn-secondary" href="#work">شاهد الأعمال المنشورة</a>
           </div>
-          <div class="micro">المعاينة ثلاثية الأبعاد توضيحية لتقريب قرار الخامة وليست مخطط تنفيذ أو كتالوجاً معتمداً.</div>
+          <div class="micro">جرّب الخامة واللون والتشطيب وسطح العمل مباشرة على النموذج. المعاينة توضيحية وليست مخطط تنفيذ أو كتالوجاً معتمداً.</div>
         </div>
 
         <div class="viewer-card reveal">
@@ -147,18 +159,57 @@
           </div>
           <div id="stage" aria-label="نموذج ثلاثي الأبعاد توضيحي للمطبخ"></div>
           <div class="viewer-controls" aria-label="خيارات المعاينة">
-            <div class="control-group" data-kind="cabinet">
+            <div class="control-group" data-kind="material">
               <span class="control-title">خامة الخزائن</span>
               <button class="seg active" data-value="metal">صاج ألماني</button>
               <button class="seg" data-value="wood">خشب شابورد</button>
               <button class="seg" data-value="clad">كلادينج</button>
             </div>
+
+            <div class="control-group" data-kind="baseColor">
+              <span class="control-title">لون المعاينة — الأساسية</span>
+              <div class="swatches" aria-label="ألوان الخزائن الأساسية">
+                <button class="swatch active" style="--swatch:#f1eee6" data-value="ivory" title="أوف وايت" aria-label="أوف وايت"></button>
+                <button class="swatch" style="--swatch:#ffffff" data-value="white" title="أبيض" aria-label="أبيض"></button>
+                <button class="swatch" style="--swatch:#c9c9c5" data-value="lightgray" title="رمادي فاتح" aria-label="رمادي فاتح"></button>
+                <button class="swatch" style="--swatch:#4a4c4e" data-value="charcoal" title="فحمي" aria-label="فحمي"></button>
+                <button class="swatch" style="--swatch:#d6c2a5" data-value="beige" title="بيج" aria-label="بيج"></button>
+                <button class="swatch" style="--swatch:#7c5d4c" data-value="mocha" title="موكا" aria-label="موكا"></button>
+                <button class="swatch" style="--swatch:#b78a5e" data-value="oak" title="خشبي فاتح" aria-label="خشبي فاتح"></button>
+                <button class="swatch" style="--swatch:#5a3b2b" data-value="walnut" title="خشبي داكن" aria-label="خشبي داكن"></button>
+              </div>
+              <span class="swatch-name" id="baseColorName">أوف وايت</span>
+            </div>
+
+            <div class="control-group" data-kind="accentColor">
+              <span class="control-title">لون المعاينة — العلوية</span>
+              <div class="swatches" aria-label="ألوان الخزائن العلوية">
+                <button class="swatch" style="--swatch:#f1eee6" data-value="ivory" title="أوف وايت" aria-label="أوف وايت"></button>
+                <button class="swatch" style="--swatch:#ffffff" data-value="white" title="أبيض" aria-label="أبيض"></button>
+                <button class="swatch" style="--swatch:#c9c9c5" data-value="lightgray" title="رمادي فاتح" aria-label="رمادي فاتح"></button>
+                <button class="swatch" style="--swatch:#4a4c4e" data-value="charcoal" title="فحمي" aria-label="فحمي"></button>
+                <button class="swatch" style="--swatch:#d6c2a5" data-value="beige" title="بيج" aria-label="بيج"></button>
+                <button class="swatch" style="--swatch:#7c5d4c" data-value="mocha" title="موكا" aria-label="موكا"></button>
+                <button class="swatch active" style="--swatch:#b78a5e" data-value="oak" title="خشبي فاتح" aria-label="خشبي فاتح"></button>
+                <button class="swatch" style="--swatch:#5a3b2b" data-value="walnut" title="خشبي داكن" aria-label="خشبي داكن"></button>
+              </div>
+              <span class="swatch-name" id="accentColorName">خشبي فاتح</span>
+            </div>
+
+            <div class="control-group" data-kind="finish">
+              <span class="control-title">التشطيب</span>
+              <button class="seg active" data-value="matte">مطفي</button>
+              <button class="seg" data-value="gloss">لامع</button>
+            </div>
+
             <div class="control-group" data-kind="top">
               <span class="control-title">سطح العمل</span>
               <button class="seg active" data-value="natural">رخام طبيعي مطور</button>
               <button class="seg" data-value="industrial">رخام صناعي</button>
               <button class="seg" data-value="cast">رخام صب كامل</button>
             </div>
+
+            <div class="viewer-note">ألوان النموذج للتصور المبدئي فقط، ويُعتمد اللون والخامة النهائية مع المنفذ.</div>
           </div>
         </div>
       </div>
@@ -190,7 +241,7 @@
         <div class="flow-copy reveal">
           <div class="kicker">قبل المحادثة</div>
           <h2>حوّل اختياراتك إلى طلب مفهوم.</h2>
-          <p class="section-copy">بدلاً من بدء المحادثة من الصفر، اختر الاتجاه العام للمشروع وأضف المقاسات التقريبية واللون المرغوب. ستحصل على ملخص قصير يمكنك نسخه وإرساله عبر حراج.</p>
+          <p class="section-copy">بدلاً من بدء المحادثة من الصفر، حدّد الخامة واللون والتشطيب وسطح العمل ثم أضف المقاس التقريبي. ستحصل على ملخص قصير يمكنك نسخه وإرساله عبر حراج.</p>
           <div class="step-list">
             <div class="step"><b>١</b><span>اختر خامة الخزائن وسطح العمل</span></div>
             <div class="step"><b>٢</b><span>أدخل المقاسات التقريبية واللون المفضل</span></div>
@@ -208,6 +259,22 @@
                 <option>كلادينج</option>
               </select>
             </label>
+            <label>التشطيب
+              <select id="finishInput">
+                <option>مطفي</option>
+                <option>لامع</option>
+              </select>
+            </label>
+            <label>لون الخزائن الأساسية
+              <select id="baseColorInput">
+                <option>أوف وايت</option><option>أبيض</option><option>رمادي فاتح</option><option>فحمي</option><option>بيج</option><option>موكا</option><option>خشبي فاتح</option><option>خشبي داكن</option>
+              </select>
+            </label>
+            <label>لون الخزائن العلوية
+              <select id="accentColorInput">
+                <option>خشبي فاتح</option><option>أوف وايت</option><option>أبيض</option><option>رمادي فاتح</option><option>فحمي</option><option>بيج</option><option>موكا</option><option>خشبي داكن</option>
+              </select>
+            </label>
             <label>سطح العمل
               <select id="topInput">
                 <option>رخام طبيعي مطور</option>
@@ -217,9 +284,6 @@
             </label>
             <label>الطول التقريبي بالمتر
               <input id="lengthInput" inputmode="decimal" placeholder="مثال: ٤.٥" />
-            </label>
-            <label>اللون المفضل
-              <input id="colorInput" placeholder="مثال: أوف وايت / خشبي" />
             </label>
             <label class="full">ملاحظة للمشروع
               <input id="noteInput" placeholder="مثال: أحتاج مساحة للثلاجة والفرن المدمج" />
@@ -286,6 +350,8 @@
     wallBack.position.set(0,-2.9,2.4); wallBack.rotation.x = Math.PI/2; scene.add(wallBack);
 
     const cabinetMeshes = [];
+    const baseCabinetMeshes = [];
+    const upperCabinetMeshes = [];
     const topMeshes = [];
     const handleMat = new THREE.MeshStandardMaterial({color:0x252525,metalness:.8,roughness:.2});
     const glassMat = new THREE.MeshPhysicalMaterial({color:0x6f7d84,roughness:.16,transmission:.35,transparent:true,opacity:.55,metalness:.1});
@@ -298,30 +364,37 @@
       return mesh;
     }
 
-    const cabinetMat = new THREE.MeshStandardMaterial({color:0xc7c9c9,metalness:.58,roughness:.34});
+    const baseCabinetMat = new THREE.MeshStandardMaterial({color:0xf1eee6,metalness:.58,roughness:.42});
+    const upperCabinetMat = new THREE.MeshStandardMaterial({color:0xb78a5e,metalness:.12,roughness:.48});
     const topMat = new THREE.MeshStandardMaterial({color:0xe2ded6,metalness:.05,roughness:.28});
 
-    function addCabinet(x,z,w,h,d,y){
-      const body = box(w,h,d,x,y,z,cabinetMat);
-      cabinetMeshes.push(body);
+    function registerCabinet(mesh, zone){
+      cabinetMeshes.push(mesh);
+      (zone==="upper" ? upperCabinetMeshes : baseCabinetMeshes).push(mesh);
+    }
+
+    function addCabinet(x,z,w,h,d,y,zone="base"){
+      const mat = zone==="upper" ? upperCabinetMat : baseCabinetMat;
+      const body = box(w,h,d,x,y,z,mat);
+      registerCabinet(body,zone);
       const doorW = Math.max(.4,w/2-.04);
       const doors = w > .8 ? [-doorW/2-.02,doorW/2+.02] : [0];
       doors.forEach(dx=>{
-        const door = box(doorW,h-.08,.035,x+dx,y,z+d/2+.025,cabinetMat);
-        cabinetMeshes.push(door);
+        const door = box(doorW,h-.08,.035,x+dx,y,z+d/2+.025,mat);
+        registerCabinet(door,zone);
         box(.025,.5,.025,x+dx+(dx<=0?.12:-.12),y,z+d/2+.06,handleMat);
       });
     }
 
-    [-2.5,-1.55,-.6,.35,1.3,2.25].forEach(x=>addCabinet(x,-1.55,.84,1.05,.72,.525));
-    [-2.5,-1.55,-.6,.35,1.3].forEach(x=>addCabinet(x,-1.65,.84,.78,.52,2.18));
-    addCabinet(3.15,-1.5,1.02,2.85,.72,1.425);
+    [-2.5,-1.55,-.6,.35,1.3,2.25].forEach(x=>addCabinet(x,-1.55,.84,1.05,.72,.525,"base"));
+    [-2.5,-1.55,-.6,.35,1.3].forEach(x=>addCabinet(x,-1.65,.84,.78,.52,2.18,"upper"));
+    addCabinet(3.15,-1.5,1.02,2.85,.72,1.425,"base");
 
     const counterBack = box(6.2,.13,.86,.02,1.12,-1.55,topMat); topMeshes.push(counterBack);
     const splash = box(5.18,1.0,.05,-.45,1.72,-1.98,new THREE.MeshStandardMaterial({color:0x3a3a38,roughness:.7}));
     for(let i=0;i<3;i++){const glass=box(.72,.58,.05,2.93,1.65+i*.62,-1.12,glassMat);glass.rotation.z=Math.PI/2;}
 
-    const islandBody = box(3.1,1.02,1.16,.65,.51,1.25,cabinetMat); cabinetMeshes.push(islandBody);
+    const islandBody = box(3.1,1.02,1.16,.65,.51,1.25,baseCabinetMat); registerCabinet(islandBody,"base");
     const islandTop = box(3.42,.13,1.44,.65,1.11,1.25,topMat); topMeshes.push(islandTop);
     [-.32,.64,1.6].forEach(x=>{ const line=box(.02,.78,.03,x,.52,1.84,handleMat); });
     const sink = box(.82,.035,.5,.4,1.19,-1.45,new THREE.MeshStandardMaterial({color:0x26292b,metalness:.9,roughness:.18}));
@@ -332,38 +405,119 @@
     const rug = new THREE.Mesh(new THREE.PlaneGeometry(4.9,2.4),new THREE.MeshStandardMaterial({color:0x2b2926,roughness:1}));
     rug.rotation.x=-Math.PI/2; rug.position.set(.5,.011,.75); scene.add(rug);
 
-    const cabinetStates = {
-      metal:{color:0xd1d3d2,metalness:.65,roughness:.3},
-      wood:{color:0x9a6e49,metalness:.04,roughness:.62},
-      clad:{color:0x5a6267,metalness:.42,roughness:.32}
+    const materialStates = {
+      metal:{metalness:.66,roughness:.34},
+      wood:{metalness:.06,roughness:.58},
+      clad:{metalness:.38,roughness:.4}
+    };
+    const colorStates = {
+      ivory:{label:"أوف وايت",hex:0xf1eee6},
+      white:{label:"أبيض",hex:0xffffff},
+      lightgray:{label:"رمادي فاتح",hex:0xc9c9c5},
+      charcoal:{label:"فحمي",hex:0x4a4c4e},
+      beige:{label:"بيج",hex:0xd6c2a5},
+      mocha:{label:"موكا",hex:0x7c5d4c},
+      oak:{label:"خشبي فاتح",hex:0xb78a5e},
+      walnut:{label:"خشبي داكن",hex:0x5a3b2b}
     };
     const topStates = {
-      natural:{color:0xe5dfd4,metalness:.02,roughness:.24},
-      industrial:{color:0xc9c3b7,metalness:.05,roughness:.34},
-      cast:{color:0x272727,metalness:.18,roughness:.2}
+      natural:{label:"رخام طبيعي مطور",color:0xe5dfd4,metalness:.02,roughness:.24},
+      industrial:{label:"رخام صناعي",color:0xc9c3b7,metalness:.05,roughness:.34},
+      cast:{label:"رخام صب كامل",color:0x272727,metalness:.18,roughness:.2}
     };
-    function applyState(kind,value){
-      const src = kind==="cabinet" ? cabinetStates[value] : topStates[value];
-      const targets = kind==="cabinet" ? cabinetMeshes : topMeshes;
-      targets.forEach(m=>{m.material.color.setHex(src.color);m.material.metalness=src.metalness;m.material.roughness=src.roughness;});
+    let currentMaterial="metal";
+    let currentFinish="matte";
+    let currentBaseColor="ivory";
+    let currentAccentColor="oak";
+
+    function materialRoughness(base){
+      if(currentFinish==="gloss") return Math.max(.12,base-.22);
+      return Math.min(.72,base+.08);
     }
+
+    function applyMaterial(value){
+      currentMaterial=value;
+      const src=materialStates[value];
+      cabinetMeshes.forEach(m=>{
+        m.material.metalness=src.metalness;
+        m.material.roughness=materialRoughness(src.roughness);
+        m.material.needsUpdate=true;
+      });
+    }
+
+    function applyCabinetColor(zone,value){
+      const state=colorStates[value];
+      const targets=zone==="upper" ? upperCabinetMeshes : baseCabinetMeshes;
+      targets.forEach(m=>{m.material.color.setHex(state.hex);m.material.needsUpdate=true;});
+      if(zone==="upper") currentAccentColor=value; else currentBaseColor=value;
+    }
+
+    function applyFinish(value){
+      currentFinish=value;
+      applyMaterial(currentMaterial);
+    }
+
+    function applyTop(value){
+      const src=topStates[value];
+      topMeshes.forEach(m=>{
+        m.material.color.setHex(src.color);
+        m.material.metalness=src.metalness;
+        m.material.roughness=src.roughness;
+        m.material.needsUpdate=true;
+      });
+    }
+
+    const materialMap={metal:"صاج ألماني",wood:"خشب شابورد",clad:"كلادينج"};
+    const finishMap={matte:"مطفي",gloss:"لامع"};
 
     document.querySelectorAll(".control-group").forEach(group=>{
       group.addEventListener("click",e=>{
-        const btn=e.target.closest(".seg"); if(!btn)return;
-        group.querySelectorAll(".seg").forEach(x=>x.classList.remove("active"));
-        btn.classList.add("active");
-        applyState(group.dataset.kind,btn.dataset.value);
-        if(group.dataset.kind==="cabinet"){
-          const map={metal:"صاج ألماني",wood:"خشب شابورد",clad:"كلادينج"};
-          document.getElementById("materialInput").value=map[btn.dataset.value];
-        }else{
-          const map={natural:"رخام طبيعي مطور",industrial:"رخام صناعي",cast:"رخام صب كامل"};
-          document.getElementById("topInput").value=map[btn.dataset.value];
+        const swatch=e.target.closest(".swatch");
+        const seg=e.target.closest(".seg");
+        if(!swatch && !seg)return;
+
+        if(swatch){
+          group.querySelectorAll(".swatch").forEach(x=>x.classList.remove("active"));
+          swatch.classList.add("active");
+          const value=swatch.dataset.value;
+          if(group.dataset.kind==="baseColor"){
+            applyCabinetColor("base",value);
+            document.getElementById("baseColorName").textContent=colorStates[value].label;
+            document.getElementById("baseColorInput").value=colorStates[value].label;
+          }
+          if(group.dataset.kind==="accentColor"){
+            applyCabinetColor("upper",value);
+            document.getElementById("accentColorName").textContent=colorStates[value].label;
+            document.getElementById("accentColorInput").value=colorStates[value].label;
+          }
+        }
+
+        if(seg){
+          group.querySelectorAll(".seg").forEach(x=>x.classList.remove("active"));
+          seg.classList.add("active");
+          const value=seg.dataset.value;
+          if(group.dataset.kind==="material"){
+            applyMaterial(value);
+            document.getElementById("materialInput").value=materialMap[value];
+          }
+          if(group.dataset.kind==="finish"){
+            applyFinish(value);
+            document.getElementById("finishInput").value=finishMap[value];
+          }
+          if(group.dataset.kind==="top"){
+            applyTop(value);
+            document.getElementById("topInput").value=topStates[value].label;
+          }
         }
         updateSummary();
       });
     });
+
+    applyMaterial("metal");
+    applyCabinetColor("base","ivory");
+    applyCabinetColor("upper","oak");
+    applyFinish("matte");
+    applyTop("natural");
 
     function resize(){
       const rect=stage.getBoundingClientRect();
@@ -395,23 +549,40 @@
     }).catch(()=>{galleryFallback.style.display="block";});
 
     const materialInput=document.getElementById("materialInput");
+    const finishInput=document.getElementById("finishInput");
+    const baseColorInput=document.getElementById("baseColorInput");
+    const accentColorInput=document.getElementById("accentColorInput");
     const topInput=document.getElementById("topInput");
     const lengthInput=document.getElementById("lengthInput");
-    const colorInput=document.getElementById("colorInput");
     const noteInput=document.getElementById("noteInput");
     const summary=document.getElementById("summary");
+
+    const labelToMaterial={"صاج ألماني":"metal","خشب شابورد":"wood","كلادينج":"clad"};
+    const labelToFinish={"مطفي":"matte","لامع":"gloss"};
+    const labelToColor=Object.fromEntries(Object.entries(colorStates).map(([k,v])=>[v.label,k]));
+    const labelToTop=Object.fromEntries(Object.entries(topStates).map(([k,v])=>[v.label,k]));
+
+    materialInput.addEventListener("change",()=>applyMaterial(labelToMaterial[materialInput.value]));
+    finishInput.addEventListener("change",()=>applyFinish(labelToFinish[finishInput.value]));
+    baseColorInput.addEventListener("change",()=>applyCabinetColor("base",labelToColor[baseColorInput.value]));
+    accentColorInput.addEventListener("change",()=>applyCabinetColor("upper",labelToColor[accentColorInput.value]));
+    topInput.addEventListener("change",()=>applyTop(labelToTop[topInput.value]));
+
     function updateSummary(){
       const parts=[
         "طلب مطبخ — مطابخ أفراح الحكمي",
         "خامة الخزائن: "+materialInput.value,
+        "التشطيب: "+finishInput.value,
+        "لون الخزائن الأساسية: "+baseColorInput.value,
+        "لون الخزائن العلوية/اللمسة: "+accentColorInput.value,
         "سطح العمل: "+topInput.value,
         "الطول التقريبي: "+(lengthInput.value||"غير محدد"),
-        "اللون المفضل: "+(colorInput.value||"غير محدد"),
-        "ملاحظة: "+(noteInput.value||"لا توجد")
+        "ملاحظة: "+(noteInput.value||"لا توجد"),
+        "ملاحظة المعاينة: الألوان والخامات الظاهرة للتصور المبدئي ويُعتمد الاختيار النهائي مع المنفذ."
       ];
       summary.textContent=parts.join("\n");
     }
-    [materialInput,topInput,lengthInput,colorInput,noteInput].forEach(el=>el.addEventListener("input",updateSummary));
+    [materialInput,finishInput,baseColorInput,accentColorInput,topInput,lengthInput,noteInput].forEach(el=>el.addEventListener("input",updateSummary));
     updateSummary();
 
     document.getElementById("copyBtn").addEventListener("click",async()=>{
