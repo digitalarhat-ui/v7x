@@ -136,7 +136,7 @@
     .kicker{color:var(--gold);font-size:13px;font-weight:700;margin-bottom:8px}
     h2{font-size:clamp(31px,4vw,52px);line-height:1.08;margin:0;letter-spacing:-.8px}
     .section-copy{max-width:560px;color:#aaa39a;line-height:1.85}
-    .gallery-wrap{position:relative;overflow:hidden;margin-inline:calc((100vw - min(1180px,calc(100vw - 34px)))/-2);padding:8px 0}
+    .gallery-wrap{display:none;position:relative;overflow:hidden;margin-inline:calc((100vw - min(1180px,calc(100vw - 34px)))/-2);padding:8px 0}
     .gallery-track{display:flex;gap:16px;width:max-content;animation:rail 38s linear infinite}
     .gallery-wrap:hover .gallery-track{animation-play-state:paused}
     @keyframes rail{to{transform:translateX(50%)}}
@@ -156,10 +156,21 @@
     label.full{grid-column:1/-1}
     input,select{width:100%;border:1px solid var(--line);background:#0c0c0c;color:#f0ece6;border-radius:14px;padding:13px 14px;outline:none}
     input:focus,select:focus{border-color:rgba(214,181,109,.7)}
+    .current-selection-card{margin-bottom:14px;padding:15px 16px;border:1px solid rgba(214,181,109,.24);border-radius:18px;background:rgba(214,181,109,.055)}
+    .current-selection-card .selection-label{font-size:11px;color:var(--gold);font-weight:800;margin-bottom:6px}
+    .current-selection-card .selection-value{font-size:14px;color:#e7dfd3;line-height:1.7}
+    .current-selection-card a{display:inline-block;margin-top:8px;font-size:12px;color:#c9b177;text-decoration:underline;text-underline-offset:3px}
+    .readiness{margin-top:14px;padding:15px 16px;border:1px solid var(--line);border-radius:18px;background:#0c0c0c}
+    .readiness-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+    .readiness-head b{font-size:13px}
+    .readiness-head span{font-size:13px;color:var(--gold);font-weight:800}
+    .readiness-track{height:8px;border-radius:999px;background:#202020;overflow:hidden}
+    .readiness-fill{height:100%;width:40%;border-radius:inherit;background:linear-gradient(90deg,#9e824b,#d6b56d);transition:width .25s ease}
+    .readiness-missing{margin-top:9px;color:#817b74;font-size:11px;line-height:1.65}
     .summary{margin-top:16px;padding:16px;border-radius:18px;background:#0b0b0b;border:1px solid var(--line);white-space:pre-line;line-height:1.8;color:#d2cbc2;min-height:136px}
     .form-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
     .truth{padding:22px;border:1px solid var(--line);border-radius:22px;background:#101010;color:#9c968f;line-height:1.8;font-size:14px;margin-top:22px}
-    footer{padding:30px 0 120px;border-top:1px solid var(--line);color:#77716b}
+    footer{padding:32px 0 42px;border-top:1px solid var(--line);color:#77716b}
     .mobile-dock{display:none}
     .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
     .reveal.show{opacity:1;transform:none}
@@ -220,7 +231,8 @@
       .variant-card.has-snapshot .variant-media{height:170px}
       .form-grid{grid-template-columns:1fr}
       label.full{grid-column:auto}
-      .work-card{height:430px}
+      .work-card{height:380px}
+      .gallery-fallback{padding:20px;font-size:13px}
       .mobile-dock{display:none!important}
       footer{padding-bottom:38px}
     }
@@ -516,49 +528,42 @@
         <div class="flow-copy reveal">
           <div class="kicker">قبل المحادثة</div>
           <h2>حوّل اختياراتك إلى طلب مفهوم.</h2>
-          <p class="section-copy">بدلاً من بدء المحادثة من الصفر، حدّد الخامة واللون والتشطيب وسطح العمل ثم أضف المقاس التقريبي. ستحصل على ملخص قصير يمكنك نسخه وإرساله عبر حراج.</p>
+          <p class="section-copy">اختيارك البصري محفوظ بالفعل. أكمل فقط شكل المساحة والمقاسات التقريبية والأجهزة، ثم انسخ طلباً منظماً لبدء التواصل عبر حراج.</p>
           <div class="step-list">
-            <div class="step"><b>١</b><span>جرّب الخامة والألوان تحت أكثر من إضاءة</span></div>
-            <div class="step"><b>٢</b><span>احفظ خيارين وقارن قبل أن تحسم الاتجاه</span></div>
-            <div class="step"><b>٣</b><span>جهّز الملخص وشارك نفس القرار قبل التواصل عبر حراج</span></div>
+            <div class="step"><b>١</b><span>اختيارك من 3D ينتقل تلقائياً إلى الطلب</span></div>
+            <div class="step"><b>٢</b><span>أضف شكل المساحة والمقاسات والأجهزة</span></div>
+            <div class="step"><b>٣</b><span>انسخ ملخصاً واحداً وابدأ التواصل عبر حراج</span></div>
           </div>
           <div class="truth">المقاسات هنا أولية فقط. التسعير والتنفيذ والاعتماد النهائي للخامات والمقاسات يتم مباشرة مع الجهة المنفذة.</div>
         </div>
 
         <div class="form-card reveal">
+          <select id="materialInput" hidden>
+            <option>صاج ألماني</option><option>خشب شابورد</option><option>كلادينج</option>
+          </select>
+          <select id="finishInput" hidden>
+            <option>مطفي</option><option>لامع</option>
+          </select>
+          <select id="baseColorInput" hidden>
+            <option>أوف وايت</option><option>أبيض</option><option>رمادي فاتح</option><option>فحمي</option><option>بيج</option><option>موكا</option><option>خشبي فاتح</option><option>خشبي داكن</option>
+          </select>
+          <select id="accentColorInput" hidden>
+            <option>خشبي فاتح</option><option>أوف وايت</option><option>أبيض</option><option>رمادي فاتح</option><option>فحمي</option><option>بيج</option><option>موكا</option><option>خشبي داكن</option>
+          </select>
+          <select id="topInput" hidden>
+            <option>رخام طبيعي مطور</option><option>رخام صناعي</option><option>رخام صب كامل</option>
+          </select>
+
+          <div class="current-selection-card">
+            <div class="selection-label">اختيارك الحالي من 3D</div>
+            <div class="selection-value" id="formCurrentChoice">صاج ألماني • أوف وايت + خشبي فاتح • مطفي • رخام طبيعي مطور</div>
+            <a href="#stage">تعديل الاختيار في 3D</a>
+          </div>
+
           <div class="form-grid">
-            <label>خامة الخزائن
-              <select id="materialInput">
-                <option>صاج ألماني</option>
-                <option>خشب شابورد</option>
-                <option>كلادينج</option>
-              </select>
-            </label>
-            <label>التشطيب
-              <select id="finishInput">
-                <option>مطفي</option>
-                <option>لامع</option>
-              </select>
-            </label>
-            <label>لون الخزائن الأساسية
-              <select id="baseColorInput">
-                <option>أوف وايت</option><option>أبيض</option><option>رمادي فاتح</option><option>فحمي</option><option>بيج</option><option>موكا</option><option>خشبي فاتح</option><option>خشبي داكن</option>
-              </select>
-            </label>
-            <label>لون الخزائن العلوية
-              <select id="accentColorInput">
-                <option>خشبي فاتح</option><option>أوف وايت</option><option>أبيض</option><option>رمادي فاتح</option><option>فحمي</option><option>بيج</option><option>موكا</option><option>خشبي داكن</option>
-              </select>
-            </label>
-            <label>سطح العمل
-              <select id="topInput">
-                <option>رخام طبيعي مطور</option>
-                <option>رخام صناعي</option>
-                <option>رخام صب كامل</option>
-              </select>
-            </label>
             <label>شكل المساحة
               <select id="layoutInput">
+                <option value="">اختر شكل المساحة</option>
                 <option>مستقيم</option>
                 <option>حرف L</option>
                 <option>حرف U</option>
@@ -587,6 +592,11 @@
             <label class="full">ملاحظة للمشروع
               <input id="noteInput" placeholder="مثال: أحتاج مساحة للثلاجة والفرن المدمج" />
             </label>
+          </div>
+          <div class="readiness" aria-live="polite">
+            <div class="readiness-head"><b>جاهزية تفاصيل الطلب</b><span id="readinessScore">40%</span></div>
+            <div class="readiness-track"><div class="readiness-fill" id="readinessFill"></div></div>
+            <div class="readiness-missing" id="readinessMissing">أضف شكل المساحة والطول والأجهزة لرفع جاهزية الطلب.</div>
           </div>
           <div class="summary" id="summary"></div>
           <div class="form-actions">
@@ -971,17 +981,35 @@
 
     const gallery=document.getElementById("gallery");
     const galleryFallback=document.getElementById("galleryFallback");
+    const galleryWrap=document.querySelector(".gallery-wrap");
+    function showGalleryFallback(){
+      galleryWrap.style.display="none";
+      galleryFallback.style.display="block";
+    }
     fetch("/api/haraj").then(r=>r.json()).then(data=>{
       const safe=(data.images||[]).filter(u=>/^https:\/\/[^/]*haraj\.com\.sa\//i.test(u));
-      if(!safe.length){galleryFallback.style.display="block";return;}
+      if(!safe.length){showGalleryFallback();return;}
       const set=safe.slice(0,10);
       const loop=set.concat(set);
+      let loaded=0,failed=0,shown=false;
       loop.forEach((src,i)=>{
         const card=document.createElement("article");card.className="work-card";
-        const img=document.createElement("img");img.loading=i<3?"eager":"lazy";img.alt="صورة مطبخ منشورة في إعلان حراج";img.src=src;
-        img.onerror=()=>card.remove();card.appendChild(img);gallery.appendChild(card);
+        const img=document.createElement("img");img.loading=i<3?"eager":"lazy";img.alt="صورة مطبخ منشورة في إعلان حراج";
+        img.onload=()=>{
+          loaded++;
+          if(!shown){
+            shown=true;
+            galleryWrap.style.display="block";
+            requestAnimationFrame(()=>galleryWrap.classList.add("show"));
+          }
+        };
+        img.onerror=()=>{
+          failed++;card.remove();
+          if(failed===loop.length&&!loaded)showGalleryFallback();
+        };
+        img.src=src;card.appendChild(img);gallery.appendChild(card);
       });
-    }).catch(()=>{galleryFallback.style.display="block";});
+    }).catch(showGalleryFallback);
 
     const materialInput=document.getElementById("materialInput");
     const finishInput=document.getElementById("finishInput");
@@ -1025,9 +1053,11 @@
     }
 
     function updateCurrentChoice(){
+      const value=materialMap[currentMaterial]+" • "+colorStates[currentBaseColor].label+" + "+colorStates[currentAccentColor].label+" • "+finishMap[currentFinish]+" • "+topStates[currentTop].label+" • "+lightingStates[currentLighting].label;
       const el=document.getElementById("currentChoice");
-      if(!el)return;
-      el.textContent=materialMap[currentMaterial]+" • "+colorStates[currentBaseColor].label+" + "+colorStates[currentAccentColor].label+" • "+finishMap[currentFinish]+" • "+topStates[currentTop].label+" • "+lightingStates[currentLighting].label;
+      if(el)el.textContent=value;
+      const formEl=document.getElementById("formCurrentChoice");
+      if(formEl)formEl.textContent=value;
     }
 
     function updateShareUrl(){
@@ -1310,6 +1340,21 @@
       return [...document.querySelectorAll('input[name="appliance"]:checked')].map(x=>x.value);
     }
 
+    function updateReadiness(){
+      let score=40;
+      const missing=[];
+      if(layoutInput.value){score+=15;}else missing.push("شكل المساحة");
+      if(lengthInput.value.trim()){score+=20;}else missing.push("الطول الرئيسي");
+      if(selectedAppliances().length){score+=15;}else missing.push("الأجهزة");
+      if(wallBInput.value.trim()||wallCInput.value.trim()||heightInput.value.trim()||noteInput.value.trim()){score+=10;}else missing.push("تفصيل إضافي اختياري");
+      score=Math.min(100,score);
+      document.getElementById("readinessScore").textContent=score+"%";
+      document.getElementById("readinessFill").style.width=score+"%";
+      document.getElementById("readinessMissing").textContent=missing.length
+        ? "لإكمال التفاصيل: "+missing.join("، ")+"."
+        : "التفاصيل الأساسية جاهزة للنسخ قبل التواصل.";
+    }
+
     function updateSummary(){
       const parts=[
         "طلب مطبخ — مطابخ أفراح الحكمي",
@@ -1319,7 +1364,7 @@
         "لون الخزائن العلوية/اللمسة: "+accentColorInput.value,
         "سطح العمل: "+topInput.value,
         "إضاءة المعاينة: "+lightingStates[currentLighting].label,
-        "شكل المساحة: "+layoutInput.value,
+        "شكل المساحة: "+(layoutInput.value||"غير محدد"),
         "الطول الرئيسي: "+(lengthInput.value||"غير محدد"),
         "الجدار ب: "+(wallBInput.value||"غير محدد"),
         "الجدار ج: "+(wallCInput.value||"غير محدد"),
@@ -1329,6 +1374,7 @@
         "ملاحظة المعاينة: الألوان والخامات الظاهرة للتصور المبدئي ويُعتمد الاختيار النهائي مع المنفذ."
       ];
       summary.textContent=parts.join("\n");
+      updateReadiness();
     }
     [materialInput,finishInput,baseColorInput,accentColorInput,topInput,layoutInput,lengthInput,wallBInput,wallCInput,heightInput,noteInput].forEach(el=>el.addEventListener("input",updateSummary));
     document.querySelectorAll('input[name="appliance"]').forEach(el=>el.addEventListener("change",updateSummary));
