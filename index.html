@@ -56,6 +56,45 @@
     .decision-actions .mini-action{border:1px solid var(--line);background:#141414;color:#ddd6cd;border-radius:12px;padding:9px 12px;cursor:pointer;font-size:12px;font-weight:700;transition:.2s ease}
     .decision-actions .mini-action:hover{border-color:rgba(214,181,109,.5);transform:translateY(-1px)}
     .decision-actions .mini-action.primary{background:rgba(214,181,109,.12);border-color:rgba(214,181,109,.34);color:#f2d99f}
+    .signature-section{padding:42px 0 34px}
+    .signature-card{border:1px solid var(--line);border-radius:30px;background:linear-gradient(145deg,#121212,#0c0c0c);padding:28px}
+    .signature-head{display:grid;grid-template-columns:.82fr 1.18fr;gap:32px;align-items:start;margin-bottom:22px}
+    .signature-head p{margin:0;color:#aaa39a;line-height:1.85}
+    .advisor-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;align-items:stretch}
+    .advisor-questions{display:grid;gap:12px}
+    .question-card{border:1px solid var(--line);background:#0a0a0a;border-radius:20px;padding:16px}
+    .question-card strong{display:block;margin-bottom:10px;color:#eee7dc;font-size:14px}
+    .choice-row{display:flex;flex-wrap:wrap;gap:7px}
+    .choice{border:1px solid var(--line);background:#151515;color:#aaa39a;border-radius:999px;padding:9px 12px;font-size:12px;cursor:pointer;transition:.2s ease}
+    .choice.active{background:#f1e9da;color:#17130d;border-color:#f1e9da}
+    .advisor-result{border:1px solid rgba(214,181,109,.26);background:radial-gradient(circle at 80% 0%,rgba(214,181,109,.12),transparent 35%),#0b0b0b;border-radius:22px;padding:20px;display:flex;flex-direction:column;justify-content:space-between;min-height:100%}
+    .advisor-result .result-label{font-size:12px;color:var(--gold);font-weight:800}
+    .advisor-result h3{font-size:28px;line-height:1.15;margin:10px 0}
+    .advisor-result p{color:#9d968e;line-height:1.8;margin:0 0 16px}
+    .result-stack{display:grid;gap:8px;margin:12px 0 18px}
+    .result-row{display:flex;justify-content:space-between;gap:18px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
+    .result-row span{color:#77716b}
+    .result-row b{color:#ded6ca}
+    .room-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .room-upload{border:1px dashed rgba(214,181,109,.35);border-radius:22px;background:#0a0a0a;min-height:390px;position:relative;overflow:hidden;display:grid;place-items:center;padding:18px}
+    .room-upload.has-image{padding:0;border-style:solid}
+    .room-upload img{width:100%;height:100%;object-fit:cover;display:block}
+    .upload-empty{text-align:center;max-width:330px}
+    .upload-empty b{display:block;font-size:20px;margin-bottom:8px}
+    .upload-empty span{display:block;color:#8f8981;line-height:1.7;font-size:13px;margin-bottom:14px}
+    .room-side{display:grid;gap:12px}
+    .palette-card,.room-rec{border:1px solid var(--line);border-radius:20px;background:#0a0a0a;padding:16px}
+    .palette-card strong,.room-rec strong{display:block;margin-bottom:10px}
+    .detected-palette{display:flex;gap:8px;min-height:38px}
+    .detected-color{width:38px;height:38px;border-radius:11px;border:1px solid rgba(255,255,255,.15);background:var(--c)}
+    .room-analysis{font-size:13px;color:#8e8880;line-height:1.7}
+    .room-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .privacy-note{font-size:11px;color:#6f6963;line-height:1.6}
+    .scope-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}
+    .scope-mini label{font-size:12px}
+    .appliance-grid{display:flex;flex-wrap:wrap;gap:8px}
+    .check-pill{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:8px 10px;background:#0c0c0c;color:#aaa39a;font-size:12px;cursor:pointer}
+    .check-pill input{width:auto;margin:0;accent-color:#d6b56d}
     .decision-lab{padding:34px 0 72px}
     .decision-shell{border:1px solid var(--line);border-radius:30px;background:linear-gradient(145deg,#121212,#0d0d0d);padding:28px}
     .decision-top{display:grid;grid-template-columns:.8fr 1.2fr;gap:34px;align-items:start}
@@ -136,6 +175,10 @@
       .swatches{width:100%;padding-bottom:4px}
       .swatch{width:28px;height:28px;min-width:28px}
       .swatch-name{display:none}
+      .signature-section{padding:20px 0 16px}
+      .signature-card{padding:18px;border-radius:24px}
+      .signature-head,.advisor-grid,.room-grid{grid-template-columns:1fr}
+      .scope-mini{grid-template-columns:1fr}
       .decision-lab{padding:18px 0 56px}
       .decision-shell{padding:18px;border-radius:24px}
       .benefit-grid{grid-template-columns:1fr}
@@ -172,7 +215,7 @@
         <div class="hero-copy reveal">
           <div class="eyebrow">تفصيل حسب الطلب • الرياض</div>
           <h1>ابدأ مطبخك<br>من قرار واضح.</h1>
-          <p class="lead">قارن بين خامات الخزائن وسطح العمل على نموذج ثلاثي الأبعاد، ثم جهّز ملخصاً واضحاً لمقاساتك وتفضيلاتك قبل بدء المحادثة.</p>
+          <p class="lead">ابدأ من اتجاه يناسب ذوقك، جرّب الخامات والألوان والإضاءة على 3D، اربط القرار بصورة مساحتك، ثم جهّز ملخصاً واضحاً قبل بدء المحادثة.</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#request">جهّز طلبك الآن</a>
             <a class="btn btn-secondary" href="#work">شاهد الأعمال المنشورة</a>
@@ -256,6 +299,69 @@
       </div>
     </section>
 
+    <section class="signature-section" id="advisor">
+      <div class="shell signature-card reveal">
+        <div class="signature-head">
+          <div>
+            <div class="kicker">مستشار البداية</div>
+            <h2>ابدأ من ذوقك ومساحتك، لا من قائمة طويلة.</h2>
+          </div>
+          <p>أربع إجابات قصيرة تبني لك نقطة بداية بصرية ثم تطبقها مباشرة على نموذج المطبخ. هذا اقتراح أولي لتقليل الحيرة، وليس اعتماداً فنياً للخامة.</p>
+        </div>
+
+        <div class="advisor-grid">
+          <div class="advisor-questions">
+            <div class="question-card" data-advisor="style">
+              <strong>ما الهوية الأقرب لك؟</strong>
+              <div class="choice-row">
+                <button class="choice active" data-value="clean" type="button">هادئ ونظيف</button>
+                <button class="choice" data-value="warm" type="button">دافئ وخشبي</button>
+                <button class="choice" data-value="bold" type="button">جريء ومعماري</button>
+              </div>
+            </div>
+            <div class="question-card" data-advisor="light">
+              <strong>إضاءة المساحة غالباً؟</strong>
+              <div class="choice-row">
+                <button class="choice" data-value="strong" type="button">قوية</button>
+                <button class="choice active" data-value="medium" type="button">متوسطة</button>
+                <button class="choice" data-value="low" type="button">محدودة</button>
+              </div>
+            </div>
+            <div class="question-card" data-advisor="contrast">
+              <strong>كم تحب التباين بين الخزائن؟</strong>
+              <div class="choice-row">
+                <button class="choice" data-value="same" type="button">لون واحد</button>
+                <button class="choice active" data-value="soft" type="button">تباين بسيط</button>
+                <button class="choice" data-value="high" type="button">تباين واضح</button>
+              </div>
+            </div>
+            <div class="question-card" data-advisor="finish">
+              <strong>التشطيب الأقرب لك؟</strong>
+              <div class="choice-row">
+                <button class="choice active" data-value="matte" type="button">مطفي</button>
+                <button class="choice" data-value="gloss" type="button">لامع</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="advisor-result">
+            <div>
+              <div class="result-label">نقطة البداية المقترحة</div>
+              <h3 id="advisorTitle">اتجاه هادئ ثنائي اللون</h3>
+              <p id="advisorWhy">مزيج فاتح ومتوازن يعطيك نقطة مقارنة واضحة قبل الانتقال إلى خيارات أكثر جرأة.</p>
+              <div class="result-stack">
+                <div class="result-row"><span>الخامة</span><b id="advisorMaterial">صاج ألماني</b></div>
+                <div class="result-row"><span>الأساسية</span><b id="advisorBase">أوف وايت</b></div>
+                <div class="result-row"><span>العلوية</span><b id="advisorAccent">رمادي فاتح</b></div>
+                <div class="result-row"><span>التشطيب</span><b id="advisorFinish">مطفي</b></div>
+              </div>
+            </div>
+            <button class="btn btn-primary" id="applyAdvisor" type="button">طبّق الاتجاه على 3D</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="decision-lab" id="compare">
       <div class="shell decision-shell reveal">
         <div class="decision-top">
@@ -281,6 +387,52 @@
           </article>
         </div>
         <div class="compare-result" id="compareResult">احفظ خيارين ليظهر الفرق بينهما هنا.</div>
+      </div>
+    </section>
+
+    <section class="signature-section" id="ownRoom">
+      <div class="shell signature-card reveal">
+        <div class="signature-head">
+          <div>
+            <div class="kicker">مطبخي أنا</div>
+            <h2>اربط الاختيار بمساحتك الحقيقية.</h2>
+          </div>
+          <p>ارفع صورة للمطبخ أو المساحة. تُحلّل لوحة الألوان محلياً على جهازك، ثم نقترح اتجاهاً بصرياً كبداية ونربطه بنفس نموذج 3D وملخص المشروع.</p>
+        </div>
+
+        <div class="room-grid">
+          <div class="room-upload" id="roomUpload">
+            <div class="upload-empty" id="uploadEmpty">
+              <b>صورة واحدة تكفي للبدء</b>
+              <span>يفضل تصوير المساحة بإضاءة طبيعية ومن زاوية واسعة. الصورة لا تغادر جهازك في هذه التجربة.</span>
+              <label class="btn btn-primary" style="display:inline-flex;cursor:pointer">
+                اختر صورة المساحة
+                <input id="roomFile" type="file" accept="image/*" capture="environment" hidden />
+              </label>
+            </div>
+            <img id="roomPreview" alt="صورة مساحة المطبخ المرفوعة" hidden />
+          </div>
+
+          <div class="room-side">
+            <div class="palette-card">
+              <strong>ألوان المساحة المكتشفة</strong>
+              <div class="detected-palette" id="detectedPalette"><span class="room-analysis">ارفع صورة لتظهر لوحة المساحة هنا.</span></div>
+            </div>
+            <div class="room-rec">
+              <strong>اتجاه بصري مقترح</strong>
+              <div class="room-analysis" id="roomAnalysis">سنقارن سطوع الصورة ودفء ألوانها مع لوحة المعاينة ونقترح نقطة بداية فقط، دون الادعاء بأنها عينة لون معتمدة.</div>
+              <div class="result-stack" style="margin-bottom:12px">
+                <div class="result-row"><span>الأساسية</span><b id="roomBase">—</b></div>
+                <div class="result-row"><span>العلوية</span><b id="roomAccent">—</b></div>
+              </div>
+              <div class="room-actions">
+                <button class="btn btn-primary" id="applyRoomPalette" type="button" disabled>طبّق على 3D</button>
+                <button class="btn btn-secondary" id="saveDecisionCard" type="button" disabled>حفظ بطاقة القرار</button>
+              </div>
+              <div class="privacy-note">التحليل يتم داخل المتصفح. بطاقة القرار تجمع صورتك مع لقطة 3D واختياراتك محلياً لتستطيع مشاركتها بالطريقة التي تناسبك.</div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -351,8 +503,32 @@
                 <option>رخام صب كامل</option>
               </select>
             </label>
-            <label>الطول التقريبي بالمتر
+            <label>شكل المساحة
+              <select id="layoutInput">
+                <option>مستقيم</option>
+                <option>حرف L</option>
+                <option>حرف U</option>
+                <option>غير محدد بعد</option>
+              </select>
+            </label>
+            <label>الطول الرئيسي بالمتر
               <input id="lengthInput" inputmode="decimal" placeholder="مثال: ٤.٥" />
+            </label>
+            <label class="full">مقاسات إضافية تقريبية
+              <div class="scope-mini">
+                <label>الجدار ب<input id="wallBInput" inputmode="decimal" placeholder="مثال: ٢.٨" /></label>
+                <label>الجدار ج<input id="wallCInput" inputmode="decimal" placeholder="مثال: ٢.٢" /></label>
+                <label>ارتفاع السقف<input id="heightInput" inputmode="decimal" placeholder="مثال: ٢.٧" /></label>
+              </div>
+            </label>
+            <label class="full">الأجهزة التي تريد تجهيز أماكنها
+              <div class="appliance-grid">
+                <label class="check-pill"><input type="checkbox" name="appliance" value="ثلاجة">ثلاجة</label>
+                <label class="check-pill"><input type="checkbox" name="appliance" value="فرن مدمج">فرن مدمج</label>
+                <label class="check-pill"><input type="checkbox" name="appliance" value="غسالة صحون">غسالة صحون</label>
+                <label class="check-pill"><input type="checkbox" name="appliance" value="ميكروويف">ميكروويف</label>
+                <label class="check-pill"><input type="checkbox" name="appliance" value="شفاط">شفاط</label>
+              </div>
             </label>
             <label class="full">ملاحظة للمشروع
               <input id="noteInput" placeholder="مثال: أحتاج مساحة للثلاجة والفرن المدمج" />
@@ -647,7 +823,11 @@
     const baseColorInput=document.getElementById("baseColorInput");
     const accentColorInput=document.getElementById("accentColorInput");
     const topInput=document.getElementById("topInput");
+    const layoutInput=document.getElementById("layoutInput");
     const lengthInput=document.getElementById("lengthInput");
+    const wallBInput=document.getElementById("wallBInput");
+    const wallCInput=document.getElementById("wallCInput");
+    const heightInput=document.getElementById("heightInput");
     const noteInput=document.getElementById("noteInput");
     const summary=document.getElementById("summary");
 
@@ -750,6 +930,172 @@
       applySavedState(s);
     }
 
+    const advisorState={style:"clean",light:"medium",contrast:"soft",finish:"matte"};
+    let advisorRecommendation={m:"metal",b:"ivory",a:"lightgray",f:"matte",t:"natural",l:"day"};
+
+    function buildAdvisorRecommendation(){
+      const s=advisorState;
+      let rec={m:"metal",b:"ivory",a:"lightgray",f:s.finish,t:"natural",l:s.light==="low"?"day":(s.light==="strong"?"neutral":"day")};
+      let title="اتجاه هادئ ثنائي اللون";
+      let why="مزيج فاتح ومتوازن يعطيك نقطة مقارنة واضحة قبل الانتقال إلى خيارات أكثر جرأة.";
+
+      if(s.style==="warm"){
+        rec.m="wood"; rec.b=s.light==="low"?"ivory":"beige"; rec.a="oak";
+        title="اتجاه دافئ بطابع خشبي";
+        why="نقطة بداية دافئة تربط اللون المحايد بلمسة خشبية واضحة حتى ترى التوازن قبل اعتماد العينات.";
+      }
+      if(s.style==="bold"){
+        rec.m="clad"; rec.b=s.light==="low"?"lightgray":"charcoal"; rec.a="walnut";
+        title="اتجاه معماري بتباين أقوى";
+        why="قاعدة أغمق ولمسة خشبية تمنحك مقارنة أكثر جرأة، مع إبقاء النتيجة مجرد تصور بصري أولي.";
+      }
+
+      if(s.contrast==="same") rec.a=rec.b;
+      if(s.contrast==="high"){
+        if(["ivory","white","lightgray","beige"].includes(rec.b)) rec.a=s.style==="warm"?"walnut":"charcoal";
+        else rec.a="ivory";
+      }
+      if(s.light==="low" && ["charcoal","mocha","walnut"].includes(rec.b)) rec.b="ivory";
+
+      advisorRecommendation=rec;
+      document.getElementById("advisorTitle").textContent=title;
+      document.getElementById("advisorWhy").textContent=why;
+      document.getElementById("advisorMaterial").textContent=materialMap[rec.m];
+      document.getElementById("advisorBase").textContent=colorStates[rec.b].label;
+      document.getElementById("advisorAccent").textContent=colorStates[rec.a].label;
+      document.getElementById("advisorFinish").textContent=finishMap[rec.f];
+    }
+
+    document.querySelectorAll("[data-advisor]").forEach(card=>{
+      card.addEventListener("click",e=>{
+        const btn=e.target.closest(".choice"); if(!btn)return;
+        card.querySelectorAll(".choice").forEach(x=>x.classList.remove("active"));
+        btn.classList.add("active");
+        advisorState[card.dataset.advisor]=btn.dataset.value;
+        buildAdvisorRecommendation();
+      });
+    });
+    document.getElementById("applyAdvisor").addEventListener("click",()=>{
+      applySavedState(advisorRecommendation);
+      document.querySelector(".viewer-card").scrollIntoView({behavior:"smooth",block:"center"});
+    });
+    buildAdvisorRecommendation();
+
+    let roomImage=null;
+    let roomRecommendation=null;
+
+    function quantizedPalette(img){
+      const c=document.createElement("canvas");
+      const max=140, scale=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight));
+      c.width=Math.max(1,Math.round(img.naturalWidth*scale));
+      c.height=Math.max(1,Math.round(img.naturalHeight*scale));
+      const x=c.getContext("2d",{willReadFrequently:true});
+      x.drawImage(img,0,0,c.width,c.height);
+      const data=x.getImageData(0,0,c.width,c.height).data;
+      const buckets=new Map();
+      let totalR=0,totalG=0,totalB=0,count=0;
+      for(let i=0;i<data.length;i+=16){
+        const r=data[i],g=data[i+1],b=data[i+2],a=data[i+3];
+        if(a<200)continue;
+        const lum=(r+g+b)/3;
+        if(lum<18||lum>245)continue;
+        const qr=Math.round(r/40)*40,qg=Math.round(g/40)*40,qb=Math.round(b/40)*40;
+        const key=[Math.min(240,qr),Math.min(240,qg),Math.min(240,qb)].join(",");
+        buckets.set(key,(buckets.get(key)||0)+1);
+        totalR+=r;totalG+=g;totalB+=b;count++;
+      }
+      const top=[...buckets.entries()].sort((a,b)=>b[1]-a[1]).slice(0,4).map(([k])=>k.split(",").map(Number));
+      return {top,avg:count?[totalR/count,totalG/count,totalB/count]:[150,150,150]};
+    }
+
+    function recommendFromRoom(avg){
+      const [r,g,b]=avg;
+      const brightness=(r+g+b)/3;
+      const warm=r-b>12;
+      let base="ivory",accent="oak";
+      if(brightness>185){base=warm?"charcoal":"mocha";accent="oak";}
+      else if(brightness<105){base="ivory";accent=warm?"oak":"lightgray";}
+      else if(warm){base="beige";accent="walnut";}
+      else{base="ivory";accent="charcoal";}
+      return {base,accent,brightness,warm};
+    }
+
+    document.getElementById("roomFile").addEventListener("change",e=>{
+      const file=e.target.files&&e.target.files[0]; if(!file)return;
+      if(!file.type.startsWith("image/"))return;
+      const reader=new FileReader();
+      reader.onload=()=>{
+        const img=document.getElementById("roomPreview");
+        img.onload=()=>{
+          roomImage=img;
+          const analysis=quantizedPalette(img);
+          const rec=recommendFromRoom(analysis.avg);
+          roomRecommendation=rec;
+          const palette=document.getElementById("detectedPalette");
+          palette.innerHTML="";
+          analysis.top.forEach(rgb=>{
+            const sw=document.createElement("span");sw.className="detected-color";sw.style.setProperty("--c","rgb("+rgb.join(",")+")");palette.appendChild(sw);
+          });
+          document.getElementById("roomBase").textContent=colorStates[rec.base].label;
+          document.getElementById("roomAccent").textContent=colorStates[rec.accent].label;
+          const tone=rec.warm?"دافئة":"محايدة/باردة";
+          const light=rec.brightness>180?"مضيئة":rec.brightness<110?"داكنة":"متوسطة السطوع";
+          document.getElementById("roomAnalysis").textContent="الصورة تبدو "+light+" وبنغمة "+tone+". لذلك نقترح هذه التركيبة كنقطة بداية للمقارنة داخل 3D، لا كحكم لوني نهائي.";
+          document.getElementById("applyRoomPalette").disabled=false;
+          document.getElementById("saveDecisionCard").disabled=false;
+          document.getElementById("roomUpload").classList.add("has-image");
+          document.getElementById("uploadEmpty").hidden=true;
+          img.hidden=false;
+        };
+        img.src=reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    document.getElementById("applyRoomPalette").addEventListener("click",()=>{
+      if(!roomRecommendation)return;
+      const s=getState();
+      s.b=roomRecommendation.base;s.a=roomRecommendation.accent;
+      applySavedState(s);
+      document.querySelector(".viewer-card").scrollIntoView({behavior:"smooth",block:"center"});
+    });
+
+    document.getElementById("saveDecisionCard").addEventListener("click",async()=>{
+      if(!roomImage)return;
+      await document.fonts.ready;
+      renderer.render(scene,camera);
+      const out=document.createElement("canvas");out.width=1600;out.height=900;
+      const x=out.getContext("2d");
+      x.fillStyle="#0b0b0b";x.fillRect(0,0,out.width,out.height);
+      x.direction="rtl";
+      x.fillStyle="#f6f2e9";x.font="700 42px Tajawal, sans-serif";x.fillText("بطاقة قرار المطبخ",1510,64);
+      x.fillStyle="#d6b56d";x.font="600 22px Tajawal, sans-serif";x.fillText("مطابخ أفراح الحكمي — تصور أولي",1510,104);
+
+      function cover(img,dx,dy,dw,dh){
+        const iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height;
+        const scale=Math.max(dw/iw,dh/ih),sw=dw/scale,sh=dh/scale,sx=(iw-sw)/2,sy=(ih-sh)/2;
+        x.drawImage(img,sx,sy,sw,sh,dx,dy,dw,dh);
+      }
+      cover(roomImage,820,150,700,520);
+      const shot=new Image();
+      shot.onload=()=>{
+        cover(shot,80,150,700,520);
+        x.fillStyle="#161616";x.fillRect(80,700,1440,140);
+        x.fillStyle="#f0e7d8";x.font="700 26px Tajawal, sans-serif";
+        x.fillText("الخامة: "+materialMap[currentMaterial]+"   •   التشطيب: "+finishMap[currentFinish],1490,742);
+        x.font="600 22px Tajawal, sans-serif";x.fillStyle="#bbb3a8";
+        x.fillText("الأساسية: "+colorStates[currentBaseColor].label+"   •   العلوية: "+colorStates[currentAccentColor].label+"   •   السطح: "+topStates[currentTop].label,1490,782);
+        x.fillStyle="#77716b";x.font="500 17px Tajawal, sans-serif";
+        x.fillText("تصور بصري أولي — يعتمد الاختيار النهائي مع المنفذ بعد القياس والعينات.",1490,817);
+        const a=document.createElement("a");a.download="kitchen-decision-card.jpg";a.href=out.toDataURL("image/jpeg",.9);a.click();
+      };
+      shot.src=renderer.domElement.toDataURL("image/jpeg",.9);
+    });
+
+    function selectedAppliances(){
+      return [...document.querySelectorAll('input[name="appliance"]:checked')].map(x=>x.value);
+    }
+
     function updateSummary(){
       const parts=[
         "طلب مطبخ — مطابخ أفراح الحكمي",
@@ -759,13 +1105,19 @@
         "لون الخزائن العلوية/اللمسة: "+accentColorInput.value,
         "سطح العمل: "+topInput.value,
         "إضاءة المعاينة: "+lightingStates[currentLighting].label,
-        "الطول التقريبي: "+(lengthInput.value||"غير محدد"),
+        "شكل المساحة: "+layoutInput.value,
+        "الطول الرئيسي: "+(lengthInput.value||"غير محدد"),
+        "الجدار ب: "+(wallBInput.value||"غير محدد"),
+        "الجدار ج: "+(wallCInput.value||"غير محدد"),
+        "ارتفاع السقف: "+(heightInput.value||"غير محدد"),
+        "الأجهزة المطلوب تجهيزها: "+(selectedAppliances().join("، ")||"غير محددة"),
         "ملاحظة: "+(noteInput.value||"لا توجد"),
         "ملاحظة المعاينة: الألوان والخامات الظاهرة للتصور المبدئي ويُعتمد الاختيار النهائي مع المنفذ."
       ];
       summary.textContent=parts.join("\n");
     }
-    [materialInput,finishInput,baseColorInput,accentColorInput,topInput,lengthInput,noteInput].forEach(el=>el.addEventListener("input",updateSummary));
+    [materialInput,finishInput,baseColorInput,accentColorInput,topInput,layoutInput,lengthInput,wallBInput,wallCInput,heightInput,noteInput].forEach(el=>el.addEventListener("input",updateSummary));
+    document.querySelectorAll('input[name="appliance"]').forEach(el=>el.addEventListener("change",updateSummary));
     updateSummary();
     loadStateFromUrl();
 
