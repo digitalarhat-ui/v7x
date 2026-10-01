@@ -22,7 +22,7 @@
     .brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:.2px}
     .brand-mark{width:34px;height:34px;border:1px solid rgba(214,181,109,.5);border-radius:11px;display:grid;place-items:center;color:var(--gold);font-size:18px}
     .nav-cta{padding:11px 18px;border:1px solid rgba(214,181,109,.44);border-radius:999px;color:#f8e4b5;background:rgba(214,181,109,.08)}
-    .hero{padding:102px 0 26px;display:grid;align-items:center}
+    .hero{padding:96px 0 22px;display:grid;align-items:center}
     .hero-grid{display:grid;grid-template-columns:.92fr 1.38fr;gap:34px;align-items:center}
     .eyebrow{color:var(--gold);font-size:14px;font-weight:700;letter-spacing:.6px;margin-bottom:14px}
     h1{font-size:clamp(42px,6vw,78px);line-height:.98;margin:0 0 20px;letter-spacing:-1.8px}
@@ -61,7 +61,7 @@
     .decision-actions .mini-action{border:1px solid var(--line);background:#141414;color:#ddd6cd;border-radius:12px;padding:9px 12px;cursor:pointer;font-size:12px;font-weight:700;transition:.2s ease}
     .decision-actions .mini-action:hover{border-color:rgba(214,181,109,.5);transform:translateY(-1px)}
     .decision-actions .mini-action.primary{background:rgba(214,181,109,.12);border-color:rgba(214,181,109,.34);color:#f2d99f}
-    .signature-section{padding:42px 0 34px}
+    .signature-section{padding:34px 0 26px}
     .signature-card{border:1px solid var(--line);border-radius:30px;background:linear-gradient(145deg,#121212,#0c0c0c);padding:28px}
     .signature-head{display:grid;grid-template-columns:.82fr 1.18fr;gap:32px;align-items:start;margin-bottom:22px}
     .signature-head p{margin:0;color:#aaa39a;line-height:1.85}
@@ -100,7 +100,7 @@
     .appliance-grid{display:flex;flex-wrap:wrap;gap:8px}
     .check-pill{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:8px 10px;background:#0c0c0c;color:#aaa39a;font-size:12px;cursor:pointer}
     .check-pill input{width:auto;margin:0;accent-color:#d6b56d}
-    .decision-lab{padding:34px 0 72px}
+    .decision-lab{padding:28px 0 42px}
     .decision-shell{border:1px solid var(--line);border-radius:30px;background:linear-gradient(145deg,#121212,#0d0d0d);padding:28px}
     .decision-top{display:grid;grid-template-columns:.8fr 1.2fr;gap:34px;align-items:start}
     .decision-title{font-size:clamp(28px,3.5vw,46px);line-height:1.08;margin:0 0 12px}
@@ -118,7 +118,7 @@
     .variant-summary{font-size:11px;color:#8d8780;margin-top:4px;line-height:1.55}
     .variant-apply{border:1px solid var(--line);background:#151515;color:#ddd;border-radius:999px;padding:7px 10px;cursor:pointer;font-size:11px}
     .compare-result{margin-top:14px;border:1px solid rgba(214,181,109,.2);background:rgba(214,181,109,.06);border-radius:18px;padding:14px 16px;color:#bdb5aa;font-size:13px;line-height:1.8}
-    .section{padding:78px 0}
+    .section{padding:62px 0}
     .section-head{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:34px}
     .kicker{color:var(--gold);font-size:13px;font-weight:700;margin-bottom:8px}
     h2{font-size:clamp(31px,4vw,52px);line-height:1.08;margin:0;letter-spacing:-.8px}
@@ -151,24 +151,28 @@
     .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
     .reveal.show{opacity:1;transform:none}
     @media(max-width:900px){
-      .hero{padding:88px 0 18px}
+      .hero{padding:82px 0 14px}
       .hero-grid,.flow,.decision-top{grid-template-columns:1fr}
       .hero-copy{order:1}
       .viewer-card{order:2}
       #stage{height:480px}
       .viewer-controls{grid-template-columns:1fr}
       .benefit-grid{grid-template-columns:1fr 1fr 1fr}
-      .section{padding:66px 0}
+      .section{padding:48px 0}
       .section-head{display:block}
       .section-copy{margin-top:16px}
     }
     @media(max-width:560px){
       .shell{width:min(100% - 24px,1180px)}
-      .nav{height:66px}
-      .brand{font-size:14px}
-      .nav-cta{font-size:12px;padding:9px 12px}
-      h1{font-size:44px}
-      .lead{font-size:16px}
+      .nav{height:62px}
+      .brand{font-size:13px;gap:8px}
+      .brand-mark{width:30px;height:30px;border-radius:9px}
+      .nav-cta{font-size:11px;padding:8px 11px}
+      h1{font-size:42px;line-height:1.02;margin-bottom:16px}
+      .lead{font-size:15px;line-height:1.75;margin-bottom:20px}
+      .micro{font-size:12px;line-height:1.65;margin-top:14px}
+      .hero-proof{margin-top:12px;gap:6px}
+      .hero-proof span{font-size:10px;padding:6px 8px}
       .hero-actions .btn{width:100%}
       .viewer-card{border-radius:24px}
       #stage{height:410px}
@@ -182,11 +186,11 @@
       .swatches{width:100%;padding-bottom:4px}
       .swatch{width:28px;height:28px;min-width:28px}
       .swatch-name{display:none}
-      .signature-section{padding:20px 0 16px}
-      .signature-card{padding:18px;border-radius:24px}
+      .signature-section{padding:14px 0 10px}
+      .signature-card{padding:16px;border-radius:22px}
       .signature-head,.advisor-grid,.room-grid{grid-template-columns:1fr}
       .scope-mini{grid-template-columns:1fr}
-      .decision-lab{padding:18px 0 56px}
+      .decision-lab{padding:14px 0 24px}
       .decision-shell{padding:18px;border-radius:24px}
       .benefit-grid{grid-template-columns:1fr}
       .compare-grid{grid-template-columns:1fr}
@@ -194,9 +198,8 @@
       .form-grid{grid-template-columns:1fr}
       label.full{grid-column:auto}
       .work-card{height:430px}
-      .mobile-dock{position:fixed;z-index:60;display:flex;right:12px;left:12px;bottom:max(12px,env(safe-area-inset-bottom));background:#0b0b0be8;border:1px solid var(--line);border-radius:999px;padding:8px;backdrop-filter:blur(18px)}
-      .mobile-dock .btn{width:100%;padding:13px}
-      footer{padding-bottom:110px}
+      .mobile-dock{display:none!important}
+      footer{padding-bottom:38px}
     }
     @media(prefers-reduced-motion:reduce){
       html{scroll-behavior:auto}.gallery-track{animation:none}.reveal{opacity:1;transform:none;transition:none}.btn{transition:none}
@@ -559,8 +562,6 @@
   <footer>
     <div class="shell">مطابخ أفراح الحكمي • تجربة قرار أولي مرتبطة بمصدر التواصل الحالي على حراج.</div>
   </footer>
-
-  <div class="mobile-dock"><a class="btn btn-primary" href="https://haraj.com.sa/11149337708/" target="_blank" rel="noopener">التواصل عبر حراج</a></div>
 
   <script type="module">
     import * as THREE from "three";
