@@ -33,6 +33,8 @@
     .btn-secondary{background:transparent;color:var(--ink);border:1px solid var(--line)}
     .btn:hover{transform:translateY(-2px)}
     .micro{margin-top:18px;color:#827d76;font-size:13px}
+    .hero-proof{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+    .hero-proof span{font-size:11px;color:#a9a198;border:1px solid var(--line);background:#111;border-radius:999px;padding:7px 10px}
     .viewer-card{position:relative;border-radius:34px;overflow:hidden;background:linear-gradient(145deg,#171717,#0b0b0b);border:1px solid var(--line);box-shadow:0 36px 100px rgba(0,0,0,.42)}
     .viewer-head{position:absolute;z-index:6;top:20px;right:20px;left:20px;display:flex;justify-content:space-between;gap:12px;pointer-events:none}
     .chip{font-size:12px;color:#d9d0c5;border:1px solid var(--line);background:#111b;border-radius:999px;padding:8px 11px;backdrop-filter:blur(10px)}
@@ -214,13 +216,14 @@
       <div class="shell hero-grid">
         <div class="hero-copy reveal">
           <div class="eyebrow">تفصيل حسب الطلب • الرياض</div>
-          <h1>ابدأ مطبخك<br>من قرار واضح.</h1>
+          <h1>جرّب. قارن.<br>ثم احسم الاتجاه.</h1>
           <p class="lead">ابدأ من اتجاه يناسب ذوقك، جرّب الخامات والألوان والإضاءة على 3D، اربط القرار بصورة مساحتك، ثم جهّز ملخصاً واضحاً قبل بدء المحادثة.</p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="#request">جهّز طلبك الآن</a>
-            <a class="btn btn-secondary" href="#work">شاهد الأعمال المنشورة</a>
+            <a class="btn btn-primary" href="#advisor">ابدأ الاختيار الذكي</a>
+            <a class="btn btn-secondary" href="#ownRoom">جرّب بصورة مساحتك</a>
           </div>
           <div class="micro">جرّب الخامة واللون والتشطيب وسطح العمل مباشرة على النموذج. المعاينة توضيحية وليست مخطط تنفيذ أو كتالوجاً معتمداً.</div>
+          <div class="hero-proof"><span>مستشار بداية</span><span>مقارنة أ / ب</span><span>تحليل ألوان المساحة محلياً</span><span>رابط يحفظ نفس الاختيار</span></div>
         </div>
 
         <div class="viewer-card reveal">
@@ -411,6 +414,10 @@
               </label>
             </div>
             <img id="roomPreview" alt="صورة مساحة المطبخ المرفوعة" hidden />
+            <label id="changeRoomPhoto" class="chip" style="display:none;position:absolute;left:14px;bottom:14px;z-index:3;cursor:pointer;pointer-events:auto">
+              تغيير الصورة
+              <input id="roomFileChange" type="file" accept="image/*" capture="environment" hidden />
+            </label>
           </div>
 
           <div class="room-side">
@@ -1020,9 +1027,8 @@
       return {base,accent,brightness,warm};
     }
 
-    document.getElementById("roomFile").addEventListener("change",e=>{
-      const file=e.target.files&&e.target.files[0]; if(!file)return;
-      if(!file.type.startsWith("image/"))return;
+    function handleRoomFile(file){
+      if(!file||!file.type.startsWith("image/"))return;
       const reader=new FileReader();
       reader.onload=()=>{
         const img=document.getElementById("roomPreview");
@@ -1046,11 +1052,14 @@
           document.getElementById("roomUpload").classList.add("has-image");
           document.getElementById("uploadEmpty").hidden=true;
           img.hidden=false;
+          document.getElementById("changeRoomPhoto").style.display="inline-flex";
         };
         img.src=reader.result;
       };
       reader.readAsDataURL(file);
-    });
+    }
+    document.getElementById("roomFile").addEventListener("change",e=>handleRoomFile(e.target.files&&e.target.files[0]));
+    document.getElementById("roomFileChange").addEventListener("change",e=>handleRoomFile(e.target.files&&e.target.files[0]));
 
     document.getElementById("applyRoomPalette").addEventListener("click",()=>{
       if(!roomRecommendation)return;
