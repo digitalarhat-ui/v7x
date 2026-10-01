@@ -32,6 +32,8 @@
     .btn-primary{background:var(--gold);color:#15120b}
     .btn-secondary{background:transparent;color:var(--ink);border:1px solid var(--line)}
     .btn:hover{transform:translateY(-2px)}
+    button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+    button:disabled{opacity:.45;cursor:not-allowed;transform:none!important}
     .micro{margin-top:18px;color:#827d76;font-size:13px}
     .hero-proof{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
     .hero-proof span{font-size:11px;color:#a9a198;border:1px solid var(--line);background:#111;border-radius:999px;padding:7px 10px}
@@ -40,8 +42,9 @@
     .chip{font-size:12px;color:#d9d0c5;border:1px solid var(--line);background:#111b;border-radius:999px;padding:8px 11px;backdrop-filter:blur(10px)}
     #stage{height:520px;width:100%;position:relative;border-bottom:1px solid var(--line)}
     #stage canvas{display:block;width:100%!important;height:100%!important}
-    .viewer-controls{position:relative;z-index:8;display:grid;grid-template-columns:1fr;gap:10px;padding:15px 16px 16px;background:#0d0d0de8;backdrop-filter:blur(18px)}
-    .control-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .viewer-controls{position:relative;z-index:8;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:15px 16px 16px;background:#0d0d0de8;backdrop-filter:blur(18px)}
+    .control-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0}
+    .control-group[data-kind="baseColor"],.control-group[data-kind="accentColor"],.decision-actions,.viewer-note{grid-column:1/-1}
     .control-title{font-size:12px;color:#aaa39a;margin-left:2px;min-width:110px;font-weight:700}
     .seg{border:1px solid var(--line);background:#171717;color:#d7d2ca;border-radius:999px;padding:9px 12px;cursor:pointer;font-size:12px;transition:.2s ease}
     .seg.active{background:#f3ead8;color:#17130d;border-color:#f3ead8}
@@ -170,7 +173,9 @@
       .viewer-card{border-radius:24px}
       #stage{height:410px}
       .viewer-head{right:12px;left:12px;top:12px}
-      .viewer-controls{padding:12px 11px 14px;gap:8px}
+      .viewer-head .chip:last-child{display:none}
+      .viewer-controls{grid-template-columns:1fr;padding:12px 11px 14px;gap:8px}
+      .control-group[data-kind="baseColor"],.control-group[data-kind="accentColor"],.decision-actions,.viewer-note{grid-column:auto}
       .control-group{gap:6px}
       .control-title{width:100%;min-width:0}
       .seg{padding:8px 10px;font-size:11px}
@@ -296,7 +301,7 @@
               <button class="mini-action primary" id="shareDesign" type="button">نسخ رابط هذا الاختيار</button>
             </div>
 
-            <div class="viewer-note">ألوان النموذج للتصور المبدئي فقط، ويُعتمد اللون والخامة النهائية مع المنفذ.</div>
+            <div class="viewer-note"><span id="currentChoice">صاج ألماني • أوف وايت + خشبي فاتح • مطفي • رخام طبيعي مطور</span><br>ألوان النموذج للتصور المبدئي فقط، ويُعتمد اللون والخامة النهائية مع المنفذ.</div>
           </div>
         </div>
       </div>
@@ -307,7 +312,7 @@
         <div class="signature-head">
           <div>
             <div class="kicker">مستشار البداية</div>
-            <h2>ابدأ من ذوقك ومساحتك، لا من قائمة طويلة.</h2>
+            <h2>ابدأ من ذوقك وإضاءة مساحتك، لا من قائمة طويلة.</h2>
           </div>
           <p>أربع إجابات قصيرة تبني لك نقطة بداية بصرية ثم تطبقها مباشرة على نموذج المطبخ. هذا اقتراح أولي لتقليل الحيرة، وليس اعتماداً فنياً للخامة.</p>
         </div>
@@ -799,14 +804,30 @@
     function resize(){
       const rect=stage.getBoundingClientRect();
       renderer.setSize(rect.width,rect.height,false);
-      camera.aspect=rect.width/rect.height; camera.updateProjectionMatrix();
+      camera.aspect=rect.width/rect.height;
+      if(rect.width<560){
+        camera.fov=46;
+        camera.position.set(7.6,4.8,9.7);
+      }else if(rect.width<900){
+        camera.fov=40;
+        camera.position.set(7.4,4.8,9.0);
+      }else{
+        camera.fov=36;
+        camera.position.set(7.2,4.8,8.4);
+      }
+      camera.updateProjectionMatrix();
     }
     window.addEventListener("resize",resize); resize();
+
+    let isInteracting=false;
+    renderer.domElement.addEventListener("pointerdown",()=>{isInteracting=true;});
+    window.addEventListener("pointerup",()=>{isInteracting=false;});
+    renderer.domElement.addEventListener("pointerleave",()=>{isInteracting=false;});
 
     let t=0;
     function animate(){
       requestAnimationFrame(animate); t+=.003;
-      if(!matchMedia("(prefers-reduced-motion: reduce)").matches && !controls._isUserInteracting){ scene.rotation.y=Math.sin(t)*.025; }
+      if(!matchMedia("(prefers-reduced-motion: reduce)").matches && !isInteracting){ scene.rotation.y=Math.sin(t)*.025; }
       controls.update(); renderer.render(scene,camera);
     }
     animate();
@@ -843,11 +864,11 @@
     const labelToColor=Object.fromEntries(Object.entries(colorStates).map(([k,v])=>[v.label,k]));
     const labelToTop=Object.fromEntries(Object.entries(topStates).map(([k,v])=>[v.label,k]));
 
-    materialInput.addEventListener("change",()=>{applyMaterial(labelToMaterial[materialInput.value]);syncControl("material",labelToMaterial[materialInput.value]);updateShareUrl();});
-    finishInput.addEventListener("change",()=>{applyFinish(labelToFinish[finishInput.value]);syncControl("finish",labelToFinish[finishInput.value]);updateShareUrl();});
-    baseColorInput.addEventListener("change",()=>{applyCabinetColor("base",labelToColor[baseColorInput.value]);syncControl("baseColor",labelToColor[baseColorInput.value]);updateShareUrl();});
-    accentColorInput.addEventListener("change",()=>{applyCabinetColor("upper",labelToColor[accentColorInput.value]);syncControl("accentColor",labelToColor[accentColorInput.value]);updateShareUrl();});
-    topInput.addEventListener("change",()=>{applyTop(labelToTop[topInput.value]);syncControl("top",labelToTop[topInput.value]);updateShareUrl();});
+    materialInput.addEventListener("change",()=>{applyMaterial(labelToMaterial[materialInput.value]);syncControl("material",labelToMaterial[materialInput.value]);updateSummary();updateShareUrl();});
+    finishInput.addEventListener("change",()=>{applyFinish(labelToFinish[finishInput.value]);syncControl("finish",labelToFinish[finishInput.value]);updateSummary();updateShareUrl();});
+    baseColorInput.addEventListener("change",()=>{applyCabinetColor("base",labelToColor[baseColorInput.value]);syncControl("baseColor",labelToColor[baseColorInput.value]);updateSummary();updateShareUrl();});
+    accentColorInput.addEventListener("change",()=>{applyCabinetColor("upper",labelToColor[accentColorInput.value]);syncControl("accentColor",labelToColor[accentColorInput.value]);updateSummary();updateShareUrl();});
+    topInput.addEventListener("change",()=>{applyTop(labelToTop[topInput.value]);syncControl("top",labelToTop[topInput.value]);updateSummary();updateShareUrl();});
 
     function syncControl(kind,value){
       const group=document.querySelector('.control-group[data-kind="'+kind+'"]');
@@ -866,7 +887,14 @@
       return [materialMap[s.m],colorStates[s.b].label+" + "+colorStates[s.a].label,finishMap[s.f],topStates[s.t].label,lightingStates[s.l].label].join(" • ");
     }
 
+    function updateCurrentChoice(){
+      const el=document.getElementById("currentChoice");
+      if(!el)return;
+      el.textContent=materialMap[currentMaterial]+" • "+colorStates[currentBaseColor].label+" + "+colorStates[currentAccentColor].label+" • "+finishMap[currentFinish]+" • "+topStates[currentTop].label+" • "+lightingStates[currentLighting].label;
+    }
+
     function updateShareUrl(){
+      updateCurrentChoice();
       const s=getState();
       const u=new URL(location.href);
       ["m","b","a","f","t","l"].forEach(k=>u.searchParams.set(k,s[k]));
@@ -1029,6 +1057,10 @@
 
     function handleRoomFile(file){
       if(!file||!file.type.startsWith("image/"))return;
+      if(file.size>18*1024*1024){
+        document.getElementById("roomAnalysis").textContent="حجم الصورة كبير جداً. اختر صورة أقل من 18MB لتجربة أسرع على الجوال.";
+        return;
+      }
       const reader=new FileReader();
       reader.onload=()=>{
         const img=document.getElementById("roomPreview");
@@ -1129,6 +1161,7 @@
     document.querySelectorAll('input[name="appliance"]').forEach(el=>el.addEventListener("change",updateSummary));
     updateSummary();
     loadStateFromUrl();
+    updateCurrentChoice();
 
     document.getElementById("copyBtn").addEventListener("click",async()=>{
       try{
