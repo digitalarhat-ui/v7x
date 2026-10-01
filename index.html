@@ -157,7 +157,8 @@
     .work-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
     .work-card:hover img{transform:scale(1.035)}
     .work-card::after{content:"صورة منشورة في إعلان حراج";position:absolute;right:14px;bottom:14px;background:#0c0c0cbd;border:1px solid var(--line);padding:8px 11px;border-radius:999px;font-size:11px;color:#ddd}
-    .gallery-fallback{display:none;border:1px solid var(--line);border-radius:24px;padding:34px;background:var(--panel);text-align:center;color:#b9b2a9}
+    .gallery-fallback{display:none;border:1px solid var(--line);border-radius:24px;padding:26px;background:var(--panel);text-align:center;color:#b9b2a9}
+    .gallery-source{display:inline-flex;align-items:center;gap:7px;margin-top:12px;border:1px solid var(--line);border-radius:999px;padding:7px 10px;font-size:11px;color:#817b74;background:#101010}
     .flow{display:grid;grid-template-columns:.86fr 1.14fr;gap:28px}
     .flow-copy{padding:28px 0}
     .step-list{display:grid;gap:10px;margin-top:26px}
@@ -180,7 +181,11 @@
     .readiness-track{height:8px;border-radius:999px;background:#202020;overflow:hidden}
     .readiness-fill{height:100%;width:40%;border-radius:inherit;background:linear-gradient(90deg,#9e824b,#d6b56d);transition:width .25s ease}
     .readiness-missing{margin-top:9px;color:#817b74;font-size:11px;line-height:1.65}
-    .summary{margin-top:16px;padding:16px;border-radius:18px;background:#0b0b0b;border:1px solid var(--line);white-space:pre-line;line-height:1.8;color:#d2cbc2;min-height:136px}
+    .readiness-checks{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+    .readiness-check{border:1px solid var(--line);border-radius:999px;padding:7px 9px;font-size:11px;color:#77716b;background:#111}
+    .readiness-check.done{border-color:rgba(214,181,109,.28);background:rgba(214,181,109,.07);color:#dcc58f}
+    .summary{margin-top:16px;padding:16px;border-radius:18px;background:#0b0b0b;border:1px solid var(--line);white-space:pre-line;line-height:1.85;color:#d2cbc2;min-height:128px}
+    .handoff-note{margin-top:10px;color:#716b64;font-size:11px;line-height:1.65}
     .form-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
     .truth{padding:22px;border:1px solid var(--line);border-radius:22px;background:#101010;color:#9c968f;line-height:1.8;font-size:14px;margin-top:22px}
     footer{padding:32px 0 42px;border-top:1px solid var(--line);color:#77716b}
@@ -249,7 +254,10 @@
       .variant-card.has-snapshot .variant-media{height:170px}
       .form-grid{grid-template-columns:1fr}
       label.full{grid-column:auto}
-      .work-card{height:380px}
+      .gallery-wrap{overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:0;padding-inline:12px;scrollbar-width:none}
+      .gallery-wrap::-webkit-scrollbar{display:none}
+      .gallery-track{animation:none!important}
+      .work-card{height:380px;scroll-snap-align:center}
       .gallery-fallback{padding:20px;font-size:13px}
       .mobile-dock{display:none!important}
       footer{padding-bottom:38px}
@@ -536,7 +544,10 @@
             <div class="kicker">من الإعلان إلى صورة أوضح</div>
             <h2>أعمال منشورة من نفس المصدر.</h2>
           </div>
-          <p class="section-copy">تُحمَّل الصور مباشرة من إعلان حراج المرتبط بالعمل، بدون صور مخزنة أو ستوك أو صور مولدة.</p>
+          <div>
+            <p class="section-copy">تُحمَّل الصور مباشرة من إعلان حراج المرتبط بالعمل، بدون صور مخزنة أو ستوك أو صور مولدة.</p>
+            <span class="gallery-source">المصدر الحالي للتواصل والأعمال: حراج</span>
+          </div>
         </div>
       </div>
       <div class="gallery-wrap reveal">
@@ -624,12 +635,20 @@
             <div class="readiness-head"><b>جاهزية تفاصيل الطلب</b><span id="readinessScore">40%</span></div>
             <div class="readiness-track"><div class="readiness-fill" id="readinessFill"></div></div>
             <div class="readiness-missing" id="readinessMissing">أضف شكل المساحة والطول والأجهزة لرفع جاهزية الطلب.</div>
+            <div class="readiness-checks">
+              <span class="readiness-check done" id="readyVisual">✓ الاختيار البصري</span>
+              <span class="readiness-check" id="readyLayout">شكل المساحة</span>
+              <span class="readiness-check" id="readyLength">المقاس الرئيسي</span>
+              <span class="readiness-check" id="readyAppliances">الأجهزة</span>
+              <span class="readiness-check" id="readyExtra">تفصيل إضافي</span>
+            </div>
           </div>
           <div class="summary" id="summary"></div>
           <div class="form-actions">
-            <button class="btn btn-primary" id="copyBtn" type="button">نسخ ملخص الطلب</button>
-            <a class="btn btn-secondary" href="https://haraj.com.sa/11149337708/" target="_blank" rel="noopener">الانتقال إلى حراج</a>
+            <button class="btn btn-primary" id="handoffBtn" type="button">نسخ الطلب وفتح حراج</button>
+            <button class="btn btn-secondary" id="copyBtn" type="button">نسخ فقط</button>
           </div>
+          <div class="handoff-note">بعد فتح حراج، الصق الملخص في المحادثة. لا يتم إرسال أي بيانات تلقائياً من هذه الصفحة.</div>
         </div>
       </div>
     </section>
@@ -1033,15 +1052,18 @@
       galleryWrap.style.display="none";
       galleryFallback.style.display="block";
     }
-    fetch("/api/haraj").then(r=>r.json()).then(data=>{
-      const safe=(data.images||[]).filter(u=>/^https:\/\/[^/]*haraj\.com\.sa\//i.test(u));
+    const galleryAbort=new AbortController();
+    const galleryTimer=setTimeout(()=>galleryAbort.abort(),8000);
+    fetch("/api/haraj",{signal:galleryAbort.signal}).then(r=>r.json()).then(data=>{
+      clearTimeout(galleryTimer);
+      const safe=[...new Set((data.images||[]).filter(u=>/^https:\/\/[^/]*haraj\.com\.sa\//i.test(u)))];
       if(!safe.length){showGalleryFallback();return;}
-      const set=safe.slice(0,10);
-      const loop=set.concat(set);
+      const set=safe.slice(0,6);
+      const loop=matchMedia("(max-width: 560px)").matches?set:set.concat(set);
       let loaded=0,failed=0,shown=false;
       loop.forEach((src,i)=>{
         const card=document.createElement("article");card.className="work-card";
-        const img=document.createElement("img");img.loading=i<3?"eager":"lazy";img.alt="صورة مطبخ منشورة في إعلان حراج";
+        const img=document.createElement("img");img.loading=i<2?"eager":"lazy";img.alt="صورة مطبخ منشورة في إعلان حراج";
         img.onload=()=>{
           loaded++;
           if(!shown){
@@ -1056,7 +1078,7 @@
         };
         img.src=src;card.appendChild(img);gallery.appendChild(card);
       });
-    }).catch(showGalleryFallback);
+    }).catch(()=>{clearTimeout(galleryTimer);showGalleryFallback();});
 
     const materialInput=document.getElementById("materialInput");
     const finishInput=document.getElementById("finishInput");
@@ -1413,39 +1435,63 @@
       return [...document.querySelectorAll('input[name="appliance"]:checked')].map(x=>x.value);
     }
 
+    function setReady(id,done,label){
+      const el=document.getElementById(id);
+      el.classList.toggle("done",done);
+      el.textContent=(done?"✓ ":"")+label;
+    }
+
     function updateReadiness(){
-      let score=40;
-      const missing=[];
-      if(layoutInput.value){score+=15;}else missing.push("شكل المساحة");
-      if(lengthInput.value.trim()){score+=20;}else missing.push("الطول الرئيسي");
-      if(selectedAppliances().length){score+=15;}else missing.push("الأجهزة");
-      if(wallBInput.value.trim()||wallCInput.value.trim()||heightInput.value.trim()||noteInput.value.trim()){score+=10;}else missing.push("تفصيل إضافي اختياري");
+      const hasLayout=Boolean(layoutInput.value);
+      const hasLength=Boolean(lengthInput.value.trim());
+      const hasAppliances=selectedAppliances().length>0;
+      const hasExtra=Boolean(wallBInput.value.trim()||wallCInput.value.trim()||heightInput.value.trim()||noteInput.value.trim());
+
+      let score=45;
+      if(hasLayout)score+=15;
+      if(hasLength)score+=20;
+      if(hasAppliances)score+=10;
+      if(hasExtra)score+=10;
       score=Math.min(100,score);
+
+      const missing=[];
+      if(!hasLayout)missing.push("شكل المساحة");
+      if(!hasLength)missing.push("الطول الرئيسي");
+      if(!hasAppliances)missing.push("الأجهزة");
+
       document.getElementById("readinessScore").textContent=score+"%";
       document.getElementById("readinessFill").style.width=score+"%";
       document.getElementById("readinessMissing").textContent=missing.length
-        ? "لإكمال التفاصيل: "+missing.join("، ")+"."
-        : "التفاصيل الأساسية جاهزة للنسخ قبل التواصل.";
+        ? "التفاصيل الأساسية المتبقية: "+missing.join("، ")+"."
+        : (hasExtra?"الطلب منظم وجاهز للنسخ قبل التواصل.":"الأساسيات جاهزة؛ يمكنك إضافة ملاحظة أو مقاس إضافي إن وجد.");
+
+      setReady("readyVisual",true,"الاختيار البصري");
+      setReady("readyLayout",hasLayout,"شكل المساحة");
+      setReady("readyLength",hasLength,"المقاس الرئيسي");
+      setReady("readyAppliances",hasAppliances,"الأجهزة");
+      setReady("readyExtra",hasExtra,"تفصيل إضافي");
     }
 
     function updateSummary(){
       const parts=[
         "طلب مطبخ — مطابخ أفراح الحكمي",
-        "خامة الخزائن: "+materialInput.value,
-        "التشطيب: "+finishInput.value,
-        "لون الخزائن الأساسية: "+baseColorInput.value,
-        "لون الخزائن العلوية/اللمسة: "+accentColorInput.value,
-        "سطح العمل: "+topInput.value,
-        "إضاءة المعاينة: "+lightingStates[currentLighting].label,
-        "شكل المساحة: "+(layoutInput.value||"غير محدد"),
-        "الطول الرئيسي: "+(lengthInput.value||"غير محدد"),
-        "الجدار ب: "+(wallBInput.value||"غير محدد"),
-        "الجدار ج: "+(wallCInput.value||"غير محدد"),
-        "ارتفاع السقف: "+(heightInput.value||"غير محدد"),
-        "الأجهزة المطلوب تجهيزها: "+(selectedAppliances().join("، ")||"غير محددة"),
-        "ملاحظة: "+(noteInput.value||"لا توجد"),
-        "ملاحظة المعاينة: الألوان والخامات الظاهرة للتصور المبدئي ويُعتمد الاختيار النهائي مع المنفذ."
+        "الاختيار: "+materialInput.value+" • "+baseColorInput.value+" + "+accentColorInput.value+" • "+finishInput.value+" • "+topInput.value
       ];
+
+      if(layoutInput.value)parts.push("شكل المساحة: "+layoutInput.value);
+
+      const dims=[];
+      if(lengthInput.value.trim())dims.push("الرئيسي "+lengthInput.value.trim()+"م");
+      if(wallBInput.value.trim())dims.push("ب "+wallBInput.value.trim()+"م");
+      if(wallCInput.value.trim())dims.push("ج "+wallCInput.value.trim()+"م");
+      if(heightInput.value.trim())dims.push("الارتفاع "+heightInput.value.trim()+"م");
+      if(dims.length)parts.push("المقاسات التقريبية: "+dims.join(" • "));
+
+      const appliances=selectedAppliances();
+      if(appliances.length)parts.push("أماكن الأجهزة: "+appliances.join("، "));
+      if(noteInput.value.trim())parts.push("ملاحظة: "+noteInput.value.trim());
+
+      parts.push("المعاينة أولية؛ الاعتماد النهائي للخامات والمقاسات والتسعير مع الجهة المنفذة.");
       summary.textContent=parts.join("\n");
       updateReadiness();
     }
@@ -1455,13 +1501,33 @@
     loadStateFromUrl();
     updateCurrentChoice();
 
-    document.getElementById("copyBtn").addEventListener("click",async()=>{
+    async function copyRequest(button){
       try{
         await navigator.clipboard.writeText(summary.textContent);
-        const b=document.getElementById("copyBtn"),old=b.textContent;b.textContent="تم النسخ ✓";setTimeout(()=>b.textContent=old,1700);
+        const old=button.textContent;button.textContent="تم النسخ ✓";setTimeout(()=>button.textContent=old,1700);
+        return true;
       }catch(e){
-        const range=document.createRange();range.selectNode(summary);const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);
+        const range=document.createRange();range.selectNode(summary);
+        const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);
+        return false;
       }
+    }
+
+    document.getElementById("copyBtn").addEventListener("click",async e=>{
+      await copyRequest(e.currentTarget);
+    });
+
+    document.getElementById("handoffBtn").addEventListener("click",e=>{
+      const button=e.currentTarget;
+      const harajWindow=window.open("https://haraj.com.sa/11149337708/","_blank","noopener,noreferrer");
+      copyRequest(button).then(copied=>{
+        if(copied){
+          const old=button.dataset.original||"نسخ الطلب وفتح حراج";
+          button.dataset.original=old;
+          button.textContent="تم النسخ — الصقه في حراج ✓";
+          setTimeout(()=>button.textContent=old,2200);
+        }
+      });
     });
 
     const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("show")}),{threshold:.12});
