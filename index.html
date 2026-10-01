@@ -116,8 +116,14 @@
     .room-analysis{font-size:13px;color:#8e8880;line-height:1.7}
     .room-actions{display:flex;gap:8px;flex-wrap:wrap}
     .privacy-note{font-size:11px;color:#6f6963;line-height:1.6}
-    .scope-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}
+    .scope-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
     .scope-mini label{font-size:12px}
+    .optional-details{grid-column:1/-1;border:1px solid var(--line);border-radius:16px;background:#0d0d0d;padding:0 14px}
+    .optional-details summary{cursor:pointer;list-style:none;padding:13px 0;color:#aaa39a;font-size:13px;font-weight:700}
+    .optional-details summary::-webkit-details-marker{display:none}
+    .optional-details summary::before{content:"＋";color:var(--gold);margin-left:8px}
+    .optional-details[open] summary::before{content:"−"}
+    .optional-details[open]{padding-bottom:13px}
     .appliance-grid{display:flex;flex-wrap:wrap;gap:8px}
     .check-pill{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:8px 10px;background:#0c0c0c;color:#aaa39a;font-size:12px;cursor:pointer}
     .check-pill input{width:auto;margin:0;accent-color:#d6b56d}
@@ -210,14 +216,14 @@
       .brand{font-size:13px;gap:8px}
       .brand-mark{width:30px;height:30px;border-radius:9px}
       .nav-cta{font-size:11px;padding:8px 11px}
-      h1{font-size:42px;line-height:1.02;margin-bottom:16px}
-      .lead{font-size:15px;line-height:1.75;margin-bottom:20px}
-      .micro{font-size:12px;line-height:1.65;margin-top:14px}
-      .hero-proof{margin-top:12px;gap:6px}
-      .hero-proof span{font-size:10px;padding:6px 8px}
-      .hero-actions .btn{width:100%}
+      h1{font-size:38px;line-height:1.03;margin-bottom:14px;letter-spacing:-1px}
+      .lead{font-size:14px;line-height:1.72;margin-bottom:16px}
+      .micro,.hero-proof{display:none}
+      .hero-actions{gap:8px}
+      .hero-actions .btn-primary{width:100%;padding:12px 18px}
+      .hero-actions .btn-secondary{width:auto;margin-inline:auto;padding:9px 15px;font-size:12px}
       .viewer-card{border-radius:24px}
-      #stage{height:440px}
+      #stage{height:390px}
       .viewer-head{right:12px;left:12px;top:12px}
       .viewer-head{align-items:center}
       .viewer-head .viewer-tools{margin-inline-start:auto}
@@ -237,19 +243,35 @@
       .control-title{width:100%;min-width:0}
       .seg{padding:8px 10px;font-size:11px}
       .swatches{width:100%;padding-bottom:4px}
-      .swatch{width:28px;height:28px;min-width:28px}
+      .swatch{width:34px;height:34px;min-width:34px}
       .swatch-name{display:none}
       .signature-section{padding:14px 0 10px}
       .signature-card{padding:16px;border-radius:22px}
+      .signature-head{gap:12px;margin-bottom:14px}
+      .signature-head h2,.decision-title{font-size:30px;line-height:1.08}
+      .signature-head p,.decision-copy,.section-copy{font-size:13px;line-height:1.72}
+      .section-head{margin-bottom:20px}
       .signature-head,.advisor-grid,.room-grid{grid-template-columns:1fr}
+      .advisor-result{display:none;min-height:auto}
       .advisor-grid.result-ready>div:first-child{display:none}
-      .advisor-result{min-height:auto}
-      .room-upload{min-height:230px}
-      .scope-mini{grid-template-columns:1fr}
+      .advisor-grid.result-ready .advisor-result{display:flex}
+      .room-upload{min-height:205px}
+      .scope-mini{grid-template-columns:1fr 1fr;gap:8px}
+      .scope-mini label:last-child{grid-column:1/-1}
+      .flow-copy{padding:0 0 10px}
+      .flow-copy .step-list{display:none}
+      .truth{padding:14px;margin-top:14px;font-size:12px;line-height:1.65}
+      .form-card{padding:16px;border-radius:22px}
+      input,select{padding:12px 12px}
+      .appliance-grid{gap:6px}
+      .check-pill{padding:8px 9px}
+      .summary{font-size:12.5px;line-height:1.75;min-height:112px}
+      .form-actions{gap:8px}
+      .form-actions .btn{width:100%;padding:12px 14px}
       .decision-lab{padding:14px 0 24px}
       .decision-shell{padding:18px;border-radius:24px}
-      .benefit-grid{grid-template-columns:1fr}
-      .compare-grid{grid-template-columns:1fr}
+      .benefit-grid{display:none}
+      .compare-grid{grid-template-columns:1fr;margin-top:14px}
       .variant-media{height:74px}
       .variant-card.has-snapshot .variant-media{height:170px}
       .form-grid{grid-template-columns:1fr}
@@ -611,13 +633,14 @@
             <label>الطول الرئيسي بالمتر
               <input id="lengthInput" inputmode="decimal" placeholder="مثال: ٤.٥" />
             </label>
-            <label class="full">مقاسات إضافية تقريبية
+            <details class="optional-details">
+              <summary>مقاسات إضافية (اختياري)</summary>
               <div class="scope-mini">
                 <label>الجدار ب<input id="wallBInput" inputmode="decimal" placeholder="مثال: ٢.٨" /></label>
                 <label>الجدار ج<input id="wallCInput" inputmode="decimal" placeholder="مثال: ٢.٢" /></label>
                 <label>ارتفاع السقف<input id="heightInput" inputmode="decimal" placeholder="مثال: ٢.٧" /></label>
               </div>
-            </label>
+            </details>
             <label class="full">الأجهزة التي تريد تجهيز أماكنها
               <div class="appliance-grid">
                 <label class="check-pill"><input type="checkbox" name="appliance" value="ثلاجة">ثلاجة</label>
@@ -702,9 +725,8 @@
     scene.add(key);
     const rim = new THREE.DirectionalLight(0x8bb4ff,2.1);
     rim.position.set(-4,5,-3); scene.add(rim);
-    const roomFill = new THREE.RectAreaLight(0xffe7c1,2.2,5.6,2.4);
-    roomFill.position.set(-.35,3.05,1.7);
-    roomFill.lookAt(-.35,1.15,-1.65);
+    const roomFill = new THREE.DirectionalLight(0xffe7c1,1.35);
+    roomFill.position.set(-2.8,4.2,3.4);
     scene.add(roomFill);
 
     const floor = new THREE.Mesh(
@@ -809,12 +831,13 @@
     function addUpperUnit(x,w=.82,glass=false){
       box(w,.86,.47,x,2.18,-1.76,upperCabinetMat); registerCabinet(scene.children[scene.children.length-1],"upper");
       if(glass){
-        const frame=addFrontPanel(x,2.18,-1.50,w-.055,.79,upperCabinetMat,"upper");
-        const glassPane=box(w-.18,.65,.018,x,2.18,-1.472,glassMat);
-        box(w-.17,.028,.025,x,2.18+.325,-1.458,handleMat);
-        box(w-.17,.028,.025,x,2.18-.325,-1.458,handleMat);
-        box(.028,.65,.025,x-w/2+.085,2.18,-1.458,handleMat);
-        box(.028,.65,.025,x+w/2-.085,2.18,-1.458,handleMat);
+        const fw=.055, fh=.065, frontZ=-1.50;
+        const topFrame=box(w-.055,fh,.045,x,2.18+.36,frontZ,upperCabinetMat);registerCabinet(topFrame,"upper");
+        const bottomFrame=box(w-.055,fh,.045,x,2.18-.36,frontZ,upperCabinetMat);registerCabinet(bottomFrame,"upper");
+        const leftFrame=box(fw,.66,.045,x-w/2+.055,2.18,frontZ,upperCabinetMat);registerCabinet(leftFrame,"upper");
+        const rightFrame=box(fw,.66,.045,x+w/2-.055,2.18,frontZ,upperCabinetMat);registerCabinet(rightFrame,"upper");
+        box(w-.17,.65,.018,x,2.18,-1.474,glassMat);
+        box(.20,.018,.028,x+w/2-.16,2.18,-1.448,handleMat);
       }else{
         addFrontPanel(x,2.18,-1.50,w-.055,.79,upperCabinetMat,"upper");
       }
@@ -938,7 +961,7 @@
       key.color.setHex(s.key); key.intensity=s.keyI;
       rim.color.setHex(s.rim); rim.intensity=s.rimI;
       roomFill.color.setHex(value==="evening"?0xffc982:(value==="neutral"?0xffffff:0xffe7c1));
-      roomFill.intensity=value==="evening"?2.6:2.2;
+      roomFill.intensity=value==="evening"?1.55:1.35;
       strip.material.emissiveIntensity=s.strip;
       renderer.toneMappingExposure=value==="evening" ? .98 : 1.08;
     }
@@ -1065,6 +1088,11 @@
         const card=document.createElement("article");card.className="work-card";
         const img=document.createElement("img");img.loading=i<2?"eager":"lazy";img.alt="صورة مطبخ منشورة في إعلان حراج";
         img.onload=()=>{
+          if(img.naturalWidth<420 || img.naturalHeight<280){
+            failed++; card.remove();
+            if(failed===loop.length&&!loaded)showGalleryFallback();
+            return;
+          }
           loaded++;
           if(!shown){
             shown=true;
@@ -1298,10 +1326,7 @@
         btn.classList.add("active");
         advisorState[card.dataset.advisor]=btn.dataset.value;
         buildAdvisorRecommendation();
-        const index=advisorCards.indexOf(card);
-        if(index===advisorStep && advisorStep<advisorCards.length-1){
-          setTimeout(()=>{advisorStep++;renderAdvisorStep();},170);
-        }
+        // Keep the selected answer visible; the user advances explicitly with "التالي".
       });
     });
     document.getElementById("applyAdvisor").addEventListener("click",()=>{
