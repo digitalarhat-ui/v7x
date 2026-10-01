@@ -39,7 +39,10 @@
     .hero-proof span{font-size:11px;color:#a9a198;border:1px solid var(--line);background:#111;border-radius:999px;padding:7px 10px}
     .viewer-card{position:relative;border-radius:34px;overflow:hidden;background:linear-gradient(145deg,#171717,#0b0b0b);border:1px solid var(--line);box-shadow:0 36px 100px rgba(0,0,0,.42)}
     .viewer-head{position:absolute;z-index:6;top:20px;right:20px;left:20px;display:flex;justify-content:space-between;gap:12px;pointer-events:none}
+    .viewer-tools{display:flex;gap:8px;pointer-events:auto}
     .chip{font-size:12px;color:#d9d0c5;border:1px solid var(--line);background:#111b;border-radius:999px;padding:8px 11px;backdrop-filter:blur(10px)}
+    button.chip{cursor:pointer;font-family:inherit}
+    button.chip:hover{border-color:rgba(214,181,109,.5);color:#f4dfad}
     #stage{height:520px;width:100%;position:relative;border-bottom:1px solid var(--line)}
     #stage canvas{display:block;width:100%!important;height:100%!important}
     .viewer-controls{position:relative;z-index:8;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:15px 16px 16px;background:#0d0d0de8;backdrop-filter:blur(18px)}
@@ -201,7 +204,10 @@
       .viewer-card{border-radius:24px}
       #stage{height:440px}
       .viewer-head{right:12px;left:12px;top:12px}
-      .viewer-head .chip:last-child{display:none}
+      .viewer-head{align-items:center}
+      .viewer-head .viewer-tools{margin-inline-start:auto}
+      .viewer-head>span.chip{display:none}
+      .viewer-head button.chip{font-size:10px;padding:7px 9px}
       .viewer-controls{grid-template-columns:1fr;padding:12px 11px 14px;gap:8px}
       .control-tabs{display:grid}
       .control-group[data-kind="baseColor"],.control-group[data-kind="accentColor"],.decision-actions,.viewer-note{grid-column:auto}
@@ -271,8 +277,10 @@
 
         <div class="viewer-card reveal">
           <div class="viewer-head">
+            <div class="viewer-tools">
+              <button class="chip" id="resetView" type="button">إعادة المنظر</button>
+            </div>
             <span class="chip">اسحب لتدوير النموذج</span>
-            <span class="chip">معاينة 3D تفاعلية</span>
           </div>
           <div id="stage" aria-label="نموذج ثلاثي الأبعاد توضيحي للمطبخ"></div>
           <div class="viewer-controls" data-tab="material" aria-label="خيارات المعاينة">
@@ -637,18 +645,29 @@
     controls.enableDamping = true;
     controls.enablePan = false;
     controls.minDistance = 6.4;
-    controls.maxDistance = 13;
-    controls.minPolarAngle = .7;
-    controls.maxPolarAngle = 1.42;
+    controls.maxDistance = 11.5;
+    controls.minPolarAngle = .82;
+    controls.maxPolarAngle = 1.34;
+    controls.minAzimuthAngle = -.12;
+    controls.maxAzimuthAngle = 1.38;
     controls.target.set(-.15,1.35,-1.48);
 
     const hemi = new THREE.HemisphereLight(0xfff5df,0x1a1f24,2.3);
     scene.add(hemi);
     const key = new THREE.DirectionalLight(0xffe0aa,4.5);
     key.position.set(5,8,4); key.castShadow = true;
-    key.shadow.mapSize.set(2048,2048); scene.add(key);
+    key.shadow.mapSize.set(2048,2048);
+    key.shadow.camera.left=-6; key.shadow.camera.right=6;
+    key.shadow.camera.top=6; key.shadow.camera.bottom=-3;
+    key.shadow.camera.near=.5; key.shadow.camera.far=18;
+    key.shadow.bias=-.00035;
+    scene.add(key);
     const rim = new THREE.DirectionalLight(0x8bb4ff,2.1);
     rim.position.set(-4,5,-3); scene.add(rim);
+    const roomFill = new THREE.RectAreaLight(0xffe7c1,2.2,5.6,2.4);
+    roomFill.position.set(-.35,3.05,1.7);
+    roomFill.lookAt(-.35,1.15,-1.65);
+    scene.add(roomFill);
 
     const floor = new THREE.Mesh(
       new THREE.PlaneGeometry(22,22),
@@ -659,6 +678,7 @@
     const wallMat=new THREE.MeshStandardMaterial({color:0x242321,roughness:.95});
     const backWall=boxRaw(8.7,3.65,.18,0,1.825,-2.24,wallMat);
     const sideWall=boxRaw(.14,3.65,5.4,-4.28,1.825,.35,new THREE.MeshStandardMaterial({color:0x1d1d1c,roughness:.96}));
+    boxRaw(8.7,.16,1.02,0,3.48,-1.78,new THREE.MeshStandardMaterial({color:0x1b1a19,roughness:.9}));
 
     const cabinetMeshes=[];
     const baseCabinetMeshes=[];
@@ -879,6 +899,8 @@
       hemi.color.setHex(s.hemi); hemi.groundColor.setHex(s.ground); hemi.intensity=s.hemiI;
       key.color.setHex(s.key); key.intensity=s.keyI;
       rim.color.setHex(s.rim); rim.intensity=s.rimI;
+      roomFill.color.setHex(value==="evening"?0xffc982:(value==="neutral"?0xffffff:0xffe7c1));
+      roomFill.intensity=value==="evening"?2.6:2.2;
       strip.material.emissiveIntensity=s.strip;
       renderer.toneMappingExposure=value==="evening" ? .98 : 1.08;
     }
@@ -948,23 +970,29 @@
     applyTop("natural");
     applyLighting("day");
 
+    function defaultCameraForWidth(width){
+      if(width<560)return {fov:43,pos:[6.7,3.95,9.5]};
+      if(width<900)return {fov:38,pos:[6.55,3.75,8.45]};
+      return {fov:34,pos:[6.15,3.55,7.45]};
+    }
+    function resetCameraView(){
+      const rect=stage.getBoundingClientRect();
+      const preset=defaultCameraForWidth(rect.width);
+      camera.fov=preset.fov;
+      camera.position.set(...preset.pos);
+      controls.target.set(-.15,1.35,-1.48);
+      scene.rotation.y=0;
+      camera.updateProjectionMatrix();
+      controls.update();
+    }
     function resize(){
       const rect=stage.getBoundingClientRect();
       renderer.setSize(rect.width,rect.height,false);
       camera.aspect=rect.width/rect.height;
-      if(rect.width<560){
-        camera.fov=43;
-        camera.position.set(6.7,3.95,9.5);
-      }else if(rect.width<900){
-        camera.fov=38;
-        camera.position.set(6.55,3.75,8.45);
-      }else{
-        camera.fov=34;
-        camera.position.set(6.15,3.55,7.45);
-      }
-      camera.updateProjectionMatrix();
+      resetCameraView();
     }
     window.addEventListener("resize",resize); resize();
+    document.getElementById("resetView").addEventListener("click",resetCameraView);
 
     let isInteracting=false;
     renderer.domElement.addEventListener("pointerdown",()=>{isInteracting=true;});
