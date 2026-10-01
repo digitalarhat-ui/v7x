@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0b0b" />
+  <title>مطابخ أفراح الحكمي | اختر خامتك وابدأ طلبك</title>
+  <meta name="description" content="تجربة مبسطة لاختيار خامة المطبخ وسطح العمل وتجهيز ملخص الطلب قبل التواصل عبر حراج." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0b0b0b;--panel:#111;--panel2:#171717;--ink:#f6f2e9;--muted:#aaa39a;--gold:#d6b56d;--line:rgba(255,255,255,.1);--radius:26px}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;background:var(--bg)}
+    body{margin:0;background:radial-gradient(circle at 72% -10%,rgba(214,181,109,.12),transparent 34%),var(--bg);color:var(--ink);font-family:"Tajawal",system-ui,sans-serif;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    button,input,select{font:inherit}
+    .shell{width:min(1180px,calc(100% - 34px));margin:auto}
+    .topbar{position:fixed;inset:0 0 auto;z-index:50;background:linear-gradient(#0b0b0be8,#0b0b0b00);backdrop-filter:blur(12px)}
+    .nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:.2px}
+    .brand-mark{width:34px;height:34px;border:1px solid rgba(214,181,109,.5);border-radius:11px;display:grid;place-items:center;color:var(--gold);font-size:18px}
+    .nav-cta{padding:11px 18px;border:1px solid rgba(214,181,109,.44);border-radius:999px;color:#f8e4b5;background:rgba(214,181,109,.08)}
+    .hero{min-height:100svh;padding:112px 0 54px;display:grid;align-items:center}
+    .hero-grid{display:grid;grid-template-columns:.92fr 1.38fr;gap:34px;align-items:center}
+    .eyebrow{color:var(--gold);font-size:14px;font-weight:700;letter-spacing:.6px;margin-bottom:14px}
+    h1{font-size:clamp(42px,6vw,78px);line-height:.98;margin:0 0 20px;letter-spacing:-1.8px}
+    .lead{font-size:clamp(17px,2vw,21px);line-height:1.9;color:#c8c1b8;margin:0 0 28px;max-width:610px}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:12px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:0;border-radius:999px;padding:14px 21px;font-weight:700;cursor:pointer;transition:.25s ease}
+    .btn-primary{background:var(--gold);color:#15120b}
+    .btn-secondary{background:transparent;color:var(--ink);border:1px solid var(--line)}
+    .btn:hover{transform:translateY(-2px)}
+    .micro{margin-top:18px;color:#827d76;font-size:13px}
+    .viewer-card{position:relative;border-radius:34px;overflow:hidden;background:linear-gradient(145deg,#171717,#0b0b0b);border:1px solid var(--line);box-shadow:0 36px 100px rgba(0,0,0,.42);min-height:650px}
+    .viewer-head{position:absolute;z-index:6;top:20px;right:20px;left:20px;display:flex;justify-content:space-between;gap:12px;pointer-events:none}
+    .chip{font-size:12px;color:#d9d0c5;border:1px solid var(--line);background:#111b;border-radius:999px;padding:8px 11px;backdrop-filter:blur(10px)}
+    #stage{height:650px;width:100%;position:relative}
+    #stage canvas{display:block;width:100%!important;height:100%!important}
+    .viewer-controls{position:absolute;z-index:8;right:18px;left:18px;bottom:18px;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px;border:1px solid var(--line);border-radius:20px;background:#0c0c0cda;backdrop-filter:blur(18px)}
+    .control-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .control-title{font-size:12px;color:#938d85;margin-left:2px;min-width:76px}
+    .seg{border:1px solid var(--line);background:#171717;color:#d7d2ca;border-radius:999px;padding:9px 12px;cursor:pointer;font-size:12px;transition:.2s ease}
+    .seg.active{background:#f3ead8;color:#17130d;border-color:#f3ead8}
+    .section{padding:105px 0}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:34px}
+    .kicker{color:var(--gold);font-size:13px;font-weight:700;margin-bottom:8px}
+    h2{font-size:clamp(31px,4vw,52px);line-height:1.08;margin:0;letter-spacing:-.8px}
+    .section-copy{max-width:560px;color:#aaa39a;line-height:1.85}
+    .gallery-wrap{position:relative;overflow:hidden;margin-inline:calc((100vw - min(1180px,calc(100vw - 34px)))/-2);padding:8px 0}
+    .gallery-track{display:flex;gap:16px;width:max-content;animation:rail 38s linear infinite}
+    .gallery-wrap:hover .gallery-track{animation-play-state:paused}
+    @keyframes rail{to{transform:translateX(50%)}}
+    .work-card{width:min(430px,78vw);height:500px;border-radius:24px;overflow:hidden;border:1px solid var(--line);background:#151515;position:relative;flex:0 0 auto}
+    .work-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+    .work-card:hover img{transform:scale(1.035)}
+    .work-card::after{content:"صورة منشورة في إعلان حراج";position:absolute;right:14px;bottom:14px;background:#0c0c0cbd;border:1px solid var(--line);padding:8px 11px;border-radius:999px;font-size:11px;color:#ddd}
+    .gallery-fallback{display:none;border:1px solid var(--line);border-radius:24px;padding:34px;background:var(--panel);text-align:center;color:#b9b2a9}
+    .flow{display:grid;grid-template-columns:.86fr 1.14fr;gap:28px}
+    .flow-copy{padding:28px 0}
+    .step-list{display:grid;gap:10px;margin-top:26px}
+    .step{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);color:#c8c2b9}
+    .step b{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#171717;border:1px solid var(--line);color:var(--gold)}
+    .form-card{background:linear-gradient(150deg,#171717,#101010);border:1px solid var(--line);border-radius:30px;padding:25px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+    label{display:grid;gap:8px;font-size:13px;color:#99928a}
+    label.full{grid-column:1/-1}
+    input,select{width:100%;border:1px solid var(--line);background:#0c0c0c;color:#f0ece6;border-radius:14px;padding:13px 14px;outline:none}
+    input:focus,select:focus{border-color:rgba(214,181,109,.7)}
+    .summary{margin-top:16px;padding:16px;border-radius:18px;background:#0b0b0b;border:1px solid var(--line);white-space:pre-line;line-height:1.8;color:#d2cbc2;min-height:136px}
+    .form-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .truth{padding:22px;border:1px solid var(--line);border-radius:22px;background:#101010;color:#9c968f;line-height:1.8;font-size:14px;margin-top:22px}
+    footer{padding:30px 0 120px;border-top:1px solid var(--line);color:#77716b}
+    .mobile-dock{display:none}
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.show{opacity:1;transform:none}
+    @media(max-width:900px){
+      .hero{padding-top:94px}
+      .hero-grid,.flow{grid-template-columns:1fr}
+      .hero-copy{order:1}
+      .viewer-card{order:2;min-height:590px}
+      #stage{height:590px}
+      .viewer-controls{grid-template-columns:1fr}
+      .section{padding:78px 0}
+      .section-head{display:block}
+      .section-copy{margin-top:16px}
+    }
+    @media(max-width:560px){
+      .shell{width:min(100% - 24px,1180px)}
+      .nav{height:66px}
+      .brand{font-size:14px}
+      .nav-cta{font-size:12px;padding:9px 12px}
+      h1{font-size:44px}
+      .lead{font-size:16px}
+      .hero-actions .btn{width:100%}
+      .viewer-card{border-radius:24px;min-height:610px}
+      #stage{height:610px}
+      .viewer-head{right:12px;left:12px;top:12px}
+      .viewer-controls{right:10px;left:10px;bottom:10px;padding:10px;border-radius:17px;gap:8px}
+      .control-group{gap:6px}
+      .control-title{width:100%;min-width:0}
+      .seg{padding:8px 10px;font-size:11px}
+      .form-grid{grid-template-columns:1fr}
+      label.full{grid-column:auto}
+      .work-card{height:430px}
+      .mobile-dock{position:fixed;z-index:60;display:flex;right:12px;left:12px;bottom:max(12px,env(safe-area-inset-bottom));background:#0b0b0be8;border:1px solid var(--line);border-radius:999px;padding:8px;backdrop-filter:blur(18px)}
+      .mobile-dock .btn{width:100%;padding:13px}
+      footer{padding-bottom:110px}
+    }
+    @media(prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}.gallery-track{animation:none}.reveal{opacity:1;transform:none;transition:none}.btn{transition:none}
+    }
+  </style>
+  <script type="importmap">
+    {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell nav">
+      <a class="brand" href="#top" aria-label="مطابخ أفراح الحكمي">
+        <span class="brand-mark">أ</span><span>مطابخ أفراح الحكمي</span>
+      </a>
+      <a class="nav-cta" href="https://haraj.com.sa/11149337708/" target="_blank" rel="noopener">التواصل عبر حراج</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="shell hero-grid">
+        <div class="hero-copy reveal">
+          <div class="eyebrow">تفصيل حسب الطلب • الرياض</div>
+          <h1>ابدأ مطبخك<br>من قرار واضح.</h1>
+          <p class="lead">قارن بين خامات الخزائن وسطح العمل على نموذج ثلاثي الأبعاد، ثم جهّز ملخصاً واضحاً لمقاساتك وتفضيلاتك قبل بدء المحادثة.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#request">جهّز طلبك الآن</a>
+            <a class="btn btn-secondary" href="#work">شاهد الأعمال المنشورة</a>
+          </div>
+          <div class="micro">المعاينة ثلاثية الأبعاد توضيحية لتقريب قرار الخامة وليست مخطط تنفيذ أو كتالوجاً معتمداً.</div>
+        </div>
+
+        <div class="viewer-card reveal">
+          <div class="viewer-head">
+            <span class="chip">اسحب لتدوير النموذج</span>
+            <span class="chip">معاينة 3D تفاعلية</span>
+          </div>
+          <div id="stage" aria-label="نموذج ثلاثي الأبعاد توضيحي للمطبخ"></div>
+          <div class="viewer-controls" aria-label="خيارات المعاينة">
+            <div class="control-group" data-kind="cabinet">
+              <span class="control-title">خامة الخزائن</span>
+              <button class="seg active" data-value="metal">صاج ألماني</button>
+              <button class="seg" data-value="wood">خشب شابورد</button>
+              <button class="seg" data-value="clad">كلادينج</button>
+            </div>
+            <div class="control-group" data-kind="top">
+              <span class="control-title">سطح العمل</span>
+              <button class="seg active" data-value="natural">رخام طبيعي مطور</button>
+              <button class="seg" data-value="industrial">رخام صناعي</button>
+              <button class="seg" data-value="cast">رخام صب كامل</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="work">
+      <div class="shell">
+        <div class="section-head reveal">
+          <div>
+            <div class="kicker">من الإعلان إلى صورة أوضح</div>
+            <h2>أعمال منشورة من نفس المصدر.</h2>
+          </div>
+          <p class="section-copy">تُحمَّل الصور مباشرة من إعلان حراج المرتبط بالعمل، بدون صور مخزنة أو ستوك أو صور مولدة.</p>
+        </div>
+      </div>
+      <div class="gallery-wrap reveal">
+        <div class="gallery-track" id="gallery"></div>
+      </div>
+      <div class="shell">
+        <div class="gallery-fallback" id="galleryFallback">
+          تعذّر تحميل صور الإعلان تلقائياً الآن. يمكنك مشاهدة الصور المنشورة من المصدر مباشرة عبر حراج.
+          <div style="margin-top:16px"><a class="btn btn-secondary" href="https://haraj.com.sa/11149337708/" target="_blank" rel="noopener">فتح الإعلان على حراج</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="request">
+      <div class="shell flow">
+        <div class="flow-copy reveal">
+          <div class="kicker">قبل المحادثة</div>
+          <h2>حوّل اختياراتك إلى طلب مفهوم.</h2>
+          <p class="section-copy">بدلاً من بدء المحادثة من الصفر، اختر الاتجاه العام للمشروع وأضف المقاسات التقريبية واللون المرغوب. ستحصل على ملخص قصير يمكنك نسخه وإرساله عبر حراج.</p>
+          <div class="step-list">
+            <div class="step"><b>١</b><span>اختر خامة الخزائن وسطح العمل</span></div>
+            <div class="step"><b>٢</b><span>أدخل المقاسات التقريبية واللون المفضل</span></div>
+            <div class="step"><b>٣</b><span>انسخ الملخص وابدأ التواصل من حراج</span></div>
+          </div>
+          <div class="truth">المقاسات هنا أولية فقط. التسعير والتنفيذ والاعتماد النهائي للخامات والمقاسات يتم مباشرة مع الجهة المنفذة.</div>
+        </div>
+
+        <div class="form-card reveal">
+          <div class="form-grid">
+            <label>خامة الخزائن
+              <select id="materialInput">
+                <option>صاج ألماني</option>
+                <option>خشب شابورد</option>
+                <option>كلادينج</option>
+              </select>
+            </label>
+            <label>سطح العمل
+              <select id="topInput">
+                <option>رخام طبيعي مطور</option>
+                <option>رخام صناعي</option>
+                <option>رخام صب كامل</option>
+              </select>
+            </label>
+            <label>الطول التقريبي بالمتر
+              <input id="lengthInput" inputmode="decimal" placeholder="مثال: ٤.٥" />
+            </label>
+            <label>اللون المفضل
+              <input id="colorInput" placeholder="مثال: أوف وايت / خشبي" />
+            </label>
+            <label class="full">ملاحظة للمشروع
+              <input id="noteInput" placeholder="مثال: أحتاج مساحة للثلاجة والفرن المدمج" />
+            </label>
+          </div>
+          <div class="summary" id="summary"></div>
+          <div class="form-actions">
+            <button class="btn btn-primary" id="copyBtn" type="button">نسخ ملخص الطلب</button>
+            <a class="btn btn-secondary" href="https://haraj.com.sa/11149337708/" target="_blank" rel="noopener">الانتقال إلى حراج</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell">مطابخ أفراح الحكمي • تجربة قرار أولي مرتبطة بمصدر التواصل الحالي على حراج.</div>
+  </footer>
+
+  <div class="mobile-dock"><a class="btn btn-primary" href="https://haraj.com.sa/11149337708/" target="_blank" rel="noopener">التواصل عبر حراج</a></div>
+
+  <script type="module">
+    import * as THREE from "three";
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+    const stage = document.getElementById("stage");
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0c0c0c);
+    scene.fog = new THREE.Fog(0x0c0c0c, 9, 18);
+
+    const camera = new THREE.PerspectiveCamera(36, 1, .1, 100);
+    camera.position.set(7.2, 4.8, 8.4);
+
+    const renderer = new THREE.WebGLRenderer({antialias:true,alpha:false});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.08;
+    stage.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.enablePan = false;
+    controls.minDistance = 6.4;
+    controls.maxDistance = 13;
+    controls.minPolarAngle = .7;
+    controls.maxPolarAngle = 1.42;
+    controls.target.set(0,1.25,0);
+
+    const hemi = new THREE.HemisphereLight(0xfff5df,0x1a1f24,2.3);
+    scene.add(hemi);
+    const key = new THREE.DirectionalLight(0xffe0aa,4.5);
+    key.position.set(5,8,4); key.castShadow = true;
+    key.shadow.mapSize.set(2048,2048); scene.add(key);
+    const rim = new THREE.DirectionalLight(0x8bb4ff,2.1);
+    rim.position.set(-4,5,-3); scene.add(rim);
+
+    const floor = new THREE.Mesh(new THREE.PlaneGeometry(22,22),new THREE.MeshStandardMaterial({color:0x181818,roughness:.9}));
+    floor.rotation.x = -Math.PI/2; floor.receiveShadow = true; scene.add(floor);
+    const wallMat = new THREE.MeshStandardMaterial({color:0x20201f,roughness:.92});
+    const wallBack = new THREE.Mesh(new THREE.BoxGeometry(10,.15,4.8),wallMat);
+    wallBack.position.set(0,-2.9,2.4); wallBack.rotation.x = Math.PI/2; scene.add(wallBack);
+
+    const cabinetMeshes = [];
+    const topMeshes = [];
+    const handleMat = new THREE.MeshStandardMaterial({color:0x252525,metalness:.8,roughness:.2});
+    const glassMat = new THREE.MeshPhysicalMaterial({color:0x6f7d84,roughness:.16,transmission:.35,transparent:true,opacity:.55,metalness:.1});
+
+    function box(w,h,d,x,y,z,mat,bevel){
+      const geo = new THREE.BoxGeometry(w,h,d, bevel ? 2 : 1, bevel ? 2 : 1, bevel ? 2 : 1);
+      const mesh = new THREE.Mesh(geo,mat);
+      mesh.position.set(x,y,z);
+      mesh.castShadow = true; mesh.receiveShadow = true; scene.add(mesh);
+      return mesh;
+    }
+
+    const cabinetMat = new THREE.MeshStandardMaterial({color:0xc7c9c9,metalness:.58,roughness:.34});
+    const topMat = new THREE.MeshStandardMaterial({color:0xe2ded6,metalness:.05,roughness:.28});
+
+    function addCabinet(x,z,w,h,d,y){
+      const body = box(w,h,d,x,y,z,cabinetMat);
+      cabinetMeshes.push(body);
+      const doorW = Math.max(.4,w/2-.04);
+      const doors = w > .8 ? [-doorW/2-.02,doorW/2+.02] : [0];
+      doors.forEach(dx=>{
+        const door = box(doorW,h-.08,.035,x+dx,y,z+d/2+.025,cabinetMat);
+        cabinetMeshes.push(door);
+        box(.025,.5,.025,x+dx+(dx<=0?.12:-.12),y,z+d/2+.06,handleMat);
+      });
+    }
+
+    [-2.5,-1.55,-.6,.35,1.3,2.25].forEach(x=>addCabinet(x,-1.55,.84,1.05,.72,.525));
+    [-2.5,-1.55,-.6,.35,1.3].forEach(x=>addCabinet(x,-1.65,.84,.78,.52,2.18));
+    addCabinet(3.15,-1.5,1.02,2.85,.72,1.425);
+
+    const counterBack = box(6.2,.13,.86,.02,1.12,-1.55,topMat); topMeshes.push(counterBack);
+    const splash = box(5.18,1.0,.05,-.45,1.72,-1.98,new THREE.MeshStandardMaterial({color:0x3a3a38,roughness:.7}));
+    for(let i=0;i<3;i++){const glass=box(.72,.58,.05,2.93,1.65+i*.62,-1.12,glassMat);glass.rotation.z=Math.PI/2;}
+
+    const islandBody = box(3.1,1.02,1.16,.65,.51,1.25,cabinetMat); cabinetMeshes.push(islandBody);
+    const islandTop = box(3.42,.13,1.44,.65,1.11,1.25,topMat); topMeshes.push(islandTop);
+    [-.32,.64,1.6].forEach(x=>{ const line=box(.02,.78,.03,x,.52,1.84,handleMat); });
+    const sink = box(.82,.035,.5,.4,1.19,-1.45,new THREE.MeshStandardMaterial({color:0x26292b,metalness:.9,roughness:.18}));
+    const hob = box(.72,.035,.52,1.72,1.2,-1.43,new THREE.MeshStandardMaterial({color:0x090909,metalness:.25,roughness:.12}));
+    const oven = box(.72,.67,.05,3.15,.92,-1.11,new THREE.MeshStandardMaterial({color:0x080808,metalness:.4,roughness:.1}));
+
+    const strip = box(5.05,.035,.055,-.45,1.66,-1.37,new THREE.MeshStandardMaterial({color:0xffd99b,emissive:0xffc66a,emissiveIntensity:5}));
+    const rug = new THREE.Mesh(new THREE.PlaneGeometry(4.9,2.4),new THREE.MeshStandardMaterial({color:0x2b2926,roughness:1}));
+    rug.rotation.x=-Math.PI/2; rug.position.set(.5,.011,.75); scene.add(rug);
+
+    const cabinetStates = {
+      metal:{color:0xd1d3d2,metalness:.65,roughness:.3},
+      wood:{color:0x9a6e49,metalness:.04,roughness:.62},
+      clad:{color:0x5a6267,metalness:.42,roughness:.32}
+    };
+    const topStates = {
+      natural:{color:0xe5dfd4,metalness:.02,roughness:.24},
+      industrial:{color:0xc9c3b7,metalness:.05,roughness:.34},
+      cast:{color:0x272727,metalness:.18,roughness:.2}
+    };
+    function applyState(kind,value){
+      const src = kind==="cabinet" ? cabinetStates[value] : topStates[value];
+      const targets = kind==="cabinet" ? cabinetMeshes : topMeshes;
+      targets.forEach(m=>{m.material.color.setHex(src.color);m.material.metalness=src.metalness;m.material.roughness=src.roughness;});
+    }
+
+    document.querySelectorAll(".control-group").forEach(group=>{
+      group.addEventListener("click",e=>{
+        const btn=e.target.closest(".seg"); if(!btn)return;
+        group.querySelectorAll(".seg").forEach(x=>x.classList.remove("active"));
+        btn.classList.add("active");
+        applyState(group.dataset.kind,btn.dataset.value);
+        if(group.dataset.kind==="cabinet"){
+          const map={metal:"صاج ألماني",wood:"خشب شابورد",clad:"كلادينج"};
+          document.getElementById("materialInput").value=map[btn.dataset.value];
+        }else{
+          const map={natural:"رخام طبيعي مطور",industrial:"رخام صناعي",cast:"رخام صب كامل"};
+          document.getElementById("topInput").value=map[btn.dataset.value];
+        }
+        updateSummary();
+      });
+    });
+
+    function resize(){
+      const rect=stage.getBoundingClientRect();
+      renderer.setSize(rect.width,rect.height,false);
+      camera.aspect=rect.width/rect.height; camera.updateProjectionMatrix();
+    }
+    window.addEventListener("resize",resize); resize();
+
+    let t=0;
+    function animate(){
+      requestAnimationFrame(animate); t+=.003;
+      if(!matchMedia("(prefers-reduced-motion: reduce)").matches && !controls._isUserInteracting){ scene.rotation.y=Math.sin(t)*.025; }
+      controls.update(); renderer.render(scene,camera);
+    }
+    animate();
+
+    const gallery=document.getElementById("gallery");
+    const galleryFallback=document.getElementById("galleryFallback");
+    fetch("/api/haraj").then(r=>r.json()).then(data=>{
+      const safe=(data.images||[]).filter(u=>/^https:\/\/[^/]*haraj\.com\.sa\//i.test(u));
+      if(!safe.length){galleryFallback.style.display="block";return;}
+      const set=safe.slice(0,10);
+      const loop=set.concat(set);
+      loop.forEach((src,i)=>{
+        const card=document.createElement("article");card.className="work-card";
+        const img=document.createElement("img");img.loading=i<3?"eager":"lazy";img.alt="صورة مطبخ منشورة في إعلان حراج";img.src=src;
+        img.onerror=()=>card.remove();card.appendChild(img);gallery.appendChild(card);
+      });
+    }).catch(()=>{galleryFallback.style.display="block";});
+
+    const materialInput=document.getElementById("materialInput");
+    const topInput=document.getElementById("topInput");
+    const lengthInput=document.getElementById("lengthInput");
+    const colorInput=document.getElementById("colorInput");
+    const noteInput=document.getElementById("noteInput");
+    const summary=document.getElementById("summary");
+    function updateSummary(){
+      const parts=[
+        "طلب مطبخ — مطابخ أفراح الحكمي",
+        "خامة الخزائن: "+materialInput.value,
+        "سطح العمل: "+topInput.value,
+        "الطول التقريبي: "+(lengthInput.value||"غير محدد"),
+        "اللون المفضل: "+(colorInput.value||"غير محدد"),
+        "ملاحظة: "+(noteInput.value||"لا توجد")
+      ];
+      summary.textContent=parts.join("\n");
+    }
+    [materialInput,topInput,lengthInput,colorInput,noteInput].forEach(el=>el.addEventListener("input",updateSummary));
+    updateSummary();
+
+    document.getElementById("copyBtn").addEventListener("click",async()=>{
+      try{
+        await navigator.clipboard.writeText(summary.textContent);
+        const b=document.getElementById("copyBtn"),old=b.textContent;b.textContent="تم النسخ ✓";setTimeout(()=>b.textContent=old,1700);
+      }catch(e){
+        const range=document.createRange();range.selectNode(summary);const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);
+      }
+    });
+
+    const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("show")}),{threshold:.12});
+    document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+  </script>
+</body>
+</html>
