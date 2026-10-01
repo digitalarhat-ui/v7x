@@ -86,7 +86,10 @@
     .choice-row{display:flex;flex-wrap:wrap;gap:7px}
     .choice{border:1px solid var(--line);background:#151515;color:#aaa39a;border-radius:999px;padding:9px 12px;font-size:12px;cursor:pointer;transition:.2s ease}
     .choice.active{background:#f1e9da;color:#17130d;border-color:#f1e9da}
-    .advisor-result{border:1px solid rgba(214,181,109,.26);background:radial-gradient(circle at 80% 0%,rgba(214,181,109,.12),transparent 35%),#0b0b0b;border-radius:22px;padding:20px;display:flex;flex-direction:column;justify-content:space-between;min-height:100%}
+    .advisor-result{border:1px solid rgba(214,181,109,.26);background:radial-gradient(circle at 80% 0%,rgba(214,181,109,.12),transparent 35%),#0b0b0b;border-radius:22px;padding:20px;display:flex;flex-direction:column;justify-content:space-between;min-height:100%;opacity:.35;pointer-events:none;filter:saturate(.55);transition:.25s ease}
+    .advisor-grid.result-ready .advisor-result{opacity:1;pointer-events:auto;filter:none}
+    .advisor-grid.result-ready .advisor-progress,.advisor-grid.result-ready .advisor-questions,.advisor-grid.result-ready .advisor-nav{opacity:.52}
+    .advisor-restart{border:0;background:transparent;color:#9f978d;text-decoration:underline;text-underline-offset:3px;cursor:pointer;font-size:12px;margin-top:10px;padding:4px 0}
     .advisor-result .result-label{font-size:12px;color:var(--gold);font-weight:800}
     .advisor-result h3{font-size:28px;line-height:1.15;margin:10px 0}
     .advisor-result p{color:#9d968e;line-height:1.8;margin:0 0 16px}
@@ -102,7 +105,10 @@
     .upload-empty{text-align:center;max-width:330px}
     .upload-empty b{display:block;font-size:20px;margin-bottom:8px}
     .upload-empty span{display:block;color:#8f8981;line-height:1.7;font-size:13px;margin-bottom:14px}
-    .room-side{display:grid;gap:12px}
+    .room-side{display:none;gap:12px}
+    .room-side.ready{display:grid}
+    .room-status{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+    .room-status span{border:1px solid var(--line);border-radius:999px;padding:7px 9px;font-size:11px;color:#aaa39a;background:#111}
     .palette-card,.room-rec{border:1px solid var(--line);border-radius:20px;background:#0a0a0a;padding:16px}
     .palette-card strong,.room-rec strong{display:block;margin-bottom:10px}
     .detected-palette{display:flex;gap:8px;min-height:38px}
@@ -129,7 +135,11 @@
     .variant-media{height:82px;background:radial-gradient(circle at 50% 20%,#232323,#0c0c0c);display:grid;place-items:center;color:#706b65;font-size:13px;padding:14px;text-align:center}
     .variant-card.has-snapshot .variant-media{height:190px;padding:0}
     .variant-media img{width:100%;height:100%;object-fit:cover;display:block}
-    .variant-meta{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .variant-meta{padding:14px 16px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px}
+    .variant-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+    .variant-save{border:1px solid rgba(214,181,109,.28);background:rgba(214,181,109,.08);color:#e6cf98;border-radius:999px;padding:8px 11px;cursor:pointer;font-size:11px;font-weight:700}
+    .variant-card.has-snapshot .variant-save{background:#151515;border-color:var(--line);color:#aaa39a}
+    .variant-card.applied{border-color:rgba(214,181,109,.5);box-shadow:0 0 0 1px rgba(214,181,109,.12) inset}
     .variant-name{font-weight:800}
     .variant-summary{font-size:11px;color:#8d8780;margin-top:4px;line-height:1.55}
     .variant-apply{border:1px solid var(--line);background:#151515;color:#ddd;border-radius:999px;padding:7px 10px;cursor:pointer;font-size:11px}
@@ -227,6 +237,8 @@
       .signature-section{padding:14px 0 10px}
       .signature-card{padding:16px;border-radius:22px}
       .signature-head,.advisor-grid,.room-grid{grid-template-columns:1fr}
+      .advisor-grid.result-ready>div:first-child{display:none}
+      .advisor-result{min-height:auto}
       .room-upload{min-height:230px}
       .scope-mini{grid-template-columns:1fr}
       .decision-lab{padding:14px 0 24px}
@@ -348,9 +360,8 @@
             </div>
 
             <div class="decision-actions">
-              <button class="mini-action" id="saveA" type="button">حفظ كخيار أ</button>
-              <button class="mini-action" id="saveB" type="button">حفظ كخيار ب</button>
               <button class="mini-action primary" id="shareDesign" type="button">نسخ رابط هذا الاختيار</button>
+              <a class="mini-action" href="#compare">مقارنة أ / ب</a>
             </div>
 
             <div class="viewer-note"><span id="currentChoice">صاج ألماني • أوف وايت + خشبي فاتح • مطفي • رخام طبيعي مطور</span><br>ألوان النموذج للتصور المبدئي فقط، ويُعتمد اللون والخامة النهائية مع المنفذ.</div>
@@ -369,7 +380,7 @@
           <p>أربع إجابات قصيرة تبني لك نقطة بداية بصرية ثم تطبقها مباشرة على نموذج المطبخ. هذا اقتراح أولي لتقليل الحيرة، وليس اعتماداً فنياً للخامة.</p>
         </div>
 
-        <div class="advisor-grid">
+        <div class="advisor-grid" id="advisorGrid">
           <div>
             <div class="advisor-progress">
               <span id="advisorStepLabel">السؤال ١ من ٤</span>
@@ -427,6 +438,7 @@
               </div>
             </div>
             <button class="btn btn-primary" id="applyAdvisor" type="button">طبّق الاتجاه على 3D</button>
+            <button class="advisor-restart" id="advisorRestart" type="button">تغيير الإجابات</button>
           </div>
         </div>
       </div>
@@ -448,12 +460,18 @@
         </div>
         <div class="compare-grid">
           <article class="variant-card" id="variantA">
-            <div class="variant-media" id="variantAMedia">احفظ الاختيار الحالي كخيار أ</div>
-            <div class="variant-meta"><div><div class="variant-name">الخيار أ</div><div class="variant-summary" id="variantASummary">لم يتم الحفظ بعد</div></div><button class="variant-apply" id="applyA" type="button" disabled>تطبيق</button></div>
+            <div class="variant-media" id="variantAMedia">احفظ الاتجاه الحالي كخيار أ</div>
+            <div class="variant-meta">
+              <div><div class="variant-name">الخيار أ</div><div class="variant-summary" id="variantASummary">لم يتم الحفظ بعد</div></div>
+              <div class="variant-actions"><button class="variant-save" id="saveA" type="button">حفظ الحالي</button><button class="variant-apply" id="applyA" type="button" disabled>تطبيق</button></div>
+            </div>
           </article>
           <article class="variant-card" id="variantB">
-            <div class="variant-media" id="variantBMedia">غيّر الخامة أو اللون ثم احفظ خيار ب</div>
-            <div class="variant-meta"><div><div class="variant-name">الخيار ب</div><div class="variant-summary" id="variantBSummary">لم يتم الحفظ بعد</div></div><button class="variant-apply" id="applyB" type="button" disabled>تطبيق</button></div>
+            <div class="variant-media" id="variantBMedia">عدّل 3D ثم احفظ الاتجاه الثاني</div>
+            <div class="variant-meta">
+              <div><div class="variant-name">الخيار ب</div><div class="variant-summary" id="variantBSummary">لم يتم الحفظ بعد</div></div>
+              <div class="variant-actions"><button class="variant-save" id="saveB" type="button">حفظ الحالي</button><button class="variant-apply" id="applyB" type="button" disabled>تطبيق</button></div>
+            </div>
           </article>
         </div>
         <div class="compare-result" id="compareResult">احفظ خيارين ليظهر الفرق بينهما هنا.</div>
@@ -487,14 +505,15 @@
             </label>
           </div>
 
-          <div class="room-side">
+          <div class="room-side" id="roomSide">
             <div class="palette-card">
               <strong>ألوان المساحة المكتشفة</strong>
               <div class="detected-palette" id="detectedPalette"><span class="room-analysis">ارفع صورة لتظهر لوحة المساحة هنا.</span></div>
             </div>
             <div class="room-rec">
               <strong>اتجاه بصري مقترح</strong>
-              <div class="room-analysis" id="roomAnalysis">سنقارن سطوع الصورة ودفء ألوانها مع لوحة المعاينة ونقترح نقطة بداية فقط، دون الادعاء بأنها عينة لون معتمدة.</div>
+              <div class="room-analysis" id="roomAnalysis">نقارن سطوع الصورة ودفء ألوانها مع لوحة المعاينة لنقترح نقطة بداية بصرية فقط.</div>
+              <div class="room-status" id="roomStatus"></div>
               <div class="result-stack" style="margin-bottom:12px">
                 <div class="result-row"><span>الأساسية</span><b id="roomBase">—</b></div>
                 <div class="result-row"><span>العلوية</span><b id="roomAccent">—</b></div>
@@ -1140,6 +1159,7 @@
       media.closest(".variant-card").classList.add("has-snapshot");
       summaryEl.textContent=stateSummary(state);
       document.getElementById("apply"+slot).disabled=false;
+      document.getElementById("save"+slot).textContent="تحديث";
       updateCompareResult();
     }
 
@@ -1158,8 +1178,14 @@
 
     document.getElementById("saveA").addEventListener("click",()=>captureVariant("A"));
     document.getElementById("saveB").addEventListener("click",()=>captureVariant("B"));
-    document.getElementById("applyA").addEventListener("click",()=>applySavedState(savedA));
-    document.getElementById("applyB").addEventListener("click",()=>applySavedState(savedB));
+    function applyVariant(slot,state){
+      applySavedState(state);
+      document.querySelectorAll(".variant-card").forEach(x=>x.classList.remove("applied"));
+      document.getElementById("variant"+slot).classList.add("applied");
+      document.querySelector(".viewer-card").scrollIntoView({behavior:"smooth",block:"center"});
+    }
+    document.getElementById("applyA").addEventListener("click",()=>applyVariant("A",savedA));
+    document.getElementById("applyB").addEventListener("click",()=>applyVariant("B",savedB));
     document.getElementById("shareDesign").addEventListener("click",async()=>{
       const url=updateShareUrl();
       const btn=document.getElementById("shareDesign");
@@ -1227,8 +1253,19 @@
     }
     document.getElementById("advisorPrev").addEventListener("click",()=>{advisorStep=Math.max(0,advisorStep-1);renderAdvisorStep();});
     document.getElementById("advisorNext").addEventListener("click",()=>{
-      if(advisorStep<advisorCards.length-1){advisorStep++;renderAdvisorStep();}
-      else document.querySelector(".advisor-result").scrollIntoView({behavior:"smooth",block:"center"});
+      if(advisorStep<advisorCards.length-1){
+        advisorStep++;
+        renderAdvisorStep();
+      }else{
+        document.getElementById("advisorGrid").classList.add("result-ready");
+        document.querySelector(".advisor-result").scrollIntoView({behavior:"smooth",block:"center"});
+      }
+    });
+    document.getElementById("advisorRestart").addEventListener("click",()=>{
+      advisorStep=0;
+      document.getElementById("advisorGrid").classList.remove("result-ready");
+      renderAdvisorStep();
+      document.querySelector("#advisor .advisor-progress").scrollIntoView({behavior:"smooth",block:"center"});
     });
     renderAdvisorStep();
 
@@ -1239,10 +1276,15 @@
         btn.classList.add("active");
         advisorState[card.dataset.advisor]=btn.dataset.value;
         buildAdvisorRecommendation();
+        const index=advisorCards.indexOf(card);
+        if(index===advisorStep && advisorStep<advisorCards.length-1){
+          setTimeout(()=>{advisorStep++;renderAdvisorStep();},170);
+        }
       });
     });
     document.getElementById("applyAdvisor").addEventListener("click",()=>{
       applySavedState(advisorRecommendation);
+      document.querySelectorAll(".variant-card").forEach(x=>x.classList.remove("applied"));
       document.querySelector(".viewer-card").scrollIntoView({behavior:"smooth",block:"center"});
     });
     buildAdvisorRecommendation();
@@ -1310,6 +1352,9 @@
           const tone=rec.warm?"دافئة":"محايدة/باردة";
           const light=rec.brightness>180?"مضيئة":rec.brightness<110?"داكنة":"متوسطة السطوع";
           document.getElementById("roomAnalysis").textContent="الصورة تبدو "+light+" وبنغمة "+tone+". لذلك نقترح هذه التركيبة كنقطة بداية للمقارنة داخل 3D، لا كحكم لوني نهائي.";
+          const status=document.getElementById("roomStatus");
+          status.innerHTML='<span>'+light+'</span><span>'+tone+'</span><span>تحليل محلي على جهازك</span>';
+          document.getElementById("roomSide").classList.add("ready");
           document.getElementById("applyRoomPalette").disabled=false;
           document.getElementById("saveDecisionCard").disabled=false;
           document.getElementById("roomUpload").classList.add("has-image");
@@ -1335,7 +1380,7 @@
     document.getElementById("saveDecisionCard").addEventListener("click",async()=>{
       if(!roomImage)return;
       await document.fonts.ready;
-      renderer.render(scene,camera);
+      const canonicalShot=captureComparisonShot();
       const out=document.createElement("canvas");out.width=1600;out.height=900;
       const x=out.getContext("2d");
       x.fillStyle="#0b0b0b";x.fillRect(0,0,out.width,out.height);
@@ -1361,7 +1406,7 @@
         x.fillText("تصور بصري أولي — يعتمد الاختيار النهائي مع المنفذ بعد القياس والعينات.",1490,817);
         const a=document.createElement("a");a.download="kitchen-decision-card.jpg";a.href=out.toDataURL("image/jpeg",.9);a.click();
       };
-      shot.src=renderer.domElement.toDataURL("image/jpeg",.9);
+      shot.src=canonicalShot;
     });
 
     function selectedAppliances(){
