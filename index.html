@@ -22,7 +22,7 @@
     .brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:.2px}
     .brand-mark{width:34px;height:34px;border:1px solid rgba(214,181,109,.5);border-radius:11px;display:grid;place-items:center;color:var(--gold);font-size:18px}
     .nav-cta{padding:11px 18px;border:1px solid rgba(214,181,109,.44);border-radius:999px;color:#f8e4b5;background:rgba(214,181,109,.08)}
-    .hero{min-height:100svh;padding:112px 0 54px;display:grid;align-items:center}
+    .hero{padding:102px 0 26px;display:grid;align-items:center}
     .hero-grid{display:grid;grid-template-columns:.92fr 1.38fr;gap:34px;align-items:center}
     .eyebrow{color:var(--gold);font-size:14px;font-weight:700;letter-spacing:.6px;margin-bottom:14px}
     h1{font-size:clamp(42px,6vw,78px);line-height:.98;margin:0 0 20px;letter-spacing:-1.8px}
@@ -33,12 +33,12 @@
     .btn-secondary{background:transparent;color:var(--ink);border:1px solid var(--line)}
     .btn:hover{transform:translateY(-2px)}
     .micro{margin-top:18px;color:#827d76;font-size:13px}
-    .viewer-card{position:relative;border-radius:34px;overflow:hidden;background:linear-gradient(145deg,#171717,#0b0b0b);border:1px solid var(--line);box-shadow:0 36px 100px rgba(0,0,0,.42);min-height:650px}
+    .viewer-card{position:relative;border-radius:34px;overflow:hidden;background:linear-gradient(145deg,#171717,#0b0b0b);border:1px solid var(--line);box-shadow:0 36px 100px rgba(0,0,0,.42)}
     .viewer-head{position:absolute;z-index:6;top:20px;right:20px;left:20px;display:flex;justify-content:space-between;gap:12px;pointer-events:none}
     .chip{font-size:12px;color:#d9d0c5;border:1px solid var(--line);background:#111b;border-radius:999px;padding:8px 11px;backdrop-filter:blur(10px)}
-    #stage{height:650px;width:100%;position:relative}
+    #stage{height:520px;width:100%;position:relative;border-bottom:1px solid var(--line)}
     #stage canvas{display:block;width:100%!important;height:100%!important}
-    .viewer-controls{position:absolute;z-index:8;right:18px;left:18px;bottom:18px;display:grid;grid-template-columns:1fr;gap:10px;padding:13px;border:1px solid var(--line);border-radius:22px;background:#0c0c0ce8;backdrop-filter:blur(18px);box-shadow:0 18px 48px rgba(0,0,0,.32)}
+    .viewer-controls{position:relative;z-index:8;display:grid;grid-template-columns:1fr;gap:10px;padding:15px 16px 16px;background:#0d0d0de8;backdrop-filter:blur(18px)}
     .control-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
     .control-title{font-size:12px;color:#aaa39a;margin-left:2px;min-width:110px;font-weight:700}
     .seg{border:1px solid var(--line);background:#171717;color:#d7d2ca;border-radius:999px;padding:9px 12px;cursor:pointer;font-size:12px;transition:.2s ease}
@@ -52,7 +52,29 @@
     .swatch.active{box-shadow:inset 0 0 0 2px rgba(0,0,0,.22),0 0 0 2px rgba(214,181,109,.18)}
     .swatch-name{font-size:11px;color:#807a73;min-width:68px}
     .viewer-note{font-size:11px;color:#77716b;line-height:1.55;padding-top:1px}
-    .section{padding:105px 0}
+    .decision-actions{display:flex;gap:8px;flex-wrap:wrap;padding-top:2px}
+    .decision-actions .mini-action{border:1px solid var(--line);background:#141414;color:#ddd6cd;border-radius:12px;padding:9px 12px;cursor:pointer;font-size:12px;font-weight:700;transition:.2s ease}
+    .decision-actions .mini-action:hover{border-color:rgba(214,181,109,.5);transform:translateY(-1px)}
+    .decision-actions .mini-action.primary{background:rgba(214,181,109,.12);border-color:rgba(214,181,109,.34);color:#f2d99f}
+    .decision-lab{padding:34px 0 72px}
+    .decision-shell{border:1px solid var(--line);border-radius:30px;background:linear-gradient(145deg,#121212,#0d0d0d);padding:28px}
+    .decision-top{display:grid;grid-template-columns:.8fr 1.2fr;gap:34px;align-items:start}
+    .decision-title{font-size:clamp(28px,3.5vw,46px);line-height:1.08;margin:0 0 12px}
+    .decision-copy{color:#aaa39a;line-height:1.85;margin:0}
+    .benefit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .benefit-card{border:1px solid var(--line);border-radius:20px;background:#0b0b0b;padding:18px;min-height:126px}
+    .benefit-card b{display:block;color:#f0e7d8;margin-bottom:8px}
+    .benefit-card span{font-size:13px;color:#8d8780;line-height:1.7}
+    .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+    .variant-card{border:1px solid var(--line);border-radius:22px;background:#0a0a0a;overflow:hidden;min-height:245px;position:relative}
+    .variant-media{height:190px;background:radial-gradient(circle at 50% 20%,#232323,#0c0c0c);display:grid;place-items:center;color:#706b65;font-size:13px}
+    .variant-media img{width:100%;height:100%;object-fit:cover;display:block}
+    .variant-meta{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .variant-name{font-weight:800}
+    .variant-summary{font-size:11px;color:#8d8780;margin-top:4px;line-height:1.55}
+    .variant-apply{border:1px solid var(--line);background:#151515;color:#ddd;border-radius:999px;padding:7px 10px;cursor:pointer;font-size:11px}
+    .compare-result{margin-top:14px;border:1px solid rgba(214,181,109,.2);background:rgba(214,181,109,.06);border-radius:18px;padding:14px 16px;color:#bdb5aa;font-size:13px;line-height:1.8}
+    .section{padding:78px 0}
     .section-head{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:34px}
     .kicker{color:var(--gold);font-size:13px;font-weight:700;margin-bottom:8px}
     h2{font-size:clamp(31px,4vw,52px);line-height:1.08;margin:0;letter-spacing:-.8px}
@@ -85,13 +107,14 @@
     .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
     .reveal.show{opacity:1;transform:none}
     @media(max-width:900px){
-      .hero{padding-top:94px}
-      .hero-grid,.flow{grid-template-columns:1fr}
+      .hero{padding:88px 0 18px}
+      .hero-grid,.flow,.decision-top{grid-template-columns:1fr}
       .hero-copy{order:1}
-      .viewer-card{order:2;min-height:590px}
-      #stage{height:590px}
+      .viewer-card{order:2}
+      #stage{height:480px}
       .viewer-controls{grid-template-columns:1fr}
-      .section{padding:78px 0}
+      .benefit-grid{grid-template-columns:1fr 1fr 1fr}
+      .section{padding:66px 0}
       .section-head{display:block}
       .section-copy{margin-top:16px}
     }
@@ -103,16 +126,21 @@
       h1{font-size:44px}
       .lead{font-size:16px}
       .hero-actions .btn{width:100%}
-      .viewer-card{border-radius:24px;min-height:610px}
-      #stage{height:610px}
+      .viewer-card{border-radius:24px}
+      #stage{height:410px}
       .viewer-head{right:12px;left:12px;top:12px}
-      .viewer-controls{right:10px;left:10px;bottom:10px;padding:10px;border-radius:17px;gap:8px;max-height:265px;overflow-y:auto}
+      .viewer-controls{padding:12px 11px 14px;gap:8px}
       .control-group{gap:6px}
       .control-title{width:100%;min-width:0}
       .seg{padding:8px 10px;font-size:11px}
       .swatches{width:100%;padding-bottom:4px}
       .swatch{width:28px;height:28px;min-width:28px}
       .swatch-name{display:none}
+      .decision-lab{padding:18px 0 56px}
+      .decision-shell{padding:18px;border-radius:24px}
+      .benefit-grid{grid-template-columns:1fr}
+      .compare-grid{grid-template-columns:1fr}
+      .variant-media{height:180px}
       .form-grid{grid-template-columns:1fr}
       label.full{grid-column:auto}
       .work-card{height:430px}
@@ -209,9 +237,50 @@
               <button class="seg" data-value="cast">رخام صب كامل</button>
             </div>
 
+            <div class="control-group" data-kind="lighting">
+              <span class="control-title">اختبار الإضاءة</span>
+              <button class="seg active" data-value="day">نهار طبيعي</button>
+              <button class="seg" data-value="evening">مساء دافئ</button>
+              <button class="seg" data-value="neutral">عرض محايد</button>
+            </div>
+
+            <div class="decision-actions">
+              <button class="mini-action" id="saveA" type="button">حفظ كخيار أ</button>
+              <button class="mini-action" id="saveB" type="button">حفظ كخيار ب</button>
+              <button class="mini-action primary" id="shareDesign" type="button">نسخ رابط هذا الاختيار</button>
+            </div>
+
             <div class="viewer-note">ألوان النموذج للتصور المبدئي فقط، ويُعتمد اللون والخامة النهائية مع المنفذ.</div>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="decision-lab" id="compare">
+      <div class="shell decision-shell reveal">
+        <div class="decision-top">
+          <div>
+            <div class="kicker">من التردد إلى قرار قابل للمقارنة</div>
+            <h2 class="decision-title">قراران أمامك بدل عشر رسائل.</h2>
+            <p class="decision-copy">احفظ نسختين من نفس المطبخ، قارن الفرق بصرياً، وشارك نفس الاختيار برابط واحد. بهذه الطريقة تبدأ المحادثة من قرار واضح بدل إعادة شرح اللون والخامة من البداية.</p>
+          </div>
+          <div class="benefit-grid">
+            <div class="benefit-card"><b>مقارنة أ / ب</b><span>احفظ اتجاهين مختلفين وشاهدهما جنباً إلى جنب بنفس زاوية العرض.</span></div>
+            <div class="benefit-card"><b>اختبار الإضاءة</b><span>جرّب اللون نفسه تحت نهار طبيعي، مساء دافئ أو إضاءة محايدة قبل أن تختصر القائمة.</span></div>
+            <div class="benefit-card"><b>رابط قرار واحد</b><span>شارك نفس الخامة واللون والتشطيب وسطح العمل بدون صور شاشة أو وصف طويل.</span></div>
+          </div>
+        </div>
+        <div class="compare-grid">
+          <article class="variant-card" id="variantA">
+            <div class="variant-media" id="variantAMedia">احفظ الاختيار الحالي كخيار أ</div>
+            <div class="variant-meta"><div><div class="variant-name">الخيار أ</div><div class="variant-summary" id="variantASummary">لم يتم الحفظ بعد</div></div><button class="variant-apply" id="applyA" type="button" disabled>تطبيق</button></div>
+          </article>
+          <article class="variant-card" id="variantB">
+            <div class="variant-media" id="variantBMedia">غيّر الخامة أو اللون ثم احفظ خيار ب</div>
+            <div class="variant-meta"><div><div class="variant-name">الخيار ب</div><div class="variant-summary" id="variantBSummary">لم يتم الحفظ بعد</div></div><button class="variant-apply" id="applyB" type="button" disabled>تطبيق</button></div>
+          </article>
+        </div>
+        <div class="compare-result" id="compareResult">احفظ خيارين ليظهر الفرق بينهما هنا.</div>
       </div>
     </section>
 
@@ -243,9 +312,9 @@
           <h2>حوّل اختياراتك إلى طلب مفهوم.</h2>
           <p class="section-copy">بدلاً من بدء المحادثة من الصفر، حدّد الخامة واللون والتشطيب وسطح العمل ثم أضف المقاس التقريبي. ستحصل على ملخص قصير يمكنك نسخه وإرساله عبر حراج.</p>
           <div class="step-list">
-            <div class="step"><b>١</b><span>اختر خامة الخزائن وسطح العمل</span></div>
-            <div class="step"><b>٢</b><span>أدخل المقاسات التقريبية واللون المفضل</span></div>
-            <div class="step"><b>٣</b><span>انسخ الملخص وابدأ التواصل من حراج</span></div>
+            <div class="step"><b>١</b><span>جرّب الخامة والألوان تحت أكثر من إضاءة</span></div>
+            <div class="step"><b>٢</b><span>احفظ خيارين وقارن قبل أن تحسم الاتجاه</span></div>
+            <div class="step"><b>٣</b><span>جهّز الملخص وشارك نفس القرار قبل التواصل عبر حراج</span></div>
           </div>
           <div class="truth">المقاسات هنا أولية فقط. التسعير والتنفيذ والاعتماد النهائي للخامات والمقاسات يتم مباشرة مع الجهة المنفذة.</div>
         </div>
@@ -317,7 +386,7 @@
     const camera = new THREE.PerspectiveCamera(36, 1, .1, 100);
     camera.position.set(7.2, 4.8, 8.4);
 
-    const renderer = new THREE.WebGLRenderer({antialias:true,alpha:false});
+    const renderer = new THREE.WebGLRenderer({antialias:true,alpha:false,preserveDrawingBuffer:true});
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -429,6 +498,8 @@
     let currentFinish="matte";
     let currentBaseColor="ivory";
     let currentAccentColor="oak";
+    let currentTop="natural";
+    let currentLighting="day";
 
     function materialRoughness(base){
       if(currentFinish==="gloss") return Math.max(.12,base-.22);
@@ -458,6 +529,7 @@
     }
 
     function applyTop(value){
+      currentTop=value;
       const src=topStates[value];
       topMeshes.forEach(m=>{
         m.material.color.setHex(src.color);
@@ -465,6 +537,23 @@
         m.material.roughness=src.roughness;
         m.material.needsUpdate=true;
       });
+    }
+
+    const lightingStates={
+      day:{label:"نهار طبيعي",bg:0x111418,hemi:0xfff7e8,ground:0x273342,hemiI:2.5,key:0xfff0d4,keyI:4.8,rim:0x9fc5ff,rimI:2.4,strip:2.8},
+      evening:{label:"مساء دافئ",bg:0x120d0a,hemi:0xffd2a0,ground:0x24150f,hemiI:1.65,key:0xffb86b,keyI:4.0,rim:0xff7d4d,rimI:1.15,strip:7.0},
+      neutral:{label:"عرض محايد",bg:0x0d0d0d,hemi:0xffffff,ground:0x202020,hemiI:2.2,key:0xffffff,keyI:4.1,rim:0xd9e4ff,rimI:1.8,strip:4.0}
+    };
+    function applyLighting(value){
+      currentLighting=value;
+      const s=lightingStates[value];
+      scene.background.setHex(s.bg);
+      scene.fog.color.setHex(s.bg);
+      hemi.color.setHex(s.hemi); hemi.groundColor.setHex(s.ground); hemi.intensity=s.hemiI;
+      key.color.setHex(s.key); key.intensity=s.keyI;
+      rim.color.setHex(s.rim); rim.intensity=s.rimI;
+      strip.material.emissiveIntensity=s.strip;
+      renderer.toneMappingExposure=value==="evening" ? .98 : 1.08;
     }
 
     const materialMap={metal:"صاج ألماني",wood:"خشب شابورد",clad:"كلادينج"};
@@ -508,8 +597,12 @@
             applyTop(value);
             document.getElementById("topInput").value=topStates[value].label;
           }
+          if(group.dataset.kind==="lighting"){
+            applyLighting(value);
+          }
         }
         updateSummary();
+        updateShareUrl();
       });
     });
 
@@ -518,6 +611,7 @@
     applyCabinetColor("upper","oak");
     applyFinish("matte");
     applyTop("natural");
+    applyLighting("day");
 
     function resize(){
       const rect=stage.getBoundingClientRect();
@@ -562,11 +656,99 @@
     const labelToColor=Object.fromEntries(Object.entries(colorStates).map(([k,v])=>[v.label,k]));
     const labelToTop=Object.fromEntries(Object.entries(topStates).map(([k,v])=>[v.label,k]));
 
-    materialInput.addEventListener("change",()=>applyMaterial(labelToMaterial[materialInput.value]));
-    finishInput.addEventListener("change",()=>applyFinish(labelToFinish[finishInput.value]));
-    baseColorInput.addEventListener("change",()=>applyCabinetColor("base",labelToColor[baseColorInput.value]));
-    accentColorInput.addEventListener("change",()=>applyCabinetColor("upper",labelToColor[accentColorInput.value]));
-    topInput.addEventListener("change",()=>applyTop(labelToTop[topInput.value]));
+    materialInput.addEventListener("change",()=>{applyMaterial(labelToMaterial[materialInput.value]);syncControl("material",labelToMaterial[materialInput.value]);updateShareUrl();});
+    finishInput.addEventListener("change",()=>{applyFinish(labelToFinish[finishInput.value]);syncControl("finish",labelToFinish[finishInput.value]);updateShareUrl();});
+    baseColorInput.addEventListener("change",()=>{applyCabinetColor("base",labelToColor[baseColorInput.value]);syncControl("baseColor",labelToColor[baseColorInput.value]);updateShareUrl();});
+    accentColorInput.addEventListener("change",()=>{applyCabinetColor("upper",labelToColor[accentColorInput.value]);syncControl("accentColor",labelToColor[accentColorInput.value]);updateShareUrl();});
+    topInput.addEventListener("change",()=>{applyTop(labelToTop[topInput.value]);syncControl("top",labelToTop[topInput.value]);updateShareUrl();});
+
+    function syncControl(kind,value){
+      const group=document.querySelector('.control-group[data-kind="'+kind+'"]');
+      if(!group)return;
+      const all=group.querySelectorAll(".seg,.swatch");
+      all.forEach(el=>el.classList.toggle("active",el.dataset.value===value));
+      if(kind==="baseColor")document.getElementById("baseColorName").textContent=colorStates[value].label;
+      if(kind==="accentColor")document.getElementById("accentColorName").textContent=colorStates[value].label;
+    }
+
+    function getState(){
+      return {m:currentMaterial,b:currentBaseColor,a:currentAccentColor,f:currentFinish,t:currentTop,l:currentLighting};
+    }
+
+    function stateSummary(s){
+      return [materialMap[s.m],colorStates[s.b].label+" + "+colorStates[s.a].label,finishMap[s.f],topStates[s.t].label,lightingStates[s.l].label].join(" • ");
+    }
+
+    function updateShareUrl(){
+      const s=getState();
+      const u=new URL(location.href);
+      ["m","b","a","f","t","l"].forEach(k=>u.searchParams.set(k,s[k]));
+      history.replaceState(null,"",u);
+      return u.toString();
+    }
+
+    function applySavedState(s){
+      if(!s)return;
+      currentMaterial=s.m; currentBaseColor=s.b; currentAccentColor=s.a; currentFinish=s.f; currentTop=s.t; currentLighting=s.l;
+      applyCabinetColor("base",s.b); applyCabinetColor("upper",s.a); applyFinish(s.f); applyMaterial(s.m); applyTop(s.t); applyLighting(s.l);
+      materialInput.value=materialMap[s.m]; finishInput.value=finishMap[s.f]; baseColorInput.value=colorStates[s.b].label; accentColorInput.value=colorStates[s.a].label; topInput.value=topStates[s.t].label;
+      ["material","baseColor","accentColor","finish","top","lighting"].forEach(kind=>{
+        const map={material:s.m,baseColor:s.b,accentColor:s.a,finish:s.f,top:s.t,lighting:s.l};
+        syncControl(kind,map[kind]);
+      });
+      updateSummary(); updateShareUrl();
+    }
+
+    let savedA=null,savedB=null;
+    function captureVariant(slot){
+      renderer.render(scene,camera);
+      const shot=renderer.domElement.toDataURL("image/jpeg",.82);
+      const state={...getState(),shot};
+      if(slot==="A")savedA=state;else savedB=state;
+      const media=document.getElementById("variant"+slot+"Media");
+      const summaryEl=document.getElementById("variant"+slot+"Summary");
+      media.innerHTML='<img src="'+shot+'" alt="معاينة الخيار '+slot+'">';
+      summaryEl.textContent=stateSummary(state);
+      document.getElementById("apply"+slot).disabled=false;
+      updateCompareResult();
+    }
+
+    function updateCompareResult(){
+      const el=document.getElementById("compareResult");
+      if(!savedA||!savedB){el.textContent="احفظ خيارين ليظهر الفرق بينهما هنا.";return;}
+      const diffs=[];
+      if(savedA.m!==savedB.m)diffs.push("الخامة");
+      if(savedA.b!==savedB.b)diffs.push("لون الخزائن الأساسية");
+      if(savedA.a!==savedB.a)diffs.push("لون الخزائن العلوية");
+      if(savedA.f!==savedB.f)diffs.push("التشطيب");
+      if(savedA.t!==savedB.t)diffs.push("سطح العمل");
+      if(savedA.l!==savedB.l)diffs.push("الإضاءة");
+      el.textContent=diffs.length ? "الفرق بين الخيارين: "+diffs.join("، ")+". يمكنك تطبيق أي خيار والعودة للتعديل مباشرة." : "الخياران متطابقان حالياً — غيّر لوناً أو خامة أو إضاءة ثم احفظ الخيار الثاني.";
+    }
+
+    document.getElementById("saveA").addEventListener("click",()=>captureVariant("A"));
+    document.getElementById("saveB").addEventListener("click",()=>captureVariant("B"));
+    document.getElementById("applyA").addEventListener("click",()=>applySavedState(savedA));
+    document.getElementById("applyB").addEventListener("click",()=>applySavedState(savedB));
+    document.getElementById("shareDesign").addEventListener("click",async()=>{
+      const url=updateShareUrl();
+      const btn=document.getElementById("shareDesign");
+      try{await navigator.clipboard.writeText(url);const old=btn.textContent;btn.textContent="تم نسخ رابط الاختيار ✓";setTimeout(()=>btn.textContent=old,1800);}
+      catch(e){prompt("انسخ رابط الاختيار",url);}
+    });
+
+    function loadStateFromUrl(){
+      const p=new URLSearchParams(location.search);
+      const s={
+        m:materialStates[p.get("m")]?p.get("m"):"metal",
+        b:colorStates[p.get("b")]?p.get("b"):"ivory",
+        a:colorStates[p.get("a")]?p.get("a"):"oak",
+        f:["matte","gloss"].includes(p.get("f"))?p.get("f"):"matte",
+        t:topStates[p.get("t")]?p.get("t"):"natural",
+        l:lightingStates[p.get("l")]?p.get("l"):"day"
+      };
+      applySavedState(s);
+    }
 
     function updateSummary(){
       const parts=[
@@ -576,6 +758,7 @@
         "لون الخزائن الأساسية: "+baseColorInput.value,
         "لون الخزائن العلوية/اللمسة: "+accentColorInput.value,
         "سطح العمل: "+topInput.value,
+        "إضاءة المعاينة: "+lightingStates[currentLighting].label,
         "الطول التقريبي: "+(lengthInput.value||"غير محدد"),
         "ملاحظة: "+(noteInput.value||"لا توجد"),
         "ملاحظة المعاينة: الألوان والخامات الظاهرة للتصور المبدئي ويُعتمد الاختيار النهائي مع المنفذ."
@@ -584,6 +767,7 @@
     }
     [materialInput,finishInput,baseColorInput,accentColorInput,topInput,lengthInput,noteInput].forEach(el=>el.addEventListener("input",updateSummary));
     updateSummary();
+    loadStateFromUrl();
 
     document.getElementById("copyBtn").addEventListener("click",async()=>{
       try{
