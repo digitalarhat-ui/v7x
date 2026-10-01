@@ -70,6 +70,14 @@
     .signature-head p{margin:0;color:#aaa39a;line-height:1.85}
     .advisor-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;align-items:stretch}
     .advisor-questions{display:grid;gap:12px}
+    .advisor-progress{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 2px 4px;color:#8f8981;font-size:12px}
+    .advisor-dots{display:flex;gap:6px}
+    .advisor-dot{width:7px;height:7px;border-radius:50%;background:#2b2b2b}
+    .advisor-dot.active{background:var(--gold)}
+    .advisor-questions .question-card{display:none}
+    .advisor-questions .question-card.active-step{display:block}
+    .advisor-nav{display:flex;gap:8px;justify-content:space-between;margin-top:2px}
+    .advisor-nav button{flex:1}
     .question-card{border:1px solid var(--line);background:#0a0a0a;border-radius:20px;padding:16px}
     .question-card strong{display:block;margin-bottom:10px;color:#eee7dc;font-size:14px}
     .choice-row{display:flex;flex-wrap:wrap;gap:7px}
@@ -87,6 +95,7 @@
     .room-upload{border:1px dashed rgba(214,181,109,.35);border-radius:22px;background:#0a0a0a;min-height:390px;position:relative;overflow:hidden;display:grid;place-items:center;padding:18px}
     .room-upload.has-image{padding:0;border-style:solid}
     .room-upload img{width:100%;height:100%;object-fit:cover;display:block}
+    .room-upload img[hidden]{display:none!important}
     .upload-empty{text-align:center;max-width:330px}
     .upload-empty b{display:block;font-size:20px;margin-bottom:8px}
     .upload-empty span{display:block;color:#8f8981;line-height:1.7;font-size:13px;margin-bottom:14px}
@@ -113,8 +122,9 @@
     .benefit-card b{display:block;color:#f0e7d8;margin-bottom:8px}
     .benefit-card span{font-size:13px;color:#8d8780;line-height:1.7}
     .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
-    .variant-card{border:1px solid var(--line);border-radius:22px;background:#0a0a0a;overflow:hidden;min-height:245px;position:relative}
-    .variant-media{height:190px;background:radial-gradient(circle at 50% 20%,#232323,#0c0c0c);display:grid;place-items:center;color:#706b65;font-size:13px}
+    .variant-card{border:1px solid var(--line);border-radius:22px;background:#0a0a0a;overflow:hidden;position:relative}
+    .variant-media{height:82px;background:radial-gradient(circle at 50% 20%,#232323,#0c0c0c);display:grid;place-items:center;color:#706b65;font-size:13px;padding:14px;text-align:center}
+    .variant-card.has-snapshot .variant-media{height:190px;padding:0}
     .variant-media img{width:100%;height:100%;object-fit:cover;display:block}
     .variant-meta{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
     .variant-name{font-weight:800}
@@ -200,12 +210,14 @@
       .signature-section{padding:14px 0 10px}
       .signature-card{padding:16px;border-radius:22px}
       .signature-head,.advisor-grid,.room-grid{grid-template-columns:1fr}
+      .room-upload{min-height:230px}
       .scope-mini{grid-template-columns:1fr}
       .decision-lab{padding:14px 0 24px}
       .decision-shell{padding:18px;border-radius:24px}
       .benefit-grid{grid-template-columns:1fr}
       .compare-grid{grid-template-columns:1fr}
-      .variant-media{height:180px}
+      .variant-media{height:74px}
+      .variant-card.has-snapshot .variant-media{height:170px}
       .form-grid{grid-template-columns:1fr}
       label.full{grid-column:auto}
       .work-card{height:430px}
@@ -338,8 +350,13 @@
         </div>
 
         <div class="advisor-grid">
-          <div class="advisor-questions">
-            <div class="question-card" data-advisor="style">
+          <div>
+            <div class="advisor-progress">
+              <span id="advisorStepLabel">السؤال ١ من ٤</span>
+              <span class="advisor-dots" aria-hidden="true"><i class="advisor-dot active"></i><i class="advisor-dot"></i><i class="advisor-dot"></i><i class="advisor-dot"></i></span>
+            </div>
+            <div class="advisor-questions">
+            <div class="question-card active-step" data-advisor="style">
               <strong>ما الهوية الأقرب لك؟</strong>
               <div class="choice-row">
                 <button class="choice active" data-value="clean" type="button">هادئ ونظيف</button>
@@ -370,6 +387,11 @@
                 <button class="choice" data-value="gloss" type="button">لامع</button>
               </div>
             </div>
+            </div>
+            <div class="advisor-nav">
+              <button class="btn btn-secondary" id="advisorPrev" type="button" disabled>السابق</button>
+              <button class="btn btn-primary" id="advisorNext" type="button">التالي</button>
+            </div>
           </div>
 
           <div class="advisor-result">
@@ -395,11 +417,11 @@
         <div class="decision-top">
           <div>
             <div class="kicker">من التردد إلى قرار قابل للمقارنة</div>
-            <h2 class="decision-title">قراران أمامك بدل عشر رسائل.</h2>
-            <p class="decision-copy">احفظ نسختين من نفس المطبخ، قارن الفرق بصرياً، وشارك نفس الاختيار برابط واحد. بهذه الطريقة تبدأ المحادثة من قرار واضح بدل إعادة شرح اللون والخامة من البداية.</p>
+            <h2 class="decision-title">قارن اتجاهين بدل إعادة وصف الاختيارات.</h2>
+            <p class="decision-copy">احفظ اتجاهين من نفس المطبخ، شاهدهما من زاوية مقارنة ثابتة، ثم شارك الاختيار الذي تريد متابعته برابط واحد.</p>
           </div>
           <div class="benefit-grid">
-            <div class="benefit-card"><b>مقارنة أ / ب</b><span>احفظ اتجاهين مختلفين وشاهدهما جنباً إلى جنب بنفس زاوية العرض.</span></div>
+            <div class="benefit-card"><b>مقارنة أ / ب</b><span>احفظ اتجاهين مختلفين وشاهدهما جنباً إلى جنب بزاوية مقارنة ثابتة.</span></div>
             <div class="benefit-card"><b>اختبار الإضاءة</b><span>جرّب اللون نفسه تحت نهار طبيعي، مساء دافئ أو إضاءة محايدة قبل أن تختصر القائمة.</span></div>
             <div class="benefit-card"><b>رابط قرار واحد</b><span>شارك نفس الخامة واللون والتشطيب وسطح العمل بدون صور شاشة أو وصف طويل.</span></div>
           </div>
@@ -422,10 +444,10 @@
       <div class="shell signature-card reveal">
         <div class="signature-head">
           <div>
-            <div class="kicker">مطبخي أنا</div>
-            <h2>اربط الاختيار بمساحتك الحقيقية.</h2>
+            <div class="kicker">ألوان مساحتي</div>
+            <h2>استخرج نقطة بداية لونية من مساحتك.</h2>
           </div>
-          <p>ارفع صورة للمطبخ أو المساحة. تُحلّل لوحة الألوان محلياً على جهازك، ثم نقترح اتجاهاً بصرياً كبداية ونربطه بنفس نموذج 3D وملخص المشروع.</p>
+          <p>ارفع صورة للمطبخ أو المساحة. نحلّل السطوع ولوحة الألوان محلياً على جهازك، ثم نقترح نقطة بداية لتجربتها على نموذج 3D — بدون الادعاء بأن الصورة نفسها تم تحويلها إلى مطبخ جديد.</p>
         </div>
 
         <div class="room-grid">
@@ -1030,14 +1052,34 @@
     }
 
     let savedA=null,savedB=null;
-    function captureVariant(slot){
+    function captureComparisonShot(){
+      const oldPos=camera.position.clone();
+      const oldQuat=camera.quaternion.clone();
+      const oldTarget=controls.target.clone();
+      const oldSceneY=scene.rotation.y;
+      scene.rotation.y=0;
+      camera.position.set(6.15,3.55,7.45);
+      controls.target.set(-.15,1.35,-1.48);
+      controls.update();
       renderer.render(scene,camera);
-      const shot=renderer.domElement.toDataURL("image/jpeg",.82);
+      const shot=renderer.domElement.toDataURL("image/jpeg",.84);
+      camera.position.copy(oldPos);
+      camera.quaternion.copy(oldQuat);
+      controls.target.copy(oldTarget);
+      scene.rotation.y=oldSceneY;
+      controls.update();
+      renderer.render(scene,camera);
+      return shot;
+    }
+
+    function captureVariant(slot){
+      const shot=captureComparisonShot();
       const state={...getState(),shot};
       if(slot==="A")savedA=state;else savedB=state;
       const media=document.getElementById("variant"+slot+"Media");
       const summaryEl=document.getElementById("variant"+slot+"Summary");
       media.innerHTML='<img src="'+shot+'" alt="معاينة الخيار '+slot+'">';
+      media.closest(".variant-card").classList.add("has-snapshot");
       summaryEl.textContent=stateSummary(state);
       document.getElementById("apply"+slot).disabled=false;
       updateCompareResult();
@@ -1115,6 +1157,22 @@
       document.getElementById("advisorAccent").textContent=colorStates[rec.a].label;
       document.getElementById("advisorFinish").textContent=finishMap[rec.f];
     }
+
+    const advisorCards=[...document.querySelectorAll("[data-advisor]")];
+    let advisorStep=0;
+    function renderAdvisorStep(){
+      advisorCards.forEach((card,i)=>card.classList.toggle("active-step",i===advisorStep));
+      document.getElementById("advisorStepLabel").textContent="السؤال "+["١","٢","٣","٤"][advisorStep]+" من ٤";
+      document.querySelectorAll(".advisor-dot").forEach((dot,i)=>dot.classList.toggle("active",i<=advisorStep));
+      document.getElementById("advisorPrev").disabled=advisorStep===0;
+      document.getElementById("advisorNext").textContent=advisorStep===advisorCards.length-1?"عرض النتيجة":"التالي";
+    }
+    document.getElementById("advisorPrev").addEventListener("click",()=>{advisorStep=Math.max(0,advisorStep-1);renderAdvisorStep();});
+    document.getElementById("advisorNext").addEventListener("click",()=>{
+      if(advisorStep<advisorCards.length-1){advisorStep++;renderAdvisorStep();}
+      else document.querySelector(".advisor-result").scrollIntoView({behavior:"smooth",block:"center"});
+    });
+    renderAdvisorStep();
 
     document.querySelectorAll("[data-advisor]").forEach(card=>{
       card.addEventListener("click",e=>{
