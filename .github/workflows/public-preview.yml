@@ -16,20 +16,23 @@ jobs:
       - name: Checkout current build
         uses: actions/checkout@v4
 
-      - name: Package current demo
-        run: tar -czf /tmp/project.tgz --exclude='.git' --exclude='.github' .
-
-      - name: Deploy public Vercel preview
+      - name: Check Vercel credential
         shell: bash
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "VERCEL_TOKEN_NOT_AVAILABLE"
+            exit 2
+          fi
+          echo "VERCEL_TOKEN_AVAILABLE"
+
+      - name: Deploy unrestricted Vercel preview
+        shell: bash
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           set -euo pipefail
-          RESPONSE="$(curl -fsS -X POST "https://codex-deploy-skills.vercel.sh/api/deploy" -F "file=@/tmp/project.tgz" -F "framework=null")"
-          echo "$RESPONSE"
-          PREVIEW="$(printf '%s' "$RESPONSE" | jq -r '.previewUrl // empty')"
-          CLAIM="$(printf '%s' "$RESPONSE" | jq -r '.claimUrl // empty')"
-          if [ -z "$PREVIEW" ]; then
-            echo "Preview URL missing" >&2
-            exit 1
-          fi
-          echo "PUBLIC_PREVIEW_URL=$PREVIEW"
-          echo "CLAIM_URL=$CLAIM"
+          npm install -g vercel@latest
+          URL="$(vercel deploy --yes --token="$VERCEL_TOKEN")"
+          echo "PUBLIC_PREVIEW_URL=$URL"
