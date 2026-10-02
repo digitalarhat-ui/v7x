@@ -95,11 +95,13 @@ jobs:
 
             // Open readiness wizard and complete all 5 steps.
             await page.click('.open-sheet');
+            await new Promise(r=>setTimeout(r,450));
             for(let i=0;i<5;i++){
               await page.waitForSelector('#wizardOptions .wizard-option',{visible:true});
               await page.click('#wizardOptions .wizard-option');
+              await new Promise(r=>setTimeout(r,80));
               await page.click('#nextStep');
-              await new Promise(r=>setTimeout(r,120));
+              await new Promise(r=>setTimeout(r,220));
             }
             const summary=await page.evaluate(()=>({
               visible:document.querySelector('#summaryView')?.classList.contains('show'),
