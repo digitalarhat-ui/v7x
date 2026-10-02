@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0d0c">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>الأبعاد الحديثة | استوديو قرار المطبخ</title>
+<meta name="description" content="استكشف اتجاه اللون والسطح على نموذج 3D، ثم جهّز طلب مطبخ جديد أو صيانة وتعديل قبل التواصل.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0d0c;--panel:#111411;--panel2:#171b17;--ink:#f5f2e9;--muted:#9ca29a;--gold:#d6bc80;--sage:#aab89d;--line:rgba(255,255,255,.105);--soft:rgba(214,188,128,.1);--radius:28px}
+*{box-sizing:border-box}html{scroll-behavior:smooth;background:var(--bg)}body{margin:0;background:radial-gradient(circle at 78% -8%,rgba(214,188,128,.1),transparent 30%),radial-gradient(circle at 10% 30%,rgba(170,184,157,.06),transparent 28%),var(--bg);color:var(--ink);font-family:"Tajawal",system-ui,sans-serif;overflow-x:hidden}
+button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}.shell{width:min(1180px,calc(100% - 34px));margin:auto}
+.topbar{position:sticky;top:0;z-index:60;background:#0b0d0ce8;backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.055)}
+.nav{height:72px;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{font-weight:800;letter-spacing:.1px}.navcta{border:1px solid rgba(214,188,128,.38);background:rgba(214,188,128,.07);color:#f1dfb5;border-radius:999px;padding:10px 15px;font-size:13px;font-weight:700}
+.hero{padding:30px 0 24px}.heroGrid{display:grid;grid-template-columns:.82fr 1.28fr;gap:28px;align-items:center}.eyebrow{color:var(--gold);font-size:13px;font-weight:800;margin-bottom:12px}.hero h1{font-size:clamp(42px,5.8vw,76px);line-height:.98;letter-spacing:-1.7px;margin:0 0 16px}.lead{font-size:clamp(17px,1.8vw,21px);line-height:1.8;color:#c2c7c0;margin:0 0 21px;max-width:610px}.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);background:#151915;color:var(--ink);border-radius:999px;padding:13px 18px;font-weight:800;transition:.2s}.btn:hover{transform:translateY(-1px);border-color:#d6bc8066}.btn.primary{background:var(--gold);border-color:var(--gold);color:#17140f}.micro{margin-top:14px;color:#747a74;font-size:11.5px;line-height:1.65}.proofs{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}.proofs span{border:1px solid var(--line);background:#101310;border-radius:999px;padding:7px 10px;color:#9da39c;font-size:11px}
+.viewer{border:1px solid var(--line);border-radius:32px;overflow:hidden;background:linear-gradient(145deg,#151915,#0c0f0d);box-shadow:0 34px 90px #0007}.viewerHead{height:54px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 16px;border-bottom:1px solid var(--line)}.viewerHead b{font-size:13px}.viewerHead span{font-size:10.5px;color:#899088}.stage{height:470px;position:relative;background:#0d100e}.stage canvas{display:block;width:100%!important;height:100%!important;touch-action:none}.stageFallback{position:absolute;inset:0;display:none;place-items:center;text-align:center;padding:30px;background:linear-gradient(90deg,#0b0d0cb0,#0b0d0c70),url("https://postcdn.haraj.com.sa/userfiles30/2025-04-22/900x900-1_-GO__MTc0NTI4MTc5NDEyMTk4ODEyMzkxNA.jpg-700.webp") center/cover no-repeat;color:#e9e3d7;line-height:1.75}.stage.failed .stageFallback{display:grid}.stageBadge{position:absolute;z-index:4;top:13px;right:13px;border:1px solid var(--line);background:#0a0d0bc9;backdrop-filter:blur(10px);border-radius:999px;padding:8px 10px;font-size:10.5px;color:#d6d8d3;pointer-events:none}
+.controls{padding:14px 15px 16px;background:#0c0f0d;display:grid;gap:11px}.control{display:grid;grid-template-columns:116px 1fr;gap:10px;align-items:center}.controlTitle{font-size:11.5px;font-weight:800;color:#969d95}.segments,.swatches{display:flex;gap:7px;overflow:auto;scrollbar-width:none;padding:3px 1px}.segments::-webkit-scrollbar,.swatches::-webkit-scrollbar{display:none}.seg{white-space:nowrap;border:1px solid var(--line);background:#151915;color:#afb5ae;border-radius:999px;padding:9px 11px;font-size:11px}.seg.active{background:#ede4d0;color:#17140e;border-color:#ede4d0}.swatch{width:31px;height:31px;min-width:31px;border-radius:50%;border:1px solid #ffffff35;background:var(--c);position:relative}.swatch.active:after{content:"";position:absolute;inset:-4px;border:1.5px solid var(--gold);border-radius:50%}.controlNote{color:#6f766f;font-size:10.5px;line-height:1.55}.viewerActions{display:flex;gap:8px;flex-wrap:wrap}.mini{border:1px solid var(--line);background:#151915;color:#d5d9d3;border-radius:12px;padding:9px 11px;font-size:11px;font-weight:750}.mini.gold{border-color:#d6bc8055;color:#efd89f;background:#d6bc800d}
+.section{padding:40px 0}.sectionTop{display:grid;grid-template-columns:.8fr 1.2fr;gap:26px;align-items:start;margin-bottom:20px}.section h2{font-size:clamp(30px,4vw,48px);line-height:1.08;margin:0}.sectionLead{margin:0;color:#a3aaa2;line-height:1.8;max-width:730px}
+.galleryWrap{overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}.galleryWrap::-webkit-scrollbar{display:none}.gallery{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(260px,31%);gap:10px}.work{height:360px;position:relative;overflow:hidden;border:1px solid var(--line);border-radius:22px;background:#111;scroll-snap-align:start}.work img{width:100%;height:100%;object-fit:cover;display:block;transition:.35s}.work:hover img{transform:scale(1.018)}.work:after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,#000b);pointer-events:none}.workMeta{position:absolute;z-index:2;inset:auto 12px 12px;display:flex;align-items:end;justify-content:space-between;gap:8px}.workMeta small{color:#e7e5df}.pick{border:1px solid #ffffff32;background:#0b0d0ccb;color:#f0dca9;backdrop-filter:blur(9px);border-radius:999px;padding:8px 10px;font-size:10.5px}
+.routeBox{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}.route{border:1px solid var(--line);background:linear-gradient(145deg,#141814,#0e110f);border-radius:23px;padding:20px;text-align:right;color:var(--ink)}.route.active{border-color:#d6bc80;background:radial-gradient(circle at 80% 0,#d6bc801b,transparent 48%),#111511}.route small{display:block;color:var(--gold);font-weight:800;margin-bottom:5px}.route b{display:block;font-size:24px;margin-bottom:5px}.route p{margin:0;color:#8e958e;font-size:12px;line-height:1.65}
+.lab{border:1px solid var(--line);border-radius:28px;background:linear-gradient(145deg,#121512,#0d100e);padding:22px}.labGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.subcard{border:1px solid var(--line);border-radius:21px;background:#0a0d0b;padding:16px}.subcard h3{margin:0 0 7px;font-size:20px}.subcard p{margin:0 0 13px;color:#858c85;font-size:12px;line-height:1.65}.compareGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.variant{border:1px solid var(--line);border-radius:17px;background:#111411;overflow:hidden;min-height:145px}.variantMedia{height:94px;background:#080a09;display:grid;place-items:center;color:#646a64;font-size:11px}.variantMedia img{width:100%;height:100%;object-fit:cover;display:block}.variantBody{padding:10px}.variantBody b{font-size:12px}.variantBody p{font-size:10.5px;line-height:1.55;color:#8a9189;margin:5px 0 0}.roomUpload{height:190px;border:1px dashed #d6bc8050;border-radius:17px;position:relative;display:grid;place-items:center;overflow:hidden;background:#0d100e}.roomUpload img{width:100%;height:100%;object-fit:cover;display:block}.roomUpload .empty{text-align:center;padding:15px}.roomUpload .empty b{display:block;margin-bottom:6px}.roomUpload .empty span{display:block;color:#818880;font-size:11px;line-height:1.6}.palette{display:flex;gap:7px;margin:12px 0 5px}.pal{width:34px;height:34px;border-radius:10px;border:1px solid #ffffff24;background:var(--p)}.roomActions{display:flex;gap:7px;flex-wrap:wrap}
+.studio{display:grid;grid-template-columns:1.08fr .92fr;gap:14px;align-items:start}.card{border:1px solid var(--line);border-radius:25px;background:#101310;padding:19px}.card h3{font-size:21px;margin:0 0 6px}.cardSub{color:#7e857e;font-size:11.5px;margin:0 0 16px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:11px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:11.5px;color:#aab0a9;font-weight:700}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);background:#090c0a;color:#ece9e1;border-radius:13px;padding:12px 13px;outline:none}.field input:focus,.field select:focus,.field textarea:focus{border-color:#d6bc8077;box-shadow:0 0 0 3px #d6bc8012}.choiceRow{display:flex;gap:7px;flex-wrap:wrap}.choice{border:1px solid var(--line);background:#151915;color:#aab0a9;border-radius:999px;padding:9px 11px;font-size:11px}.choice.active{background:#eee5d3;color:#17140f;border-color:#eee5d3}.uploadBox{border:1px dashed #d6bc8050;border-radius:15px;padding:13px}.fileRow{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.fileBtn{border:1px solid #d6bc8050;color:#ecd69f;background:#151812;border-radius:999px;padding:9px 12px;font-size:11px;cursor:pointer}.fileCount{font-size:11px;color:#777e77}
+.summaryCard{position:sticky;top:88px}.summaryLabel{font-size:10.5px;color:var(--gold);font-weight:800}.summaryCard h3{font-size:27px;margin:8px 0 12px}.selectionLine{border:1px solid var(--line);background:#0a0d0b;border-radius:15px;padding:11px;font-size:11px;line-height:1.65;color:#aaa}.readiness{margin:13px 0}.readyTop{display:flex;justify-content:space-between;gap:12px;font-size:11px;color:#aab0a9}.track{height:7px;border-radius:999px;background:#242824;overflow:hidden;margin-top:7px}.fill{height:100%;width:20%;border-radius:999px;background:linear-gradient(90deg,var(--sage),var(--gold));transition:.25s}.missing{font-size:10.5px;color:#777e77;margin-top:7px;line-height:1.55}.summary{white-space:pre-wrap;border:1px solid var(--line);background:#090c0a;border-radius:17px;padding:14px;min-height:235px;font-size:12.5px;line-height:1.8;color:#c6cbc4}.summaryActions{display:grid;grid-template-columns:1.25fr .75fr;gap:8px;margin-top:10px}.handoffNote{font-size:10.5px;color:#747b74;line-height:1.55;margin-top:8px}
+.footer{border-top:1px solid var(--line);padding:24px 0 38px;color:#747b74;font-size:11px}.toast{position:fixed;z-index:90;bottom:20px;left:50%;transform:translate(-50%,15px);opacity:0;background:#eee5d2;color:#17140f;border-radius:999px;padding:10px 14px;font-weight:800;pointer-events:none;transition:.22s}.toast.show{opacity:1;transform:translate(-50%,0)}
+[hidden]{display:none!important}
+@media(max-width:880px){.heroGrid,.sectionTop,.studio{grid-template-columns:1fr}.stage{height:390px}.summaryCard{position:static}.gallery{grid-auto-columns:minmax(250px,72%)}}
+@media(max-width:600px){.shell{width:min(100% - 20px,1180px)}.nav{height:62px}.brand{font-size:12.5px}.navcta{padding:8px 11px;font-size:11px}.hero{padding-top:20px}.hero h1{font-size:40px}.lead{font-size:15.5px;line-height:1.75}.actions .btn{flex:1;min-width:150px}.viewer{border-radius:24px}.stage{height:335px}.viewerHead{height:48px}.controls{padding:12px}.control{grid-template-columns:1fr;gap:6px}.controlTitle{font-size:11px}.swatch{width:30px;height:30px;min-width:30px}.section{padding:31px 0}.sectionTop{gap:10px;margin-bottom:14px}.section h2{font-size:32px}.sectionLead{font-size:13px}.work{height:330px}.gallery{grid-auto-columns:84%}.routeBox{grid-template-columns:1fr}.route{padding:17px}.lab{padding:14px;border-radius:22px}.labGrid{grid-template-columns:1fr}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}.card{padding:15px;border-radius:21px}.summaryActions{grid-template-columns:1fr}.compareGrid{grid-template-columns:1fr 1fr}.variantMedia{height:82px}}
+@media(max-width:390px){.hero h1{font-size:36px}.stage{height:305px}.actions{display:grid;grid-template-columns:1fr}.actions .btn{width:100%}.compareGrid{grid-template-columns:1fr}.gallery{grid-auto-columns:90%}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+<script src="/vendor/three-r128.min.js"></script>
+</head>
+<body>
+<header class="topbar"><div class="shell nav"><div class="brand">الأبعاد الحديثة لجميع أعمال الألمنيوم</div><a class="navcta" href="#request">جهّز طلبك</a></div></header>
+
+<main>
+<section class="hero"><div class="shell heroGrid">
+<div>
+<div class="eyebrow">خميس مشيط · مطابخ جديدة · صيانة وتعديلات</div>
+<h1>احسم اللون<br>قبل أن تبدأ الطلب.</h1>
+<p class="lead">جرّب لون الخزائن والسطح والإضاءة على نموذج ثلاثي الأبعاد، قارن اتجاهين، ثم ابدأ طلب مطبخ جديد أو صيانة بمعلومات أوضح.</p>
+<div class="actions"><a class="btn primary" href="#viewer">ابدأ الاختيار البصري</a><a class="btn" href="#works">شاهد الأعمال المنشورة</a></div>
+<div class="micro">المعاينة البصرية توضيحية وليست تصميماً تنفيذياً أو كتالوج ألوان معتمداً. اللون والخامة النهائية تُراجع مع الأبعاد الحديثة قبل التنفيذ.</div>
+<div class="proofs"><span>تفصيل مطابخ ألمنيوم</span><span>إضافة دواليب</span><span>تغيير لون</span><span>صيانة مفصلات وسحابات</span><span>تعديلات وتجهيزات</span></div>
+</div>
+
+<div class="viewer" id="viewer">
+<div class="viewerHead"><b>استوديو القرار ثلاثي الأبعاد</b><span>اسحب للدوران · قرّب بإصبعين</span></div>
+<div class="stage" id="stage"><div class="stageBadge">نموذج ثابت للتصور المبدئي</div><div class="stageFallback">تعذر تشغيل النموذج ثلاثي الأبعاد على هذا المتصفح. يمكنك متابعة الاختيارات والأعمال المنشورة من نفس المعرض.</div></div>
+<div class="controls">
+<div class="control"><div class="controlTitle">عائلة النموذج</div><div class="segments" id="materialSeg"><button class="seg active" data-v="aluminum">ألمنيوم</button></div></div>
+<div class="control"><div class="controlTitle">الخزائن الأساسية</div><div class="swatches" id="baseSwatches"></div></div>
+<div class="control"><div class="controlTitle">الخزائن العلوية</div><div class="swatches" id="upperSwatches"></div></div>
+<div class="control"><div class="controlTitle">التشطيب البصري</div><div class="segments" id="finishSeg"><button class="seg active" data-v="matte">مطفي</button><button class="seg" data-v="satin">ساتان</button><button class="seg" data-v="gloss">لامع</button></div></div>
+<div class="control"><div class="controlTitle">درجة سطح العمل</div><div class="segments" id="topSeg"><button class="seg active" data-v="marble">فاتح</button><button class="seg" data-v="granite">داكن</button></div></div>
+<div class="control"><div class="controlTitle">اختبار الإضاءة</div><div class="segments" id="lightSeg"><button class="seg active" data-v="day">نهار</button><button class="seg" data-v="warm">دافئ</button><button class="seg" data-v="neutral">محايد</button></div></div>
+<div class="viewerActions"><button class="mini gold" id="saveA">احفظ كخيار أ</button><button class="mini" id="saveB">احفظ كخيار ب</button><button class="mini" id="shareState">نسخ رابط هذا الاختيار</button><button class="mini" id="resetView">إعادة المنظر</button></div>
+<div class="controlNote"><span id="visualSummary">ألمنيوم · أوف وايت + خشبي فاتح · مطفي · سطح فاتح</span><br>لوحة الألوان هنا توضيحية لتقليل الحيرة البصرية؛ اعتمد اللون والخامة المتاحة مع المعرض قبل التنفيذ.</div>
+</div>
+</div>
+</div></section>
+
+<section class="section" id="works"><div class="shell">
+<div class="sectionTop"><h2>أعمال منشورة من نفس المعرض</h2><p class="sectionLead">اختر عملاً قريباً من اتجاهك بدل إعادة وصف كل شيء من الصفر. الصور أدناه من الأعمال المنشورة للأبعاد الحديثة على حراج.</p></div>
+<div class="galleryWrap"><div class="gallery">
+<article class="work"><img src="https://postcdn.haraj.com.sa/userfiles30/2025-5-15/2048x1536-1_-1mtI6EGvSi0Y1t.jpg-700.webp" alt="عمل مطبخ منشور للأبعاد الحديثة"><div class="workMeta"><small>عمل منشور · 01</small><button class="pick" data-work="01">أريد اتجاهاً قريباً من هذا</button></div></article>
+<article class="work"><img src="https://postcdn.haraj.com.sa/userfiles30/2025-5-15/2048x1536-1_-2lm0aJ5UQSKSuG.jpg-700.webp" alt="عمل مطبخ منشور للأبعاد الحديثة"><div class="workMeta"><small>عمل منشور · 02</small><button class="pick" data-work="02">قريب من هذا</button></div></article>
+<article class="work"><img src="https://postcdn.haraj.com.sa/userfiles30/2022-8-6/578x434-1_-QVf682gMvTmXKN.jpg-700.webp" alt="عمل مطبخ منشور للأبعاد الحديثة"><div class="workMeta"><small>عمل منشور · 03</small><button class="pick" data-work="03">قريب من هذا</button></div></article>
+<article class="work"><img src="https://postcdn.haraj.com.sa/userfiles30/2022-7-25/578x434-1_-WO4QC0CK0uZnpD.jpg-700.webp" alt="عمل مطبخ منشور للأبعاد الحديثة"><div class="workMeta"><small>عمل منشور · 04</small><button class="pick" data-work="04">قريب من هذا</button></div></article>
+</div></div>
+</div></section>
+
+<section class="section" id="decisionLab"><div class="shell">
+<div class="sectionTop"><h2>احسم الاتجاه قبل القياس</h2><p class="sectionLead">قارن اتجاهين من نفس النموذج، أو استخدم ألوان مساحتك كنقطة بداية. كل التحليل يتم محلياً داخل المتصفح.</p></div>
+<div class="lab"><div class="labGrid">
+<div class="subcard"><h3>مقارنة أ / ب</h3><p>احفظ اتجاهين مختلفين بعد تعديل 3D، ثم راجع الفرق قبل بدء المحادثة.</p><div class="compareGrid">
+<div class="variant"><div class="variantMedia" id="mediaA">لم يتم حفظ الخيار أ</div><div class="variantBody"><b>الخيار أ</b><p id="textA">—</p></div></div>
+<div class="variant"><div class="variantMedia" id="mediaB">لم يتم حفظ الخيار ب</div><div class="variantBody"><b>الخيار ب</b><p id="textB">—</p></div></div>
+</div></div>
+<div class="subcard"><h3>ألوان مساحتي</h3><p>ارفع صورة للمطبخ أو المكان لاستخراج لوحة تقريبية محلياً، ثم طبّق أقرب لون على المعاينة.</p>
+<div class="roomUpload" id="roomUpload"><div class="empty" id="roomEmpty"><b>صورة واحدة تكفي</b><span>يفضل ضوء طبيعي وزاوية واسعة.</span><label class="fileBtn" for="roomPhoto">اختيار صورة</label></div><img id="roomImg" alt="صورة المساحة" hidden></div>
+<input id="roomPhoto" type="file" accept="image/*" hidden>
+<div class="palette" id="roomPalette"></div>
+<div class="roomActions"><button class="mini gold" id="applyRoom" disabled>طبّق أقرب لون على 3D</button><button class="mini" id="changeRoom" disabled>تغيير الصورة</button></div>
+</div>
+</div></div>
+</div></section>
+
+<section class="section" id="request"><div class="shell">
+<div class="sectionTop"><h2>ابدأ من نوع العمل الصحيح</h2><p class="sectionLead">اختر أولاً هل المشروع مطبخ جديد أم صيانة / تعديل. كل مسار يطلب المعلومات المناسبة له ثم يجهّز ملخصاً واحداً للتواصل.</p></div>
+<div class="routeBox">
+<button class="route active" id="customRoute"><small>مشروع جديد</small><b>مطبخ جديد</b><p>للمقاسات واتجاه اللون والأجهزة ومرحلة جاهزية الموقع.</p></button>
+<button class="route" id="readyRoute"><small>مطبخ قائم</small><b>صيانة أو تعديل</b><p>لتحديد نوع التغيير والحالة والموقع قبل بدء المحادثة.</p></button>
+</div>
+<div class="studio">
+<div class="card">
+<h3 id="formTitle">تفاصيل المطبخ الجديد</h3><p class="cardSub">أدخل ما تعرفه الآن فقط؛ اختيارات 3D تنتقل تلقائياً إلى الملخص.</p>
+<div class="fields" id="customFields">
+<div class="field full"><label>شكل المساحة</label><div class="choiceRow" id="layoutChoices"><button class="choice active" data-v="مستقيم">مستقيم</button><button class="choice" data-v="حرف L">حرف L</button><button class="choice" data-v="حرف U">حرف U</button><button class="choice" data-v="مع جزيرة">مع جزيرة</button></div></div>
+<div class="field"><label>الطول الرئيسي بالمتر</label><input id="length" inputmode="decimal" placeholder="مثال: 5"></div>
+<div class="field"><label>العرض التقريبي بالمتر</label><input id="width" inputmode="decimal" placeholder="مثال: 3"></div>
+<div class="field"><label>مرحلة الموقع</label><select id="siteStage"><option>غير محدد</option><option>جاهز للقياس</option><option>تحت التشطيب</option><option>تجديد مطبخ قائم</option></select></div>
+<div class="field"><label>المدينة / الحي</label><input id="city" placeholder="مثال: خميس مشيط - الحي"></div>
+<div class="field full"><label>الأجهزة التي تحتاج أماكن مخصصة</label><div class="choiceRow" id="appliances"><button class="choice" data-v="ثلاجة">ثلاجة</button><button class="choice" data-v="فرن">فرن</button><button class="choice" data-v="موقد">موقد</button><button class="choice" data-v="غسالة صحون">غسالة صحون</button><button class="choice" data-v="شفاط">شفاط</button></div></div>
+<div class="field full uploadBox"><label>صور المساحة أو الإلهام (اختياري)</label><div class="fileRow"><label class="fileBtn" for="projectPhotos">إضافة صور</label><span class="fileCount" id="projectFileCount">لم يتم اختيار صور</span></div><input id="projectPhotos" type="file" accept="image/*" multiple hidden></div>
+<div class="field full"><label>ملاحظة للمشروع</label><textarea id="notes" rows="3" placeholder="مثال: أفضّل تخزيناً أكثر أو ألواناً فاتحة"></textarea></div>
+</div>
+<div class="fields" id="readyFields" hidden>
+<div class="field"><label>نوع الصيانة / التعديل</label><select id="readySize"><option>غير محدد</option><option>إضافة دواليب</option><option>تغيير سطح العمل</option><option>تغيير مجلى</option><option>تجهيز غسالة صحون</option><option>تغيير مفصلات</option><option>تغيير سحابات</option><option>تغيير مسكات</option><option>تغيير لون</option><option>فك / تركيب</option><option>أخرى</option></select></div>
+<div class="field"><label>حالة الطلب</label><select id="readyMaterial"><option>غير محدد</option><option>أعرف التعديل المطلوب</option><option>أحتاج معاينة للحالة</option><option>أحتاج أكثر من تعديل</option></select></div>
+<div class="field"><label>المدينة / الحي</label><input id="readyCity" placeholder="مثال: خميس مشيط"></div>
+<div class="field"><label>وجود صور للحالة</label><select id="readyInstall"><option>لدي صور جاهزة</option><option>سألتقط صوراً</option><option>لا توجد صور الآن</option></select></div>
+<div class="field full uploadBox"><label>صور الحالة (اختياري)</label><div class="fileRow"><label class="fileBtn" for="projectPhotos">إضافة صور</label><span class="fileCount">يمكن اختيار الصور من نفس زر الإضافة</span></div></div>
+<div class="field full"><label>وصف مختصر</label><textarea id="readyNotes" rows="3" placeholder="ما الموجود الآن وما الذي تريد تغييره؟"></textarea></div>
+</div>
+</div>
+<div class="card summaryCard">
+<div class="summaryLabel">ملخص البداية</div><h3 id="summaryTitle">طلب مطبخ جديد</h3>
+<div class="selectionLine" id="selectionLine"></div>
+<div class="readiness"><div class="readyTop"><b>جاهزية معلومات البداية</b><span id="readyPct">20%</span></div><div class="track"><div class="fill" id="readyFill"></div></div><div class="missing" id="missing">أضف المقاس والموقع ومرحلة المشروع لرفع جاهزية الطلب.</div></div>
+<div class="summary" id="summary"></div>
+<div class="summaryActions"><button class="btn primary" id="handoff">نسخ الطلب وفتح حراج</button><button class="btn" id="copyOnly">نسخ فقط</button></div><a class="btn" style="width:100%;margin-top:8px" href="tel:+966535416179">اتصال مباشر · <span dir="ltr">053 541 6179</span></a>
+<div class="handoffNote">بعد فتح حراج، الصق الملخص في المحادثة. ويمكن الاتصال مباشرة على <a href="tel:+966535416179" dir="ltr">053 541 6179</a>. لا يتم إرسال بياناتك تلقائياً من هذه الصفحة.</div>
+</div>
+</div>
+</div></section>
+</main>
+<footer class="footer"><div class="shell">الأبعاد الحديثة لجميع أعمال الألمنيوم · خميس مشيط</div></footer>
+<div class="toast" id="toast">تم النسخ</div>
+
+<script>
+
+const HARAJ="https://haraj.com.sa/1197506972/";
+const qs=s=>document.querySelector(s), qsa=s=>[...document.querySelectorAll(s)];
+const colorSet=[
+["ivory","أوف وايت","#f1eee6"],["white","أبيض","#ffffff"],["sand","رملي","#d7c6aa"],["beige","بيج دافئ","#cdb798"],
+["taupe","تاوب","#9b8c7d"],["mocha","موكا","#72584b"],["oak","خشبي فاتح","#b4865c"],["walnut","خشبي داكن","#563c2c"],
+["sage","ساج","#9aaa91"],["olive","زيتوني هادئ","#78806b"],["mist","رمادي ضبابي","#c4c8c5"],["slate","سليت","#7c8587"],
+["charcoal","فحمي","#44484a"],["black","أسود","#1f2222"],["navy","كحلي","#384650"],["clay","طيني","#9b6250"]
+];
+const names=Object.fromEntries(colorSet.map(x=>[x[0],x[1]]));
+const hexes=Object.fromEntries(colorSet.map(x=>[x[0],x[2]]));
+const state={route:"custom",material:"aluminum",base:"ivory",upper:"oak",finish:"matte",top:"marble",lighting:"day",layout:"مستقيم",work:""};
+let applianceSet=new Set(),roomNearest=null,snapshotA=null,snapshotB=null;
+
+function toast(t){const el=qs("#toast");el.textContent=t;el.classList.add("show");setTimeout(()=>el.classList.remove("show"),1500)}
+function labelMaterial(v){return "ألمنيوم"}
+function labelFinish(v){return {matte:"مطفي",satin:"ساتان",gloss:"لامع"}[v]}
+function labelTop(v){return {marble:"سطح فاتح",granite:"سطح داكن"}[v]}
+function visualText(){return labelMaterial(state.material)+" · "+names[state.base]+" + "+names[state.upper]+" · "+labelFinish(state.finish)+" · "+labelTop(state.top)}
+function setActive(container,v){qsa(container+" [data-v]").forEach(b=>b.classList.toggle("active",b.dataset.v===v))}
+function buildSwatches(id,key){
+ const box=qs(id);box.innerHTML="";
+ colorSet.forEach(([v,n,h])=>{const b=document.createElement("button");b.className="swatch"+(state[key]===v?" active":"");b.style.setProperty("--c",h);b.dataset.v=v;b.title=n;b.setAttribute("aria-label",n);b.onclick=()=>{state[key]=v;buildSwatches(id,key);applyVisual()};box.appendChild(b)})
+}
+function parseShared(){
+ const p=new URLSearchParams(location.hash.replace(/^#/,""));
+ [["m","material"],["b","base"],["u","upper"],["f","finish"],["t","top"],["l","lighting"]].forEach(([a,k])=>{if(p.get(a))state[k]=p.get(a)});
+}
+parseShared();buildSwatches("#baseSwatches","base");buildSwatches("#upperSwatches","upper");
+setActive("#materialSeg",state.material);setActive("#finishSeg",state.finish);setActive("#topSeg",state.top);setActive("#lightSeg",state.lighting);
+
+["material","finish","top","lighting"].forEach(key=>{
+ const id={material:"#materialSeg",finish:"#finishSeg",top:"#topSeg",lighting:"#lightSeg"}[key];
+ qs(id).onclick=e=>{const b=e.target.closest("[data-v]");if(!b)return;state[key]=b.dataset.v;setActive(id,state[key]);applyVisual()}
+});
+
+const stage=qs("#stage");
+let scene,camera,renderer,baseMat,upperMat,topMat,keyLight,rimLight,hemi,root;
+const orbitTarget=new THREE.Vector3(-.1,1.25,-1.4);
+let orbitYaw=.64,orbitPitch=.28,orbitDist=10.25;
+const orbitPointers=new Map();
+let orbitPinch=0;
+let baseMeshes=[],upperMeshes=[],topMeshes=[];
+
+function makeCanvasTexture(kind){
+ const c=document.createElement("canvas");c.width=c.height=256;const x=c.getContext("2d");
+ if(kind==="wood"){x.fillStyle="#d3b18c";x.fillRect(0,0,256,256);for(let i=0;i<36;i++){const y=7+i*7;x.strokeStyle=i%3===0?"rgba(70,40,20,.22)":"rgba(70,45,25,.10)";x.lineWidth=i%5===0?2:1;x.beginPath();for(let px=0;px<=256;px+=12){const py=y+Math.sin((px+i*13)/24)*2.5;if(px===0)x.moveTo(px,py);else x.lineTo(px,py)}x.stroke()}}
+ else if(kind==="metal"){x.fillStyle="#c9c9c7";x.fillRect(0,0,256,256);for(let i=0;i<256;i+=3){x.fillStyle=i%9===0?"rgba(255,255,255,.08)":"rgba(0,0,0,.025)";x.fillRect(i,0,1,256)}}
+ else if(kind==="marble"){x.fillStyle="#e4ded6";x.fillRect(0,0,256,256);for(let i=0;i<8;i++){x.strokeStyle=i%2?"rgba(70,70,70,.16)":"rgba(135,120,105,.14)";x.lineWidth=i%3===0?2:1;x.beginPath();for(let px=-20;px<290;px+=14){const py=25+i*28+px*.18+Math.sin((px+i*30)/21)*6;if(px===-20)x.moveTo(px,py);else x.lineTo(px,py)}x.stroke()}}
+ else{ x.fillStyle="#65605b";x.fillRect(0,0,256,256);for(let i=0;i<700;i++){const s=Math.random()*2.2;x.fillStyle=Math.random()>.5?"rgba(255,255,255,.18)":"rgba(0,0,0,.22)";x.fillRect(Math.random()*256,Math.random()*256,s,s)}}
+ const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(2.2,2.2);t.encoding=THREE.sRGBEncoding;return t;
+}
+const woodTex=makeCanvasTexture("wood"),metalTex=makeCanvasTexture("metal"),marbleTex=makeCanvasTexture("marble"),graniteTex=makeCanvasTexture("granite");
+function box(w,h,d,x,y,z,mat,parent=root){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m}
+
+function syncCamera(){
+ if(!camera)return;
+ const cp=Math.cos(orbitPitch);
+ camera.position.set(
+   orbitTarget.x+Math.sin(orbitYaw)*cp*orbitDist,
+   orbitTarget.y+Math.sin(orbitPitch)*orbitDist,
+   orbitTarget.z+Math.cos(orbitYaw)*cp*orbitDist
+ );
+ camera.lookAt(orbitTarget);
+}
+function pointerDistance(){
+ const pts=[...orbitPointers.values()];
+ if(pts.length<2)return 0;
+ return Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y);
+}
+function setupOrbit(el){
+ el.style.touchAction="none";
+ el.addEventListener("pointerdown",e=>{
+   orbitPointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+   if(orbitPointers.size===2)orbitPinch=pointerDistance();
+   try{el.setPointerCapture(e.pointerId)}catch(_){}
+ });
+ el.addEventListener("pointermove",e=>{
+   const prev=orbitPointers.get(e.pointerId);if(!prev)return;
+   const dx=e.clientX-prev.x,dy=e.clientY-prev.y;
+   orbitPointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+   if(orbitPointers.size===1){
+     orbitYaw-=dx*.007;
+     orbitPitch=Math.max(.12,Math.min(.62,orbitPitch+dy*.0045));
+   }else if(orbitPointers.size>=2){
+     const d=pointerDistance();
+     if(orbitPinch)orbitDist=Math.max(6.5,Math.min(11.4,orbitDist+(orbitPinch-d)*.012));
+     orbitPinch=d;
+   }
+   syncCamera();
+ });
+ const end=e=>{orbitPointers.delete(e.pointerId);orbitPinch=orbitPointers.size===2?pointerDistance():0};
+ el.addEventListener("pointerup",end);el.addEventListener("pointercancel",end);
+ el.addEventListener("wheel",e=>{e.preventDefault();orbitDist=Math.max(6.5,Math.min(11.4,orbitDist+e.deltaY*.008));syncCamera()},{passive:false});
+ syncCamera();
+}
+
+function init3d(){
+ try{
+ scene=new THREE.Scene();scene.background=new THREE.Color(0x0d100e);scene.fog=new THREE.Fog(0x0d100e,9,18);
+ camera=new THREE.PerspectiveCamera(36,1,.1,100);camera.position.set(7.1,4.65,8.2);
+ renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,preserveDrawingBuffer:true,powerPreference:"high-performance"});renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;stage.prepend(renderer.domElement);
+ setupOrbit(renderer.domElement);
+ hemi=new THREE.HemisphereLight(0xfff5df,0x1a211c,2.25);scene.add(hemi);
+ keyLight=new THREE.DirectionalLight(0xffe0aa,4.3);keyLight.position.set(5,8,4);keyLight.castShadow=true;keyLight.shadow.mapSize.set(1536,1536);scene.add(keyLight);
+ rimLight=new THREE.DirectionalLight(0x9bb8ff,1.8);rimLight.position.set(-4,5,-3);scene.add(rimLight);
+ root=new THREE.Group();scene.add(root);
+ const floor=new THREE.Mesh(new THREE.PlaneGeometry(22,22),new THREE.MeshStandardMaterial({color:0x171a18,roughness:.92}));floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;scene.add(floor);
+ box(8.8,3.7,.16,0,1.85,-2.25,new THREE.MeshStandardMaterial({color:0x252923,roughness:.96}));
+ box(.15,3.7,5.4,-4.3,1.85,.3,new THREE.MeshStandardMaterial({color:0x1e221e,roughness:.96}));
+ baseMat=new THREE.MeshStandardMaterial({color:hexes[state.base],metalness:.42,roughness:.44});
+ upperMat=new THREE.MeshStandardMaterial({color:hexes[state.upper],metalness:.35,roughness:.44});
+ topMat=new THREE.MeshStandardMaterial({color:0xe1ddd6,map:marbleTex,roughness:.26,metalness:.03});
+ const handle=new THREE.MeshStandardMaterial({color:0x2a2b29,metalness:.9,roughness:.18});
+ const dark=new THREE.MeshStandardMaterial({color:0x111411,roughness:.32});
+ const glass=new THREE.MeshStandardMaterial({color:0x8b9993,roughness:.22,metalness:.08,transparent:true,opacity:.50});
+ // lower run
+ for(let i=0;i<6;i++){const x=-2.72+i*1.02;const carc=box(.95,1.02,.68,x,.51,-1.66,baseMat);baseMeshes.push(carc);const front=box(.89,.92,.045,x,.51,-1.30,baseMat);baseMeshes.push(front);box(.34,.018,.03,x,.78,-1.265,handle)}
+ // tall unit
+ baseMeshes.push(box(.96,2.64,.69,3.0,1.31,-1.65,baseMat));baseMeshes.push(box(.90,2.50,.045,3.0,1.31,-1.29,baseMat));box(.02,.60,.03,2.67,1.32,-1.255,handle);
+ // tops
+ topMeshes.push(box(6.08,.13,.86,-.12,1.07,-1.64,topMat));
+ // uppers
+ for(let i=0;i<5;i++){const x=-2.15+i*1.08;const mat=(i===1||i===3)?glass:upperMat;const m=box(.98,.88,.46,x,2.20,-1.79,mat);if(mat===upperMat)upperMeshes.push(m);const fr=box(.92,.80,.04,x,2.20,-1.54,mat);if(mat===upperMat)upperMeshes.push(fr);box(.25,.018,.025,x,1.92,-1.51,handle)}
+ // island
+ baseMeshes.push(box(2.75,.95,1.13,-.32,.49,.56,baseMat));baseMeshes.push(box(2.65,.82,.045,-.32,.49,1.15,baseMat));topMeshes.push(box(2.98,.13,1.32,-.32,1.03,.56,topMat));box(.04,.5,1.0,-1.16,.50,.56,dark);box(.04,.5,1.0,.52,.50,.56,dark);
+ // backsplash strip + undercabinet light
+ box(6.08,.72,.05,-.12,1.49,-1.99,new THREE.MeshStandardMaterial({color:0x343934,roughness:.55}));
+ const glow=new THREE.MeshStandardMaterial({color:0xffe2ad,emissive:0xffbd62,emissiveIntensity:3.2});box(5.7,.025,.025,-.12,1.69,-1.49,glow);
+ const ro=new ResizeObserver(resize);ro.observe(stage);resize();applyVisual();animate();
+ }catch(err){stage.classList.add("failed")}
+}
+function resize(){if(!renderer)return;const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
+function animate(){requestAnimationFrame(animate);renderer.render(scene,camera)}
+function applyVisual(){
+ qs("#visualSummary").textContent=visualText();
+ qs("#selectionLine").textContent="اختيارك البصري: "+visualText();
+ if(!renderer){updateSummary();return}
+ const baseColor=new THREE.Color(hexes[state.base]),upperColor=new THREE.Color(hexes[state.upper]);
+ baseMat.color.copy(baseColor);upperMat.color.copy(upperColor);
+ const rough={matte:.58,satin:.34,gloss:.12}[state.finish];
+ const metal=.72;
+ [baseMat,upperMat].forEach(m=>{m.roughness=rough;m.metalness=metal;m.map=metalTex;m.needsUpdate=true});
+ topMat.map=state.top==="marble"?marbleTex:graniteTex;topMat.color.set(state.top==="marble"?0xe4dfd6:0x817b74);topMat.needsUpdate=true;
+ if(state.lighting==="day"){scene.background.set(0x0d100e);hemi.intensity=2.25;hemi.color.set(0xfff5df);keyLight.color.set(0xffe0aa);keyLight.intensity=4.3;rimLight.intensity=1.8}
+ if(state.lighting==="warm"){scene.background.set(0x120f0b);hemi.intensity=1.75;hemi.color.set(0xffd7a3);keyLight.color.set(0xffb86d);keyLight.intensity=3.7;rimLight.intensity=.65}
+ if(state.lighting==="neutral"){scene.background.set(0x111315);hemi.intensity=2.05;hemi.color.set(0xf3f3ed);keyLight.color.set(0xffffff);keyLight.intensity=3.8;rimLight.intensity=1.1}
+ updateSummary();
+}
+function capture(){try{return renderer.domElement.toDataURL("image/jpeg",.82)}catch(e){return null}}
+function snapshot(slot){
+ const snap={...state,text:visualText(),img:capture()};
+ if(slot==="A"){snapshotA=snap;qs("#textA").textContent=snap.text;qs("#mediaA").innerHTML=snap.img?'<img src="'+snap.img+'" alt="الخيار أ">':"الخيار أ محفوظ"}
+ else{snapshotB=snap;qs("#textB").textContent=snap.text;qs("#mediaB").innerHTML=snap.img?'<img src="'+snap.img+'" alt="الخيار ب">':"الخيار ب محفوظ"}
+ toast("تم حفظ الخيار "+slot)
+}
+qs("#saveA").onclick=()=>snapshot("A");qs("#saveB").onclick=()=>snapshot("B");
+qs("#resetView").onclick=()=>{orbitYaw=.64;orbitPitch=.28;orbitDist=10.25;syncCamera()};
+qs("#shareState").onclick=async()=>{const p=new URLSearchParams({m:state.material,b:state.base,u:state.upper,f:state.finish,t:state.top,l:state.lighting});const url=location.origin+location.pathname+"#"+p.toString();try{await navigator.clipboard.writeText(url);toast("تم نسخ رابط الاختيار")}catch(e){toast("تعذر النسخ")}};
+
+function route(r){
+ state.route=r;qs("#readyRoute").classList.toggle("active",r==="ready");qs("#customRoute").classList.toggle("active",r==="custom");
+ qs("#readyFields").hidden=r!=="ready";qs("#customFields").hidden=r!=="custom";qs("#formTitle").textContent=r==="ready"?"تفاصيل الصيانة أو التعديل":"تفاصيل المطبخ الجديد";qs("#summaryTitle").textContent=r==="ready"?"طلب صيانة / تعديل":"طلب مطبخ جديد";updateSummary()
+}
+qs("#readyRoute").onclick=()=>route("ready");qs("#customRoute").onclick=()=>route("custom");
+qs("#layoutChoices").onclick=e=>{const b=e.target.closest("[data-v]");if(!b)return;state.layout=b.dataset.v;qsa("#layoutChoices .choice").forEach(x=>x.classList.toggle("active",x===b));updateSummary()};
+qs("#appliances").onclick=e=>{const b=e.target.closest("[data-v]");if(!b)return;const v=b.dataset.v;if(applianceSet.has(v))applianceSet.delete(v);else applianceSet.add(v);b.classList.toggle("active");updateSummary()};
+qsa(".pick").forEach(b=>b.onclick=()=>{state.work=b.dataset.work;route("custom");qs("#notes").value="أريد اتجاهاً قريباً من العمل المنشور رقم "+state.work;updateSummary();qs("#request").scrollIntoView({behavior:"smooth"});toast("تم ربط العمل رقم "+state.work+" بالطلب")});
+
+qsa("input,select,textarea").forEach(el=>el.addEventListener("input",updateSummary));qsa("select").forEach(el=>el.addEventListener("change",updateSummary));
+qs("#projectPhotos").onchange=()=>{const n=qs("#projectPhotos").files.length;qs("#projectFileCount").textContent=n?n+" صورة محددة":"لم يتم اختيار صور";updateSummary()};
+
+function val(id){const e=qs(id);return e&&e.value.trim()?e.value.trim():"غير محدد"}
+function updateSummary(){
+ qs("#selectionLine").textContent="اختيارك البصري: "+visualText();
+ let lines=[],tests=[];
+ if(state.route==="custom"){
+   lines=["السلام عليكم، أرغب في مطبخ جديد.","الاتجاه البصري المبدئي: "+visualText(),"شكل المساحة: "+state.layout,"المقاس التقريبي: "+val("#length")+" × "+val("#width")+" متر","مرحلة الموقع: "+val("#siteStage"),"الأجهزة: "+(applianceSet.size?[...applianceSet].join("، "):"غير محدد"),"الموقع: "+val("#city"),state.work?"مرجع من الأعمال المنشورة: رقم "+state.work:"مرجع من الأعمال المنشورة: غير محدد","ملاحظة: "+val("#notes")];
+   tests=[true,true,!!qs("#length").value.trim(),val("#siteStage")!=="غير محدد",!!qs("#city").value.trim(),applianceSet.size>0]
+ } else {
+   lines=["السلام عليكم، لدي طلب صيانة أو تعديل للمطبخ.","نوع الصيانة / التعديل: "+val("#readySize"),"حالة الطلب: "+val("#readyMaterial"),"الموقع: "+val("#readyCity"),"الصور: "+val("#readyInstall"),state.work?"مرجع من الأعمال المنشورة: رقم "+state.work:"مرجع من الأعمال المنشورة: غير محدد","وصف الحالة: "+val("#readyNotes")];
+   tests=[true,val("#readySize")!=="غير محدد",val("#readyMaterial")!=="غير محدد",!!qs("#readyCity").value.trim(),true]
+ }
+ qs("#summary").textContent=lines.join("\n");
+ const pct=Math.round(tests.filter(Boolean).length/tests.length*100);qs("#readyPct").textContent=pct+"%";qs("#readyFill").style.width=pct+"%";
+ qs("#missing").textContent=pct>=85?"معلومات البداية واضحة وجاهزة للمحادثة.":state.route==="custom"?"أضف المقاس والموقع ومرحلة المشروع والأجهزة لرفع الجاهزية.":"حدد نوع التعديل والحالة والموقع لرفع جاهزية الطلب.";
+}
+async function copySummary(){try{await navigator.clipboard.writeText(qs("#summary").textContent);toast("تم نسخ الطلب");return true}catch(e){toast("تعذر النسخ");return false}}
+qs("#copyOnly").onclick=copySummary;qs("#handoff").onclick=async()=>{await copySummary();window.open(HARAJ,"_blank","noopener")};
+
+// room palette - local only
+qs("#roomPhoto").onchange=e=>{const file=e.target.files[0];if(!file)return;const url=URL.createObjectURL(file),img=qs("#roomImg");img.onload=()=>{qs("#roomEmpty").hidden=true;img.hidden=false;extractPalette(img);URL.revokeObjectURL(url)};img.src=url};
+qs("#changeRoom").onclick=()=>qs("#roomPhoto").click();
+function extractPalette(img){
+ const c=document.createElement("canvas"),x=c.getContext("2d");c.width=80;c.height=80;x.drawImage(img,0,0,80,80);const d=x.getImageData(0,0,80,80).data,bins={};
+ for(let i=0;i<d.length;i+=16){const r=Math.round(d[i]/32)*32,g=Math.round(d[i+1]/32)*32,b=Math.round(d[i+2]/32)*32,key=[Math.min(255,r),Math.min(255,g),Math.min(255,b)].join(",");bins[key]=(bins[key]||0)+1}
+ const top=Object.entries(bins).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k])=>k.split(",").map(Number));qs("#roomPalette").innerHTML=top.map(rgb=>'<span class="pal" style="--p:rgb('+rgb.join(",")+')"></span>').join("");
+ const target=top[0];let best=Infinity,bestKey="ivory";for(const [k,,h] of colorSet){const rgb=[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)],dist=rgb.reduce((s,v,i)=>s+(v-target[i])**2,0);if(dist<best){best=dist;bestKey=k}}roomNearest=bestKey;qs("#applyRoom").disabled=false;qs("#changeRoom").disabled=false
+}
+qs("#applyRoom").onclick=()=>{if(!roomNearest)return;state.base=roomNearest;state.upper=roomNearest==="ivory"?"oak":"ivory";buildSwatches("#baseSwatches","base");buildSwatches("#upperSwatches","upper");applyVisual();qs("#viewer").scrollIntoView({behavior:"smooth"});toast("تم تطبيق نقطة بداية من ألوان المساحة")};
+
+qsa(".work img").forEach(img=>img.onerror=()=>img.closest(".work").remove());
+init3d();updateSummary();
+</script>
+</body>
+</html>
