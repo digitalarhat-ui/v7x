@@ -18,5 +18,18 @@
   ],
   "alias": [
     "jawhara-almalim-studio.vercel.app"
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/jawhara",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "jawhara-almalim-studio.vercel.app"
+        }
+      ]
+    }
   ]
 }
