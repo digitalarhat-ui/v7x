@@ -23,6 +23,10 @@ function extractImages(html) {
       const url = raw.replace(/[),]+$/g, "");
       if (!/haraj\.com\.sa/i.test(url)) continue;
       if (/logo|avatar|favicon|icon|flag|badge/i.test(url)) continue;
+      const path = (() => { try { return new URL(url).pathname; } catch { return ''; } })();
+      const hasImageExt = /\.(?:jpg|jpeg|png|webp)$/i.test(path);
+      const looksLikeMediaPath = /userfiles|uploads|images|media/i.test(path) && path.length > 24;
+      if (!hasImageExt && !looksLikeMediaPath) continue;
       if (!found.includes(url)) found.push(url);
     }
   }
