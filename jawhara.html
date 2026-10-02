@@ -4,434 +4,701 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<meta name="theme-color" content="#151412">
-<title>جوهرة المعالم | استوديو تصور المطابخ</title>
-<meta name="description" content="تصور تفاعلي يساعدك على تحديد اتجاه مطبخك وتجهيز تفاصيل المشروع قبل التواصل.">
+<meta name="theme-color" content="#0f100f">
+<title>جوهرة المعالم | استوديو قرار المطبخ</title>
+<meta name="description" content="استوديو تفاعلي لتحديد اتجاه المطبخ وتجهيز تفاصيل المشروع قبل القياس والتواصل.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;500;600;700&family=Noto+Naskh+Arabic:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f2eee6;--paper:#fbf9f4;--ink:#1d1c19;--muted:#6f6a61;--line:#d7d0c4;
-  --bronze:#9b7443;--bronze2:#c39b68;--dark:#171613;--dark2:#22201c;--cream:#e8dfd2;
-  --shadow:0 24px 70px rgba(38,31,22,.12)
+  --ink:#171815;--paper:#f5f1e9;--paper2:#ebe5da;--card:#fbf8f2;--line:#d4ccbf;
+  --dark:#0f100f;--dark2:#171916;--muted:#706c64;--gold:#a78350;--gold2:#c7a876;
+  --sage:#899486;--ivory:#ddd5c6;--walnut:#71513e;--shadow:0 24px 90px rgba(20,18,14,.16)
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;background:var(--bg)}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Kufi Arabic",system-ui,sans-serif;overflow-x:hidden}
-button,a,input{font:inherit}
+html{background:var(--dark);scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans Arabic",system-ui,sans-serif;overflow-x:hidden}
+body.sheet-open{overflow:hidden}
+button,a{font:inherit}
 button{cursor:pointer}
-a{color:inherit;text-decoration:none}
-.shell{width:min(1180px,calc(100% - 32px));margin:auto}
-.top{height:78px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-.brand{font-family:"Noto Naskh Arabic",serif;font-size:27px;font-weight:700}
-.city{font-size:12px;color:var(--muted)}
-.hero{background:var(--dark);color:#f7f1e7;position:relative;overflow:hidden}
-.hero:before{content:"";position:absolute;inset:-30% -10% auto auto;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(195,155,104,.17),transparent 66%);pointer-events:none}
-.hero-grid{display:grid;grid-template-columns:.78fr 1.22fr;gap:34px;align-items:center;padding:38px 0 34px}
-.eyebrow{font-size:12px;font-weight:700;color:var(--bronze2);margin-bottom:10px}
-h1,h2{font-family:"Noto Naskh Arabic",serif;margin:0}
-h1{font-size:clamp(44px,6vw,78px);line-height:1.05;letter-spacing:-.5px}
-.hero-copy{color:#c6bfb4;line-height:2;margin:18px 0 0;max-width:520px;font-size:14px}
-.micro{color:#8f887f;font-size:11px;line-height:1.8;margin-top:12px}
-.studio{background:#d8d1c7;border:1px solid rgba(255,255,255,.08);box-shadow:0 30px 90px rgba(0,0,0,.32)}
-.stage-wrap{position:relative;height:540px;min-height:420px;background:linear-gradient(#cfc8bd,#dad3ca);overflow:hidden;touch-action:none}
-#stage{position:absolute;inset:0;width:100%;height:100%;display:block}
-.drag-tip{position:absolute;left:18px;bottom:16px;background:rgba(20,19,17,.72);color:#e9e1d6;padding:8px 11px;font-size:11px;backdrop-filter:blur(8px)}
-.controls{background:#f7f3ec;color:var(--ink);padding:18px}
-.control-row{display:grid;grid-template-columns:112px 1fr;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
-.control-row:last-child{border-bottom:0}
-.control-label{font-size:11px;color:var(--muted);font-weight:700}
-.chips{display:flex;gap:7px;flex-wrap:wrap}
-.chip{border:1px solid var(--line);background:#fffaf4;color:#4f4a42;padding:9px 11px;min-height:40px;font-size:11px;transition:.18s}
-.chip:hover{border-color:#aa8c65}
-.chip.active{background:var(--dark);border-color:var(--dark);color:#fff}
-.section{padding:88px 0}
-.section.alt{background:#e8e2d8}
-.section-head{display:grid;grid-template-columns:.8fr 1.2fr;gap:40px;align-items:end;margin-bottom:34px}
-.kicker{color:var(--bronze);font-size:12px;font-weight:700;margin-bottom:8px}
-h2{font-size:clamp(34px,4.6vw,58px);line-height:1.13}
-.lead{color:var(--muted);line-height:2;font-size:14px;max-width:620px}
-.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.look-card{background:var(--paper);border:1px solid var(--line);padding:20px;min-height:230px;display:flex;flex-direction:column;justify-content:space-between}
-.look-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.look-letter{font-family:"Noto Naskh Arabic",serif;font-size:34px}
-.badge{font-size:10px;color:var(--bronze);border:1px solid #ccb18e;padding:6px 8px}
-.look-summary{font-size:13px;line-height:2;color:#5d574f;margin:20px 0}
-.actions{display:flex;gap:8px;flex-wrap:wrap}
-.btn{border:1px solid var(--dark);background:var(--dark);color:white;padding:11px 15px;min-height:44px;font-size:12px;font-weight:700}
-.btn.light{background:transparent;color:var(--ink);border-color:var(--line)}
-.btn.bronze{background:var(--bronze);border-color:var(--bronze)}
-.compare-note{margin-top:14px;border-top:1px solid var(--line);padding-top:15px;color:var(--muted);font-size:12px;line-height:1.9}
-.proof-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:stretch}
-.proof-copy{padding:26px 0}
-.proof-box{border:1px solid var(--line);background:var(--paper);min-height:340px;padding:26px;display:grid;grid-template-columns:1fr;gap:12px}
-.proof-slot{border:1px dashed #bcb2a3;min-height:92px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px;background:#f7f3ec}
-.proof-slot b{font-size:13px}
-.proof-slot span{font-size:11px;color:var(--muted)}
-.readiness{display:grid;grid-template-columns:230px 1fr;gap:34px}
-.progress-box{position:sticky;top:18px;align-self:start}
-.progress-num{font-family:"Noto Naskh Arabic",serif;font-size:54px}
-.progress-track{height:5px;background:#d5cec2;overflow:hidden}
-.progress-fill{height:100%;width:0;background:var(--bronze);transition:.25s}
-.progress-hint{font-size:11px;color:var(--muted);line-height:1.8;margin-top:12px}
-.question-card{border-top:1px solid var(--line);padding:22px 0}
-.question-card:first-child{border-top:0;padding-top:0}
-.q-title{font-size:15px;font-weight:700;margin-bottom:12px}
-.option-row{display:flex;gap:8px;flex-wrap:wrap}
-.option{border:1px solid var(--line);background:var(--paper);color:#4e4942;padding:10px 13px;min-height:42px;font-size:11px}
-.option.active{background:var(--dark);color:white;border-color:var(--dark)}
-.handoff{background:var(--dark);color:#f6efe4;padding:70px 0}
-.handoff-grid{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end}
-.handoff h2{font-size:clamp(34px,4vw,52px)}
-.handoff p{color:#aaa398;line-height:1.9;font-size:13px;margin:12px 0 0}
-.wa{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--bronze2);color:#211a13;padding:15px 20px;min-height:54px;font-weight:700;font-size:13px;border:0}
-.footer{background:#11100e;color:#777168;border-top:1px solid #2a2824;padding:22px 0;font-size:10px}
-.footer .shell{display:flex;justify-content:space-between;gap:20px}
+a{text-decoration:none;color:inherit}
+button:focus-visible,a:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
+.shell{width:min(1220px,calc(100% - 36px));margin:auto}
+.topbar{position:absolute;z-index:20;top:0;left:0;right:0}
+.topbar-inner{height:72px;display:flex;align-items:center;justify-content:space-between;gap:18px;color:#f6f0e7}
+.wordmark{font-weight:700;font-size:20px;letter-spacing:-.2px}
+.top-meta{display:flex;gap:10px;align-items:center;color:#aaa79f;font-size:11px}
+.dot{width:4px;height:4px;border-radius:50%;background:var(--gold2)}
+.hero{min-height:100svh;background:var(--dark);color:#f7f1e7;position:relative;overflow:hidden;display:flex;align-items:stretch}
+.hero:before{content:"";position:absolute;inset:auto auto -26% -12%;width:640px;height:640px;border-radius:50%;background:radial-gradient(circle,rgba(167,131,80,.19),rgba(167,131,80,0) 68%);pointer-events:none}
+.hero-grid{width:100%;display:grid;grid-template-columns:.68fr 1.32fr;gap:26px;align-items:center;padding:104px 0 34px}
+.hero-copy{align-self:center;padding-inline:6px}
+.kicker{font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--gold2);margin-bottom:13px}
+h1,h2,h3,p{margin-top:0}
+h1{font-family:"Noto Kufi Arabic",sans-serif;font-size:clamp(38px,5.2vw,68px);line-height:1.36;letter-spacing:-1.7px;margin-bottom:16px}
+.hero-copy p{max-width:470px;color:#aaa79f;font-size:13px;line-height:2}
+.hero-cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.primary,.ghost,.mini-btn,.choice,.wizard-option,.icon-btn{border:0;transition:.2s ease}
+.primary{min-height:48px;padding:0 17px;background:var(--gold2);color:#1a1711;font-weight:700;font-size:12px}
+.ghost{min-height:48px;padding:0 16px;border:1px solid #393a36;background:transparent;color:#e8e2d8;font-size:12px}
+.primary:hover{transform:translateY(-1px);filter:brightness(1.04)}
+.ghost:hover{border-color:#6f6b62;background:#181a17}
+.hero-note{display:flex;align-items:center;gap:8px;margin-top:13px;color:#777a73;font-size:10px;line-height:1.7}
+.hero-note:before{content:"";width:20px;height:1px;background:#555650}
+
+.studio{position:relative;min-width:0;border:1px solid #272925;background:#c9c4bc;box-shadow:0 34px 110px rgba(0,0,0,.34);overflow:hidden}
+.stage{height:min(69svh,690px);min-height:520px;position:relative;background:#c9c4bc;touch-action:none;overflow:hidden}
+#scene{width:100%;height:100%;display:block}
+.stage::after{content:"";position:absolute;inset:auto 0 0;height:33%;background:linear-gradient(transparent,rgba(12,13,12,.47));pointer-events:none}
+.stage-top{position:absolute;z-index:5;top:14px;right:14px;left:14px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;pointer-events:none}
+.scene-label{background:rgba(17,18,16,.66);backdrop-filter:blur(12px);color:#eae4db;border:1px solid rgba(255,255,255,.08);padding:9px 11px;font-size:10px;line-height:1.55}
+.orbit-tip{color:#efebe3;font-size:10px;padding:9px 11px;background:rgba(17,18,16,.5);backdrop-filter:blur(10px)}
+.stage-bottom{position:absolute;z-index:6;right:14px;left:14px;bottom:14px;display:flex;gap:10px;align-items:flex-end;justify-content:space-between}
+.looks{display:flex;gap:7px;flex-wrap:wrap}
+.look{border:1px solid rgba(255,255,255,.16);background:rgba(18,19,17,.69);color:#f3eee7;padding:9px 10px;backdrop-filter:blur(12px);font-size:10px;min-height:38px}
+.look.active{background:#f4efe7;color:#191a17;border-color:#f4efe7}
+.studio-actions{display:flex;gap:7px}
+.icon-btn{width:40px;height:40px;border:1px solid rgba(255,255,255,.16);background:rgba(18,19,17,.7);color:#f4efe7;backdrop-filter:blur(12px);display:grid;place-items:center;font-size:15px}
+.material-dock{background:#f7f3ec;border-top:1px solid #d0c9bd;display:grid;grid-template-columns:repeat(3,1fr)}
+.control-group{padding:14px 16px;border-inline-start:1px solid #ddd5c9}
+.control-group:first-child{border-inline-start:0}
+.control-title{font-size:10px;color:#7b756c;margin-bottom:9px;font-weight:700}
+.swatches{display:flex;gap:8px;flex-wrap:wrap}
+.swatch{display:flex;align-items:center;gap:7px;border:0;background:none;color:#4c4841;padding:0;font-size:10px}
+.swatch i{width:22px;height:22px;border-radius:50%;display:block;border:1px solid rgba(0,0,0,.12);box-shadow:inset 0 0 0 3px rgba(255,255,255,.35)}
+.swatch.active i{outline:2px solid #1e201d;outline-offset:2px}
+.swatch span{display:none}
+.inline-disclaimer{padding:10px 16px;background:#ede8df;color:#7c766e;font-size:9px;line-height:1.65;border-top:1px solid #d8d1c7}
+
+.decision{padding:82px 0;background:var(--paper)}
+.section-title{display:grid;grid-template-columns:.85fr 1.15fr;gap:26px;align-items:end;margin-bottom:30px}
+.eyebrow{color:var(--gold);font-size:11px;font-weight:700;margin-bottom:9px}
+h2{font-family:"Noto Kufi Arabic",sans-serif;font-size:clamp(30px,4vw,50px);line-height:1.48;letter-spacing:-1px;margin-bottom:0}
+.section-title p{margin:0;color:var(--muted);font-size:13px;line-height:2;max-width:600px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.compare-card{background:var(--card);border:1px solid var(--line);padding:16px;display:grid;grid-template-columns:auto 1fr auto;gap:13px;align-items:center;min-height:116px}
+.letter{font-family:"Noto Kufi Arabic";font-weight:700;font-size:28px;line-height:1}
+.compare-copy{min-width:0}
+.compare-name{font-size:12px;font-weight:700;margin-bottom:5px}
+.compare-desc{font-size:10px;color:var(--muted);line-height:1.8}
+.preview-dots{display:flex;gap:5px;margin-top:8px}
+.preview-dots i{width:18px;height:18px;border-radius:50%;border:1px solid rgba(0,0,0,.12)}
+.mini-btn{padding:9px 10px;background:#191a17;color:white;font-size:10px;min-width:72px}
+.mini-btn.secondary{background:transparent;color:#26251f;border:1px solid var(--line)}
+.compare-bar{margin-top:12px;border:1px solid var(--line);background:#ece6db;min-height:48px;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:10px;color:#625d55}
+.compare-bar b{color:#282620;font-size:11px}
+
+.flow{background:#e7e1d6;padding:76px 0}
+.flow-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:34px;align-items:stretch}
+.flow-copy{display:flex;flex-direction:column;justify-content:center}
+.flow-copy p{color:#676159;font-size:13px;line-height:2;max-width:520px}
+.flow-card{background:#141512;color:#efebe4;padding:24px;box-shadow:var(--shadow);display:grid;grid-template-rows:auto 1fr auto;min-height:330px}
+.flow-top{display:flex;justify-content:space-between;align-items:center;gap:20px}
+.flow-top small{color:#8f918b;font-size:10px}
+.flow-number{font-family:"Noto Kufi Arabic";font-size:40px;color:var(--gold2)}
+.flow-steps{display:grid;gap:0;margin:20px 0 16px}
+.flow-step{display:grid;grid-template-columns:30px 1fr;gap:12px;padding:12px 0;border-top:1px solid #292a27}
+.flow-step:first-child{border-top:0}
+.flow-step b{font-size:12px}
+.flow-step span{font-size:10px;color:#8e918a;line-height:1.7}
+.flow-step em{width:26px;height:26px;border:1px solid #373a35;display:grid;place-items:center;font-size:9px;color:var(--gold2);font-style:normal}
+.proof-rule{padding:13px 0 0;border-top:1px solid #292a27;color:#868982;font-size:9px;line-height:1.8}
+
+.final{padding:82px 0;background:var(--paper)}
+.final-card{background:var(--dark);color:#f7f1e8;padding:36px;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;position:relative;overflow:hidden}
+.final-card:before{content:"";position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(167,131,80,.21),transparent 68%);left:-90px;bottom:-180px}
+.final-card h2{font-size:clamp(29px,3.7vw,46px)}
+.final-card p{margin:10px 0 0;color:#969991;line-height:1.9;font-size:11px;max-width:560px}
+.final-actions{position:relative;z-index:2;display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+.wa{min-height:52px;padding:0 19px;background:var(--gold2);color:#16140f;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;border:0}
+.summary-btn{min-height:52px;padding:0 17px;border:1px solid #383a35;color:#eee8df;background:transparent;font-size:11px}
+footer{background:#0a0b0a;color:#6f726c;padding:20px 0;font-size:9px}
+.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:18px}
+
+.sheet-backdrop{position:fixed;z-index:80;inset:0;background:rgba(5,6,5,.56);backdrop-filter:blur(5px);opacity:0;pointer-events:none;transition:.22s}
+.sheet-backdrop.show{opacity:1;pointer-events:auto}
+.sheet{position:fixed;z-index:90;right:0;left:0;bottom:0;margin:auto;background:#f8f4ed;width:min(720px,100%);transform:translateY(105%);transition:transform .3s cubic-bezier(.2,.8,.2,1);box-shadow:0 -24px 90px rgba(0,0,0,.24);max-height:min(84svh,760px);overflow:auto}
+.sheet.show{transform:translateY(0)}
+.sheet-head{position:sticky;top:0;z-index:4;background:rgba(248,244,237,.95);backdrop-filter:blur(12px);padding:17px 20px 13px;border-bottom:1px solid #ddd5c9}
+.sheet-head-row{display:flex;justify-content:space-between;align-items:center;gap:14px}
+.sheet-title{font-weight:700;font-size:14px}
+.close{border:0;background:#e6dfd4;width:35px;height:35px;font-size:17px}
+.progress{height:3px;background:#dfd8cd;margin-top:13px;overflow:hidden}
+.progress > i{height:100%;width:0;background:var(--gold);display:block;transition:.25s}
+.sheet-body{padding:26px 20px 18px}
+.step-kicker{font-size:10px;color:var(--gold);font-weight:700;margin-bottom:7px}
+.sheet h3{font-family:"Noto Kufi Arabic";font-size:23px;line-height:1.55;margin-bottom:18px}
+.wizard-options{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.wizard-option{min-height:60px;background:#fdfaf5;border:1px solid #d8d0c4;color:#24231f;padding:12px;text-align:right;font-size:11px;line-height:1.7}
+.wizard-option:hover,.wizard-option.selected{border-color:#262721;background:#1c1e1a;color:#fff}
+.sheet-foot{padding:14px 20px 22px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sheet-foot small{color:#8b857d;font-size:9px}
+.next{border:0;background:#1a1c18;color:white;min-height:46px;padding:0 18px;font-weight:700;font-size:11px}
+.next:disabled{opacity:.35;cursor:not-allowed}
+.summary{display:none}
+.summary.show{display:block}
+.summary-list{border-top:1px solid var(--line)}
+.summary-row{display:flex;justify-content:space-between;gap:22px;padding:11px 0;border-bottom:1px solid var(--line);font-size:10px}
+.summary-row span{color:var(--muted)}
+.summary-wa{margin-top:18px;width:100%;min-height:50px;border:0;background:var(--gold2);font-weight:700}
+
+.toast{position:fixed;z-index:110;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;background:#151614;color:white;padding:10px 14px;font-size:10px;box-shadow:0 16px 40px rgba(0,0,0,.25);pointer-events:none;transition:.2s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
 @media(max-width:900px){
-  .hero-grid,.section-head,.proof-grid,.readiness,.handoff-grid{grid-template-columns:1fr}
-  .hero-grid{padding-top:20px}
-  .stage-wrap{height:460px}
-  .progress-box{position:static}
-  .compare-grid{grid-template-columns:1fr 1fr}
+  .hero{min-height:auto}
+  .hero-grid,.section-title,.flow-grid,.final-card{grid-template-columns:1fr}
+  .hero-grid{padding-top:86px}
+  .hero-copy{padding:4px 0 8px}
+  .hero-copy p{max-width:650px}
+  .stage{height:64svh;min-height:520px}
+  .final-actions{justify-content:flex-start}
 }
 @media(max-width:560px){
-  .shell{width:min(100% - 24px,1180px)}
-  .top{height:66px}
-  .brand{font-size:23px}
-  .hero-grid{gap:24px;padding-bottom:22px}
-  h1{font-size:45px}
-  .hero-copy{font-size:12px}
-  .stage-wrap{height:405px}
-  .controls{padding:12px}
-  .control-row{grid-template-columns:1fr;gap:7px}
-  .chips{display:grid;grid-template-columns:repeat(3,1fr)}
-  .chip{padding:8px 6px;font-size:10px}
-  .section{padding:62px 0}
-  .compare-grid{grid-template-columns:1fr}
-  .look-card{min-height:210px}
-  .proof-box{padding:14px}
-  .proof-slot{padding:14px}
-  .footer .shell{flex-direction:column}
+  .shell{width:calc(100% - 22px)}
+  .topbar-inner{height:62px}
+  .wordmark{font-size:18px}
+  .top-meta span:first-child{display:none}
+  .hero-grid{padding:73px 0 12px;gap:14px}
+  h1{font-size:36px;line-height:1.5;margin-bottom:9px;letter-spacing:-1.1px}
+  .hero-copy p{font-size:11px;line-height:1.9;margin-bottom:0}
+  .hero-cta-row{margin-top:13px}
+  .primary,.ghost{min-height:43px;padding-inline:13px;font-size:10px}
+  .hero-note{font-size:9px;margin-top:8px}
+  .studio{margin-inline:-11px;border-inline:0;box-shadow:none}
+  .stage{height:57svh;min-height:430px;max-height:560px}
+  .stage-top{top:10px;right:10px;left:10px}
+  .scene-label{font-size:9px;padding:7px 8px}
+  .orbit-tip{font-size:9px;padding:7px 8px}
+  .stage-bottom{right:10px;left:10px;bottom:10px;gap:7px}
+  .looks{gap:5px;max-width:75%}
+  .look{font-size:9px;padding:7px 8px;min-height:34px}
+  .icon-btn{width:36px;height:36px}
+  .material-dock{grid-template-columns:1fr}
+  .control-group{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-inline-start:0;border-top:1px solid #dfd8cc}
+  .control-group:first-child{border-top:0}
+  .control-title{margin:0;min-width:72px}
+  .swatches{justify-content:flex-start;flex:1}
+  .swatch i{width:20px;height:20px}
+  .inline-disclaimer{padding:8px 12px}
+  .decision,.flow,.final{padding:56px 0}
+  .section-title{gap:12px;margin-bottom:20px}
+  h2{font-size:28px;line-height:1.55}
+  .section-title p,.flow-copy p{font-size:11px;line-height:1.95}
+  .compare{grid-template-columns:1fr}
+  .compare-card{min-height:102px;padding:13px;grid-template-columns:auto 1fr auto}
+  .compare-bar{align-items:flex-start;flex-direction:column}
+  .flow-grid{gap:20px}
+  .flow-card{padding:18px;min-height:auto}
+  .flow-number{font-size:32px}
+  .final-card{padding:25px 20px;gap:22px}
+  .final-actions{display:grid;grid-template-columns:1fr 1fr}
+  .wa,.summary-btn{width:100%;padding-inline:10px}
+  .footer-inner{flex-direction:column;align-items:flex-start}
+  .wizard-options{grid-template-columns:1fr}
+  .sheet h3{font-size:20px}
 }
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+@media(max-width:390px){
+  h1{font-size:33px}
+  .stage{height:54svh;min-height:405px}
+  .look:nth-child(3){display:none}
+  .compare-card{grid-template-columns:36px 1fr}
+  .compare-card .mini-btn{grid-column:1/-1;width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+  *{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}
 </style>
 </head>
 <body>
+<header class="topbar">
+  <div class="shell topbar-inner">
+    <div class="wordmark">جوهرة المعالم</div>
+    <div class="top-meta"><span>مطابخ وخزائن</span><i class="dot"></i><span>الدمام</span></div>
+  </div>
+</header>
+
+<main>
 <section class="hero">
+  <div class="shell hero-grid">
+    <div class="hero-copy">
+      <div class="kicker">استوديو قرار المطبخ</div>
+      <h1>شاهد الاتجاه.<br>قارن. ثم جهّز مشروعك.</h1>
+      <p>تصور تفاعلي يساعدك على تضييق الخيارات قبل القياس، مع ملخص جاهز للمشروع عند الانتقال إلى المحادثة.</p>
+      <div class="hero-cta-row">
+        <button class="primary open-sheet">جهّز تفاصيل مشروعك</button>
+        <button class="ghost" id="jumpCompare">احفظ وقارن A/B</button>
+      </div>
+      <div class="hero-note">الألوان والخامات للتصور المبدئي وليست كتالوجاً معتمداً.</div>
+    </div>
+
+    <div class="studio" id="studio">
+      <div class="stage" id="stage">
+        <canvas id="scene" aria-label="تصور ثلاثي الأبعاد تفاعلي للمطبخ"></canvas>
+        <div class="stage-top">
+          <div class="scene-label"><b>تصور حي</b><br>اسحب لتغيير زاوية المشهد</div>
+          <div class="orbit-tip">360°</div>
+        </div>
+        <div class="stage-bottom">
+          <div class="looks" aria-label="مظاهر مقترحة">
+            <button class="look active" data-look="ivory">عاجي دافئ</button>
+            <button class="look" data-look="sage">ساج طبيعي</button>
+            <button class="look" data-look="walnut">خشب دخاني</button>
+          </div>
+          <div class="studio-actions">
+            <button class="icon-btn" id="copyLook" aria-label="نسخ رابط المظهر">↗</button>
+            <button class="icon-btn" id="resetView" aria-label="إعادة زاوية العرض">↺</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="material-dock">
+        <div class="control-group" data-group="front">
+          <div class="control-title">الواجهات</div>
+          <div class="swatches">
+            <button class="swatch active" data-value="ivory" aria-label="عاجي"><i style="background:#ddd5c6"></i><span>عاجي</span></button>
+            <button class="swatch" data-value="sage" aria-label="ساج"><i style="background:#899486"></i><span>ساج</span></button>
+            <button class="swatch" data-value="walnut" aria-label="خشب"><i style="background:#71513e"></i><span>خشب</span></button>
+            <button class="swatch" data-value="graphite" aria-label="جرافيت"><i style="background:#3d403d"></i><span>جرافيت</span></button>
+          </div>
+        </div>
+        <div class="control-group" data-group="top">
+          <div class="control-title">السطح</div>
+          <div class="swatches">
+            <button class="swatch active" data-value="travertine" aria-label="حجر"><i style="background:#c7b49a"></i><span>حجر</span></button>
+            <button class="swatch" data-value="quartz" aria-label="كوارتز"><i style="background:#e8e4dc"></i><span>كوارتز</span></button>
+            <button class="swatch" data-value="dark" aria-label="داكن"><i style="background:#41413f"></i><span>داكن</span></button>
+          </div>
+        </div>
+        <div class="control-group" data-group="light">
+          <div class="control-title">الأجواء</div>
+          <div class="swatches">
+            <button class="swatch active" data-value="warm" aria-label="دافئ"><i style="background:#d8b17a"></i><span>دافئ</span></button>
+            <button class="swatch" data-value="day" aria-label="نهاري"><i style="background:#dfe8ef"></i><span>نهاري</span></button>
+            <button class="swatch" data-value="evening" aria-label="مسائي"><i style="background:#8a7867"></i><span>مسائي</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="inline-disclaimer">التصور يحدد الاتجاه فقط. المقاسات والخامات والتفاصيل النهائية تعتمد بعد المعاينة والقياس.</div>
+    </div>
+  </div>
+</section>
+
+<section class="decision" id="compareSection">
   <div class="shell">
-    <header class="top"><div class="brand">جوهرة المعالم</div><div class="city">الدمام</div></header>
-    <div class="hero-grid">
+    <div class="section-title">
+      <div><div class="eyebrow">A / B</div><h2>لا تتذكر الفرق.<br>احفظه أمامك.</h2></div>
+      <p>احفظ خياراً أول، غيّر اللون أو السطح أو الإضاءة، ثم احفظ البديل. الرجوع بينهما يتم مباشرة داخل نفس المشهد.</p>
+    </div>
+    <div class="compare">
+      <article class="compare-card">
+        <div class="letter">A</div>
+        <div class="compare-copy">
+          <div class="compare-name" id="nameA">لم يُحفظ بعد</div>
+          <div class="compare-desc" id="descA">احفظ المظهر الحالي كخيار أول.</div>
+          <div class="preview-dots" id="dotsA"></div>
+        </div>
+        <button class="mini-btn" id="saveA">حفظ A</button>
+      </article>
+      <article class="compare-card">
+        <div class="letter">B</div>
+        <div class="compare-copy">
+          <div class="compare-name" id="nameB">لم يُحفظ بعد</div>
+          <div class="compare-desc" id="descB">غيّر اختياراتك ثم احفظ البديل.</div>
+          <div class="preview-dots" id="dotsB"></div>
+        </div>
+        <button class="mini-btn" id="saveB">حفظ B</button>
+      </article>
+    </div>
+    <div class="compare-bar"><b id="compareHeadline">احفظ A و B لتظهر الفروقات.</b><span id="compareDetail">يمكنك عرض أي خيار بعد حفظه.</span></div>
+  </div>
+</section>
+
+<section class="flow">
+  <div class="shell flow-grid">
+    <div class="flow-copy">
+      <div class="eyebrow">من التصور إلى الطلب</div>
+      <h2>قرار بصري أقصر.<br>محادثة أكثر جاهزية.</h2>
+      <p>بدلاً من بدء المحادثة من الصفر، ينتقل الاتجاه المختار مع أساسيات المشروع إلى واتساب كمُلخص قابل للمراجعة قبل الإرسال.</p>
+      <button class="primary open-sheet" style="align-self:flex-start;margin-top:8px">ابدأ تجهيز المشروع</button>
+    </div>
+    <div class="flow-card">
+      <div class="flow-top"><small>مسار واحد واضح</small><div class="flow-number">03</div></div>
+      <div class="flow-steps">
+        <div class="flow-step"><em>01</em><div><b>اختيار الاتجاه</b><br><span>لون الواجهات، السطح، والأجواء داخل المشهد نفسه.</span></div></div>
+        <div class="flow-step"><em>02</em><div><b>تثبيت الجاهزية</b><br><span>نوع المشروع، حالة القياس، الأجهزة، وصور المساحة.</span></div></div>
+        <div class="flow-step"><em>03</em><div><b>تسليم ملخص</b><br><span>فتح واتساب برسالة جاهزة للمراجعة — بدون إرسال تلقائي.</span></div></div>
+      </div>
+      <div class="proof-rule">الملخص يجمع الاتجاه البصري وأساسيات المشروع في نقطة بداية واضحة قبل القياس واعتماد التفاصيل النهائية.</div>
+    </div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="shell">
+    <div class="final-card">
       <div>
-        <div class="eyebrow">استوديو تصور المطبخ</div>
-        <h1>اتجاه أوضح<br>قبل القياس.</h1>
-        <p class="hero-copy">جرّب اتجاهاً بصرياً للمطبخ، قارن خيارين، ثم جهّز تفاصيل مشروعك قبل الانتقال إلى المحادثة.</p>
-        <p class="micro">الألوان والخامات هنا للتصور المبدئي فقط، وليست كتالوجاً أو اعتماداً نهائياً.</p>
+        <div class="eyebrow">الخطوة التالية</div>
+        <h2>ثبت الاتجاه،<br>ثم أرسل تفاصيل المشروع.</h2>
+        <p>جهّز ملخص المشروع، راجعه، ثم افتح محادثة جوهرة المعالم على واتساب.</p>
       </div>
-      <div class="studio">
-        <div class="stage-wrap" id="stageWrap"><canvas id="stage"></canvas><div class="drag-tip">اسحب لتدوير المشهد</div></div>
-        <div class="controls">
-          <div class="control-row">
-            <div class="control-label">لون الواجهات</div>
-            <div class="chips" data-control="front">
-              <button class="chip active" data-value="ivory">عاجي هادئ</button>
-              <button class="chip" data-value="sage">أخضر رمادي</button>
-              <button class="chip" data-value="walnut">خشبي دافئ</button>
-            </div>
-          </div>
-          <div class="control-row">
-            <div class="control-label">سطح العمل</div>
-            <div class="chips" data-control="top">
-              <button class="chip active" data-value="stone">حجر دافئ</button>
-              <button class="chip" data-value="quartz">كوارتز فاتح</button>
-              <button class="chip" data-value="graphite">جرافيت</button>
-            </div>
-          </div>
-          <div class="control-row">
-            <div class="control-label">الإضاءة</div>
-            <div class="chips" data-control="light">
-              <button class="chip active" data-value="warm">دافئة</button>
-              <button class="chip" data-value="day">نهارية</button>
-              <button class="chip" data-value="evening">مسائية</button>
-            </div>
-          </div>
-        </div>
+      <div class="final-actions">
+        <button class="summary-btn open-sheet">مراجعة التفاصيل</button>
+        <a class="wa" id="directWa" href="https://wa.me/966550437444" target="_blank" rel="noopener noreferrer">واتساب جوهرة المعالم ←</a>
       </div>
     </div>
   </div>
 </section>
+</main>
 
-<section class="section">
-  <div class="shell">
-    <div class="section-head">
-      <div><div class="kicker">مقارنة A / B</div><h2>احفظ خيارين.<br>ثم اختر الأقرب.</h2></div>
-      <p class="lead">بدلاً من تذكر التغييرات، احفظ اتجاهين بصريين وقارن بينهما قبل إرسال تفاصيل المشروع.</p>
-    </div>
-    <div class="compare-grid">
-      <div class="look-card" id="cardA">
-        <div>
-          <div class="look-top"><div class="look-letter">A</div><span class="badge" id="badgeA">غير محفوظ</span></div>
-          <div class="look-summary" id="summaryA">احفظ المظهر الحالي هنا.</div>
-        </div>
-        <div class="actions"><button class="btn light" id="saveA">حفظ A</button><button class="btn" id="applyA" disabled>عرض A</button></div>
-      </div>
-      <div class="look-card" id="cardB">
-        <div>
-          <div class="look-top"><div class="look-letter">B</div><span class="badge" id="badgeB">غير محفوظ</span></div>
-          <div class="look-summary" id="summaryB">غيّر الاختيارات ثم احفظ البديل هنا.</div>
-        </div>
-        <div class="actions"><button class="btn light" id="saveB">حفظ B</button><button class="btn" id="applyB" disabled>عرض B</button></div>
-      </div>
-    </div>
-    <div class="compare-note" id="compareNote">احفظ الخيارين ليظهر الفرق بينهما هنا.</div>
-  </div>
-</section>
+<footer><div class="shell footer-inner"><span>جوهرة المعالم · الدمام</span><span>استوديو تفاعلي لتجهيز اتجاه المشروع</span></div></footer>
 
-<section class="section alt">
-  <div class="shell">
-    <div class="proof-grid">
-      <div class="proof-copy">
-        <div class="kicker">نماذج من أعمالنا المنشورة</div>
-        <h2>المشروع الحقيقي<br>يبقى هو المرجع.</h2>
-        <p class="lead">يُعرض هنا فقط ما تم اعتماده من صور المشاريع الأصلية المنشورة التابعة لجوهرة المعالم. لا تُستخدم صور بديلة على أنها أعمال منفذة.</p>
-      </div>
-      <div class="proof-box">
-        <div class="proof-slot"><div><b>مشروع مطبخ</b><br><span>تُضاف الصور الأصلية بعد اعتمادها</span></div><span>01</span></div>
-        <div class="proof-slot"><div><b>مشروع خزائن</b><br><span>تُضاف الصور الأصلية بعد اعتمادها</span></div><span>02</span></div>
-        <div class="proof-slot"><div><b>تفاصيل تنفيذ</b><br><span>تُضاف الصور الأصلية بعد اعتمادها</span></div><span>03</span></div>
-      </div>
+<div class="sheet-backdrop" id="backdrop"></div>
+<section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="sheet-head">
+    <div class="sheet-head-row"><div class="sheet-title" id="sheetTitle">جاهزية المشروع</div><button class="close" id="closeSheet" aria-label="إغلاق">×</button></div>
+    <div class="progress"><i id="wizardProgress"></i></div>
+  </div>
+  <div class="sheet-body">
+    <div id="questionView">
+      <div class="step-kicker" id="stepKicker">1 / 5</div>
+      <h3 id="questionTitle"></h3>
+      <div class="wizard-options" id="wizardOptions"></div>
+    </div>
+    <div class="summary" id="summaryView">
+      <div class="step-kicker">ملخص جاهزية المشروع</div>
+      <h3>راجع التفاصيل قبل فتح واتساب.</h3>
+      <div class="summary-list" id="summaryList"></div>
+      <button class="summary-wa" id="summaryWa">فتح واتساب مع الملخص ←</button>
     </div>
   </div>
+  <div class="sheet-foot" id="sheetFoot"><small id="wizardHint">اختر إجابة للمتابعة.</small><button class="next" id="nextStep" disabled>التالي</button></div>
 </section>
-
-<section class="section">
-  <div class="shell">
-    <div class="section-head">
-      <div><div class="kicker">جاهزية المشروع</div><h2>تفاصيل قليلة.<br>محادثة أوضح.</h2></div>
-      <p class="lead">حدد الأساسيات التي تساعد على بدء النقاش من نقطة عملية، ثم أرسل الملخص عبر واتساب للمراجعة قبل الإرسال.</p>
-    </div>
-    <div class="readiness">
-      <div class="progress-box">
-        <div class="progress-num"><span id="score">0</span>%</div>
-        <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
-        <div class="progress-hint" id="progressHint">اختر تفاصيل المشروع الأساسية.</div>
-      </div>
-      <div>
-        <div class="question-card" data-key="type">
-          <div class="q-title">نوع المشروع</div>
-          <div class="option-row"><button class="option">مطبخ جديد</button><button class="option">تجديد مطبخ قائم</button></div>
-        </div>
-        <div class="question-card" data-key="dimensions">
-          <div class="q-title">حالة الأبعاد</div>
-          <div class="option-row"><button class="option">مخطط جاهز</button><button class="option">أبعاد تقريبية</button><button class="option">أحتاج قياساً</button></div>
-        </div>
-        <div class="question-card" data-key="appliances">
-          <div class="q-title">الأجهزة</div>
-          <div class="option-row"><button class="option">محددة مسبقاً</button><button class="option">أحتاج اقتراح التوزيع</button></div>
-        </div>
-        <div class="question-card" data-key="direction">
-          <div class="q-title">الاتجاه البصري</div>
-          <div class="option-row"><button class="option" id="visualDirection">عاجي هادئ + حجر دافئ</button><button class="option">مفتوح للاقتراح</button></div>
-        </div>
-        <div class="question-card" data-key="photos">
-          <div class="q-title">صور المساحة</div>
-          <div class="option-row"><button class="option">متوفرة</button><button class="option">سألتقطها لاحقاً</button></div>
-        </div>
-        <div class="question-card" data-key="next">
-          <div class="q-title">الخطوة التالية</div>
-          <div class="option-row"><button class="option">طلب قياس</button><button class="option">استشارة</button><button class="option">طلب عرض سعر</button></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="handoff">
-  <div class="shell handoff-grid">
-    <div>
-      <div class="kicker">الخطوة التالية</div>
-      <h2>حوّل الاتجاه المختار<br>إلى محادثة عملية.</h2>
-      <p>سيفتح واتساب مع ملخص جاهز للمراجعة. لن يتم إرسال أي رسالة تلقائياً.</p>
-    </div>
-    <a class="wa" id="wa" target="_blank" rel="noopener noreferrer">متابعة عبر واتساب ←</a>
-  </div>
-</section>
-<footer class="footer"><div class="shell"><span>جوهرة المعالم · الدمام</span><span>تصور تفاعلي خاص للمعاينة</span></div></footer>
+<div class="toast" id="toast">تم نسخ رابط المظهر</div>
 
 <script src="/vendor/three-r128.min.js"></script>
 <script>
-(function(){
-  const labels={
-    front:{ivory:"عاجي هادئ",sage:"أخضر رمادي",walnut:"خشبي دافئ"},
-    top:{stone:"حجر دافئ",quartz:"كوارتز فاتح",graphite:"جرافيت"},
-    light:{warm:"إضاءة دافئة",day:"إضاءة نهارية",evening:"إضاءة مسائية"}
+(() => {
+  const FRONT = { ivory:0xded6c8, sage:0x8b9689, walnut:0x72503d, graphite:0x3e413d };
+  const TOP = { travertine:0xc9b79f, quartz:0xe7e2d9, dark:0x454541 };
+  const labels = {
+    front:{ivory:'عاجي',sage:'ساج',walnut:'خشب دخاني',graphite:'جرافيت'},
+    top:{travertine:'حجر دافئ',quartz:'كوارتز فاتح',dark:'سطح داكن'},
+    light:{warm:'إضاءة دافئة',day:'ضوء نهاري',evening:'أجواء مسائية'}
   };
-  const palette={
-    front:{ivory:0xded7ca,sage:0x8f9989,walnut:0x73523c},
-    top:{stone:0xc4ae91,quartz:0xe7e3da,graphite:0x494846}
-  };
-  const state={front:"ivory",top:"stone",light:"warm"};
-  let savedA=null,savedB=null;
+  const state = { front:'ivory', top:'travertine', light:'warm' };
+  let savedA = null, savedB = null;
 
-  const canvas=document.getElementById("stage");
-  const wrap=document.getElementById("stageWrap");
-  if(!window.THREE){
-    wrap.innerHTML='<div style="height:100%;display:grid;place-items:center;color:#3d3933;padding:24px;text-align:center">تعذر تشغيل العرض ثلاثي الأبعاد على هذا الجهاز.</div>';
-    return;
+  const params = new URLSearchParams(location.search);
+  if(FRONT[params.get('front')]) state.front=params.get('front');
+  if(TOP[params.get('top')]) state.top=params.get('top');
+  if(['warm','day','evening'].includes(params.get('light'))) state.light=params.get('light');
+
+  const stage = document.getElementById('stage');
+  const canvas = document.getElementById('scene');
+  let root, renderer, camera, scene, frontMat, counterMat, wallMat, floorMat, ambient, key, warmStrip, pendantLights=[];
+  let yaw=-0.24,pitch=0,drag=false,lastX=0,lastY=0,targetYaw=yaw,targetPitch=pitch;
+
+  function init3d(){
+    if(!window.THREE){
+      stage.innerHTML='<div style="height:100%;display:grid;place-items:center;background:#d8d2c8;color:#514c44;padding:24px;text-align:center">هذا الجهاز لا يدعم العرض ثلاثي الأبعاد حالياً.</div>';
+      return;
+    }
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xd8d3cb);
+    renderer = new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.65));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    if(THREE.ACESFilmicToneMapping){renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;}
+    camera = new THREE.PerspectiveCamera(34,1,.1,100);
+    camera.position.set(7.9,4.3,9.2);
+    scene.add(camera);
+
+    root = new THREE.Group();
+    root.position.set(0,-1.35,0);
+    scene.add(root);
+
+    frontMat = new THREE.MeshStandardMaterial({color:FRONT[state.front],roughness:.46,metalness:.03});
+    counterMat = new THREE.MeshStandardMaterial({color:TOP[state.top],roughness:.32,metalness:.05});
+    wallMat = new THREE.MeshStandardMaterial({color:0xe9e3d9,roughness:.9});
+    floorMat = new THREE.MeshStandardMaterial({color:0xb9afa2,roughness:.78});
+    const darkMat = new THREE.MeshStandardMaterial({color:0x1d1f1d,roughness:.3,metalness:.26});
+    const metalMat = new THREE.MeshStandardMaterial({color:0x777872,roughness:.28,metalness:.75});
+    const brassMat = new THREE.MeshStandardMaterial({color:0xb58c54,roughness:.22,metalness:.72});
+    const glassMat = new THREE.MeshPhysicalMaterial({color:0x5d665f,roughness:.08,metalness:.03,transparent:true,opacity:.34,transmission:.25});
+
+    const box=(w,h,d,x,y,z,mat,shadow=true)=>{
+      const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
+      m.position.set(x,y,z);m.castShadow=shadow;m.receiveShadow=true;root.add(m);return m;
+    };
+    const line=(w,h,d,x,y,z,mat)=>box(w,h,d,x,y,z,mat,false);
+
+    box(8.1,5.5,.12,0,1.6,-1.02,wallMat,false);
+    box(7.9,.12,4.5,0,-.55,.6,floorMat,false);
+    box(.12,5.5,4.5,-4.0,1.6,.6,wallMat,false);
+
+    // back run
+    [-2.9,-2.15,-1.4,-.65,.1].forEach(x=>box(.69,1.55,.78,x,.13,-.28,frontMat));
+    box(3.9,.12,.92,-1.42,.94,-.22,counterMat);
+    box(3.9,.72,.07,-1.42,1.39,-.64,counterMat,false);
+
+    // tall bank
+    box(.92,3.45,.82,1.05,1.08,-.27,frontMat);
+    box(.92,3.45,.82,2.03,1.08,-.27,frontMat);
+    box(.92,3.45,.82,3.01,1.08,-.27,metalMat);
+    line(.64,.026,.024,3.01,1.25,.15,brassMat);
+
+    // oven
+    box(.73,.78,.035,1.05,.52,.16,darkMat);
+    box(.58,.48,.02,1.05,.52,.185,new THREE.MeshStandardMaterial({color:0x0a0b0a,roughness:.18,metalness:.4}),false);
+
+    // uppers
+    [-2.55,-1.68,-.81].forEach(x=>box(.78,1.02,.52,x,2.25,-.5,frontMat));
+    // glass display
+    [-.0,.82].forEach(x=>{
+      box(.72,1.02,.52,x,2.25,-.5,darkMat);
+      box(.60,.88,.02,x,2.25,-.215,glassMat,false);
+      line(.025,.84,.025,x,2.25,-.19,brassMat);
+    });
+
+    // sink and faucet
+    box(.88,.035,.48,-1.55,1.02,-.05,metalMat,false);
+    const faucet=new THREE.Mesh(new THREE.TorusGeometry(.21,.026,12,32,Math.PI),brassMat);
+    faucet.position.set(-1.55,1.35,-.12);faucet.rotation.z=Math.PI;root.add(faucet);
+
+    // hob & hood
+    box(.72,.025,.47,-.15,1.02,-.04,darkMat,false);
+    box(.95,.12,.62,-.15,2.96,-.41,darkMat);
+    box(.48,.74,.42,-.15,3.36,-.48,darkMat);
+
+    // side return / L
+    [-3.62,-3.62,-3.62].forEach((x,i)=>box(.74,1.55,.72,x,.13,.35+i*.76,frontMat));
+    box(.92,.12,2.48,-3.58,.94,1.1,counterMat);
+
+    // island with waterfall
+    box(3.1,1.18,1.15,.35,-.02,2.08,frontMat);
+    box(3.35,.14,1.34,.35,.63,2.08,counterMat);
+    box(.13,1.28,1.34,-1.26,.02,2.08,counterMat);
+    // island reveal & brass line
+    line(2.9,.018,.02,.35,.25,2.665,brassMat);
+
+    // stools
+    [-.38,.55,1.45].forEach(x=>{
+      const seat=box(.46,.10,.46,x,-.18,3.05,darkMat);
+      line(.035,.64,.035,x-.15,-.5,2.92,metalMat);
+      line(.035,.64,.035,x+.15,-.5,2.92,metalMat);
+      line(.035,.64,.035,x-.15,-.5,3.18,metalMat);
+      line(.035,.64,.035,x+.15,-.5,3.18,metalMat);
+    });
+
+    // décor
+    const vase=new THREE.Mesh(new THREE.CylinderGeometry(.12,.18,.5,24),new THREE.MeshStandardMaterial({color:0xb9aa93,roughness:.7}));
+    vase.position.set(-2.5,1.27,-.16);vase.castShadow=true;root.add(vase);
+    const plantMat=new THREE.MeshStandardMaterial({color:0x61705e,roughness:.9});
+    for(let i=0;i<5;i++){
+      const leaf=new THREE.Mesh(new THREE.SphereGeometry(.12,12,8),plantMat);
+      leaf.scale.set(.55,1.9,.38);leaf.position.set(-2.5+(i-2)*.07,1.65+Math.abs(i-2)*.03,-.15);leaf.rotation.z=(i-2)*.23;root.add(leaf);
+    }
+
+    // under cabinet light
+    warmStrip = new THREE.PointLight(0xffc779,1.45,4.5);
+    warmStrip.position.set(-1.25,1.62,.2);scene.add(warmStrip);
+    ambient = new THREE.HemisphereLight(0xffffff,0x54493d,.86);scene.add(ambient);
+    key = new THREE.DirectionalLight(0xffe6c8,2.1);key.position.set(4.5,8,6.5);key.castShadow=true;
+    key.shadow.mapSize.width=1024;key.shadow.mapSize.height=1024;scene.add(key);
+
+    // pendants
+    [-.45,.85].forEach(x=>{
+      line(.018,.82,.018,x,3.35,2.08,metalMat);
+      const shade=new THREE.Mesh(new THREE.ConeGeometry(.26,.38,32,1,true),darkMat);
+      shade.position.set(x,2.85,2.08);shade.rotation.x=Math.PI;root.add(shade);
+      const pl=new THREE.PointLight(0xffc678,.95,3.8);pl.position.set(x,2.55,2.08);scene.add(pl);pendantLights.push(pl);
+    });
+
+    function resize(){
+      const r=stage.getBoundingClientRect();
+      renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;camera.updateProjectionMatrix();
+      if(r.width<600){camera.position.set(7.6,4.0,10.7)} else {camera.position.set(7.9,4.3,9.2)}
+    }
+    new ResizeObserver(resize).observe(stage);resize();
+
+    stage.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX;lastY=e.clientY;stage.setPointerCapture(e.pointerId)});
+    stage.addEventListener('pointermove',e=>{
+      if(!drag)return;
+      const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;
+      targetYaw+=dx*.006;targetPitch=Math.max(-.08,Math.min(.12,targetPitch+dy*.0023));
+    });
+    stage.addEventListener('pointerup',()=>drag=false);
+    stage.addEventListener('pointercancel',()=>drag=false);
+
+    function animate(){
+      yaw+=(targetYaw-yaw)*.075;pitch+=(targetPitch-pitch)*.075;
+      root.rotation.y=yaw;root.rotation.x=pitch;
+      renderer.render(scene,camera);requestAnimationFrame(animate);
+    }
+    animate();
+    applyScene();
   }
 
-  const scene=new THREE.Scene();
-  scene.background=new THREE.Color(0xd6d0c6);
-  const camera=new THREE.PerspectiveCamera(38,1,.1,100);
-  camera.position.set(6.7,3.8,8.4);
-  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:"high-performance"});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.6));
-  renderer.shadowMap.enabled=true;
-  renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-  renderer.outputEncoding=THREE.sRGBEncoding;
-
-  const root=new THREE.Group();
-  root.position.set(0,-1.1,0);
-  scene.add(root);
-
-  const matFront=new THREE.MeshStandardMaterial({color:palette.front.ivory,roughness:.53,metalness:.03});
-  const matTop=new THREE.MeshStandardMaterial({color:palette.top.stone,roughness:.43,metalness:.03});
-  const matWall=new THREE.MeshStandardMaterial({color:0xe1ddd5,roughness:.9});
-  const matFloor=new THREE.MeshStandardMaterial({color:0xb9b1a6,roughness:.8});
-  const matDark=new THREE.MeshStandardMaterial({color:0x252525,roughness:.35,metalness:.28});
-  const matMetal=new THREE.MeshStandardMaterial({color:0x8c8a84,roughness:.25,metalness:.72});
-  const matBrass=new THREE.MeshStandardMaterial({color:0xae8750,roughness:.2,metalness:.8});
-
-  function box(w,h,d,x,y,z,mat){
-    const g=new THREE.BoxGeometry(w,h,d);
-    const m=new THREE.Mesh(g,mat);
-    m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;root.add(m);return m;
-  }
-  box(6.7,4.7,.12,0,1.55,-.55,matWall);
-  box(6.5,.12,2.4,0,-.54,.15,matFloor);
-
-  [-2.35,-1.64,-.93,-.22,.49].forEach(x=>box(.64,1.5,.74,x,.08,0,matFront));
-  [-2.2,-1.28,.7,1.55].forEach(x=>box(.8,1.06,.56,x,2.16,-.02,matFront));
-  box(4.2,.15,.91,-.94,.87,.04,matTop);
-  box(4.2,.82,.08,-.94,1.38,-.35,matTop);
-
-  box(.84,1.5,.75,1.55,.08,0,matDark);
-  box(.5,.52,.04,1.55,.18,.39,new THREE.MeshStandardMaterial({color:0x111111,metalness:.35,roughness:.2}));
-  box(.86,3.05,.72,2.48,1.17,-.02,matMetal);
-  box(.7,.025,.025,2.48,1.38,.36,matBrass);
-
-  const sink=box(.88,.04,.48,-1.55,1.0,.1,new THREE.MeshStandardMaterial({color:0x74716b,metalness:.62,roughness:.25}));
-  const faucet=new THREE.Mesh(new THREE.TorusGeometry(.2,.03,10,24,Math.PI),matBrass);
-  faucet.position.set(-1.55,1.33,.1);faucet.rotation.z=Math.PI;root.add(faucet);
-
-  const ambient=new THREE.AmbientLight(0xffffff,.72);scene.add(ambient);
-  const key=new THREE.DirectionalLight(0xffe3bf,1.55);key.position.set(4,7,6);key.castShadow=true;scene.add(key);
-  const fill=new THREE.PointLight(0xffbe76,1.15,10);fill.position.set(-2,2.4,2.2);scene.add(fill);
-
-  let drag=false,lastX=0,lastY=0,ry=-.28,rx=0;
-  wrap.addEventListener("pointerdown",e=>{drag=true;lastX=e.clientX;lastY=e.clientY;wrap.setPointerCapture(e.pointerId)});
-  wrap.addEventListener("pointermove",e=>{
-    if(!drag)return;
-    const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;
-    ry+=dx*.006;rx=Math.max(-.12,Math.min(.14,rx+dy*.0025));
-  });
-  wrap.addEventListener("pointerup",()=>drag=false);
-  wrap.addEventListener("pointercancel",()=>drag=false);
-  wrap.addEventListener("wheel",e=>{e.preventDefault();camera.position.z=Math.max(6.6,Math.min(10,camera.position.z+e.deltaY*.004))},{passive:false});
-
-  function resize(){
-    const r=wrap.getBoundingClientRect();renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;camera.updateProjectionMatrix();
-  }
-  new ResizeObserver(resize).observe(wrap);resize();
-
-  function render(){
-    root.rotation.y += (ry-root.rotation.y)*.08;
-    root.rotation.x += (rx-root.rotation.x)*.08;
-    renderer.render(scene,camera);requestAnimationFrame(render);
-  }
-  render();
-
-  function applyVisual(){
-    matFront.color.setHex(palette.front[state.front]);
-    matTop.color.setHex(palette.top[state.top]);
-    if(state.light==="warm"){ambient.intensity=.72;key.intensity=1.55;key.color.setHex(0xffe3bf);fill.intensity=1.15;fill.color.setHex(0xffbe76);scene.background.setHex(0xd6d0c6)}
-    if(state.light==="day"){ambient.intensity=1;key.intensity=1.35;key.color.setHex(0xffffff);fill.intensity=.65;fill.color.setHex(0xe4edff);scene.background.setHex(0xdcdad5)}
-    if(state.light==="evening"){ambient.intensity=.38;key.intensity=1.75;key.color.setHex(0xffd09b);fill.intensity=1.8;fill.color.setHex(0xc68f55);scene.background.setHex(0x8f8980)}
-    document.getElementById("visualDirection").textContent=labels.front[state.front]+" + "+labels.top[state.top];
+  function applyScene(){
+    if(frontMat) frontMat.color.setHex(FRONT[state.front]);
+    if(counterMat) counterMat.color.setHex(TOP[state.top]);
+    if(scene){
+      if(state.light==='warm'){
+        scene.background.setHex(0xd7d0c6);ambient.intensity=.86;key.intensity=2.1;key.color.setHex(0xffe6c8);warmStrip.intensity=1.45;pendantLights.forEach(x=>x.intensity=.95);
+        if(renderer?.toneMappingExposure) renderer.toneMappingExposure=1.04;
+      }else if(state.light==='day'){
+        scene.background.setHex(0xdfe1df);ambient.intensity=1.25;key.intensity=1.75;key.color.setHex(0xf6fbff);warmStrip.intensity=.45;pendantLights.forEach(x=>x.intensity=.25);
+        if(renderer?.toneMappingExposure) renderer.toneMappingExposure=1.12;
+      }else{
+        scene.background.setHex(0x989087);ambient.intensity=.48;key.intensity=2.25;key.color.setHex(0xffc68d);warmStrip.intensity=2.0;pendantLights.forEach(x=>x.intensity=1.55);
+        if(renderer?.toneMappingExposure) renderer.toneMappingExposure=.92;
+      }
+    }
+    syncControls();
+    updateUrl();
     updateWhatsApp();
   }
 
-  document.querySelectorAll("[data-control]").forEach(group=>{
-    group.addEventListener("click",e=>{
-      const b=e.target.closest(".chip");if(!b)return;
-      const key=group.dataset.control;
-      group.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));b.classList.add("active");
-      state[key]=b.dataset.value;applyVisual();
+  function syncControls(){
+    document.querySelectorAll('[data-group]').forEach(group=>{
+      const key=group.dataset.group;
+      group.querySelectorAll('.swatch').forEach(btn=>btn.classList.toggle('active',btn.dataset.value===state[key]));
+    });
+    document.querySelectorAll('.look').forEach(x=>x.classList.remove('active'));
+    const mapped = state.front==='sage'?'sage':state.front==='walnut'?'walnut':state.front==='ivory'?'ivory':null;
+    if(mapped) document.querySelector('.look[data-look="'+mapped+'"]')?.classList.add('active');
+  }
+
+  function updateUrl(){
+    const u=new URL(location.href);
+    u.searchParams.set('front',state.front);u.searchParams.set('top',state.top);u.searchParams.set('light',state.light);
+    history.replaceState(null,'',u);
+  }
+
+  document.querySelectorAll('[data-group]').forEach(group=>{
+    group.addEventListener('click',e=>{
+      const btn=e.target.closest('.swatch');if(!btn)return;
+      state[group.dataset.group]=btn.dataset.value;applyScene();
     });
   });
 
-  function summary(s){return labels.front[s.front]+" · "+labels.top[s.top]+" · "+labels.light[s.light]}
+  const curated={
+    ivory:{front:'ivory',top:'travertine',light:'warm'},
+    sage:{front:'sage',top:'quartz',light:'day'},
+    walnut:{front:'walnut',top:'dark',light:'evening'}
+  };
+  document.querySelectorAll('.look').forEach(btn=>btn.addEventListener('click',()=>{Object.assign(state,curated[btn.dataset.look]);applyScene()}));
+  document.getElementById('resetView').onclick=()=>{targetYaw=-.24;targetPitch=0};
+  document.getElementById('copyLook').onclick=async()=>{
+    try{await navigator.clipboard.writeText(location.href);showToast('تم نسخ رابط المظهر')}catch(e){showToast('الرابط جاهز للمشاركة')}
+  };
+  document.getElementById('jumpCompare').onclick=()=>document.getElementById('compareSection').scrollIntoView({behavior:'smooth'});
+
+  function snapshot(){return {front:state.front,top:state.top,light:state.light}}
+  function human(s){return labels.front[s.front]+' · '+labels.top[s.top]+' · '+labels.light[s.light]}
   function save(slot){
-    const copy={front:state.front,top:state.top,light:state.light};
-    if(slot==="A")savedA=copy;else savedB=copy;
-    document.getElementById("summary"+slot).textContent=summary(copy);
-    document.getElementById("badge"+slot).textContent="محفوظ";
-    document.getElementById("apply"+slot).disabled=false;
-    document.getElementById("save"+slot).textContent="تحديث "+slot;
-    compare();
+    const s=snapshot(); if(slot==='A')savedA=s;else savedB=s;
+    localStorage.setItem('jawhara-'+slot,JSON.stringify(s)); renderCompare();
   }
-  function applySaved(s){
-    if(!s)return;
-    Object.assign(state,s);
-    document.querySelectorAll("[data-control]").forEach(group=>{
-      group.querySelectorAll(".chip").forEach(x=>x.classList.toggle("active",x.dataset.value===state[group.dataset.control]));
+  function load(slot){
+    const s=slot==='A'?savedA:savedB;if(!s)return;Object.assign(state,s);applyScene();document.getElementById('studio').scrollIntoView({behavior:'smooth',block:'center'})
+  }
+  function dots(s){
+    if(!s)return '';
+    const colors=[FRONT[s.front],TOP[s.top],s.light==='warm'?0xd8b17a:s.light==='day'?0xdfe8ef:0x8a7867];
+    return colors.map(c=>'<i style="background:#'+c.toString(16).padStart(6,'0')+'"></i>').join('');
+  }
+  function renderCompare(){
+    [['A',savedA],['B',savedB]].forEach(([slot,s])=>{
+      document.getElementById('name'+slot).textContent=s?human(s):'لم يُحفظ بعد';
+      document.getElementById('desc'+slot).textContent=s?'اضغط للعودة لهذا الاختيار.':slot==='A'?'احفظ المظهر الحالي كخيار أول.':'غيّر اختياراتك ثم احفظ البديل.';
+      document.getElementById('dots'+slot).innerHTML=dots(s);
+      const btn=document.getElementById('save'+slot);
+      btn.textContent=s?'عرض '+slot:'حفظ '+slot;
+      btn.onclick=()=>s?load(slot):save(slot);
     });
-    applyVisual();
-    document.querySelector(".studio").scrollIntoView({behavior:"smooth",block:"center"});
+    if(savedA&&savedB){
+      const diff=[];
+      if(savedA.front!==savedB.front)diff.push('الواجهات');
+      if(savedA.top!==savedB.top)diff.push('السطح');
+      if(savedA.light!==savedB.light)diff.push('الأجواء');
+      document.getElementById('compareHeadline').textContent=diff.length?'الفرق: '+diff.join('، '):'الخياران متطابقان حالياً.';
+      document.getElementById('compareDetail').textContent='اضغط “عرض A” أو “عرض B” للعودة مباشرة داخل المشهد.';
+    }
   }
-  function compare(){
-    const el=document.getElementById("compareNote");
-    if(!savedA||!savedB){el.textContent="احفظ الخيارين ليظهر الفرق بينهما هنا.";return}
-    const diffs=[];
-    if(savedA.front!==savedB.front)diffs.push("لون الواجهات");
-    if(savedA.top!==savedB.top)diffs.push("سطح العمل");
-    if(savedA.light!==savedB.light)diffs.push("الإضاءة");
-    el.textContent=diffs.length?"الفرق بين A و B: "+diffs.join("، ")+" — اعرض أي خيار للعودة إليه.":"الخياران متطابقان حالياً.";
-  }
-  document.getElementById("saveA").onclick=()=>save("A");
-  document.getElementById("saveB").onclick=()=>save("B");
-  document.getElementById("applyA").onclick=()=>applySaved(savedA);
-  document.getElementById("applyB").onclick=()=>applySaved(savedB);
+  try{savedA=JSON.parse(localStorage.getItem('jawhara-A')||'null');savedB=JSON.parse(localStorage.getItem('jawhara-B')||'null')}catch(e){}
+  renderCompare();
 
-  const answers={};
-  document.querySelectorAll(".question-card").forEach(card=>{
-    card.addEventListener("click",e=>{
-      const b=e.target.closest(".option");if(!b)return;
-      card.querySelectorAll(".option").forEach(x=>x.classList.remove("active"));
-      b.classList.add("active");answers[card.dataset.key]=b.textContent.trim();updateReadiness();updateWhatsApp();
+  // Wizard
+  const questions=[
+    {key:'type',title:'ما نوع المشروع؟',options:['مطبخ جديد','تجديد مطبخ قائم']},
+    {key:'measure',title:'أين وصلت مع المقاسات؟',options:['لدي مخطط أو مقاسات','لدي أبعاد تقريبية','أحتاج زيارة قياس']},
+    {key:'appliances',title:'هل مواقع الأجهزة محددة؟',options:['نعم، الأجهزة ومقاساتها معروفة','جزئياً','أحتاج اقتراح توزيع']},
+    {key:'photos',title:'هل لديك صور للمساحة؟',options:['نعم، جاهزة للمشاركة','سألتقطها لاحقاً']},
+    {key:'next',title:'ما الخطوة التي تريدها الآن؟',options:['طلب قياس','استشارة على التصميم','طلب عرض سعر']}
+  ];
+  const answers={};let qIndex=0;
+  const sheet=document.getElementById('sheet'),backdrop=document.getElementById('backdrop');
+  function openSheet(){document.body.classList.add('sheet-open');sheet.classList.add('show');backdrop.classList.add('show');renderQuestion()}
+  function closeSheet(){document.body.classList.remove('sheet-open');sheet.classList.remove('show');backdrop.classList.remove('show')}
+  document.querySelectorAll('.open-sheet').forEach(b=>b.addEventListener('click',openSheet));
+  document.getElementById('closeSheet').onclick=closeSheet;backdrop.onclick=closeSheet;
+
+  function renderQuestion(){
+    document.getElementById('summaryView').classList.remove('show');
+    document.getElementById('questionView').style.display='block';
+    document.getElementById('sheetFoot').style.display='flex';
+    const q=questions[qIndex];
+    document.getElementById('stepKicker').textContent=(qIndex+1)+' / '+questions.length;
+    document.getElementById('questionTitle').textContent=q.title;
+    document.getElementById('wizardProgress').style.width=((qIndex)/questions.length*100)+'%';
+    const wrap=document.getElementById('wizardOptions');wrap.innerHTML='';
+    q.options.forEach(opt=>{
+      const b=document.createElement('button');b.className='wizard-option'+(answers[q.key]===opt?' selected':'');b.textContent=opt;
+      b.onclick=()=>{answers[q.key]=opt;renderQuestion()};wrap.appendChild(b);
     });
-  });
-  function updateReadiness(){
-    const n=Object.keys(answers).filter(k=>answers[k]).length;
-    const pct=Math.round(n/6*100);
-    document.getElementById("score").textContent=pct;
-    document.getElementById("progress").style.width=pct+"%";
-    document.getElementById("progressHint").textContent=n===6?"الأساسيات جاهزة للمحادثة.":"تم تحديد "+n+" من 6 عناصر أساسية.";
+    const next=document.getElementById('nextStep');next.disabled=!answers[q.key];next.textContent=qIndex===questions.length-1?'مراجعة الملخص':'التالي';
+    document.getElementById('wizardHint').textContent=qIndex===0?'الاتجاه البصري الحالي سيُضاف تلقائياً إلى الملخص.':'يمكنك الرجوع بإغلاق النافذة دون فقد الاختيارات.';
+  }
+  document.getElementById('nextStep').onclick=()=>{
+    if(!answers[questions[qIndex].key])return;
+    if(qIndex<questions.length-1){qIndex++;renderQuestion()}else renderSummary();
+  };
+  function renderSummary(){
+    document.getElementById('questionView').style.display='none';
+    document.getElementById('sheetFoot').style.display='none';
+    document.getElementById('summaryView').classList.add('show');
+    document.getElementById('wizardProgress').style.width='100%';
+    const rows=[
+      ['الاتجاه',human(state)],['نوع المشروع',answers.type],['المقاسات',answers.measure],['الأجهزة',answers.appliances],['صور المساحة',answers.photos],['الخطوة المطلوبة',answers.next]
+    ];
+    document.getElementById('summaryList').innerHTML=rows.map(r=>'<div class="summary-row"><span>'+r[0]+'</span><b>'+r[1]+'</b></div>').join('');
+    updateWhatsApp();
+  }
+  function waText(){
+    const lines=[
+      'مرحباً جوهرة المعالم،',
+      'أرغب في '+(answers.next||'استشارة')+' لمشروع مطبخ.',
+      'الاتجاه الذي اخترته: '+human(state)+'.',
+      answers.type?'نوع المشروع: '+answers.type+'.':null,
+      answers.measure?'حالة المقاسات: '+answers.measure+'.':null,
+      answers.appliances?'الأجهزة: '+answers.appliances+'.':null,
+      answers.photos?'صور المساحة: '+answers.photos+'.':null,
+      'هذا الملخص للتوضيح المبدئي ويمكنني إرسال الصور/المخطط في المحادثة.'
+    ].filter(Boolean);
+    return lines.join('\n');
   }
   function updateWhatsApp(){
-    const chosen=answers.direction||labels.front[state.front]+" + "+labels.top[state.top];
-    const lines=[
-      "مرحباً جوهرة المعالم،",
-      "أرغب في "+(answers.next||"استشارة")+" بخصوص مشروع مطبخ.",
-      "الاتجاه البصري: "+chosen+"، "+labels.light[state.light]+".",
-      "نوع المشروع: "+(answers.type||"غير محدد")+".",
-      "الأبعاد: "+(answers.dimensions||"غير محددة")+".",
-      "الأجهزة: "+(answers.appliances||"غير محددة")+".",
-      "صور المساحة: "+(answers.photos||"غير محدد")+"."
-    ];
-    document.getElementById("wa").href="https://wa.me/966550437444?text="+encodeURIComponent(lines.join("\n"));
+    const href='https://wa.me/966550437444?text='+encodeURIComponent(waText());
+    document.getElementById('directWa').href=href;
+    document.getElementById('summaryWa').onclick=()=>window.open(href,'_blank','noopener');
   }
-  applyVisual();updateReadiness();updateWhatsApp();
+  function showToast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.add('show');clearTimeout(showToast.t);showToast.t=setTimeout(()=>el.classList.remove('show'),1800)}
+  updateWhatsApp();init3d();
 })();
 </script>
 </body>
