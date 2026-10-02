@@ -413,8 +413,9 @@ footer{background:#0a0b0a;color:#6f726c;padding:20px 0;font-size:9px}
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.outputEncoding = THREE.sRGBEncoding;
     if(THREE.ACESFilmicToneMapping){renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;}
-    camera = new THREE.PerspectiveCamera(34,1,.1,100);
+    camera = new THREE.PerspectiveCamera(38,1,.1,100);
     camera.position.set(7.9,4.3,9.2);
+    camera.lookAt(0,.45,.65);
     scene.add(camera);
 
     root = new THREE.Group();
@@ -522,10 +523,14 @@ footer{background:#0a0b0a;color:#6f726c;padding:20px 0;font-size:9px}
       const r=stage.getBoundingClientRect();
       renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;camera.updateProjectionMatrix();
       if(r.width<600){camera.position.set(7.6,4.0,10.7)} else {camera.position.set(7.9,4.3,9.2)}
+      camera.lookAt(0,.45,.65);
     }
     new ResizeObserver(resize).observe(stage);resize();
 
-    stage.addEventListener('pointerdown',e=>{\n      if(e.target.closest('button,a')) return;\n      drag=true;lastX=e.clientX;lastY=e.clientY;stage.setPointerCapture(e.pointerId)\n    });
+    stage.addEventListener('pointerdown',e=>{
+      if(e.target.closest('button,a')) return;
+      drag=true;lastX=e.clientX;lastY=e.clientY;stage.setPointerCapture(e.pointerId)
+    });
     stage.addEventListener('pointermove',e=>{
       if(!drag)return;
       const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;
