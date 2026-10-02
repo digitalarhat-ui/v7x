@@ -1,0 +1,143 @@
+name: Alab3ad Live Vercel QA
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/alab3ad-live-qa.yml'
+      - 'alab3ad.html'
+      - 'vercel.json'
+      - 'vendor/three-r128.min.js'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  live-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare Alab3ad live browser QA
+        run: |
+          mkdir -p /tmp/alab3ad-live qa-alab3ad-live
+          cd /tmp/alab3ad-live
+          npm init -y >/dev/null 2>&1
+          npm install puppeteer-core@24.19.0 --silent
+          cat > qa.mjs <<'NODE'
+          import puppeteer from 'puppeteer-core';
+          import fs from 'node:fs';
+
+          const live='https://alab3ad-modern-kitchens.vercel.app/';
+          const browser=await puppeteer.launch({
+            executablePath:'/usr/bin/google-chrome',
+            headless:true,
+            args:['--no-sandbox','--disable-dev-shm-usage','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader','--enable-webgl']
+          });
+          const sizes=[['390',390,844],['430',430,932],['768',768,1024],['1440',1440,900]];
+          const out=[];
+
+          for (const [name,w,h] of sizes){
+            const p=await browser.newPage();
+            await p.setViewport({width:w,height:h,deviceScaleFactor:1});
+            const errors=[];
+            p.on('pageerror',e=>errors.push('page:'+String(e)));
+            p.on('console',m=>{if(m.type()==='error') errors.push('console:'+m.text())});
+
+            const res=await p.goto(live,{waitUntil:'networkidle2',timeout:60000});
+            await new Promise(r=>setTimeout(r,1800));
+
+            const init=await p.evaluate(()=>({
+              url:location.href,
+              title:document.title,
+              three:!!window.THREE,
+              canvas:[document.querySelector('.stage canvas')?.width||0,document.querySelector('.stage canvas')?.height||0],
+              overflow:document.documentElement.scrollWidth-innerWidth,
+              brand:document.querySelector('.brand')?.textContent?.trim()||'',
+              phone:document.querySelector('a[href^="tel:"]')?.getAttribute('href')||'',
+              gallery:[...document.querySelectorAll('.work img')].map(x=>({ok:x.complete&&x.naturalWidth>100,w:x.naturalWidth,h:x.naturalHeight})),
+              swatches:document.querySelectorAll('#baseSwatches .swatch').length,
+              routes:[...document.querySelectorAll('.route b')].map(x=>x.textContent.trim()),
+              internal:['Digital Arhat','AppDeploy','QA build','preview token'].some(x=>document.body.innerText.includes(x))
+            }));
+
+            if(!res || res.status()>=400) throw new Error(name+': HTTP '+(res?.status()||'none'));
+            if(new URL(init.url).pathname!='/alab3ad') throw new Error(name+': clean alias redirect failed '+init.url);
+            if(!init.title.includes('الأبعاد الحديثة') || !init.brand.includes('الأبعاد الحديثة')) throw new Error(name+': identity failed');
+            if(!init.three || init.canvas[0]<100 || init.canvas[1]<100) throw new Error(name+': WebGL failed '+JSON.stringify(init.canvas));
+            if(init.overflow>2) throw new Error(name+': horizontal overflow '+init.overflow);
+            if(init.internal) throw new Error(name+': internal branding leaked');
+            if(init.phone!=='tel:+966535416179') throw new Error(name+': phone route mismatch '+init.phone);
+            if(init.swatches<16) throw new Error(name+': color depth too shallow '+init.swatches);
+            if(!init.routes.includes('مطبخ جديد') || !init.routes.includes('صيانة أو تعديل')) throw new Error(name+': primary route labels missing '+JSON.stringify(init.routes));
+            if(init.gallery.length<4 || init.gallery.some(x=>!x.ok)) throw new Error(name+': authentic gallery failed '+JSON.stringify(init.gallery));
+
+            await p.screenshot({path:'/home/runner/work/v7x/v7x/qa-alab3ad-live/live-'+name+'-viewport.png',fullPage:false});
+            if(name==='390'||name==='1440') await p.screenshot({path:'/home/runner/work/v7x/v7x/qa-alab3ad-live/live-'+name+'-full.png',fullPage:true});
+
+            const before=await p.$eval('#visualSummary',el=>el.textContent);
+            await p.click('#baseSwatches .swatch:nth-child(5)');
+            await p.click('#upperSwatches .swatch:nth-child(8)');
+            await p.click('#finishSeg [data-v="satin"]');
+            await p.click('#topSeg [data-v="granite"]');
+            await p.click('#lightSeg [data-v="warm"]');
+            await new Promise(r=>setTimeout(r,250));
+            const after=await p.$eval('#visualSummary',el=>el.textContent);
+            if(after===before || !after.includes('ساتان') || !after.includes('سطح داكن')) throw new Error(name+': color decision controls failed '+after);
+
+            await p.click('#saveA');
+            await p.click('#baseSwatches .swatch:nth-child(1)');
+            await p.click('#saveB');
+            const ab=await p.evaluate(()=>({
+              a:document.querySelector('#textA')?.textContent||'',
+              b:document.querySelector('#textB')?.textContent||'',
+              imgA:!!document.querySelector('#mediaA img'),
+              imgB:!!document.querySelector('#mediaB img')
+            }));
+            if(!ab.a || !ab.b || ab.a===ab.b || !ab.imgA || !ab.imgB) throw new Error(name+': A/B compare failed '+JSON.stringify(ab));
+
+            await p.click('#readyRoute');
+            await p.select('#readySize','تغيير لون');
+            await p.select('#readyMaterial','أعرف التعديل المطلوب');
+            await p.type('#readyCity','خميس مشيط');
+            await p.type('#readyNotes','تغيير لون الواجهات');
+            await new Promise(r=>setTimeout(r,150));
+            const maintenance=await p.evaluate(()=>({
+              title:document.querySelector('#summaryTitle')?.textContent||'',
+              summary:document.querySelector('#summary')?.textContent||'',
+              pct:document.querySelector('#readyPct')?.textContent||''
+            }));
+            if(!maintenance.title.includes('صيانة') || !maintenance.summary.includes('تغيير لون') || !maintenance.summary.includes('خميس مشيط')) throw new Error(name+': maintenance route failed '+JSON.stringify(maintenance));
+
+            await p.click('#customRoute');
+            await p.type('#length','5');
+            await p.type('#width','3');
+            await p.select('#siteStage','جاهز للقياس');
+            await p.type('#city','خميس مشيط');
+            await p.click('#appliances [data-v="غسالة صحون"]');
+            await new Promise(r=>setTimeout(r,150));
+            const custom=await p.evaluate(()=>({
+              title:document.querySelector('#summaryTitle')?.textContent||'',
+              summary:document.querySelector('#summary')?.textContent||'',
+              pct:document.querySelector('#readyPct')?.textContent||''
+            }));
+            if(!custom.title.includes('مطبخ جديد') || !custom.summary.includes('5 × 3') || !custom.summary.includes('غسالة صحون')) throw new Error(name+': new kitchen route failed '+JSON.stringify(custom));
+
+            const meaningfulErrors=errors.filter(e=>!e.includes('favicon'));
+            if(meaningfulErrors.length) throw new Error(name+': console errors '+JSON.stringify(meaningfulErrors));
+
+            out.push({viewport:name,http:res.status(),...init,before,after,ab,maintenance,custom,errors});
+            await p.close();
+          }
+          await browser.close();
+          fs.writeFileSync('/home/runner/work/v7x/v7x/qa-alab3ad-live/results.json',JSON.stringify(out,null,2));
+          console.log('ALAB3AD_LIVE_QA_PASS');
+          console.log(JSON.stringify(out.map(x=>({viewport:x.viewport,http:x.http,url:x.url,webgl:x.three,canvas:x.canvas,overflow:x.overflow,images:x.gallery.length,swatches:x.swatches,pctNew:x.custom.pct,pctMaintenance:x.maintenance.pct,errors:x.errors.length})),null,2));
+          NODE
+      - name: Run Alab3ad live Vercel QA
+        run: node /tmp/alab3ad-live/qa.mjs
+      - name: Upload visual QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alab3ad-live-vercel-qa
+          path: qa-alab3ad-live/
+          retention-days: 7
