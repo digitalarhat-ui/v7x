@@ -64,7 +64,8 @@ jobs:
             if(initial.canvas.w<100 || initial.canvas.h<100) throw new Error(c.name+': WebGL canvas not sized');
             if(initial.overflow>2) throw new Error(c.name+': horizontal overflow '+initial.overflow);
             if(initial.bodyText.includes('Digital Arhat') || initial.bodyText.includes('Lovable') || initial.bodyText.includes('V1.4')) throw new Error(c.name+': internal branding leaked');
-            if(!initial.wa.includes('wa.me/966550437444')) throw new Error(c.name+': WhatsApp route mismatch');\n            console.log('INITIAL '+c.name,JSON.stringify({...initial,bodyText:undefined,consoleErrors}));
+            if(!initial.wa.includes('wa.me/966550437444')) throw new Error(c.name+': WhatsApp route mismatch');
+            console.log('INITIAL '+c.name,JSON.stringify({...initial,bodyText:undefined,consoleErrors}));
 
             await page.screenshot({path:'/home/runner/work/v7x/v7x/qa-output/jawhara-'+c.name+'-viewport.png',fullPage:false});
             if(c.name==='390' || c.name==='1440') {
@@ -75,7 +76,10 @@ jobs:
             await page.click('.look[data-look="sage"]');
             await new Promise(r=>setTimeout(r,250));
             const sage=await page.evaluate(()=>location.search);
-            if(!sage.includes('front=sage') || !sage.includes('top=quartz') || !sage.includes('light=day')) {\n              const dbg=await page.evaluate(()=>({search:location.search,active:[...document.querySelectorAll('.look.active')].map(x=>x.textContent),front:[...document.querySelectorAll('[data-group=\"front\"] .swatch.active')].map(x=>x.dataset.value)}));\n              throw new Error(c.name+': curated look state failed '+JSON.stringify(dbg)+' console='+JSON.stringify(consoleErrors));\n            }
+            if(!sage.includes('front=sage') || !sage.includes('top=quartz') || !sage.includes('light=day')) {
+              const dbg=await page.evaluate(()=>({search:location.search,active:[...document.querySelectorAll('.look.active')].map(x=>x.textContent),front:[...document.querySelectorAll('[data-group=\"front\"] .swatch.active')].map(x=>x.dataset.value)}));
+              throw new Error(c.name+': curated look state failed '+JSON.stringify(dbg)+' console='+JSON.stringify(consoleErrors));
+            }
 
             await page.click('#saveA');
             await page.click('.look[data-look="walnut"]');
