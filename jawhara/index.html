@@ -531,7 +531,6 @@ footer{background:#0a0b0a;color:#6f726c;padding:20px 0;font-size:9px}
       const r=stage.getBoundingClientRect();
       renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;camera.updateProjectionMatrix();
       if(r.width<600){camera.position.set(7.6,4.0,10.7)} else {camera.position.set(7.9,4.3,9.2)}
-      camera.lookAt(cameraFocus)
       camera.lookAt(0,.45,.65);
     }
     new ResizeObserver(resize).observe(stage);resize();
