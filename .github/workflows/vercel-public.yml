@@ -1,0 +1,59 @@
+name: Make v7x Production Public
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/vercel-public.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  publicize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      TEAM_ID: team_7NIjs7afCkh79XqV0tqm1LFh
+      PROJECT_NAME: v7x
+    steps:
+      - name: Check Vercel credential availability
+        id: check
+        shell: bash
+        run: |
+          if [ -n "$VERCEL_TOKEN" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+            echo "VERCEL_TOKEN_PRESENT=yes"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "VERCEL_TOKEN_PRESENT=no"
+          fi
+      - name: Read project and make production public
+        if: steps.check.outputs.available == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsS "https://api.vercel.com/v9/projects/$PROJECT_NAME?teamId=$TEAM_ID"             -H "Authorization: Bearer $VERCEL_TOKEN"             -H "Content-Type: application/json" > /tmp/project-before.json
+
+          python3 - <<'PY'
+          import json
+          p=json.load(open('/tmp/project-before.json'))
+          print('PROJECT_FOUND='+str(p.get('name')))
+          print('PROJECT_ID_PRESENT='+('yes' if p.get('id') else 'no'))
+          print('SSO_BEFORE='+json.dumps(p.get('ssoProtection'),separators=(',',':')))
+          t=p.get('targets',{}).get('production',{}) or {}
+          aliases=t.get('alias') or p.get('alias') or []
+          if isinstance(aliases,str): aliases=[aliases]
+          print('PRODUCTION_ALIASES_BEFORE='+','.join(aliases[:10]))
+          PY
+
+          curl -fsS -X PATCH "https://api.vercel.com/v9/projects/$PROJECT_NAME?teamId=$TEAM_ID"             -H "Authorization: Bearer $VERCEL_TOKEN"             -H "Content-Type: application/json"             --data '{"ssoProtection":{"deploymentType":"preview"}}' > /tmp/project-after.json
+
+          python3 - <<'PY'
+          import json
+          p=json.load(open('/tmp/project-after.json'))
+          print('SSO_AFTER='+json.dumps(p.get('ssoProtection'),separators=(',',':')))
+          t=p.get('targets',{}).get('production',{}) or {}
+          aliases=t.get('alias') or p.get('alias') or []
+          if isinstance(aliases,str): aliases=[aliases]
+          print('PRODUCTION_ALIASES_AFTER='+','.join(aliases[:10]))
+          PY
