@@ -18,7 +18,8 @@
   ],
   "alias": [
     "jawhara-almalim-studio.vercel.app",
-    "rukn-dareen-kitchen-studio.vercel.app"
+    "rukn-dareen-kitchen-studio.vercel.app",
+    "ruaad-alabdae-kitchens.vercel.app"
   ],
   "redirects": [
     {
@@ -40,6 +41,17 @@
         {
           "type": "host",
           "value": "rukn-dareen-kitchen-studio.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/ruaad-alabdae-v14",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "ruaad-alabdae-kitchens.vercel.app"
         }
       ]
     }
