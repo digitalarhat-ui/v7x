@@ -202,7 +202,6 @@ footer{background:#0a0b0a;color:#6f726c;padding:20px 0;font-size:9px}
 @media(max-width:390px){
   h1{font-size:33px}
   .stage{height:54svh;min-height:405px}
-  .look:nth-child(3){display:none}
   .compare-card{grid-template-columns:36px 1fr}
   .compare-card .mini-btn{grid-column:1/-1;width:100%}
 }
@@ -257,18 +256,18 @@ footer{background:#0a0b0a;color:#6f726c;padding:20px 0;font-size:9px}
         <div class="control-group" data-group="front">
           <div class="control-title">الواجهات</div>
           <div class="swatches">
-            <button class="swatch active" data-value="ivory" aria-label="عاجي"><i style="background:#ddd5c6"></i><span>عاجي</span></button>
-            <button class="swatch" data-value="sage" aria-label="ساج"><i style="background:#899486"></i><span>ساج</span></button>
-            <button class="swatch" data-value="walnut" aria-label="خشب"><i style="background:#71513e"></i><span>خشب</span></button>
-            <button class="swatch" data-value="graphite" aria-label="جرافيت"><i style="background:#3d403d"></i><span>جرافيت</span></button>
+            <button class="swatch active" data-value="ivory" aria-label="عاجي"><i style="background:#c7b9a3"></i><span>عاجي</span></button>
+            <button class="swatch" data-value="sage" aria-label="ساج"><i style="background:#7f8b7e"></i><span>ساج</span></button>
+            <button class="swatch" data-value="walnut" aria-label="خشب"><i style="background:#684735"></i><span>خشب</span></button>
+            <button class="swatch" data-value="graphite" aria-label="جرافيت"><i style="background:#343735"></i><span>جرافيت</span></button>
           </div>
         </div>
         <div class="control-group" data-group="top">
           <div class="control-title">السطح</div>
           <div class="swatches">
-            <button class="swatch active" data-value="travertine" aria-label="حجر"><i style="background:#c7b49a"></i><span>حجر</span></button>
-            <button class="swatch" data-value="quartz" aria-label="كوارتز"><i style="background:#e8e4dc"></i><span>كوارتز</span></button>
-            <button class="swatch" data-value="dark" aria-label="داكن"><i style="background:#41413f"></i><span>داكن</span></button>
+            <button class="swatch active" data-value="travertine" aria-label="حجر"><i style="background:#b89b7b"></i><span>حجر</span></button>
+            <button class="swatch" data-value="quartz" aria-label="كوارتز"><i style="background:#dcd8cf"></i><span>كوارتز</span></button>
+            <button class="swatch" data-value="dark" aria-label="داكن"><i style="background:#373936"></i><span>داكن</span></button>
           </div>
         </div>
         <div class="control-group" data-group="light">
@@ -380,8 +379,8 @@ footer{background:#0a0b0a;color:#6f726c;padding:20px 0;font-size:9px}
 <script src="https://cdn.jsdelivr.net/gh/digitalarhat-ui/v7x@main/vendor/three-r128.min.js"></script>
 <script>
 (() => {
-  const FRONT = { ivory:0xded6c8, sage:0x8b9689, walnut:0x72503d, graphite:0x3e413d };
-  const TOP = { travertine:0xc9b79f, quartz:0xe7e2d9, dark:0x454541 };
+  const FRONT = { ivory:0xc7b9a3, sage:0x7f8b7e, walnut:0x684735, graphite:0x343735 };
+  const TOP = { travertine:0xb89b7b, quartz:0xdcd8cf, dark:0x373936 };
   const labels = {
     front:{ivory:'عاجي',sage:'ساج',walnut:'خشب دخاني',graphite:'جرافيت'},
     top:{travertine:'حجر دافئ',quartz:'كوارتز فاتح',dark:'سطح داكن'},
@@ -422,14 +421,14 @@ footer{background:#0a0b0a;color:#6f726c;padding:20px 0;font-size:9px}
     root.position.set(0,-1.35,0);
     scene.add(root);
 
-    frontMat = new THREE.MeshStandardMaterial({color:FRONT[state.front],roughness:.46,metalness:.03});
-    counterMat = new THREE.MeshStandardMaterial({color:TOP[state.top],roughness:.32,metalness:.05});
-    wallMat = new THREE.MeshStandardMaterial({color:0xe9e3d9,roughness:.9});
-    floorMat = new THREE.MeshStandardMaterial({color:0xb9afa2,roughness:.78});
+    frontMat = new THREE.MeshStandardMaterial({color:FRONT[state.front],roughness:.34,metalness:.035});
+    counterMat = new THREE.MeshStandardMaterial({color:TOP[state.top],roughness:.26,metalness:.06});
+    wallMat = new THREE.MeshStandardMaterial({color:0xeee7dc,roughness:.82});
+    floorMat = new THREE.MeshStandardMaterial({color:0xa99d90,roughness:.72});
     const darkMat = new THREE.MeshStandardMaterial({color:0x1d1f1d,roughness:.3,metalness:.26});
     const metalMat = new THREE.MeshStandardMaterial({color:0x777872,roughness:.28,metalness:.75});
-    const brassMat = new THREE.MeshStandardMaterial({color:0xb58c54,roughness:.22,metalness:.72});
-    const glassMat = new THREE.MeshPhysicalMaterial({color:0x5d665f,roughness:.08,metalness:.03,transparent:true,opacity:.34,transmission:.25});
+    const brassMat = new THREE.MeshStandardMaterial({color:0xa77a45,roughness:.2,metalness:.78});
+    const glassMat = new THREE.MeshPhysicalMaterial({color:0x5a625d,roughness:.1,metalness:.03,transparent:true,opacity:.38,transmission:.22});
 
     const box=(w,h,d,x,y,z,mat,shadow=true)=>{
       const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
@@ -442,7 +441,10 @@ footer{background:#0a0b0a;color:#6f726c;padding:20px 0;font-size:9px}
     box(.12,5.5,4.5,-4.0,1.6,.6,wallMat,false);
 
     // back run
-    [-2.9,-2.15,-1.4,-.65,.1].forEach(x=>box(.69,1.55,.78,x,.13,-.28,frontMat));
+    [-2.9,-2.15,-1.4,-.65,.1].forEach(x=>{
+      box(.69,1.55,.78,x,.13,-.28,frontMat);
+      line(.30,.018,.018,x,.60,.115,brassMat);
+    });
     box(3.9,.12,.92,-1.42,.94,-.22,counterMat);
     box(3.9,.72,.07,-1.42,1.39,-.64,counterMat,false);
 
@@ -457,7 +459,10 @@ footer{background:#0a0b0a;color:#6f726c;padding:20px 0;font-size:9px}
     box(.58,.48,.02,1.05,.52,.185,new THREE.MeshStandardMaterial({color:0x0a0b0a,roughness:.18,metalness:.4}),false);
 
     // uppers
-    [-2.55,-1.68,-.81].forEach(x=>box(.78,1.02,.52,x,2.25,-.5,frontMat));
+    [-2.55,-1.68,-.81].forEach(x=>{
+      box(.78,1.02,.52,x,2.25,-.5,frontMat);
+      line(.28,.018,.018,x,1.92,-.205,brassMat);
+    });
     // glass display
     [-.0,.82].forEach(x=>{
       box(.72,1.02,.52,x,2.25,-.5,darkMat);
@@ -481,6 +486,8 @@ footer{background:#0a0b0a;color:#6f726c;padding:20px 0;font-size:9px}
 
     // island with waterfall
     box(3.1,1.18,1.15,.35,-.02,2.08,frontMat);
+    const islandAccent=new THREE.MeshStandardMaterial({color:0x5c4031,roughness:.42,metalness:.02});
+    box(2.92,.72,.035,.35,.02,2.666,islandAccent,false);
     box(3.35,.14,1.34,.35,.63,2.08,counterMat);
     box(.13,1.28,1.34,-1.26,.02,2.08,counterMat);
     // island reveal & brass line
@@ -553,14 +560,14 @@ footer{background:#0a0b0a;color:#6f726c;padding:20px 0;font-size:9px}
     if(counterMat) counterMat.color.setHex(TOP[state.top]);
     if(scene){
       if(state.light==='warm'){
-        scene.background.setHex(0xd7d0c6);ambient.intensity=.86;key.intensity=2.1;key.color.setHex(0xffe6c8);warmStrip.intensity=1.45;pendantLights.forEach(x=>x.intensity=.95);
-        if(renderer?.toneMappingExposure) renderer.toneMappingExposure=1.04;
+        scene.background.setHex(0xc9c0b5);ambient.intensity=.62;key.intensity=1.38;key.color.setHex(0xffe0bc);warmStrip.intensity=.9;pendantLights.forEach(x=>x.intensity=.62);
+        if(renderer?.toneMappingExposure) renderer.toneMappingExposure=.88;
       }else if(state.light==='day'){
-        scene.background.setHex(0xdfe1df);ambient.intensity=1.25;key.intensity=1.75;key.color.setHex(0xf6fbff);warmStrip.intensity=.45;pendantLights.forEach(x=>x.intensity=.25);
-        if(renderer?.toneMappingExposure) renderer.toneMappingExposure=1.12;
+        scene.background.setHex(0xd6d8d5);ambient.intensity=.92;key.intensity=1.2;key.color.setHex(0xf6fbff);warmStrip.intensity=.28;pendantLights.forEach(x=>x.intensity=.18);
+        if(renderer?.toneMappingExposure) renderer.toneMappingExposure=.96;
       }else{
-        scene.background.setHex(0x989087);ambient.intensity=.48;key.intensity=2.25;key.color.setHex(0xffc68d);warmStrip.intensity=2.0;pendantLights.forEach(x=>x.intensity=1.55);
-        if(renderer?.toneMappingExposure) renderer.toneMappingExposure=.92;
+        scene.background.setHex(0x766e67);ambient.intensity=.34;key.intensity=1.48;key.color.setHex(0xffc68d);warmStrip.intensity=1.5;pendantLights.forEach(x=>x.intensity=1.1);
+        if(renderer?.toneMappingExposure) renderer.toneMappingExposure=.8;
       }
     }
     syncControls();
