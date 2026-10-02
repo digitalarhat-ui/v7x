@@ -23,7 +23,8 @@
     "alab3ad-modern-kitchens.vercel.app",
     "blum-com-kitchen-studio.vercel.app",
     "alnojoom-althalatha-kitchens.vercel.app",
-    "kitchens-sandy-khamis.vercel.app"
+    "kitchens-sandy-khamis.vercel.app",
+    "aluminum-smart-kitchen-studio.vercel.app"
   ],
   "redirects": [
     {
@@ -100,6 +101,17 @@
         {
           "type": "host",
           "value": "kitchens-sandy-khamis.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/aluminum-smart-v14",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "aluminum-smart-kitchen-studio.vercel.app"
         }
       ]
     }
