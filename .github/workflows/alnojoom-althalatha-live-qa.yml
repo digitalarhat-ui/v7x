@@ -1,0 +1,118 @@
+name: Alnojoom Althalatha Live Vercel QA
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/alnojoom-althalatha-live-qa.yml'
+      - 'alnojoom-althalatha-v14/**'
+      - 'vercel.json'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  live-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare live browser QA
+        run: |
+          mkdir -p /tmp/alnojoom-qa qa-alnojoom-live
+          cd /tmp/alnojoom-qa
+          npm init -y >/dev/null 2>&1
+          npm install puppeteer-core@24.19.0 --silent
+          cat > qa.mjs <<'NODE'
+          import puppeteer from 'puppeteer-core';
+          import fs from 'node:fs';
+          const live='https://alnojoom-althalatha-kitchens.vercel.app/';
+          for(let i=0;i<24;i++){
+            try{
+              const r=await fetch(live,{redirect:'follow'});
+              const t=await r.text();
+              if(r.ok && t.includes('النجوم الثلاثة')) break;
+            }catch{}
+            if(i===23) throw new Error('Alias did not become ready in time');
+            await new Promise(r=>setTimeout(r,5000));
+          }
+          const browser=await puppeteer.launch({executablePath:'/usr/bin/google-chrome',headless:true,args:['--no-sandbox','--disable-dev-shm-usage','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader','--enable-webgl']});
+          const sizes=[['390',390,844],['430',430,932],['768',768,1024],['1440',1440,900]];
+          const out=[];
+          for(const [name,w,h] of sizes){
+            const p=await browser.newPage();
+            await p.setViewport({width:w,height:h,deviceScaleFactor:1});
+            const errors=[];
+            p.on('pageerror',e=>errors.push('page:'+String(e)));
+            p.on('console',m=>{if(m.type()==='error')errors.push('console:'+m.text())});
+            const res=await p.goto(live,{waitUntil:'networkidle2',timeout:60000});
+            await new Promise(r=>setTimeout(r,7600));
+            const init=await p.evaluate(()=>({
+              url:location.href,title:document.title,
+              brand:document.querySelector('.brand')?.textContent?.trim()||'',
+              phone:document.querySelector('a[href^="tel:"]')?.getAttribute('href')||'',
+              canvas:[document.querySelector('#stage canvas')?.width||0,document.querySelector('#stage canvas')?.height||0],
+              overflow:document.documentElement.scrollWidth-innerWidth,
+              baseSwatches:document.querySelectorAll('.control-group[data-kind="baseColor"] .swatch').length,
+              accentSwatches:document.querySelectorAll('.control-group[data-kind="accentColor"] .swatch').length,
+              tops:document.querySelectorAll('.control-group[data-kind="top"] .seg').length,
+              forbidden:['رواد الإبداع','ruaad','نجران','Higher Class','Afrah','Digital Arhat','BEASTMODE','V1.4'].filter(x=>document.documentElement.innerHTML.includes(x)),
+              galleryImages:[...document.querySelectorAll('#gallery img')].map(x=>({ok:x.complete&&x.naturalWidth>100,w:x.naturalWidth,h:x.naturalHeight})),
+              fallbackDisplay:getComputedStyle(document.querySelector('#galleryFallback')).display
+            }));
+            if(!res||res.status()>=400)throw new Error(name+': HTTP '+(res?.status()||'none'));
+            if(!init.title.includes('النجوم الثلاثة')||!init.brand.includes('النجوم الثلاثة'))throw new Error(name+': identity failed');
+            if(init.phone!=='tel:+966590858949')throw new Error(name+': phone route mismatch '+init.phone);
+            if(init.canvas[0]<100||init.canvas[1]<100)throw new Error(name+': WebGL failed '+JSON.stringify(init.canvas));
+            if(init.overflow>2)throw new Error(name+': horizontal overflow '+init.overflow);
+            if(init.baseSwatches<12||init.accentSwatches<12)throw new Error(name+': color depth '+JSON.stringify(init));
+            if(init.tops<4)throw new Error(name+': worktop depth '+init.tops);
+            if(init.forbidden.length)throw new Error(name+': contamination '+JSON.stringify(init.forbidden));
+            if((init.galleryImages.length===0||init.galleryImages.every(x=>!x.ok))&&init.fallbackDisplay==='none')throw new Error(name+': authentic gallery failsafe not visible');
+
+            const before=await p.$eval('#currentChoice',el=>el.textContent);
+            await p.click('.control-group[data-kind="baseColor"] .swatch[data-value="sage"]');
+            await p.click('.control-group[data-kind="accentColor"] .swatch[data-value="navy"]');
+            await p.click('.control-group[data-kind="top"] .seg[data-value="black"]');
+            await p.click('.control-group[data-kind="lighting"] .seg[data-value="evening"]');
+            await new Promise(r=>setTimeout(r,300));
+            const after=await p.$eval('#currentChoice',el=>el.textContent);
+            if(after===before||!after.includes('سيج')||!after.includes('كحلي')||!after.includes('رخامي أسود'))throw new Error(name+': 3D decision controls failed '+after);
+
+            await p.click('#saveA');
+            await p.click('.control-group[data-kind="baseColor"] .swatch[data-value="white"]');
+            await p.click('#saveB');
+            const ab=await p.evaluate(()=>({a:document.querySelector('#variantASummary')?.textContent||'',b:document.querySelector('#variantBSummary')?.textContent||'',imgA:!!document.querySelector('#variantAMedia img'),imgB:!!document.querySelector('#variantBMedia img')}));
+            if(!ab.a||!ab.b||ab.a===ab.b||!ab.imgA||!ab.imgB)throw new Error(name+': A/B compare failed '+JSON.stringify(ab));
+
+            await p.click('#shareDesign');
+            const shareUrl=await p.url();
+            if(!shareUrl.includes('b=')||!shareUrl.includes('a=')||!shareUrl.includes('t='))throw new Error(name+': share state failed '+shareUrl);
+
+            await p.select('#layoutInput','حرف L');
+            await p.type('#lengthInput','4.8');
+            await p.click('input[name="appliance"][value="غسالة صحون"]');
+            await p.type('#noteInput','أرغب بمقارنة اتجاهين قبل القياس');
+            await new Promise(r=>setTimeout(r,200));
+            const req=await p.evaluate(()=>({summary:document.querySelector('#summary')?.textContent||'',score:document.querySelector('#readinessScore')?.textContent||'',handoff:document.querySelector('#handoffBtn')?.textContent||''}));
+            if(!req.summary.includes('4.8')||!req.summary.includes('غسالة صحون')||!req.summary.includes('كحلي')||!req.handoff.includes('حراج'))throw new Error(name+': project readiness failed '+JSON.stringify(req));
+
+            const meaningful=errors.filter(e=>!e.includes('favicon')&&!e.includes('ERR_BLOCKED_BY_CLIENT')&&!e.includes('postcdn.haraj'));
+            if(meaningful.length)throw new Error(name+': console errors '+JSON.stringify(meaningful));
+            await p.screenshot({path:'/home/runner/work/v7x/v7x/qa-alnojoom-live/live-'+name+'-viewport.png',fullPage:false});
+            if(name==='390'||name==='430'||name==='1440')await p.screenshot({path:'/home/runner/work/v7x/v7x/qa-alnojoom-live/live-'+name+'-full.png',fullPage:true});
+            out.push({viewport:name,http:res.status(),...init,before,after,ab,shareUrl,req,errors});
+            await p.close();
+          }
+          await browser.close();
+          fs.writeFileSync('/home/runner/work/v7x/v7x/qa-alnojoom-live/results.json',JSON.stringify(out,null,2));
+          console.log('ALNOJOOM_LIVE_QA_PASS');
+          console.log(JSON.stringify(out.map(x=>({viewport:x.viewport,http:x.http,url:x.url,canvas:x.canvas,overflow:x.overflow,swatches:x.baseSwatches,tops:x.tops,score:x.req.score,errors:x.errors.length})),null,2));
+          NODE
+      - name: Run live Vercel QA
+        run: node /tmp/alnojoom-qa/qa.mjs
+      - name: Upload visual QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alnojoom-althalatha-live-vercel-qa
+          path: qa-alnojoom-live/
+          retention-days: 7

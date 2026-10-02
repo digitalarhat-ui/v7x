@@ -21,7 +21,8 @@
     "rukn-dareen-kitchen-studio.vercel.app",
     "ruaad-alabdae-kitchens.vercel.app",
     "alab3ad-modern-kitchens.vercel.app",
-    "blum-com-kitchen-studio.vercel.app"
+    "blum-com-kitchen-studio.vercel.app",
+    "alnojoom-althalatha-kitchens.vercel.app"
   ],
   "redirects": [
     {
@@ -76,6 +77,17 @@
         {
           "type": "host",
           "value": "blum-com-kitchen-studio.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/alnojoom-althalatha-v14",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "alnojoom-althalatha-kitchens.vercel.app"
         }
       ]
     }
