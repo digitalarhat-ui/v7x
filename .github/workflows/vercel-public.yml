@@ -57,3 +57,4 @@ jobs:
           if isinstance(aliases,str): aliases=[aliases]
           print('PRODUCTION_ALIASES_AFTER='+','.join(aliases[:10]))
           PY
+# trigger public-production check 2026-10-02
