@@ -22,7 +22,8 @@
     "ruaad-alabdae-kitchens.vercel.app",
     "alab3ad-modern-kitchens.vercel.app",
     "blum-com-kitchen-studio.vercel.app",
-    "alnojoom-althalatha-kitchens.vercel.app"
+    "alnojoom-althalatha-kitchens.vercel.app",
+    "kitchens-sandy-khamis.vercel.app"
   ],
   "redirects": [
     {
@@ -88,6 +89,17 @@
         {
           "type": "host",
           "value": "alnojoom-althalatha-kitchens.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/kitchens-sandy-v14",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "kitchens-sandy-khamis.vercel.app"
         }
       ]
     }
