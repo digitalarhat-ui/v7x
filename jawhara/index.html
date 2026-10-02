@@ -525,7 +525,7 @@ footer{background:#0a0b0a;color:#6f726c;padding:20px 0;font-size:9px}
     }
     new ResizeObserver(resize).observe(stage);resize();
 
-    stage.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX;lastY=e.clientY;stage.setPointerCapture(e.pointerId)});
+    stage.addEventListener('pointerdown',e=>{\n      if(e.target.closest('button,a')) return;\n      drag=true;lastX=e.clientX;lastY=e.clientY;stage.setPointerCapture(e.pointerId)\n    });
     stage.addEventListener('pointermove',e=>{
       if(!drag)return;
       const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;
