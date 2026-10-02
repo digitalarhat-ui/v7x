@@ -393,7 +393,7 @@
               <a class="mini-action" href="#compare">مقارنة أ / ب</a>
             </div>
 
-            <div class="viewer-note"><span id="currentChoice">ستانلس تايواني • 1 مم • فضي فاتح + فضي متوسط • مطفي • سطح استانلس موحّد</span><br>درجات السطح واللمعان توضيحية لمقارنة انعكاس المعدن فقط. السماكة 1 أو 1.20 مم مذكورة في الإعلان، أما التشطيب النهائي فيُعتمد مع الورشة.</div>
+            <div class="viewer-note"><span id="currentChoice">ستانلس تايواني • 1 مم • فضي فاتح + فضي متوسط • ساتان توضيحي • سطح استانلس موحّد</span><br>درجات السطح واللمعان توضيحية لمقارنة انعكاس المعدن فقط. السماكة 1 أو 1.20 مم مذكورة في الإعلان، أما التشطيب النهائي فيُعتمد مع الورشة.</div>
           </div>
         </div>
       </div>
@@ -463,7 +463,7 @@
                 <div class="result-row"><span>الخامة</span><b id="advisorMaterial">ستانلس تايواني • 1 مم</b></div>
                 <div class="result-row"><span>الأساسية</span><b id="advisorBase">فضي فاتح</b></div>
                 <div class="result-row"><span>العلوية</span><b id="advisorAccent">ساتان رمادي</b></div>
-                <div class="result-row"><span>التشطيب</span><b id="advisorFinish">مطفي</b></div>
+                <div class="result-row"><span>التشطيب</span><b id="advisorFinish">ساتان توضيحي</b></div>
               </div>
             </div>
             <button class="btn btn-primary" id="applyAdvisor" type="button">طبّق الاتجاه على 3D</button>
@@ -615,7 +615,7 @@
 
           <div class="current-selection-card">
             <div class="selection-label">اختيارك الحالي من 3D</div>
-            <div class="selection-value" id="formCurrentChoice">ستانلس تايواني • 1 مم • فضي فاتح + فضي متوسط • مطفي • سطح استانلس موحّد</div>
+            <div class="selection-value" id="formCurrentChoice">ستانلس تايواني • 1 مم • فضي فاتح + فضي متوسط • ساتان توضيحي • سطح استانلس موحّد</div>
             <a href="#stage">تعديل الاختيار في 3D</a>
           </div>
 
@@ -973,7 +973,7 @@
       renderer.toneMappingExposure=value==="evening" ? .98 : 1.08;
     }
 
-    const materialMap={metal:"ستانلس تايواني • 1 مم",wood:"ستانلس تايواني • 1.20 مم",clad:"ستانلس — عرض توضيحي"};
+    const materialMap={metal:"ستانلس تايواني • 1 مم",wood:"ستانلس تايواني • 1.20 مم",clad:"ستانلس تايواني • 1 مم"};
     const finishMap={matte:"ساتان توضيحي",gloss:"أكثر لمعاناً"};
 
     document.querySelectorAll(".control-tab").forEach(tab=>{
@@ -1129,7 +1129,7 @@
     const noteInput=document.getElementById("noteInput");
     const summary=document.getElementById("summary");
 
-    const labelToMaterial={"ستانلس تايواني • 1 مم":"metal","ستانلس تايواني • 1.20 مم":"wood","ستانلس — عرض توضيحي":"clad"};
+    const labelToMaterial={"ستانلس تايواني • 1 مم":"metal","ستانلس تايواني • 1.20 مم":"wood","ستانلس تايواني • 1 مم":"clad"};
     const labelToFinish={"ساتان توضيحي":"matte","أكثر لمعاناً":"gloss"};
     const labelToColor=Object.fromEntries(Object.entries(colorStates).map(([k,v])=>[v.label,k]));
     const labelToTop=Object.fromEntries(Object.entries(topStates).map(([k,v])=>[v.label,k]));
@@ -1275,13 +1275,13 @@
 
       if(s.style==="warm"){
         rec.m="metal"; rec.b=s.light==="low"?"ivory":"beige"; rec.a="oak";
-        title="اتجاه دافئ بطابع خشبي";
-        why="نقطة بداية دافئة تربط اللون المحايد بلمسة خشبية واضحة حتى ترى التوازن قبل اعتماد العينات.";
+        title="اتجاه دافئ بانعكاس أنعم";
+        why="نقطة بداية دافئة تربط درجة المعدن المحايدة بانعكاس أنعم حتى ترى الفرق قبل اعتماد التشطيب.";
       }
       if(s.style==="bold"){
         rec.m="metal"; rec.b=s.light==="low"?"lightgray":"charcoal"; rec.a="walnut";
         title="اتجاه معماري بتباين أقوى";
-        why="قاعدة أغمق ولمسة خشبية تمنحك مقارنة أكثر جرأة، مع إبقاء النتيجة مجرد تصور بصري أولي.";
+        why="قاعدة أغمق مع فرق معدني أوضح تمنحك مقارنة أكثر جرأة، مع إبقاء النتيجة مجرد تصور بصري أولي.";
       }
 
       if(s.contrast==="same") rec.a=rec.b;
