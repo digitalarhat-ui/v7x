@@ -1,0 +1,1548 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0b0b" />
+  <title>مطابخ ساندي | اختر خامتك وابدأ طلبك</title>
+  <meta name="description" content="تجربة تفاعلية لاختيار اتجاه اللون والخامة وتجهيز تفاصيل المشروع قبل التواصل مع مطابخ ساندي عبر واتساب." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0b0b0b;--panel:#111;--panel2:#171717;--ink:#f6f2e9;--muted:#aaa39a;--gold:#d6b56d;--line:rgba(255,255,255,.1);--radius:26px}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;background:var(--bg)}
+    body{margin:0;background:radial-gradient(circle at 72% -10%,rgba(214,181,109,.12),transparent 34%),var(--bg);color:var(--ink);font-family:"Tajawal",system-ui,sans-serif;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    button,input,select{font:inherit}
+    .shell{width:min(1180px,calc(100% - 34px));margin:auto}
+    .topbar{position:fixed;inset:0 0 auto;z-index:50;background:linear-gradient(#0b0b0be8,#0b0b0b00);backdrop-filter:blur(12px)}
+    .nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:.2px}
+    .brand-mark{width:34px;height:34px;border:1px solid rgba(214,181,109,.5);border-radius:11px;display:grid;place-items:center;color:var(--gold);font-size:18px}
+    .nav-cta{padding:11px 18px;border:1px solid rgba(214,181,109,.44);border-radius:999px;color:#f8e4b5;background:rgba(214,181,109,.08)}
+    .hero{padding:96px 0 22px;display:grid;align-items:center}
+    .hero-grid{display:grid;grid-template-columns:.92fr 1.38fr;gap:34px;align-items:center}
+    .eyebrow{color:var(--gold);font-size:14px;font-weight:700;letter-spacing:.6px;margin-bottom:14px}
+    h1{font-size:clamp(42px,6vw,78px);line-height:.98;margin:0 0 20px;letter-spacing:-1.8px}
+    .lead{font-size:clamp(17px,2vw,21px);line-height:1.9;color:#c8c1b8;margin:0 0 28px;max-width:610px}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:12px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:0;border-radius:999px;padding:14px 21px;font-weight:700;cursor:pointer;transition:.25s ease}
+    .btn-primary{background:var(--gold);color:#15120b}
+    .btn-secondary{background:transparent;color:var(--ink);border:1px solid var(--line)}
+    .btn:hover{transform:translateY(-2px)}
+    button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+    button:disabled{opacity:.45;cursor:not-allowed;transform:none!important}
+    .micro{margin-top:18px;color:#827d76;font-size:13px}
+    .hero-proof{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+    .hero-proof span{font-size:11px;color:#a9a198;border:1px solid var(--line);background:#111;border-radius:999px;padding:7px 10px}
+    .viewer-card{position:relative;border-radius:34px;overflow:hidden;background:linear-gradient(145deg,#171717,#0b0b0b);border:1px solid var(--line);box-shadow:0 36px 100px rgba(0,0,0,.42)}
+    .viewer-head{position:absolute;z-index:6;top:20px;right:20px;left:20px;display:flex;justify-content:space-between;gap:12px;pointer-events:none}
+    .viewer-tools{display:flex;gap:8px;pointer-events:auto}
+    .chip{font-size:12px;color:#d9d0c5;border:1px solid var(--line);background:#111b;border-radius:999px;padding:8px 11px;backdrop-filter:blur(10px)}
+    button.chip{cursor:pointer;font-family:inherit}
+    button.chip:hover{border-color:rgba(214,181,109,.5);color:#f4dfad}
+    #stage{height:520px;width:100%;position:relative;border-bottom:1px solid var(--line)}
+    #stage canvas{display:block;width:100%!important;height:100%!important}
+    .viewer-controls{position:relative;z-index:8;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:15px 16px 16px;background:#0d0d0de8;backdrop-filter:blur(18px)}
+    .control-tabs{display:none;grid-column:1/-1;grid-template-columns:repeat(4,1fr);gap:6px}
+    .control-tab{border:1px solid var(--line);background:#141414;color:#918b84;border-radius:12px;padding:9px 7px;font-size:11px;font-weight:700;cursor:pointer}
+    .control-tab.active{background:#efe5d4;color:#17130d;border-color:#efe5d4}
+    .control-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0}
+    .control-group[data-kind="baseColor"],.control-group[data-kind="accentColor"],.decision-actions,.viewer-note{grid-column:1/-1}
+    .control-title{font-size:12px;color:#aaa39a;margin-left:2px;min-width:110px;font-weight:700}
+    .seg{border:1px solid var(--line);background:#171717;color:#d7d2ca;border-radius:999px;padding:9px 12px;cursor:pointer;font-size:12px;transition:.2s ease}
+    .seg.active{background:#f3ead8;color:#17130d;border-color:#f3ead8}
+    .swatches{display:flex;align-items:center;gap:7px;overflow-x:auto;scrollbar-width:none;padding:2px 1px 3px}
+    .swatches::-webkit-scrollbar{display:none}
+    .swatch{width:30px;height:30px;min-width:30px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:var(--swatch);cursor:pointer;box-shadow:inset 0 0 0 2px rgba(0,0,0,.18);position:relative;transition:.2s ease}
+    .swatch::after{content:"";position:absolute;inset:-4px;border:1px solid transparent;border-radius:50%;transition:.2s ease}
+    .swatch:hover{transform:translateY(-1px) scale(1.04)}
+    .swatch.active::after{border-color:var(--gold)}
+    .swatch.active{box-shadow:inset 0 0 0 2px rgba(0,0,0,.22),0 0 0 2px rgba(214,181,109,.18)}
+    .swatch-name{font-size:11px;color:#807a73;min-width:68px}
+    .viewer-note{font-size:11px;color:#77716b;line-height:1.55;padding-top:1px}
+    .decision-actions{display:flex;gap:8px;flex-wrap:wrap;padding-top:2px}
+    .decision-actions .mini-action{border:1px solid var(--line);background:#141414;color:#ddd6cd;border-radius:12px;padding:9px 12px;cursor:pointer;font-size:12px;font-weight:700;transition:.2s ease}
+    .decision-actions .mini-action:hover{border-color:rgba(214,181,109,.5);transform:translateY(-1px)}
+    .decision-actions .mini-action.primary{background:rgba(214,181,109,.12);border-color:rgba(214,181,109,.34);color:#f2d99f}
+    .signature-section{padding:34px 0 26px}
+    .signature-card{border:1px solid var(--line);border-radius:30px;background:linear-gradient(145deg,#121212,#0c0c0c);padding:28px}
+    .signature-head{display:grid;grid-template-columns:.82fr 1.18fr;gap:32px;align-items:start;margin-bottom:22px}
+    .signature-head p{margin:0;color:#aaa39a;line-height:1.85}
+    .advisor-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;align-items:stretch}
+    .advisor-questions{display:grid;gap:12px}
+    .advisor-progress{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 2px 4px;color:#8f8981;font-size:12px}
+    .advisor-dots{display:flex;gap:6px}
+    .advisor-dot{width:7px;height:7px;border-radius:50%;background:#2b2b2b}
+    .advisor-dot.active{background:var(--gold)}
+    .advisor-questions .question-card{display:none}
+    .advisor-questions .question-card.active-step{display:block}
+    .advisor-nav{display:flex;gap:8px;justify-content:space-between;margin-top:2px}
+    .advisor-nav button{flex:1}
+    .question-card{border:1px solid var(--line);background:#0a0a0a;border-radius:20px;padding:16px}
+    .question-card strong{display:block;margin-bottom:10px;color:#eee7dc;font-size:14px}
+    .choice-row{display:flex;flex-wrap:wrap;gap:7px}
+    .choice{border:1px solid var(--line);background:#151515;color:#aaa39a;border-radius:999px;padding:9px 12px;font-size:12px;cursor:pointer;transition:.2s ease}
+    .choice.active{background:#f1e9da;color:#17130d;border-color:#f1e9da}
+    .advisor-result{border:1px solid rgba(214,181,109,.26);background:radial-gradient(circle at 80% 0%,rgba(214,181,109,.12),transparent 35%),#0b0b0b;border-radius:22px;padding:20px;display:flex;flex-direction:column;justify-content:space-between;min-height:100%;opacity:.35;pointer-events:none;filter:saturate(.55);transition:.25s ease}
+    .advisor-grid.result-ready .advisor-result{opacity:1;pointer-events:auto;filter:none}
+    .advisor-grid.result-ready .advisor-progress,.advisor-grid.result-ready .advisor-questions,.advisor-grid.result-ready .advisor-nav{opacity:.52}
+    .advisor-restart{border:0;background:transparent;color:#9f978d;text-decoration:underline;text-underline-offset:3px;cursor:pointer;font-size:12px;margin-top:10px;padding:4px 0}
+    .advisor-result .result-label{font-size:12px;color:var(--gold);font-weight:800}
+    .advisor-result h3{font-size:28px;line-height:1.15;margin:10px 0}
+    .advisor-result p{color:#9d968e;line-height:1.8;margin:0 0 16px}
+    .result-stack{display:grid;gap:8px;margin:12px 0 18px}
+    .result-row{display:flex;justify-content:space-between;gap:18px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
+    .result-row span{color:#77716b}
+    .result-row b{color:#ded6ca}
+    .room-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .room-upload{border:1px dashed rgba(214,181,109,.35);border-radius:22px;background:#0a0a0a;min-height:390px;position:relative;overflow:hidden;display:grid;place-items:center;padding:18px}
+    .room-upload.has-image{padding:0;border-style:solid}
+    .room-upload img{width:100%;height:100%;object-fit:cover;display:block}
+    .room-upload img[hidden]{display:none!important}
+    .upload-empty{text-align:center;max-width:330px}
+    .upload-empty b{display:block;font-size:20px;margin-bottom:8px}
+    .upload-empty span{display:block;color:#8f8981;line-height:1.7;font-size:13px;margin-bottom:14px}
+    .room-side{display:none;gap:12px}
+    .room-side.ready{display:grid}
+    .room-status{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+    .room-status span{border:1px solid var(--line);border-radius:999px;padding:7px 9px;font-size:11px;color:#aaa39a;background:#111}
+    .palette-card,.room-rec{border:1px solid var(--line);border-radius:20px;background:#0a0a0a;padding:16px}
+    .palette-card strong,.room-rec strong{display:block;margin-bottom:10px}
+    .detected-palette{display:flex;gap:8px;min-height:38px}
+    .detected-color{width:38px;height:38px;border-radius:11px;border:1px solid rgba(255,255,255,.15);background:var(--c)}
+    .room-analysis{font-size:13px;color:#8e8880;line-height:1.7}
+    .room-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .privacy-note{font-size:11px;color:#6f6963;line-height:1.6}
+    .scope-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+    .scope-mini label{font-size:12px}
+    .optional-details{grid-column:1/-1;border:1px solid var(--line);border-radius:16px;background:#0d0d0d;padding:0 14px}
+    .optional-details summary{cursor:pointer;list-style:none;padding:13px 0;color:#aaa39a;font-size:13px;font-weight:700}
+    .optional-details summary::-webkit-details-marker{display:none}
+    .optional-details summary::before{content:"＋";color:var(--gold);margin-left:8px}
+    .optional-details[open] summary::before{content:"−"}
+    .optional-details[open]{padding-bottom:13px}
+    .appliance-grid{display:flex;flex-wrap:wrap;gap:8px}
+    .check-pill{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:8px 10px;background:#0c0c0c;color:#aaa39a;font-size:12px;cursor:pointer}
+    .check-pill input{width:auto;margin:0;accent-color:#d6b56d}
+    .decision-lab{padding:28px 0 42px}
+    .decision-shell{border:1px solid var(--line);border-radius:30px;background:linear-gradient(145deg,#121212,#0d0d0d);padding:28px}
+    .decision-top{display:grid;grid-template-columns:.8fr 1.2fr;gap:34px;align-items:start}
+    .decision-title{font-size:clamp(28px,3.5vw,46px);line-height:1.08;margin:0 0 12px}
+    .decision-copy{color:#aaa39a;line-height:1.85;margin:0}
+    .benefit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .benefit-card{border:1px solid var(--line);border-radius:20px;background:#0b0b0b;padding:18px;min-height:126px}
+    .benefit-card b{display:block;color:#f0e7d8;margin-bottom:8px}
+    .benefit-card span{font-size:13px;color:#8d8780;line-height:1.7}
+    .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+    .variant-card{border:1px solid var(--line);border-radius:22px;background:#0a0a0a;overflow:hidden;position:relative}
+    .variant-media{height:82px;background:radial-gradient(circle at 50% 20%,#232323,#0c0c0c);display:grid;place-items:center;color:#706b65;font-size:13px;padding:14px;text-align:center}
+    .variant-card.has-snapshot .variant-media{height:190px;padding:0}
+    .variant-media img{width:100%;height:100%;object-fit:cover;display:block}
+    .variant-meta{padding:14px 16px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px}
+    .variant-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+    .variant-save{border:1px solid rgba(214,181,109,.28);background:rgba(214,181,109,.08);color:#e6cf98;border-radius:999px;padding:8px 11px;cursor:pointer;font-size:11px;font-weight:700}
+    .variant-card.has-snapshot .variant-save{background:#151515;border-color:var(--line);color:#aaa39a}
+    .variant-card.applied{border-color:rgba(214,181,109,.5);box-shadow:0 0 0 1px rgba(214,181,109,.12) inset}
+    .variant-name{font-weight:800}
+    .variant-summary{font-size:11px;color:#8d8780;margin-top:4px;line-height:1.55}
+    .variant-apply{border:1px solid var(--line);background:#151515;color:#ddd;border-radius:999px;padding:7px 10px;cursor:pointer;font-size:11px}
+    .compare-result{margin-top:14px;border:1px solid rgba(214,181,109,.2);background:rgba(214,181,109,.06);border-radius:18px;padding:14px 16px;color:#bdb5aa;font-size:13px;line-height:1.8}
+    .section{padding:62px 0}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:34px}
+    .kicker{color:var(--gold);font-size:13px;font-weight:700;margin-bottom:8px}
+    h2{font-size:clamp(31px,4vw,52px);line-height:1.08;margin:0;letter-spacing:-.8px}
+    .section-copy{max-width:560px;color:#aaa39a;line-height:1.85}
+    .gallery-wrap{display:none;position:relative;overflow:hidden;margin-inline:calc((100vw - min(1180px,calc(100vw - 34px)))/-2);padding:8px 0}
+    .gallery-track{display:flex;gap:16px;width:max-content;animation:rail 38s linear infinite}
+    .gallery-wrap:hover .gallery-track{animation-play-state:paused}
+    @keyframes rail{to{transform:translateX(50%)}}
+    .work-card{width:min(430px,78vw);height:500px;border-radius:24px;overflow:hidden;border:1px solid var(--line);background:#151515;position:relative;flex:0 0 auto}
+    .work-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+    .work-card:hover img{transform:scale(1.035)}
+    .work-card::after{content:"من حساب مطابخ ساندي الرسمي";position:absolute;right:14px;bottom:14px;background:#0c0c0cbd;border:1px solid var(--line);padding:8px 11px;border-radius:999px;font-size:11px;color:#ddd}
+    .gallery-fallback{display:none;border:1px solid var(--line);border-radius:24px;padding:26px;background:var(--panel);text-align:center;color:#b9b2a9}
+    .gallery-source{display:inline-flex;align-items:center;gap:7px;margin-top:12px;border:1px solid var(--line);border-radius:999px;padding:7px 10px;font-size:11px;color:#817b74;background:#101010}
+    .flow{display:grid;grid-template-columns:.86fr 1.14fr;gap:28px}
+    .flow-copy{padding:28px 0}
+    .step-list{display:grid;gap:10px;margin-top:26px}
+    .step{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);color:#c8c2b9}
+    .step b{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#171717;border:1px solid var(--line);color:var(--gold)}
+    .form-card{background:linear-gradient(150deg,#171717,#101010);border:1px solid var(--line);border-radius:30px;padding:25px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+    label{display:grid;gap:8px;font-size:13px;color:#99928a}
+    label.full{grid-column:1/-1}
+    input,select{width:100%;border:1px solid var(--line);background:#0c0c0c;color:#f0ece6;border-radius:14px;padding:13px 14px;outline:none}
+    input:focus,select:focus{border-color:rgba(214,181,109,.7)}
+    .current-selection-card{margin-bottom:14px;padding:15px 16px;border:1px solid rgba(214,181,109,.24);border-radius:18px;background:rgba(214,181,109,.055)}
+    .current-selection-card .selection-label{font-size:11px;color:var(--gold);font-weight:800;margin-bottom:6px}
+    .current-selection-card .selection-value{font-size:14px;color:#e7dfd3;line-height:1.7}
+    .current-selection-card a{display:inline-block;margin-top:8px;font-size:12px;color:#c9b177;text-decoration:underline;text-underline-offset:3px}
+    .readiness{margin-top:14px;padding:15px 16px;border:1px solid var(--line);border-radius:18px;background:#0c0c0c}
+    .readiness-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+    .readiness-head b{font-size:13px}
+    .readiness-head span{font-size:13px;color:var(--gold);font-weight:800}
+    .readiness-track{height:8px;border-radius:999px;background:#202020;overflow:hidden}
+    .readiness-fill{height:100%;width:40%;border-radius:inherit;background:linear-gradient(90deg,#9e824b,#d6b56d);transition:width .25s ease}
+    .readiness-missing{margin-top:9px;color:#817b74;font-size:11px;line-height:1.65}
+    .readiness-checks{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+    .readiness-check{border:1px solid var(--line);border-radius:999px;padding:7px 9px;font-size:11px;color:#77716b;background:#111}
+    .readiness-check.done{border-color:rgba(214,181,109,.28);background:rgba(214,181,109,.07);color:#dcc58f}
+    .summary{margin-top:16px;padding:16px;border-radius:18px;background:#0b0b0b;border:1px solid var(--line);white-space:pre-line;line-height:1.85;color:#d2cbc2;min-height:128px}
+    .handoff-note{margin-top:10px;color:#716b64;font-size:11px;line-height:1.65}
+    .form-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .truth{padding:22px;border:1px solid var(--line);border-radius:22px;background:#101010;color:#9c968f;line-height:1.8;font-size:14px;margin-top:22px}
+    footer{padding:32px 0 42px;border-top:1px solid var(--line);color:#77716b}
+    .mobile-dock{display:none}
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.show{opacity:1;transform:none}
+    @media(max-width:900px){
+      .hero{padding:82px 0 14px}
+      .hero-grid,.flow,.decision-top{grid-template-columns:1fr}
+      .hero-copy{order:1}
+      .viewer-card{order:2}
+      #stage{height:480px}
+      .viewer-controls{grid-template-columns:1fr}
+      .benefit-grid{grid-template-columns:1fr 1fr 1fr}
+      .section{padding:48px 0}
+      .section-head{display:block}
+      .section-copy{margin-top:16px}
+    }
+    @media(max-width:560px){
+      .shell{width:min(100% - 24px,1180px)}
+      .nav{height:62px}
+      .brand{font-size:13px;gap:8px}
+      .brand-mark{width:30px;height:30px;border-radius:9px}
+      .nav-cta{font-size:11px;padding:8px 11px}
+      h1{font-size:38px;line-height:1.03;margin-bottom:14px;letter-spacing:-1px}
+      .lead{font-size:14px;line-height:1.72;margin-bottom:16px}
+      .micro,.hero-proof{display:none}
+      .hero-actions{gap:8px}
+      .hero-actions .btn-primary{width:100%;padding:12px 18px}
+      .hero-actions .btn-secondary{width:auto;margin-inline:auto;padding:9px 15px;font-size:12px}
+      .viewer-card{border-radius:24px}
+      #stage{height:390px}
+      .viewer-head{right:12px;left:12px;top:12px}
+      .viewer-head{align-items:center}
+      .viewer-head .viewer-tools{margin-inline-start:auto}
+      .viewer-head>span.chip{display:none}
+      .viewer-head button.chip{font-size:10px;padding:7px 9px}
+      .viewer-controls{grid-template-columns:1fr;padding:12px 11px 14px;gap:8px}
+      .control-tabs{display:grid}
+      .control-group[data-kind="baseColor"],.control-group[data-kind="accentColor"],.decision-actions,.viewer-note{grid-column:auto}
+      .viewer-controls .control-group{display:none}
+      .viewer-controls[data-tab="material"] .control-group[data-kind="material"],
+      .viewer-controls[data-tab="material"] .control-group[data-kind="finish"],
+      .viewer-controls[data-tab="colors"] .control-group[data-kind="baseColor"],
+      .viewer-controls[data-tab="colors"] .control-group[data-kind="accentColor"],
+      .viewer-controls[data-tab="surface"] .control-group[data-kind="top"],
+      .viewer-controls[data-tab="lighting"] .control-group[data-kind="lighting"]{display:flex}
+      .control-group{gap:6px}
+      .control-title{width:100%;min-width:0}
+      .seg{padding:8px 10px;font-size:11px}
+      .swatches{width:100%;padding-bottom:4px}
+      .swatch{width:34px;height:34px;min-width:34px}
+      .swatch-name{display:none}
+      .signature-section{padding:14px 0 10px}
+      .signature-card{padding:16px;border-radius:22px}
+      .signature-head{gap:12px;margin-bottom:14px}
+      .signature-head h2,.decision-title{font-size:30px;line-height:1.08}
+      .signature-head p,.decision-copy,.section-copy{font-size:13px;line-height:1.72}
+      .section-head{margin-bottom:20px}
+      .signature-head,.advisor-grid,.room-grid{grid-template-columns:1fr}
+      .advisor-result{display:none;min-height:auto}
+      .advisor-grid.result-ready>div:first-child{display:none}
+      .advisor-grid.result-ready .advisor-result{display:flex}
+      .room-upload{min-height:205px}
+      .scope-mini{grid-template-columns:1fr 1fr;gap:8px}
+      .scope-mini label:last-child{grid-column:1/-1}
+      .flow-copy{padding:0 0 10px}
+      .flow-copy .step-list{display:none}
+      .truth{padding:14px;margin-top:14px;font-size:12px;line-height:1.65}
+      .form-card{padding:16px;border-radius:22px}
+      input,select{padding:12px 12px}
+      .appliance-grid{gap:6px}
+      .check-pill{padding:8px 9px}
+      .summary{font-size:12.5px;line-height:1.75;min-height:112px}
+      .form-actions{gap:8px}
+      .form-actions .btn{width:100%;padding:12px 14px}
+      .decision-lab{padding:14px 0 24px}
+      .decision-shell{padding:18px;border-radius:24px}
+      .benefit-grid{display:none}
+      .compare-grid{grid-template-columns:1fr;margin-top:14px}
+      .variant-media{height:74px}
+      .variant-card.has-snapshot .variant-media{height:170px}
+      .form-grid{grid-template-columns:1fr}
+      label.full{grid-column:auto}
+      .gallery-wrap{overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:0;padding-inline:12px;scrollbar-width:none}
+      .gallery-wrap::-webkit-scrollbar{display:none}
+      .gallery-track{animation:none!important}
+      .work-card{height:380px;scroll-snap-align:center}
+      .gallery-fallback{padding:20px;font-size:13px}
+      .mobile-dock{display:none!important}
+      footer{padding-bottom:38px}
+    }
+    @media(prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}.gallery-track{animation:none}.reveal{opacity:1;transform:none;transition:none}.btn{transition:none}
+    }
+  </style>
+  <script type="importmap">
+    {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell nav">
+      <a class="brand" href="#top" aria-label="مطابخ ساندي">
+        <span class="brand-mark">س</span><span>مطابخ ساندي</span>
+      </a>
+      <a class="nav-cta" href="https://wa.me/966503231360" target="_blank" rel="noopener">التواصل عبر واتساب</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="shell hero-grid">
+        <div class="hero-copy reveal">
+          <div class="eyebrow">تفصيل مطابخ حديثة • خميس مشيط</div>
+          <h1>جرّب. قارن.<br>ثم احسم الاتجاه.</h1>
+          <p class="lead">ابدأ من اتجاه يناسب ذوقك، جرّب الخامات والألوان والإضاءة على 3D، اربط القرار بصورة مساحتك، ثم جهّز ملخصاً واضحاً قبل بدء المحادثة.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#advisor">ابدأ الاختيار الذكي</a>
+            <a class="btn btn-secondary" href="#ownRoom">جرّب بصورة مساحتك</a>
+          </div>
+          <div class="micro">جرّب الخامة واللون والتشطيب وسطح العمل مباشرة على النموذج. المعاينة توضيحية وليست مخطط تنفيذ أو كتالوجاً معتمداً.</div>
+          <div class="hero-proof"><span>مستشار بداية</span><span>مقارنة أ / ب</span><span>تحليل ألوان المساحة محلياً</span><span>رابط يحفظ نفس الاختيار</span></div>
+        </div>
+
+        <div class="viewer-card reveal">
+          <div class="viewer-head">
+            <div class="viewer-tools">
+              <button class="chip" id="resetView" type="button">إعادة المنظر</button>
+            </div>
+            <span class="chip">اسحب لتدوير النموذج</span>
+          </div>
+          <div id="stage" aria-label="نموذج ثلاثي الأبعاد توضيحي للمطبخ"></div>
+          <div class="viewer-controls" data-tab="material" aria-label="خيارات المعاينة">
+            <div class="control-tabs" aria-label="أقسام المعاينة">
+              <button class="control-tab active" data-tab="material" type="button">الخامة</button>
+              <button class="control-tab" data-tab="colors" type="button">الألوان</button>
+              <button class="control-tab" data-tab="surface" type="button">السطح</button>
+              <button class="control-tab" data-tab="lighting" type="button">الإضاءة</button>
+            </div>
+            <div class="control-group" data-kind="material">
+              <span class="control-title">خامة الخزائن</span>
+              <button class="seg active" data-value="metal">ألمنيوم</button>
+              <button class="seg" data-value="wood">خشب</button>
+              <button class="seg" data-value="clad">لم أحدد بعد</button>
+            </div>
+
+            <div class="control-group" data-kind="baseColor">
+              <span class="control-title">لون المعاينة — الأساسية</span>
+              <div class="swatches" aria-label="ألوان الخزائن الأساسية">
+                <button class="swatch active" style="--swatch:#f1eee6" data-value="ivory" title="أوف وايت" aria-label="أوف وايت"></button>
+                <button class="swatch" style="--swatch:#ffffff" data-value="white" title="أبيض" aria-label="أبيض"></button>
+                <button class="swatch" style="--swatch:#c9c9c5" data-value="lightgray" title="رمادي فاتح" aria-label="رمادي فاتح"></button>
+                <button class="swatch" style="--swatch:#4a4c4e" data-value="charcoal" title="فحمي" aria-label="فحمي"></button>
+                <button class="swatch" style="--swatch:#d6c2a5" data-value="beige" title="بيج" aria-label="بيج"></button>
+                <button class="swatch" style="--swatch:#7c5d4c" data-value="mocha" title="موكا" aria-label="موكا"></button>
+                <button class="swatch" style="--swatch:#b78a5e" data-value="oak" title="خشبي فاتح" aria-label="خشبي فاتح"></button>
+                <button class="swatch" style="--swatch:#5a3b2b" data-value="walnut" title="خشبي داكن" aria-label="خشبي داكن"></button>
+              </div>
+              <span class="swatch-name" id="baseColorName">أوف وايت</span>
+            </div>
+
+            <div class="control-group" data-kind="accentColor">
+              <span class="control-title">لون المعاينة — العلوية</span>
+              <div class="swatches" aria-label="ألوان الخزائن العلوية">
+                <button class="swatch" style="--swatch:#f1eee6" data-value="ivory" title="أوف وايت" aria-label="أوف وايت"></button>
+                <button class="swatch" style="--swatch:#ffffff" data-value="white" title="أبيض" aria-label="أبيض"></button>
+                <button class="swatch" style="--swatch:#c9c9c5" data-value="lightgray" title="رمادي فاتح" aria-label="رمادي فاتح"></button>
+                <button class="swatch" style="--swatch:#4a4c4e" data-value="charcoal" title="فحمي" aria-label="فحمي"></button>
+                <button class="swatch" style="--swatch:#d6c2a5" data-value="beige" title="بيج" aria-label="بيج"></button>
+                <button class="swatch" style="--swatch:#7c5d4c" data-value="mocha" title="موكا" aria-label="موكا"></button>
+                <button class="swatch active" style="--swatch:#b78a5e" data-value="oak" title="خشبي فاتح" aria-label="خشبي فاتح"></button>
+                <button class="swatch" style="--swatch:#5a3b2b" data-value="walnut" title="خشبي داكن" aria-label="خشبي داكن"></button>
+              </div>
+              <span class="swatch-name" id="accentColorName">خشبي فاتح</span>
+            </div>
+
+            <div class="control-group" data-kind="finish">
+              <span class="control-title">التشطيب</span>
+              <button class="seg active" data-value="matte">مطفي</button>
+              <button class="seg" data-value="gloss">لامع</button>
+            </div>
+
+            <div class="control-group" data-kind="top">
+              <span class="control-title">سطح العمل</span>
+              <button class="seg active" data-value="natural">سطح فاتح</button>
+              <button class="seg" data-value="industrial">سطح حجري دافئ</button>
+              <button class="seg" data-value="cast">سطح داكن</button>
+            </div>
+
+            <div class="control-group" data-kind="lighting">
+              <span class="control-title">اختبار الإضاءة</span>
+              <button class="seg active" data-value="day">نهار طبيعي</button>
+              <button class="seg" data-value="evening">مساء دافئ</button>
+              <button class="seg" data-value="neutral">عرض محايد</button>
+            </div>
+
+            <div class="decision-actions">
+              <button class="mini-action primary" id="shareDesign" type="button">نسخ رابط هذا الاختيار</button>
+              <a class="mini-action" href="#compare">مقارنة أ / ب</a>
+            </div>
+
+            <div class="viewer-note"><span id="currentChoice">ألمنيوم • أوف وايت + خشبي فاتح • مطفي • سطح فاتح</span><br>ألوان النموذج للتصور المبدئي فقط، ويُعتمد اللون والخامة النهائية مع المنفذ.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="signature-section" id="advisor">
+      <div class="shell signature-card reveal">
+        <div class="signature-head">
+          <div>
+            <div class="kicker">مستشار البداية</div>
+            <h2>ابدأ من ذوقك وإضاءة مساحتك، لا من قائمة طويلة.</h2>
+          </div>
+          <p>أربع إجابات قصيرة تبني لك نقطة بداية بصرية ثم تطبقها مباشرة على نموذج المطبخ. هذا اقتراح أولي لتقليل الحيرة، وليس اعتماداً فنياً للخامة.</p>
+        </div>
+
+        <div class="advisor-grid" id="advisorGrid">
+          <div>
+            <div class="advisor-progress">
+              <span id="advisorStepLabel">السؤال ١ من ٤</span>
+              <span class="advisor-dots" aria-hidden="true"><i class="advisor-dot active"></i><i class="advisor-dot"></i><i class="advisor-dot"></i><i class="advisor-dot"></i></span>
+            </div>
+            <div class="advisor-questions">
+            <div class="question-card active-step" data-advisor="style">
+              <strong>ما الهوية الأقرب لك؟</strong>
+              <div class="choice-row">
+                <button class="choice active" data-value="clean" type="button">هادئ ونظيف</button>
+                <button class="choice" data-value="warm" type="button">دافئ وخشبي</button>
+                <button class="choice" data-value="bold" type="button">جريء ومعماري</button>
+              </div>
+            </div>
+            <div class="question-card" data-advisor="light">
+              <strong>إضاءة المساحة غالباً؟</strong>
+              <div class="choice-row">
+                <button class="choice" data-value="strong" type="button">قوية</button>
+                <button class="choice active" data-value="medium" type="button">متوسطة</button>
+                <button class="choice" data-value="low" type="button">محدودة</button>
+              </div>
+            </div>
+            <div class="question-card" data-advisor="contrast">
+              <strong>كم تحب التباين بين الخزائن؟</strong>
+              <div class="choice-row">
+                <button class="choice" data-value="same" type="button">لون واحد</button>
+                <button class="choice active" data-value="soft" type="button">تباين بسيط</button>
+                <button class="choice" data-value="high" type="button">تباين واضح</button>
+              </div>
+            </div>
+            <div class="question-card" data-advisor="finish">
+              <strong>التشطيب الأقرب لك؟</strong>
+              <div class="choice-row">
+                <button class="choice active" data-value="matte" type="button">مطفي</button>
+                <button class="choice" data-value="gloss" type="button">لامع</button>
+              </div>
+            </div>
+            </div>
+            <div class="advisor-nav">
+              <button class="btn btn-secondary" id="advisorPrev" type="button" disabled>السابق</button>
+              <button class="btn btn-primary" id="advisorNext" type="button">التالي</button>
+            </div>
+          </div>
+
+          <div class="advisor-result">
+            <div>
+              <div class="result-label">نقطة البداية المقترحة</div>
+              <h3 id="advisorTitle">اتجاه هادئ ثنائي اللون</h3>
+              <p id="advisorWhy">مزيج فاتح ومتوازن يعطيك نقطة مقارنة واضحة قبل الانتقال إلى خيارات أكثر جرأة.</p>
+              <div class="result-stack">
+                <div class="result-row"><span>الخامة</span><b id="advisorMaterial">ألمنيوم</b></div>
+                <div class="result-row"><span>الأساسية</span><b id="advisorBase">أوف وايت</b></div>
+                <div class="result-row"><span>العلوية</span><b id="advisorAccent">رمادي فاتح</b></div>
+                <div class="result-row"><span>التشطيب</span><b id="advisorFinish">مطفي</b></div>
+              </div>
+            </div>
+            <button class="btn btn-primary" id="applyAdvisor" type="button">طبّق الاتجاه على 3D</button>
+            <button class="advisor-restart" id="advisorRestart" type="button">تغيير الإجابات</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="decision-lab" id="compare">
+      <div class="shell decision-shell reveal">
+        <div class="decision-top">
+          <div>
+            <div class="kicker">من التردد إلى قرار قابل للمقارنة</div>
+            <h2 class="decision-title">قارن اتجاهين بدل إعادة وصف الاختيارات.</h2>
+            <p class="decision-copy">احفظ اتجاهين من نفس المطبخ، شاهدهما من زاوية مقارنة ثابتة، ثم شارك الاختيار الذي تريد متابعته برابط واحد.</p>
+          </div>
+          <div class="benefit-grid">
+            <div class="benefit-card"><b>مقارنة أ / ب</b><span>احفظ اتجاهين مختلفين وشاهدهما جنباً إلى جنب بزاوية مقارنة ثابتة.</span></div>
+            <div class="benefit-card"><b>اختبار الإضاءة</b><span>جرّب اللون نفسه تحت نهار طبيعي، مساء دافئ أو إضاءة محايدة قبل أن تختصر القائمة.</span></div>
+            <div class="benefit-card"><b>رابط قرار واحد</b><span>شارك نفس الخامة واللون والتشطيب وسطح العمل بدون صور شاشة أو وصف طويل.</span></div>
+          </div>
+        </div>
+        <div class="compare-grid">
+          <article class="variant-card" id="variantA">
+            <div class="variant-media" id="variantAMedia">احفظ الاتجاه الحالي كخيار أ</div>
+            <div class="variant-meta">
+              <div><div class="variant-name">الخيار أ</div><div class="variant-summary" id="variantASummary">لم يتم الحفظ بعد</div></div>
+              <div class="variant-actions"><button class="variant-save" id="saveA" type="button">حفظ الحالي</button><button class="variant-apply" id="applyA" type="button" disabled>تطبيق</button></div>
+            </div>
+          </article>
+          <article class="variant-card" id="variantB">
+            <div class="variant-media" id="variantBMedia">عدّل 3D ثم احفظ الاتجاه الثاني</div>
+            <div class="variant-meta">
+              <div><div class="variant-name">الخيار ب</div><div class="variant-summary" id="variantBSummary">لم يتم الحفظ بعد</div></div>
+              <div class="variant-actions"><button class="variant-save" id="saveB" type="button">حفظ الحالي</button><button class="variant-apply" id="applyB" type="button" disabled>تطبيق</button></div>
+            </div>
+          </article>
+        </div>
+        <div class="compare-result" id="compareResult">احفظ خيارين ليظهر الفرق بينهما هنا.</div>
+      </div>
+    </section>
+
+    <section class="signature-section" id="ownRoom">
+      <div class="shell signature-card reveal">
+        <div class="signature-head">
+          <div>
+            <div class="kicker">ألوان مساحتي</div>
+            <h2>استخرج نقطة بداية لونية من مساحتك.</h2>
+          </div>
+          <p>ارفع صورة للمطبخ أو المساحة. نحلّل السطوع ولوحة الألوان محلياً على جهازك، ثم نقترح نقطة بداية لتجربتها على نموذج 3D — بدون الادعاء بأن الصورة نفسها تم تحويلها إلى مطبخ جديد.</p>
+        </div>
+
+        <div class="room-grid">
+          <div class="room-upload" id="roomUpload">
+            <div class="upload-empty" id="uploadEmpty">
+              <b>صورة واحدة تكفي للبدء</b>
+              <span>يفضل تصوير المساحة بإضاءة طبيعية ومن زاوية واسعة. الصورة لا تغادر جهازك في هذه التجربة.</span>
+              <label class="btn btn-primary" style="display:inline-flex;cursor:pointer">
+                اختر صورة المساحة
+                <input id="roomFile" type="file" accept="image/*" capture="environment" hidden />
+              </label>
+            </div>
+            <img id="roomPreview" alt="صورة مساحة المطبخ المرفوعة" hidden />
+            <label id="changeRoomPhoto" class="chip" style="display:none;position:absolute;left:14px;bottom:14px;z-index:3;cursor:pointer;pointer-events:auto">
+              تغيير الصورة
+              <input id="roomFileChange" type="file" accept="image/*" capture="environment" hidden />
+            </label>
+          </div>
+
+          <div class="room-side" id="roomSide">
+            <div class="palette-card">
+              <strong>ألوان المساحة المكتشفة</strong>
+              <div class="detected-palette" id="detectedPalette"><span class="room-analysis">ارفع صورة لتظهر لوحة المساحة هنا.</span></div>
+            </div>
+            <div class="room-rec">
+              <strong>اتجاه بصري مقترح</strong>
+              <div class="room-analysis" id="roomAnalysis">نقارن سطوع الصورة ودفء ألوانها مع لوحة المعاينة لنقترح نقطة بداية بصرية فقط.</div>
+              <div class="room-status" id="roomStatus"></div>
+              <div class="result-stack" style="margin-bottom:12px">
+                <div class="result-row"><span>الأساسية</span><b id="roomBase">—</b></div>
+                <div class="result-row"><span>العلوية</span><b id="roomAccent">—</b></div>
+              </div>
+              <div class="room-actions">
+                <button class="btn btn-primary" id="applyRoomPalette" type="button" disabled>طبّق على 3D</button>
+                <button class="btn btn-secondary" id="saveDecisionCard" type="button" disabled>حفظ بطاقة القرار</button>
+              </div>
+              <div class="privacy-note">التحليل يتم داخل المتصفح. بطاقة القرار تجمع صورتك مع لقطة 3D واختياراتك محلياً لتستطيع مشاركتها بالطريقة التي تناسبك.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="work">
+      <div class="shell">
+        <div class="section-head reveal">
+          <div>
+            <div class="kicker">من الإعلان إلى صورة أوضح</div>
+            <h2>شاهد الأعمال من الحسابات الرسمية.</h2>
+          </div>
+          <div>
+            <p class="section-copy">للتحقق من الأعمال الحقيقية نوجّهك للحسابات الرسمية مباشرة؛ لا نعرض هنا صور ستوك أو صوراً من نشاط آخر.</p>
+            <span class="gallery-source">المصدر: @kitchens_sandy على Instagram</span>
+          </div>
+        </div>
+      </div>
+      <div class="gallery-wrap reveal">
+        <div class="gallery-track" id="gallery"></div>
+      </div>
+      <div class="shell">
+        <div class="gallery-fallback" id="galleryFallback">
+          شاهد أعمال مطابخ ساندي من القنوات الرسمية مباشرة.
+          <div style="margin-top:16px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+            <a class="btn btn-secondary" href="https://www.instagram.com/kitchens_sandy/" target="_blank" rel="noopener">Instagram الرسمي</a>
+            <a class="btn btn-secondary" href="https://www.tiktok.com/@kk321349cgl" target="_blank" rel="noopener">TikTok الرسمي</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="request">
+      <div class="shell flow">
+        <div class="flow-copy reveal">
+          <div class="kicker">قبل المحادثة</div>
+          <h2>حوّل اختياراتك إلى طلب مفهوم.</h2>
+          <p class="section-copy">اختيارك البصري محفوظ بالفعل. أكمل شكل المساحة والمقاسات التقريبية والأجهزة، ثم أرسل ملخصاً منظماً مباشرة عبر واتساب.</p>
+          <div class="step-list">
+            <div class="step"><b>١</b><span>اختيارك من 3D ينتقل تلقائياً إلى الطلب</span></div>
+            <div class="step"><b>٢</b><span>أضف شكل المساحة والمقاسات والأجهزة</span></div>
+            <div class="step"><b>٣</b><span>أرسل ملخصاً واحداً وابدأ التواصل عبر واتساب</span></div>
+          </div>
+          <div class="truth">المقاسات هنا أولية فقط. التسعير والتنفيذ والاعتماد النهائي للخامات والمقاسات يتم مباشرة مع الجهة المنفذة.</div>
+        </div>
+
+        <div class="form-card reveal">
+          <select id="materialInput" hidden>
+            <option>ألمنيوم</option><option>خشب</option><option>لم أحدد بعد</option>
+          </select>
+          <select id="finishInput" hidden>
+            <option>مطفي</option><option>لامع</option>
+          </select>
+          <select id="baseColorInput" hidden>
+            <option>أوف وايت</option><option>أبيض</option><option>رمادي فاتح</option><option>فحمي</option><option>بيج</option><option>موكا</option><option>خشبي فاتح</option><option>خشبي داكن</option>
+          </select>
+          <select id="accentColorInput" hidden>
+            <option>خشبي فاتح</option><option>أوف وايت</option><option>أبيض</option><option>رمادي فاتح</option><option>فحمي</option><option>بيج</option><option>موكا</option><option>خشبي داكن</option>
+          </select>
+          <select id="topInput" hidden>
+            <option>سطح فاتح</option><option>سطح حجري دافئ</option><option>سطح داكن</option>
+          </select>
+
+          <div class="current-selection-card">
+            <div class="selection-label">اختيارك الحالي من 3D</div>
+            <div class="selection-value" id="formCurrentChoice">ألمنيوم • أوف وايت + خشبي فاتح • مطفي • سطح فاتح</div>
+            <a href="#stage">تعديل الاختيار في 3D</a>
+          </div>
+
+          <div class="form-grid">
+            <label>شكل المساحة
+              <select id="layoutInput">
+                <option value="">اختر شكل المساحة</option>
+                <option>مستقيم</option>
+                <option>حرف L</option>
+                <option>حرف U</option>
+                <option>غير محدد بعد</option>
+              </select>
+            </label>
+            <label>الطول الرئيسي بالمتر
+              <input id="lengthInput" inputmode="decimal" placeholder="مثال: ٤.٥" />
+            </label>
+            <details class="optional-details">
+              <summary>مقاسات إضافية (اختياري)</summary>
+              <div class="scope-mini">
+                <label>الجدار ب<input id="wallBInput" inputmode="decimal" placeholder="مثال: ٢.٨" /></label>
+                <label>الجدار ج<input id="wallCInput" inputmode="decimal" placeholder="مثال: ٢.٢" /></label>
+                <label>ارتفاع السقف<input id="heightInput" inputmode="decimal" placeholder="مثال: ٢.٧" /></label>
+              </div>
+            </details>
+            <label class="full">الأجهزة التي تريد تجهيز أماكنها
+              <div class="appliance-grid">
+                <label class="check-pill"><input type="checkbox" name="appliance" value="ثلاجة">ثلاجة</label>
+                <label class="check-pill"><input type="checkbox" name="appliance" value="فرن مدمج">فرن مدمج</label>
+                <label class="check-pill"><input type="checkbox" name="appliance" value="غسالة صحون">غسالة صحون</label>
+                <label class="check-pill"><input type="checkbox" name="appliance" value="ميكروويف">ميكروويف</label>
+                <label class="check-pill"><input type="checkbox" name="appliance" value="شفاط">شفاط</label>
+              </div>
+            </label>
+            <label class="full">ملاحظة للمشروع
+              <input id="noteInput" placeholder="مثال: أحتاج مساحة للثلاجة والفرن المدمج" />
+            </label>
+          </div>
+          <div class="readiness" aria-live="polite">
+            <div class="readiness-head"><b>جاهزية تفاصيل الطلب</b><span id="readinessScore">40%</span></div>
+            <div class="readiness-track"><div class="readiness-fill" id="readinessFill"></div></div>
+            <div class="readiness-missing" id="readinessMissing">أضف شكل المساحة والطول والأجهزة لرفع جاهزية الطلب.</div>
+            <div class="readiness-checks">
+              <span class="readiness-check done" id="readyVisual">✓ الاختيار البصري</span>
+              <span class="readiness-check" id="readyLayout">شكل المساحة</span>
+              <span class="readiness-check" id="readyLength">المقاس الرئيسي</span>
+              <span class="readiness-check" id="readyAppliances">الأجهزة</span>
+              <span class="readiness-check" id="readyExtra">تفصيل إضافي</span>
+            </div>
+          </div>
+          <div class="summary" id="summary"></div>
+          <div class="form-actions">
+            <button class="btn btn-primary" id="handoffBtn" type="button">إرسال الطلب عبر واتساب</button>
+            <button class="btn btn-secondary" id="copyBtn" type="button">نسخ فقط</button>
+          </div>
+          <div class="handoff-note">يفتح واتساب برسالة مجهزة من اختياراتك الحالية. راجع التفاصيل قبل الإرسال؛ لا يتم إرسال شيء تلقائياً.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell">مطابخ ساندي • تجربة قرار أولي مرتبطة بقناة واتساب الحالية للنشاط.</div>
+  </footer>
+
+  <script type="module">
+    import * as THREE from "three";
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+    const stage = document.getElementById("stage");
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0c0c0c);
+    scene.fog = new THREE.Fog(0x0c0c0c, 9, 18);
+
+    const camera = new THREE.PerspectiveCamera(36, 1, .1, 100);
+    camera.position.set(7.2, 4.8, 8.4);
+
+    const renderer = new THREE.WebGLRenderer({antialias:true,alpha:false,preserveDrawingBuffer:true});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.08;
+    stage.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.enablePan = false;
+    controls.minDistance = 6.4;
+    controls.maxDistance = 11.5;
+    controls.minPolarAngle = .82;
+    controls.maxPolarAngle = 1.34;
+    controls.minAzimuthAngle = -.12;
+    controls.maxAzimuthAngle = 1.38;
+    controls.target.set(-.15,1.35,-1.48);
+
+    const hemi = new THREE.HemisphereLight(0xfff5df,0x1a1f24,2.3);
+    scene.add(hemi);
+    const key = new THREE.DirectionalLight(0xffe0aa,4.5);
+    key.position.set(5,8,4); key.castShadow = true;
+    key.shadow.mapSize.set(2048,2048);
+    key.shadow.camera.left=-6; key.shadow.camera.right=6;
+    key.shadow.camera.top=6; key.shadow.camera.bottom=-3;
+    key.shadow.camera.near=.5; key.shadow.camera.far=18;
+    key.shadow.bias=-.00035;
+    scene.add(key);
+    const rim = new THREE.DirectionalLight(0x8bb4ff,2.1);
+    rim.position.set(-4,5,-3); scene.add(rim);
+    const roomFill = new THREE.DirectionalLight(0xffe7c1,1.35);
+    roomFill.position.set(-2.8,4.2,3.4);
+    scene.add(roomFill);
+
+    const floor = new THREE.Mesh(
+      new THREE.PlaneGeometry(22,22),
+      new THREE.MeshStandardMaterial({color:0x161616,roughness:.92})
+    );
+    floor.rotation.x=-Math.PI/2; floor.receiveShadow=true; scene.add(floor);
+
+    const wallMat=new THREE.MeshStandardMaterial({color:0x242321,roughness:.95});
+    const backWall=boxRaw(8.7,3.65,.18,0,1.825,-2.24,wallMat);
+    const sideWall=boxRaw(.14,3.65,5.4,-4.28,1.825,.35,new THREE.MeshStandardMaterial({color:0x1d1d1c,roughness:.96}));
+    boxRaw(8.7,.16,1.02,0,3.48,-1.78,new THREE.MeshStandardMaterial({color:0x1b1a19,roughness:.9}));
+
+    const cabinetMeshes=[];
+    const baseCabinetMeshes=[];
+    const upperCabinetMeshes=[];
+    const topMeshes=[];
+    const handleMat=new THREE.MeshStandardMaterial({color:0x272727,metalness:.86,roughness:.2});
+    const darkInsetMat=new THREE.MeshStandardMaterial({color:0x111214,metalness:.38,roughness:.18});
+    const glassMat=new THREE.MeshPhysicalMaterial({color:0x87949b,roughness:.12,transmission:.48,transparent:true,opacity:.46,metalness:.05});
+    const backsplashMat=new THREE.MeshStandardMaterial({color:0x343330,roughness:.62});
+    const warmLightMat=new THREE.MeshStandardMaterial({color:0xffe0aa,emissive:0xffc875,emissiveIntensity:4.2});
+
+    function boxRaw(w,h,d,x,y,z,mat){
+      const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
+      mesh.position.set(x,y,z);
+      mesh.castShadow=true; mesh.receiveShadow=true; scene.add(mesh);
+      return mesh;
+    }
+    function box(w,h,d,x,y,z,mat){return boxRaw(w,h,d,x,y,z,mat);}
+
+    function canvasTexture(kind){
+      const c=document.createElement("canvas"); c.width=c.height=256;
+      const x=c.getContext("2d");
+      x.fillStyle="#d9d5cf"; x.fillRect(0,0,256,256);
+      if(kind==="wood"){
+        for(let i=0;i<34;i++){
+          const y=8+i*7.4;
+          x.strokeStyle=i%3===0?"rgba(55,35,22,.22)":"rgba(70,48,30,.11)";
+          x.lineWidth=i%4===0?2:1;
+          x.beginPath();
+          for(let px=0;px<=256;px+=12){
+            const py=y+Math.sin((px+i*11)/25)*2.4+Math.sin((px+i*7)/51)*1.2;
+            if(px===0)x.moveTo(px,py);else x.lineTo(px,py);
+          }
+          x.stroke();
+        }
+      }else if(kind==="clad"){
+        for(let i=0;i<256;i+=18){
+          x.fillStyle=i%36===0?"rgba(20,20,20,.13)":"rgba(255,255,255,.045)";
+          x.fillRect(i,0,2,256);
+        }
+      }else if(kind==="marble"){
+        x.fillStyle="#e7e2da";x.fillRect(0,0,256,256);
+        for(let i=0;i<9;i++){
+          x.strokeStyle=i%2?"rgba(65,65,65,.14)":"rgba(125,115,105,.18)";
+          x.lineWidth=i%3===0?2:1;
+          x.beginPath();
+          for(let px=-20;px<290;px+=14){
+            const py=25+i*25+px*.23+Math.sin((px+i*31)/19)*5;
+            if(px===-20)x.moveTo(px,py);else x.lineTo(px,py);
+          }
+          x.stroke();
+        }
+      }
+      const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(2.2,2.2);
+      t.colorSpace=THREE.SRGBColorSpace; return t;
+    }
+
+    const woodTexture=canvasTexture("wood");
+    const cladTexture=canvasTexture("clad");
+    const marbleTexture=canvasTexture("marble");
+
+    const baseCabinetMat=new THREE.MeshStandardMaterial({color:0xf1eee6,metalness:.48,roughness:.44});
+    const upperCabinetMat=new THREE.MeshStandardMaterial({color:0xb78a5e,metalness:.08,roughness:.48});
+    const topMat=new THREE.MeshStandardMaterial({color:0xe2ded6,map:marbleTexture,metalness:.03,roughness:.27});
+
+    function registerCabinet(mesh,zone){
+      cabinetMeshes.push(mesh);
+      (zone==="upper"?upperCabinetMeshes:baseCabinetMeshes).push(mesh);
+    }
+
+    function addFrontPanel(x,y,z,w,h,mat,zone,handleSide="right"){
+      const door=box(w,h,.045,x,y,z,mat); registerCabinet(door,zone);
+      const hx=handleSide==="right"?x+w/2-.09:x-w/2+.09;
+      box(.018,Math.min(.48,h*.58),.028,hx,y,z+.042,handleMat);
+      return door;
+    }
+
+    function addBaseUnit(x,w=.82,drawers=false){
+      box(w,1.02,.67,x,.51,-1.68,baseCabinetMat); registerCabinet(scene.children[scene.children.length-1],"base");
+      if(drawers){
+        [0.18,.51,.84].forEach(y=>{
+          const panel=box(w-.055,.285,.045,x,y,-1.32,baseCabinetMat);registerCabinet(panel,"base");
+          box(.34,.018,.028,x,y+.09,-1.286,handleMat);
+        });
+      }else{
+        addFrontPanel(x,.51,-1.32,w-.055,.93,baseCabinetMat,"base");
+      }
+    }
+
+    function addUpperUnit(x,w=.82,glass=false){
+      box(w,.86,.47,x,2.18,-1.76,upperCabinetMat); registerCabinet(scene.children[scene.children.length-1],"upper");
+      if(glass){
+        const fw=.055, fh=.065, frontZ=-1.50;
+        const topFrame=box(w-.055,fh,.045,x,2.18+.36,frontZ,upperCabinetMat);registerCabinet(topFrame,"upper");
+        const bottomFrame=box(w-.055,fh,.045,x,2.18-.36,frontZ,upperCabinetMat);registerCabinet(bottomFrame,"upper");
+        const leftFrame=box(fw,.66,.045,x-w/2+.055,2.18,frontZ,upperCabinetMat);registerCabinet(leftFrame,"upper");
+        const rightFrame=box(fw,.66,.045,x+w/2-.055,2.18,frontZ,upperCabinetMat);registerCabinet(rightFrame,"upper");
+        box(w-.17,.65,.018,x,2.18,-1.474,glassMat);
+        box(.20,.018,.028,x+w/2-.16,2.18,-1.448,handleMat);
+      }else{
+        addFrontPanel(x,2.18,-1.50,w-.055,.79,upperCabinetMat,"upper");
+      }
+    }
+
+    // Plinth and main base run.
+    box(5.45,.14,.58,-.45,.07,-1.70,new THREE.MeshStandardMaterial({color:0x171717,roughness:.55}));
+    [-2.65,-1.82,-.99,-.16,.67,1.50].forEach((x,i)=>addBaseUnit(x,.78,i===1||i===4));
+
+    // Worktop and backsplash.
+    const counterBack=box(5.35,.095,.79,-.55,1.075,-1.66,topMat);topMeshes.push(counterBack);
+    box(5.35,1.04,.055,-.55,1.64,-2.115,backsplashMat);
+
+    // Upper run with two glazed display cabinets.
+    [-2.55,-1.72,-.89,-.06,.77,1.60].forEach((x,i)=>addUpperUnit(x,.78,i===1||i===4));
+
+    // Tall pantry / appliance bank.
+    box(1.02,2.84,.72,2.55,1.42,-1.68,baseCabinetMat); registerCabinet(scene.children[scene.children.length-1],"base");
+    addFrontPanel(2.55,2.15,-1.30,.94,1.20,baseCabinetMat,"base");
+    box(.82,1.23,.055,2.55,.78,-1.292,darkInsetMat);
+    box(.68,.56,.06,2.55,.98,-1.255,new THREE.MeshStandardMaterial({color:0x060606,metalness:.48,roughness:.12}));
+    box(.68,.035,.035,2.55,.70,-1.215,handleMat);
+
+    box(1.02,2.84,.72,3.58,1.42,-1.68,baseCabinetMat); registerCabinet(scene.children[scene.children.length-1],"base");
+    addFrontPanel(3.58,1.42,-1.30,.94,2.74,baseCabinetMat,"base");
+
+    // Sink, hob and subtle hardware.
+    box(.78,.035,.47,-1.62,1.135,-1.61,new THREE.MeshStandardMaterial({color:0x24272a,metalness:.92,roughness:.17}));
+    box(.68,.035,.48,.75,1.135,-1.61,new THREE.MeshStandardMaterial({color:0x080909,metalness:.28,roughness:.10}));
+    const faucetStem=box(.055,.47,.055,-1.62,1.39,-1.92,handleMat);
+    const faucetArm=box(.055,.055,.28,-1.62,1.60,-1.80,handleMat);
+
+    // Warm under-cabinet light, decorative shelf, wall detail.
+    const strip=box(4.92,.028,.042,-.48,1.72,-1.49,warmLightMat);
+    box(1.25,.055,.27,-3.28,2.48,-1.83,new THREE.MeshStandardMaterial({color:0x5b412f,roughness:.52}));
+    [2.64,2.93].forEach(y=>box(.28,.28,.25,-3.45,y,-1.72,new THREE.MeshStandardMaterial({color:0x8d755f,roughness:.62})));
+
+    // Rug and subtle foreground grounding.
+    const rug=new THREE.Mesh(new THREE.PlaneGeometry(4.8,1.85),new THREE.MeshStandardMaterial({color:0x282522,roughness:1}));
+    rug.rotation.x=-Math.PI/2; rug.position.set(-.2,.012,.25); scene.add(rug);
+
+    const materialStates = {
+      metal:{metalness:.66,roughness:.34},
+      wood:{metalness:.06,roughness:.58},
+      clad:{metalness:.38,roughness:.4}
+    };
+    const colorStates = {
+      ivory:{label:"أوف وايت",hex:0xf1eee6},
+      white:{label:"أبيض",hex:0xffffff},
+      lightgray:{label:"رمادي فاتح",hex:0xc9c9c5},
+      charcoal:{label:"فحمي",hex:0x4a4c4e},
+      beige:{label:"بيج",hex:0xd6c2a5},
+      mocha:{label:"موكا",hex:0x7c5d4c},
+      oak:{label:"خشبي فاتح",hex:0xb78a5e},
+      walnut:{label:"خشبي داكن",hex:0x5a3b2b}
+    };
+    const topStates = {
+      natural:{label:"سطح فاتح",color:0xe5dfd4,metalness:.02,roughness:.24},
+      industrial:{label:"سطح حجري دافئ",color:0xc9c3b7,metalness:.05,roughness:.34},
+      cast:{label:"سطح داكن",color:0x272727,metalness:.18,roughness:.2}
+    };
+    let currentMaterial="metal";
+    let currentFinish="matte";
+    let currentBaseColor="ivory";
+    let currentAccentColor="oak";
+    let currentTop="natural";
+    let currentLighting="day";
+
+    function materialRoughness(base){
+      if(currentFinish==="gloss") return Math.max(.12,base-.22);
+      return Math.min(.72,base+.08);
+    }
+
+    function applyMaterial(value){
+      currentMaterial=value;
+      const src=materialStates[value];
+      cabinetMeshes.forEach(m=>{
+        m.material.metalness=src.metalness;
+        m.material.roughness=materialRoughness(src.roughness);
+        m.material.map=value==="wood"?woodTexture:(value==="clad"?cladTexture:null);
+        if(m.material.map){m.material.map.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());}
+        m.material.needsUpdate=true;
+      });
+    }
+
+    function applyCabinetColor(zone,value){
+      const state=colorStates[value];
+      const targets=zone==="upper" ? upperCabinetMeshes : baseCabinetMeshes;
+      targets.forEach(m=>{m.material.color.setHex(state.hex);m.material.needsUpdate=true;});
+      if(zone==="upper") currentAccentColor=value; else currentBaseColor=value;
+    }
+
+    function applyFinish(value){
+      currentFinish=value;
+      applyMaterial(currentMaterial);
+    }
+
+    function applyTop(value){
+      currentTop=value;
+      const src=topStates[value];
+      topMeshes.forEach(m=>{
+        m.material.color.setHex(src.color);
+        m.material.metalness=src.metalness;
+        m.material.roughness=src.roughness;
+        m.material.map=value==="cast"?null:marbleTexture;
+        m.material.needsUpdate=true;
+      });
+    }
+
+    const lightingStates={
+      day:{label:"نهار طبيعي",bg:0x111418,hemi:0xfff7e8,ground:0x273342,hemiI:2.5,key:0xfff0d4,keyI:4.8,rim:0x9fc5ff,rimI:2.4,strip:2.8},
+      evening:{label:"مساء دافئ",bg:0x120d0a,hemi:0xffd2a0,ground:0x24150f,hemiI:1.65,key:0xffb86b,keyI:4.0,rim:0xff7d4d,rimI:1.15,strip:7.0},
+      neutral:{label:"عرض محايد",bg:0x0d0d0d,hemi:0xffffff,ground:0x202020,hemiI:2.2,key:0xffffff,keyI:4.1,rim:0xd9e4ff,rimI:1.8,strip:4.0}
+    };
+    function applyLighting(value){
+      currentLighting=value;
+      const s=lightingStates[value];
+      scene.background.setHex(s.bg);
+      scene.fog.color.setHex(s.bg);
+      hemi.color.setHex(s.hemi); hemi.groundColor.setHex(s.ground); hemi.intensity=s.hemiI;
+      key.color.setHex(s.key); key.intensity=s.keyI;
+      rim.color.setHex(s.rim); rim.intensity=s.rimI;
+      roomFill.color.setHex(value==="evening"?0xffc982:(value==="neutral"?0xffffff:0xffe7c1));
+      roomFill.intensity=value==="evening"?1.55:1.35;
+      strip.material.emissiveIntensity=s.strip;
+      renderer.toneMappingExposure=value==="evening" ? .98 : 1.08;
+    }
+
+    const materialMap={metal:"ألمنيوم",wood:"خشب",clad:"لم أحدد بعد"};
+    const finishMap={matte:"مطفي",gloss:"لامع"};
+
+    document.querySelectorAll(".control-tab").forEach(tab=>{
+      tab.addEventListener("click",()=>{
+        const controlsEl=document.querySelector(".viewer-controls");
+        controlsEl.dataset.tab=tab.dataset.tab;
+        document.querySelectorAll(".control-tab").forEach(x=>x.classList.toggle("active",x===tab));
+      });
+    });
+
+    document.querySelectorAll(".control-group").forEach(group=>{
+      group.addEventListener("click",e=>{
+        const swatch=e.target.closest(".swatch");
+        const seg=e.target.closest(".seg");
+        if(!swatch && !seg)return;
+
+        if(swatch){
+          group.querySelectorAll(".swatch").forEach(x=>x.classList.remove("active"));
+          swatch.classList.add("active");
+          const value=swatch.dataset.value;
+          if(group.dataset.kind==="baseColor"){
+            applyCabinetColor("base",value);
+            document.getElementById("baseColorName").textContent=colorStates[value].label;
+            document.getElementById("baseColorInput").value=colorStates[value].label;
+          }
+          if(group.dataset.kind==="accentColor"){
+            applyCabinetColor("upper",value);
+            document.getElementById("accentColorName").textContent=colorStates[value].label;
+            document.getElementById("accentColorInput").value=colorStates[value].label;
+          }
+        }
+
+        if(seg){
+          group.querySelectorAll(".seg").forEach(x=>x.classList.remove("active"));
+          seg.classList.add("active");
+          const value=seg.dataset.value;
+          if(group.dataset.kind==="material"){
+            applyMaterial(value);
+            document.getElementById("materialInput").value=materialMap[value];
+          }
+          if(group.dataset.kind==="finish"){
+            applyFinish(value);
+            document.getElementById("finishInput").value=finishMap[value];
+          }
+          if(group.dataset.kind==="top"){
+            applyTop(value);
+            document.getElementById("topInput").value=topStates[value].label;
+          }
+          if(group.dataset.kind==="lighting"){
+            applyLighting(value);
+          }
+        }
+        updateSummary();
+        updateShareUrl();
+      });
+    });
+
+    applyMaterial("metal");
+    applyCabinetColor("base","ivory");
+    applyCabinetColor("upper","oak");
+    applyFinish("matte");
+    applyTop("natural");
+    applyLighting("day");
+
+    function defaultCameraForWidth(width){
+      if(width<560)return {fov:43,pos:[6.7,3.95,9.5]};
+      if(width<900)return {fov:38,pos:[6.55,3.75,8.45]};
+      return {fov:34,pos:[6.15,3.55,7.45]};
+    }
+    function resetCameraView(){
+      const rect=stage.getBoundingClientRect();
+      const preset=defaultCameraForWidth(rect.width);
+      camera.fov=preset.fov;
+      camera.position.set(...preset.pos);
+      controls.target.set(-.15,1.35,-1.48);
+      scene.rotation.y=0;
+      camera.updateProjectionMatrix();
+      controls.update();
+    }
+    function resize(){
+      const rect=stage.getBoundingClientRect();
+      renderer.setSize(rect.width,rect.height,false);
+      camera.aspect=rect.width/rect.height;
+      resetCameraView();
+    }
+    window.addEventListener("resize",resize); resize();
+    document.getElementById("resetView").addEventListener("click",resetCameraView);
+
+    let isInteracting=false;
+    renderer.domElement.addEventListener("pointerdown",()=>{isInteracting=true;});
+    window.addEventListener("pointerup",()=>{isInteracting=false;});
+    renderer.domElement.addEventListener("pointerleave",()=>{isInteracting=false;});
+
+    let t=0;
+    function animate(){
+      requestAnimationFrame(animate); t+=.003;
+      if(!matchMedia("(prefers-reduced-motion: reduce)").matches && !isInteracting){ scene.rotation.y=Math.sin(t)*.025; }
+      controls.update(); renderer.render(scene,camera);
+    }
+    animate();
+
+    const gallery=document.getElementById("gallery");
+    const galleryFallback=document.getElementById("galleryFallback");
+    const galleryWrap=document.querySelector(".gallery-wrap");
+    function showGalleryFallback(){
+      galleryWrap.style.display="none";
+      galleryFallback.style.display="block";
+    }
+    const officialImages=[];
+    const set=officialImages;
+    const loop=matchMedia("(max-width: 560px)").matches?set:set.concat(set); if(!set.length)showGalleryFallback();
+    let loaded=0,failed=0,shown=false;
+    loop.forEach((src,i)=>{
+      const card=document.createElement("article");card.className="work-card";
+      const img=document.createElement("img");img.loading=i<2?"eager":"lazy";img.alt="صورة مطبخ منشورة من الحساب الرسمي لمطابخ ساندي";
+      img.onload=()=>{
+        loaded++;
+        if(!shown){
+          shown=true;
+          galleryWrap.style.display="block";
+          requestAnimationFrame(()=>galleryWrap.classList.add("show"));
+        }
+      };
+      img.onerror=()=>{
+        failed++;card.remove();
+        if(failed===loop.length&&!loaded)showGalleryFallback();
+      };
+      img.src=src;card.appendChild(img);gallery.appendChild(card);
+    });
+    setTimeout(()=>{if(!loaded)showGalleryFallback();},7000);
+
+    const materialInput=document.getElementById("materialInput");
+    const finishInput=document.getElementById("finishInput");
+    const baseColorInput=document.getElementById("baseColorInput");
+    const accentColorInput=document.getElementById("accentColorInput");
+    const topInput=document.getElementById("topInput");
+    const layoutInput=document.getElementById("layoutInput");
+    const lengthInput=document.getElementById("lengthInput");
+    const wallBInput=document.getElementById("wallBInput");
+    const wallCInput=document.getElementById("wallCInput");
+    const heightInput=document.getElementById("heightInput");
+    const noteInput=document.getElementById("noteInput");
+    const summary=document.getElementById("summary");
+
+    const labelToMaterial={"ألمنيوم":"metal","خشب":"wood","لم أحدد بعد":"clad"};
+    const labelToFinish={"مطفي":"matte","لامع":"gloss"};
+    const labelToColor=Object.fromEntries(Object.entries(colorStates).map(([k,v])=>[v.label,k]));
+    const labelToTop=Object.fromEntries(Object.entries(topStates).map(([k,v])=>[v.label,k]));
+
+    materialInput.addEventListener("change",()=>{applyMaterial(labelToMaterial[materialInput.value]);syncControl("material",labelToMaterial[materialInput.value]);updateSummary();updateShareUrl();});
+    finishInput.addEventListener("change",()=>{applyFinish(labelToFinish[finishInput.value]);syncControl("finish",labelToFinish[finishInput.value]);updateSummary();updateShareUrl();});
+    baseColorInput.addEventListener("change",()=>{applyCabinetColor("base",labelToColor[baseColorInput.value]);syncControl("baseColor",labelToColor[baseColorInput.value]);updateSummary();updateShareUrl();});
+    accentColorInput.addEventListener("change",()=>{applyCabinetColor("upper",labelToColor[accentColorInput.value]);syncControl("accentColor",labelToColor[accentColorInput.value]);updateSummary();updateShareUrl();});
+    topInput.addEventListener("change",()=>{applyTop(labelToTop[topInput.value]);syncControl("top",labelToTop[topInput.value]);updateSummary();updateShareUrl();});
+
+    function syncControl(kind,value){
+      const group=document.querySelector('.control-group[data-kind="'+kind+'"]');
+      if(!group)return;
+      const all=group.querySelectorAll(".seg,.swatch");
+      all.forEach(el=>el.classList.toggle("active",el.dataset.value===value));
+      if(kind==="baseColor")document.getElementById("baseColorName").textContent=colorStates[value].label;
+      if(kind==="accentColor")document.getElementById("accentColorName").textContent=colorStates[value].label;
+    }
+
+    function getState(){
+      return {m:currentMaterial,b:currentBaseColor,a:currentAccentColor,f:currentFinish,t:currentTop,l:currentLighting};
+    }
+
+    function stateSummary(s){
+      return [materialMap[s.m],colorStates[s.b].label+" + "+colorStates[s.a].label,finishMap[s.f],topStates[s.t].label,lightingStates[s.l].label].join(" • ");
+    }
+
+    function updateCurrentChoice(){
+      const value=materialMap[currentMaterial]+" • "+colorStates[currentBaseColor].label+" + "+colorStates[currentAccentColor].label+" • "+finishMap[currentFinish]+" • "+topStates[currentTop].label+" • "+lightingStates[currentLighting].label;
+      const el=document.getElementById("currentChoice");
+      if(el)el.textContent=value;
+      const formEl=document.getElementById("formCurrentChoice");
+      if(formEl)formEl.textContent=value;
+    }
+
+    function updateShareUrl(){
+      updateCurrentChoice();
+      const s=getState();
+      const u=new URL(location.href);
+      ["m","b","a","f","t","l"].forEach(k=>u.searchParams.set(k,s[k]));
+      history.replaceState(null,"",u);
+      return u.toString();
+    }
+
+    function applySavedState(s){
+      if(!s)return;
+      currentMaterial=s.m; currentBaseColor=s.b; currentAccentColor=s.a; currentFinish=s.f; currentTop=s.t; currentLighting=s.l;
+      applyCabinetColor("base",s.b); applyCabinetColor("upper",s.a); applyFinish(s.f); applyMaterial(s.m); applyTop(s.t); applyLighting(s.l);
+      materialInput.value=materialMap[s.m]; finishInput.value=finishMap[s.f]; baseColorInput.value=colorStates[s.b].label; accentColorInput.value=colorStates[s.a].label; topInput.value=topStates[s.t].label;
+      ["material","baseColor","accentColor","finish","top","lighting"].forEach(kind=>{
+        const map={material:s.m,baseColor:s.b,accentColor:s.a,finish:s.f,top:s.t,lighting:s.l};
+        syncControl(kind,map[kind]);
+      });
+      updateSummary(); updateShareUrl();
+    }
+
+    let savedA=null,savedB=null;
+    function captureComparisonShot(){
+      const oldPos=camera.position.clone();
+      const oldQuat=camera.quaternion.clone();
+      const oldTarget=controls.target.clone();
+      const oldSceneY=scene.rotation.y;
+      scene.rotation.y=0;
+      camera.position.set(6.15,3.55,7.45);
+      controls.target.set(-.15,1.35,-1.48);
+      controls.update();
+      renderer.render(scene,camera);
+      const shot=renderer.domElement.toDataURL("image/jpeg",.84);
+      camera.position.copy(oldPos);
+      camera.quaternion.copy(oldQuat);
+      controls.target.copy(oldTarget);
+      scene.rotation.y=oldSceneY;
+      controls.update();
+      renderer.render(scene,camera);
+      return shot;
+    }
+
+    function captureVariant(slot){
+      const shot=captureComparisonShot();
+      const state={...getState(),shot};
+      if(slot==="A")savedA=state;else savedB=state;
+      const media=document.getElementById("variant"+slot+"Media");
+      const summaryEl=document.getElementById("variant"+slot+"Summary");
+      media.innerHTML='<img src="'+shot+'" alt="معاينة الخيار '+slot+'">';
+      media.closest(".variant-card").classList.add("has-snapshot");
+      summaryEl.textContent=stateSummary(state);
+      document.getElementById("apply"+slot).disabled=false;
+      document.getElementById("save"+slot).textContent="تحديث";
+      updateCompareResult();
+    }
+
+    function updateCompareResult(){
+      const el=document.getElementById("compareResult");
+      if(!savedA||!savedB){el.textContent="احفظ خيارين ليظهر الفرق بينهما هنا.";return;}
+      const diffs=[];
+      if(savedA.m!==savedB.m)diffs.push("الخامة");
+      if(savedA.b!==savedB.b)diffs.push("لون الخزائن الأساسية");
+      if(savedA.a!==savedB.a)diffs.push("لون الخزائن العلوية");
+      if(savedA.f!==savedB.f)diffs.push("التشطيب");
+      if(savedA.t!==savedB.t)diffs.push("سطح العمل");
+      if(savedA.l!==savedB.l)diffs.push("الإضاءة");
+      el.textContent=diffs.length ? "الفرق بين الخيارين: "+diffs.join("، ")+". يمكنك تطبيق أي خيار والعودة للتعديل مباشرة." : "الخياران متطابقان حالياً — غيّر لوناً أو خامة أو إضاءة ثم احفظ الخيار الثاني.";
+    }
+
+    document.getElementById("saveA").addEventListener("click",()=>captureVariant("A"));
+    document.getElementById("saveB").addEventListener("click",()=>captureVariant("B"));
+    function applyVariant(slot,state){
+      applySavedState(state);
+      document.querySelectorAll(".variant-card").forEach(x=>x.classList.remove("applied"));
+      document.getElementById("variant"+slot).classList.add("applied");
+      document.querySelector(".viewer-card").scrollIntoView({behavior:"smooth",block:"center"});
+    }
+    document.getElementById("applyA").addEventListener("click",()=>applyVariant("A",savedA));
+    document.getElementById("applyB").addEventListener("click",()=>applyVariant("B",savedB));
+    document.getElementById("shareDesign").addEventListener("click",async()=>{
+      const url=updateShareUrl();
+      const btn=document.getElementById("shareDesign");
+      try{await navigator.clipboard.writeText(url);const old=btn.textContent;btn.textContent="تم نسخ رابط الاختيار ✓";setTimeout(()=>btn.textContent=old,1800);}
+      catch(e){prompt("انسخ رابط الاختيار",url);}
+    });
+
+    function loadStateFromUrl(){
+      const p=new URLSearchParams(location.search);
+      const s={
+        m:materialStates[p.get("m")]?p.get("m"):"metal",
+        b:colorStates[p.get("b")]?p.get("b"):"ivory",
+        a:colorStates[p.get("a")]?p.get("a"):"oak",
+        f:["matte","gloss"].includes(p.get("f"))?p.get("f"):"matte",
+        t:topStates[p.get("t")]?p.get("t"):"natural",
+        l:lightingStates[p.get("l")]?p.get("l"):"day"
+      };
+      applySavedState(s);
+    }
+
+    const advisorState={style:"clean",light:"medium",contrast:"soft",finish:"matte"};
+    let advisorRecommendation={m:"metal",b:"ivory",a:"lightgray",f:"matte",t:"natural",l:"day"};
+
+    function buildAdvisorRecommendation(){
+      const s=advisorState;
+      let rec={m:"metal",b:"ivory",a:"lightgray",f:s.finish,t:"natural",l:s.light==="low"?"day":(s.light==="strong"?"neutral":"day")};
+      let title="اتجاه هادئ ثنائي اللون";
+      let why="مزيج فاتح ومتوازن يعطيك نقطة مقارنة واضحة قبل الانتقال إلى خيارات أكثر جرأة.";
+
+      if(s.style==="warm"){
+        rec.m="wood"; rec.b=s.light==="low"?"ivory":"beige"; rec.a="oak";
+        title="اتجاه دافئ بطابع خشبي";
+        why="نقطة بداية دافئة تربط اللون المحايد بلمسة خشبية واضحة حتى ترى التوازن قبل اعتماد العينات.";
+      }
+      if(s.style==="bold"){
+        rec.m="clad"; rec.b=s.light==="low"?"lightgray":"charcoal"; rec.a="walnut";
+        title="اتجاه معماري بتباين أقوى";
+        why="قاعدة أغمق ولمسة خشبية تمنحك مقارنة أكثر جرأة، مع إبقاء النتيجة مجرد تصور بصري أولي.";
+      }
+
+      if(s.contrast==="same") rec.a=rec.b;
+      if(s.contrast==="high"){
+        if(["ivory","white","lightgray","beige"].includes(rec.b)) rec.a=s.style==="warm"?"walnut":"charcoal";
+        else rec.a="ivory";
+      }
+      if(s.light==="low" && ["charcoal","mocha","walnut"].includes(rec.b)) rec.b="ivory";
+
+      advisorRecommendation=rec;
+      document.getElementById("advisorTitle").textContent=title;
+      document.getElementById("advisorWhy").textContent=why;
+      document.getElementById("advisorMaterial").textContent=materialMap[rec.m];
+      document.getElementById("advisorBase").textContent=colorStates[rec.b].label;
+      document.getElementById("advisorAccent").textContent=colorStates[rec.a].label;
+      document.getElementById("advisorFinish").textContent=finishMap[rec.f];
+    }
+
+    const advisorCards=[...document.querySelectorAll("[data-advisor]")];
+    let advisorStep=0;
+    function renderAdvisorStep(){
+      advisorCards.forEach((card,i)=>card.classList.toggle("active-step",i===advisorStep));
+      document.getElementById("advisorStepLabel").textContent="السؤال "+["١","٢","٣","٤"][advisorStep]+" من ٤";
+      document.querySelectorAll(".advisor-dot").forEach((dot,i)=>dot.classList.toggle("active",i<=advisorStep));
+      document.getElementById("advisorPrev").disabled=advisorStep===0;
+      document.getElementById("advisorNext").textContent=advisorStep===advisorCards.length-1?"عرض النتيجة":"التالي";
+    }
+    document.getElementById("advisorPrev").addEventListener("click",()=>{advisorStep=Math.max(0,advisorStep-1);renderAdvisorStep();});
+    document.getElementById("advisorNext").addEventListener("click",()=>{
+      if(advisorStep<advisorCards.length-1){
+        advisorStep++;
+        renderAdvisorStep();
+      }else{
+        document.getElementById("advisorGrid").classList.add("result-ready");
+        document.querySelector(".advisor-result").scrollIntoView({behavior:"smooth",block:"center"});
+      }
+    });
+    document.getElementById("advisorRestart").addEventListener("click",()=>{
+      advisorStep=0;
+      document.getElementById("advisorGrid").classList.remove("result-ready");
+      renderAdvisorStep();
+      document.querySelector("#advisor .advisor-progress").scrollIntoView({behavior:"smooth",block:"center"});
+    });
+    renderAdvisorStep();
+
+    document.querySelectorAll("[data-advisor]").forEach(card=>{
+      card.addEventListener("click",e=>{
+        const btn=e.target.closest(".choice"); if(!btn)return;
+        card.querySelectorAll(".choice").forEach(x=>x.classList.remove("active"));
+        btn.classList.add("active");
+        advisorState[card.dataset.advisor]=btn.dataset.value;
+        buildAdvisorRecommendation();
+        // Keep the selected answer visible; the user advances explicitly with "التالي".
+      });
+    });
+    document.getElementById("applyAdvisor").addEventListener("click",()=>{
+      applySavedState(advisorRecommendation);
+      document.querySelectorAll(".variant-card").forEach(x=>x.classList.remove("applied"));
+      document.querySelector(".viewer-card").scrollIntoView({behavior:"smooth",block:"center"});
+    });
+    buildAdvisorRecommendation();
+
+    let roomImage=null;
+    let roomRecommendation=null;
+
+    function quantizedPalette(img){
+      const c=document.createElement("canvas");
+      const max=140, scale=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight));
+      c.width=Math.max(1,Math.round(img.naturalWidth*scale));
+      c.height=Math.max(1,Math.round(img.naturalHeight*scale));
+      const x=c.getContext("2d",{willReadFrequently:true});
+      x.drawImage(img,0,0,c.width,c.height);
+      const data=x.getImageData(0,0,c.width,c.height).data;
+      const buckets=new Map();
+      let totalR=0,totalG=0,totalB=0,count=0;
+      for(let i=0;i<data.length;i+=16){
+        const r=data[i],g=data[i+1],b=data[i+2],a=data[i+3];
+        if(a<200)continue;
+        const lum=(r+g+b)/3;
+        if(lum<18||lum>245)continue;
+        const qr=Math.round(r/40)*40,qg=Math.round(g/40)*40,qb=Math.round(b/40)*40;
+        const key=[Math.min(240,qr),Math.min(240,qg),Math.min(240,qb)].join(",");
+        buckets.set(key,(buckets.get(key)||0)+1);
+        totalR+=r;totalG+=g;totalB+=b;count++;
+      }
+      const top=[...buckets.entries()].sort((a,b)=>b[1]-a[1]).slice(0,4).map(([k])=>k.split(",").map(Number));
+      return {top,avg:count?[totalR/count,totalG/count,totalB/count]:[150,150,150]};
+    }
+
+    function recommendFromRoom(avg){
+      const [r,g,b]=avg;
+      const brightness=(r+g+b)/3;
+      const warm=r-b>12;
+      let base="ivory",accent="oak";
+      if(brightness>185){base=warm?"charcoal":"mocha";accent="oak";}
+      else if(brightness<105){base="ivory";accent=warm?"oak":"lightgray";}
+      else if(warm){base="beige";accent="walnut";}
+      else{base="ivory";accent="charcoal";}
+      return {base,accent,brightness,warm};
+    }
+
+    function handleRoomFile(file){
+      if(!file||!file.type.startsWith("image/"))return;
+      if(file.size>18*1024*1024){
+        document.getElementById("roomAnalysis").textContent="حجم الصورة كبير جداً. اختر صورة أقل من 18MB لتجربة أسرع على الجوال.";
+        return;
+      }
+      const reader=new FileReader();
+      reader.onload=()=>{
+        const img=document.getElementById("roomPreview");
+        img.onload=()=>{
+          roomImage=img;
+          const analysis=quantizedPalette(img);
+          const rec=recommendFromRoom(analysis.avg);
+          roomRecommendation=rec;
+          const palette=document.getElementById("detectedPalette");
+          palette.innerHTML="";
+          analysis.top.forEach(rgb=>{
+            const sw=document.createElement("span");sw.className="detected-color";sw.style.setProperty("--c","rgb("+rgb.join(",")+")");palette.appendChild(sw);
+          });
+          document.getElementById("roomBase").textContent=colorStates[rec.base].label;
+          document.getElementById("roomAccent").textContent=colorStates[rec.accent].label;
+          const tone=rec.warm?"دافئة":"محايدة/باردة";
+          const light=rec.brightness>180?"مضيئة":rec.brightness<110?"داكنة":"متوسطة السطوع";
+          document.getElementById("roomAnalysis").textContent="الصورة تبدو "+light+" وبنغمة "+tone+". لذلك نقترح هذه التركيبة كنقطة بداية للمقارنة داخل 3D، لا كحكم لوني نهائي.";
+          const status=document.getElementById("roomStatus");
+          status.innerHTML='<span>'+light+'</span><span>'+tone+'</span><span>تحليل محلي على جهازك</span>';
+          document.getElementById("roomSide").classList.add("ready");
+          document.getElementById("applyRoomPalette").disabled=false;
+          document.getElementById("saveDecisionCard").disabled=false;
+          document.getElementById("roomUpload").classList.add("has-image");
+          document.getElementById("uploadEmpty").hidden=true;
+          img.hidden=false;
+          document.getElementById("changeRoomPhoto").style.display="inline-flex";
+        };
+        img.src=reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+    document.getElementById("roomFile").addEventListener("change",e=>handleRoomFile(e.target.files&&e.target.files[0]));
+    document.getElementById("roomFileChange").addEventListener("change",e=>handleRoomFile(e.target.files&&e.target.files[0]));
+
+    document.getElementById("applyRoomPalette").addEventListener("click",()=>{
+      if(!roomRecommendation)return;
+      const s=getState();
+      s.b=roomRecommendation.base;s.a=roomRecommendation.accent;
+      applySavedState(s);
+      document.querySelector(".viewer-card").scrollIntoView({behavior:"smooth",block:"center"});
+    });
+
+    document.getElementById("saveDecisionCard").addEventListener("click",async()=>{
+      if(!roomImage)return;
+      await document.fonts.ready;
+      const canonicalShot=captureComparisonShot();
+      const out=document.createElement("canvas");out.width=1600;out.height=900;
+      const x=out.getContext("2d");
+      x.fillStyle="#0b0b0b";x.fillRect(0,0,out.width,out.height);
+      x.direction="rtl";
+      x.fillStyle="#f6f2e9";x.font="700 42px Tajawal, sans-serif";x.fillText("بطاقة قرار المطبخ",1510,64);
+      x.fillStyle="#d6b56d";x.font="600 22px Tajawal, sans-serif";x.fillText("مطابخ ساندي — تصور أولي",1510,104);
+
+      function cover(img,dx,dy,dw,dh){
+        const iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height;
+        const scale=Math.max(dw/iw,dh/ih),sw=dw/scale,sh=dh/scale,sx=(iw-sw)/2,sy=(ih-sh)/2;
+        x.drawImage(img,sx,sy,sw,sh,dx,dy,dw,dh);
+      }
+      cover(roomImage,820,150,700,520);
+      const shot=new Image();
+      shot.onload=()=>{
+        cover(shot,80,150,700,520);
+        x.fillStyle="#161616";x.fillRect(80,700,1440,140);
+        x.fillStyle="#f0e7d8";x.font="700 26px Tajawal, sans-serif";
+        x.fillText("الخامة: "+materialMap[currentMaterial]+"   •   التشطيب: "+finishMap[currentFinish],1490,742);
+        x.font="600 22px Tajawal, sans-serif";x.fillStyle="#bbb3a8";
+        x.fillText("الأساسية: "+colorStates[currentBaseColor].label+"   •   العلوية: "+colorStates[currentAccentColor].label+"   •   السطح: "+topStates[currentTop].label,1490,782);
+        x.fillStyle="#77716b";x.font="500 17px Tajawal, sans-serif";
+        x.fillText("تصور بصري أولي — يعتمد الاختيار النهائي مع المنفذ بعد القياس والعينات.",1490,817);
+        const a=document.createElement("a");a.download="kitchen-decision-card.jpg";a.href=out.toDataURL("image/jpeg",.9);a.click();
+      };
+      shot.src=canonicalShot;
+    });
+
+    function selectedAppliances(){
+      return [...document.querySelectorAll('input[name="appliance"]:checked')].map(x=>x.value);
+    }
+
+    function setReady(id,done,label){
+      const el=document.getElementById(id);
+      el.classList.toggle("done",done);
+      el.textContent=(done?"✓ ":"")+label;
+    }
+
+    function updateReadiness(){
+      const hasLayout=Boolean(layoutInput.value);
+      const hasLength=Boolean(lengthInput.value.trim());
+      const hasAppliances=selectedAppliances().length>0;
+      const hasExtra=Boolean(wallBInput.value.trim()||wallCInput.value.trim()||heightInput.value.trim()||noteInput.value.trim());
+
+      let score=45;
+      if(hasLayout)score+=15;
+      if(hasLength)score+=20;
+      if(hasAppliances)score+=10;
+      if(hasExtra)score+=10;
+      score=Math.min(100,score);
+
+      const missing=[];
+      if(!hasLayout)missing.push("شكل المساحة");
+      if(!hasLength)missing.push("الطول الرئيسي");
+      if(!hasAppliances)missing.push("الأجهزة");
+
+      document.getElementById("readinessScore").textContent=score+"%";
+      document.getElementById("readinessFill").style.width=score+"%";
+      document.getElementById("readinessMissing").textContent=missing.length
+        ? "التفاصيل الأساسية المتبقية: "+missing.join("، ")+"."
+        : (hasExtra?"الطلب منظم وجاهز للنسخ قبل التواصل.":"الأساسيات جاهزة؛ يمكنك إضافة ملاحظة أو مقاس إضافي إن وجد.");
+
+      setReady("readyVisual",true,"الاختيار البصري");
+      setReady("readyLayout",hasLayout,"شكل المساحة");
+      setReady("readyLength",hasLength,"المقاس الرئيسي");
+      setReady("readyAppliances",hasAppliances,"الأجهزة");
+      setReady("readyExtra",hasExtra,"تفصيل إضافي");
+    }
+
+    function updateSummary(){
+      const parts=[
+        "طلب مطبخ — مطابخ ساندي",
+        "الاختيار: "+materialInput.value+" • "+baseColorInput.value+" + "+accentColorInput.value+" • "+finishInput.value+" • "+topInput.value
+      ];
+
+      if(layoutInput.value)parts.push("شكل المساحة: "+layoutInput.value);
+
+      const dims=[];
+      if(lengthInput.value.trim())dims.push("الرئيسي "+lengthInput.value.trim()+"م");
+      if(wallBInput.value.trim())dims.push("ب "+wallBInput.value.trim()+"م");
+      if(wallCInput.value.trim())dims.push("ج "+wallCInput.value.trim()+"م");
+      if(heightInput.value.trim())dims.push("الارتفاع "+heightInput.value.trim()+"م");
+      if(dims.length)parts.push("المقاسات التقريبية: "+dims.join(" • "));
+
+      const appliances=selectedAppliances();
+      if(appliances.length)parts.push("أماكن الأجهزة: "+appliances.join("، "));
+      if(noteInput.value.trim())parts.push("ملاحظة: "+noteInput.value.trim());
+
+      parts.push("المعاينة أولية؛ الاعتماد النهائي للخامات والمقاسات والتسعير مع الجهة المنفذة.");
+      summary.textContent=parts.join("\n");
+      updateReadiness();
+    }
+    [materialInput,finishInput,baseColorInput,accentColorInput,topInput,layoutInput,lengthInput,wallBInput,wallCInput,heightInput,noteInput].forEach(el=>el.addEventListener("input",updateSummary));
+    document.querySelectorAll('input[name="appliance"]').forEach(el=>el.addEventListener("change",updateSummary));
+    updateSummary();
+    loadStateFromUrl();
+    updateCurrentChoice();
+
+    async function copyRequest(button){
+      try{
+        await navigator.clipboard.writeText(summary.textContent);
+        const old=button.textContent;button.textContent="تم النسخ ✓";setTimeout(()=>button.textContent=old,1700);
+        return true;
+      }catch(e){
+        const range=document.createRange();range.selectNode(summary);
+        const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);
+        return false;
+      }
+    }
+
+    document.getElementById("copyBtn").addEventListener("click",async e=>{
+      await copyRequest(e.currentTarget);
+    });
+
+    document.getElementById("handoffBtn").addEventListener("click",e=>{
+      updateSummary();
+      const message=summary.textContent.trim();
+      window.open("https://wa.me/966503231360?text="+encodeURIComponent(message),"_blank","noopener,noreferrer");
+    });
+
+    const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("show")}),{threshold:.12});
+    document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+  </script>
+</body>
+</html>
