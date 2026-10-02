@@ -20,7 +20,8 @@
     "jawhara-almalim-studio.vercel.app",
     "rukn-dareen-kitchen-studio.vercel.app",
     "ruaad-alabdae-kitchens.vercel.app",
-    "alab3ad-modern-kitchens.vercel.app"
+    "alab3ad-modern-kitchens.vercel.app",
+    "blum-com-kitchen-studio.vercel.app"
   ],
   "redirects": [
     {
@@ -64,6 +65,17 @@
         {
           "type": "host",
           "value": "alab3ad-modern-kitchens.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/blum-com",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "blum-com-kitchen-studio.vercel.app"
         }
       ]
     }
