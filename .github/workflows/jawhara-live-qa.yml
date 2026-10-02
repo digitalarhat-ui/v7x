@@ -56,7 +56,7 @@ jobs:
             }));
 
             if(!res || res.status()>=400) throw new Error(name+': HTTP '+(res?.status()||'none'));
-            if(!init.url.endsWith('/jawhara')) throw new Error(name+': root redirect failed '+init.url);
+            if(new URL(init.url).pathname!='/jawhara') throw new Error(name+': root redirect failed '+init.url);
             if(!init.title.includes('جوهرة المعالم') || init.wordmark!=='جوهرة المعالم') throw new Error(name+': identity failed');
             if(!init.three || init.canvas[0]<100 || init.canvas[1]<100) throw new Error(name+': WebGL failed '+JSON.stringify(init.canvas));
             if(init.overflow>2) throw new Error(name+': horizontal overflow '+init.overflow);
