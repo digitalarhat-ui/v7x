@@ -17,7 +17,8 @@
     }
   ],
   "alias": [
-    "jawhara-almalim-studio.vercel.app"
+    "jawhara-almalim-studio.vercel.app",
+    "rukn-dareen-kitchen-studio.vercel.app"
   ],
   "redirects": [
     {
@@ -28,6 +29,17 @@
         {
           "type": "host",
           "value": "jawhara-almalim-studio.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/darren",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "rukn-dareen-kitchen-studio.vercel.app"
         }
       ]
     }
