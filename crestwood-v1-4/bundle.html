@@ -1,0 +1,979 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#20231f" />
+<meta name="description" content="كريستوود — تجربة اختيار بصري وتجهيز الطلب قبل التواصل" />
+<title>كريستوود</title>
+<style>@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap');
+
+:root{
+  --bg:#f2efe8;
+  --paper:#fbf8f2;
+  --ink:#15221d;
+  --muted:#68726d;
+  --green:#222522;
+  --green-2:#34382f;
+  --gold:#a5783f;
+  --gold-soft:#dcc6a2;
+  --line:#ded7cb;
+  --shadow:0 22px 60px rgba(22,32,28,.12);
+  --radius:28px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{
+  margin:0;
+  min-width:320px;
+  font-family:'Tajawal',system-ui,sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 15% 0%,rgba(183,143,84,.13),transparent 28rem),
+    linear-gradient(#f4f0e8,#f0ece4 62%,#ece7de);
+}
+button,input,select,textarea{font:inherit}
+button{color:inherit}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:3px solid rgba(165,120,63,.35);outline-offset:3px
+}
+.page{overflow-x:hidden}
+.shell{width:min(1180px,calc(100% - 36px));margin-inline:auto}
+.topbar{
+  min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:16px
+}
+.brand{display:flex;align-items:center;gap:11px}
+.brand-mark{
+  width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
+  background:var(--green);color:#fff;font-size:22px;font-weight:800;box-shadow:0 10px 26px rgba(32,35,31,.18)
+}
+.brand-copy strong,.brand-copy span{display:block}
+.brand-copy strong{font-size:15px}
+.brand-copy span{font-size:11px;color:var(--muted);margin-top:2px}
+.route-link{
+  display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;
+  color:#59645f;border-bottom:1px solid #bdb7ad;padding-bottom:3px
+}
+.hero{padding:42px 0 34px}
+.eyebrow{
+  display:flex;align-items:center;gap:8px;color:var(--gold);font-size:12px;
+  font-weight:800;letter-spacing:.01em;margin:0 0 10px
+}
+.hero h1{
+  margin:0;font-size:clamp(34px,5.2vw,64px);line-height:1.07;letter-spacing:-.045em;max-width:870px
+}
+.hero p.lead{
+  margin:16px 0 0;color:var(--muted);font-size:16px;line-height:1.9;max-width:720px
+}
+.route-chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
+.route-chip{
+  border:1px solid #d4ccc0;background:rgba(255,255,255,.5);padding:10px 13px;border-radius:999px;
+  cursor:pointer;font-size:13px;font-weight:700;transition:.2s ease
+}
+.route-chip.active{background:var(--green);color:#fff;border-color:var(--green);box-shadow:0 8px 22px rgba(32,35,31,.16)}
+.studio-wrap{padding-bottom:42px}
+.studio{
+  background:var(--green);color:#fff;border-radius:34px;box-shadow:var(--shadow);overflow:hidden;
+  border:1px solid rgba(255,255,255,.08)
+}
+.studio-head{
+  padding:20px 22px 14px;display:flex;align-items:flex-end;justify-content:space-between;gap:20px
+}
+.studio-head h2{margin:2px 0 0;font-size:clamp(25px,3vw,38px);letter-spacing:-.03em}
+.studio-head p{margin:8px 0 0;color:#b9c7c0;font-size:12px;line-height:1.7;max-width:650px}
+.truth-pill{
+  flex:0 0 auto;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+  color:#e9e1d4;border-radius:999px;padding:8px 11px;font-size:10px;font-weight:700
+}
+.scene-frame{
+  position:relative;margin:0 16px;border-radius:24px;overflow:hidden;
+  min-height:500px;background:linear-gradient(150deg,#385246 0%,#1b2e27 45%,#0f1d18 100%);
+  border:1px solid rgba(255,255,255,.09)
+}
+#scene{position:absolute;inset:0}
+.scene-overlay{
+  position:absolute;left:16px;right:16px;bottom:14px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;pointer-events:none
+}
+.scene-caption{
+  background:rgba(14,26,22,.70);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.12);
+  border-radius:17px;padding:10px 12px;max-width:460px
+}
+.scene-caption strong,.scene-caption span{display:block}
+.scene-caption strong{font-size:12px}
+.scene-caption span{font-size:10px;color:#c1cdc7;margin-top:3px;line-height:1.6}
+.scene-tools{display:flex;gap:7px;pointer-events:auto}
+.icon-btn{
+  width:40px;height:40px;border-radius:13px;border:1px solid rgba(255,255,255,.15);
+  background:rgba(15,29,24,.72);color:#fff;display:grid;place-items:center;cursor:pointer
+}
+.control-tabs{
+  display:flex;gap:7px;overflow-x:auto;padding:14px 16px 8px;scrollbar-width:none
+}
+.control-tabs::-webkit-scrollbar{display:none}
+.tab-btn{
+  flex:0 0 auto;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);
+  color:#d9e0dc;border-radius:999px;padding:9px 13px;cursor:pointer;font-size:11px;font-weight:700
+}
+.tab-btn.active{background:#f4eee3;color:var(--ink);border-color:#f4eee3}
+.panel{display:none;padding:8px 16px 18px}
+.panel.active{display:block}
+.control-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.control-card{
+  background:#f5f0e7;color:var(--ink);border-radius:18px;padding:14px;border:1px solid #e2dbcf
+}
+.control-card h3{font-size:12px;margin:0 0 10px}
+.swatches{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.swatch{
+  border:1px solid #d6cfc4;background:#fff;border-radius:12px;padding:7px 5px;cursor:pointer;
+  min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px
+}
+.swatch i{width:24px;height:24px;border-radius:8px;border:1px solid rgba(0,0,0,.09);box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
+.swatch span{font-size:9px;font-weight:700;line-height:1.2;text-align:center}
+.swatch.active{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}
+.option-row{display:flex;flex-wrap:wrap;gap:7px}
+.option{
+  border:1px solid #d4cdc1;background:#fff;border-radius:999px;padding:8px 10px;
+  font-size:10px;font-weight:700;cursor:pointer
+}
+.option.active{background:var(--green);color:#fff;border-color:var(--green)}
+.microcopy{margin:9px 0 0;color:#727873;font-size:9px;line-height:1.55}
+.decision-section{padding:72px 0}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:24px}
+.section-head h2{margin:0;font-size:clamp(28px,4vw,46px);letter-spacing:-.04em;line-height:1.12}
+.section-head p{max-width:520px;margin:0;color:var(--muted);line-height:1.8;font-size:13px}
+.compare-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+.compare-card,.advisor-card,.readiness-card{
+  background:var(--paper);border:1px solid var(--line);border-radius:26px;padding:20px;box-shadow:0 16px 40px rgba(25,34,30,.06)
+}
+.compare-toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.action-btn{
+  border:0;border-radius:13px;padding:11px 14px;cursor:pointer;font-size:11px;font-weight:800;
+  display:inline-flex;align-items:center;gap:7px;justify-content:center
+}
+.action-btn.primary{background:var(--green);color:#fff}
+.action-btn.secondary{background:#eee7dc;color:var(--ink)}
+.action-btn.ghost{background:#fff;border:1px solid var(--line)}
+.ab-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ab-card{border:1px solid var(--line);border-radius:16px;padding:13px;background:#fff}
+.ab-card h4{margin:0 0 8px;font-size:12px}
+.ab-line{display:flex;justify-content:space-between;gap:10px;font-size:10px;color:var(--muted);padding:4px 0;border-bottom:1px dashed #ece6dd}
+.ab-line:last-child{border:0}
+.ab-line b{color:var(--ink);font-weight:700}
+.share-state{
+  display:flex;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)
+}
+.share-state input{
+  flex:1;min-width:0;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px;font-size:10px;color:#626a65
+}
+.advisor-card h3,.readiness-card h3{margin:0 0 8px;font-size:18px}
+.advisor-card p,.readiness-card p{margin:0 0 14px;color:var(--muted);font-size:12px;line-height:1.7}
+.choice-stack{display:grid;gap:8px}
+.choice-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.choice{
+  border:1px solid var(--line);background:#fff;border-radius:14px;padding:11px;text-align:right;cursor:pointer
+}
+.choice strong{display:block;font-size:11px}
+.choice span{display:block;font-size:9px;color:var(--muted);margin-top:3px}
+.choice.active{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}
+.gallery-section{padding:28px 0 72px}
+.gallery-grid{
+  display:grid;grid-template-columns:1.35fr 1fr 1fr;grid-template-rows:245px 245px;gap:10px
+}
+.gallery-item{margin:0;border-radius:20px;overflow:hidden;background:#ddd6ca;position:relative}
+.gallery-item:first-child{grid-row:span 2}
+.gallery-item:nth-child(4){grid-column:span 2}
+.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .45s ease}
+.gallery-item:hover img{transform:scale(1.025)}
+.gallery-fallback{
+  position:absolute;inset:0;display:none;place-items:center;text-align:center;padding:20px;background:#e9e3d8;color:var(--muted);font-size:11px
+}
+.gallery-item.failed .gallery-fallback{display:grid}
+.gallery-item.failed img{display:none}
+.gallery-note{margin:10px 0 0;color:var(--muted);font-size:10px}
+.readiness-section{padding:0 0 78px}
+.readiness-layout{display:grid;grid-template-columns:.95fr 1.05fr;gap:18px;align-items:start}
+.readiness-meter{
+  height:9px;background:#e7e0d5;border-radius:999px;overflow:hidden;margin:12px 0 6px
+}
+.readiness-meter > span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),#c69a60);transition:width .3s ease}
+.readiness-label{font-size:10px;color:var(--muted)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field{display:grid;gap:6px}
+.field.full{grid-column:1/-1}
+.field label{font-size:10px;font-weight:700;color:#59625d}
+.field input,.field select,.field textarea{
+  width:100%;border:1px solid var(--line);background:#fff;border-radius:13px;padding:11px 12px;color:var(--ink)
+}
+.field textarea{min-height:84px;resize:vertical}
+.optional-toggle{
+  margin-top:10px;border:0;background:transparent;color:var(--gold);font-size:10px;font-weight:800;cursor:pointer;padding:0
+}
+.optional-fields{display:none;margin-top:10px}
+.optional-fields.open{display:grid}
+.summary-box{
+  background:#14241f;color:#fff;border-radius:24px;padding:20px;position:sticky;top:16px
+}
+.summary-box h3{margin:0 0 12px;font-size:17px}
+.summary-box pre{
+  margin:0;white-space:pre-wrap;font:11px/1.8 'Tajawal',sans-serif;color:#dce5e0;
+  background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09);border-radius:15px;padding:13px
+}
+.summary-actions{display:grid;grid-template-columns:.9fr 1.1fr;gap:8px;margin-top:10px}
+.summary-actions .action-btn{min-height:46px}
+.summary-actions .action-btn.secondary{background:#efe6d8}
+.route-truth{font-size:9px;color:#a8b8b0;line-height:1.6;margin:10px 2px 0}
+.footer{
+  border-top:1px solid var(--line);padding:24px 0 40px;display:flex;align-items:center;justify-content:space-between;gap:18px;
+  color:#69716c;font-size:10px
+}
+.toast{
+  position:fixed;z-index:90;left:50%;bottom:20px;transform:translate(-50%,120px);
+  background:#14241f;color:#fff;padding:10px 14px;border-radius:999px;font-size:11px;font-weight:700;
+  box-shadow:0 15px 35px rgba(20,36,31,.28);transition:transform .25s ease
+}
+.toast.show{transform:translate(-50%,0)}
+@media (max-width:900px){
+  .scene-frame{min-height:450px}
+  .control-grid,.compare-grid,.readiness-layout{grid-template-columns:1fr}
+  .summary-box{position:static}
+  .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:220px 190px 190px}
+  .gallery-item:first-child{grid-row:span 2}
+  .gallery-item:nth-child(4){grid-column:span 2}
+}
+@media (max-width:620px){
+  .shell{width:min(100% - 28px,1180px)}
+  .topbar{min-height:66px}
+  .brand-copy span{display:none}
+  .route-link{font-size:10px}
+  .hero{padding:25px 0 20px}
+  .hero h1{font-size:clamp(34px,10.6vw,48px)}
+  .hero p.lead{font-size:13px;line-height:1.75;margin-top:12px}
+  .route-chips{margin-top:14px;gap:7px}
+  .route-chip{padding:9px 11px;font-size:11px}
+  .studio{border-radius:25px}
+  .studio-head{padding:16px 15px 11px;display:block}
+  .studio-head h2{font-size:25px}
+  .studio-head p{font-size:10px;margin-top:6px}
+  .truth-pill{display:inline-flex;margin-top:10px}
+  .scene-frame{margin:0 10px;min-height:340px;border-radius:19px}
+  .scene-caption{max-width:72%;padding:8px 10px}
+  .scene-caption strong{font-size:10px}
+  .scene-caption span{font-size:8px}
+  .scene-tools{gap:5px}
+  .icon-btn{width:36px;height:36px;border-radius:11px}
+  .control-tabs{padding:11px 10px 6px}
+  .tab-btn{font-size:10px;padding:8px 11px}
+  .panel{padding:6px 10px 13px}
+  .control-card{padding:11px;border-radius:15px}
+  .control-card h3{font-size:11px}
+  .swatches{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+  .swatch{min-height:52px;padding:6px 3px;border-radius:10px}
+  .swatch i{width:21px;height:21px}
+  .swatch span{font-size:8px}
+  .section-head{display:block;margin-bottom:18px}
+  .section-head h2{font-size:30px}
+  .section-head p{margin-top:8px;font-size:11px}
+  .decision-section{padding:52px 0}
+  .compare-card,.advisor-card,.readiness-card{padding:15px;border-radius:20px}
+  .ab-grid{grid-template-columns:1fr 1fr}
+  .ab-card{padding:10px}
+  .share-state{display:grid;grid-template-columns:1fr auto}
+  .choice-row{grid-template-columns:1fr 1fr}
+  .gallery-section{padding:8px 0 52px}
+  .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:190px 150px 150px;gap:7px}
+  .gallery-item{border-radius:14px}
+  .readiness-section{padding-bottom:54px}
+  .form-grid{grid-template-columns:1fr}
+  .field.full{grid-column:auto}
+  .summary-actions{grid-template-columns:1fr}
+  .footer{padding-bottom:28px}
+}
+@media (max-width:390px){
+  .shell{width:min(100% - 22px,1180px)}
+  .brand-mark{width:38px;height:38px;border-radius:12px}
+  .hero h1{font-size:35px}
+  .scene-frame{min-height:318px}
+  .swatch span{font-size:7.5px}
+  .route-chip{font-size:10px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+}
+</style>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}
+</script>
+</head>
+<body>
+<div id="app"></div>
+<script type="module">import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const OFFICIAL_URL = 'https://crestwoodsa.com/';
+const WHATSAPP_URL = 'https://wa.me/966535188853';
+
+const visualColors = [
+  { id:'ivory', name:'عاجي', hex:'#e9e3d6' },
+  { id:'sand', name:'رملي', hex:'#cdbb9d' },
+  { id:'greige', name:'جريج', hex:'#aaa292' },
+  { id:'sage', name:'أخضر هادئ', hex:'#8a9b86' },
+  { id:'olive', name:'زيتوني', hex:'#5d6c56' },
+  { id:'navy', name:'كحلي', hex:'#334557' },
+  { id:'charcoal', name:'فحمي', hex:'#3e4445' },
+  { id:'black', name:'أسود', hex:'#222426' },
+  { id:'walnut', name:'جوزي', hex:'#7f5b40' },
+  { id:'oak', name:'بلوط فاتح', hex:'#ba946c' },
+  { id:'terracotta', name:'طوبي', hex:'#a76550' },
+  { id:'white', name:'أبيض', hex:'#f1f0eb' }
+];
+
+const cabinetFamilies = [
+  { id:'modern', name:'مودرن', roughness:.34, metalness:.04 },
+  { id:'classic', name:'كلاسيك', roughness:.52, metalness:.02 },
+  { id:'neoclassic', name:'نيو كلاسيك', roughness:.43, metalness:.03 }
+];
+
+const countertopFamilies = [
+  { id:'light', name:'فاتح هادئ', hex:'#e9e5dd', roughness:.28 },
+  { id:'stone', name:'حجري', hex:'#aaa59d', roughness:.36 },
+  { id:'dark', name:'داكن', hex:'#343432', roughness:.25 }
+];
+
+const finishes = [
+  { id:'matte', name:'مطفي', roughness:.62 },
+  { id:'satin', name:'ساتان', roughness:.38 },
+  { id:'gloss', name:'لامع', roughness:.18 }
+];
+
+const requestTypes = [
+  { id:'kitchen', name:'مطبخ' },
+  { id:'wardrobe', name:'خزائن ملابس' },
+  { id:'woodwork', name:'أعمال خشبية' }
+];
+
+const services = [
+  { id:'design', name:'تصميم' },
+  { id:'execution', name:'تنفيذ' },
+  { id:'adjacent', name:'خزائن / أعمال خشبية إضافية' }
+];
+
+const galleryImages = [];
+
+const defaultState = {
+  request:'kitchen',
+  family:'modern',
+  base:'ivory',
+  upper:'ivory',
+  counter:'light',
+  finish:'matte',
+  light:'day',
+  services:['design','execution'],
+  layout:'',
+  width:'',
+  depth:'',
+  appliances:'',
+  city:'',
+  note:''
+};
+
+const loadUrlState = () => {
+  const q = new URLSearchParams(location.search);
+  const next = structuredClone(defaultState);
+  const keys = ['request','family','base','upper','counter','finish','light','layout','width','depth','appliances','city','note'];
+  keys.forEach((key) => {
+    if (q.has(key)) next[key] = q.get(key) || '';
+  });
+  if (q.has('services')) next.services = (q.get('services') || '').split(',').filter(Boolean);
+  return next;
+};
+
+let state = loadUrlState();
+let snapshotA = null;
+let snapshotB = null;
+let sceneApi = null;
+
+const app = document.querySelector('#app');
+
+function swatchMarkup(kind, selected) {
+  return visualColors.map((c) => `
+    <button class="swatch ${selected===c.id?'active':''}" data-kind="${kind}" data-value="${c.id}" aria-pressed="${selected===c.id}">
+      <i style="background:${c.hex}"></i><span>${c.name}</span>
+    </button>`).join('');
+}
+
+function optionMarkup(list, kind, selected) {
+  return list.map((o) => `
+    <button class="option ${selected===o.id?'active':''}" data-kind="${kind}" data-value="${o.id}" aria-pressed="${selected===o.id}">${o.name}</button>`).join('');
+}
+
+function render() {
+  app.innerHTML = `
+  <div class="page">
+    <header class="shell topbar">
+      <a class="brand" href="#top" aria-label="كريستوود">
+        <span class="brand-mark">C</span>
+        <span class="brand-copy"><strong>كريستوود</strong><span>استوديو قرار قبل طلب التصميم</span></span>
+      </a>
+      <a class="route-link" href="${OFFICIAL_URL}" target="_blank" rel="noreferrer">الموقع الرسمي ↗</a>
+    </header>
+
+    <main>
+      <section class="shell hero" id="top">
+        <p class="eyebrow">قرار أوضح قبل طلب التصميم</p>
+        <h1>جرّب اتجاه مطبخك، ثم أرسل طلب تصميم أوضح.</h1>
+        <p class="lead">اختر نوع المشروع والنمط، جرّب اتجاه اللون والسطح على نموذج ثلاثي الأبعاد، وقارن خيارين قبل إرسال ملخص منظم إلى خدمة العملاء.</p>
+        <div class="route-chips" aria-label="نوع المشروع">
+          ${requestTypes.map(r => `<button class="route-chip ${state.request===r.id?'active':''}" data-request="${r.id}">${r.name}</button>`).join('')}
+        </div>
+      </section>
+
+      <section class="shell studio-wrap">
+        <div class="studio">
+          <div class="studio-head">
+            <div>
+              <p class="eyebrow" style="color:#d9b985;margin-bottom:6px">استوديو القرار البصري</p>
+              <h2>جرّب الاتجاه على نفس النموذج.</h2>
+              <p>النموذج ثابت لدعم قرار الاتجاه؛ النمط والألوان والأسطح المعروضة تصور تجريبي وليست كتالوجاً رسمياً أو أبعاد تصنيع.</p>
+            </div>
+            <span class="truth-pill">تصور تفاعلي • نموذج ثابت</span>
+          </div>
+
+          <div class="scene-frame">
+            <div id="scene"></div>
+            <div class="scene-overlay">
+              <div class="scene-caption">
+                <strong id="sceneChoice">مودرن • عاجي • فاتح هادئ</strong>
+                <span>اسحب لتغيير الزاوية. المشهد لا يغيّر التخطيط ولا يحسب السعر.</span>
+              </div>
+              <div class="scene-tools">
+                <button class="icon-btn" id="resetView" aria-label="إعادة زاوية العرض">↺</button>
+                <button class="icon-btn" id="toggleLight" aria-label="تبديل الإضاءة">☼</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="control-tabs" role="tablist">
+            <button class="tab-btn active" data-tab="colors">الألوان</button>
+            <button class="tab-btn" data-tab="materials">النمط والسطح</button>
+            <button class="tab-btn" data-tab="finish">التشطيب والإضاءة</button>
+          </div>
+
+          <div class="panel active" data-panel="colors">
+            <div class="control-grid">
+              <div class="control-card">
+                <h3>الخزائن السفلية — اتجاه اللون</h3>
+                <div class="swatches">${swatchMarkup('base',state.base)}</div>
+                <p class="microcopy">درجات توضيحية فقط وليست أكواداً معتمدة من كريستوود.</p>
+              </div>
+              <div class="control-card">
+                <h3>الخزائن العلوية — اتجاه اللون</h3>
+                <div class="swatches">${swatchMarkup('upper',state.upper)}</div>
+                <p class="microcopy">يمكن فصل اللون العلوي عن السفلي لتجربة اتجاه ثنائي اللون.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel" data-panel="materials">
+            <div class="control-grid">
+              <div class="control-card">
+                <h3>نمط المطبخ</h3>
+                <div class="option-row">${optionMarkup(cabinetFamilies,'family',state.family)}</div>
+                <p class="microcopy">التغيير هنا يحاكي اللمعة/الملمس بصرياً فقط ولا يثبت مواصفة تصنيع.</p>
+              </div>
+              <div class="control-card">
+                <h3>اتجاه سطح العمل</h3>
+                <div class="option-row">${optionMarkup(countertopFamilies,'counter',state.counter)}</div>
+                <p class="microcopy">اتجاهات السطح والألوان في المشهد توضيحية وليست كتالوجاً معتمداً.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel" data-panel="finish">
+            <div class="control-grid">
+              <div class="control-card">
+                <h3>اتجاه التشطيب</h3>
+                <div class="option-row">${optionMarkup(finishes,'finish',state.finish)}</div>
+              </div>
+              <div class="control-card">
+                <h3>حالة الإضاءة</h3>
+                <div class="option-row">
+                  <button class="option ${state.light==='day'?'active':''}" data-kind="light" data-value="day">نهاري</button>
+                  <button class="option ${state.light==='warm'?'active':''}" data-kind="light" data-value="warm">دافئ</button>
+                </div>
+                <p class="microcopy">الهدف رؤية أثر الضوء على اللون قبل المحادثة، لا محاكاة إنارة هندسية.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="shell decision-section">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">قارن قبل أن تعتمد الاتجاه</p>
+            <h2>اختيار A أو B، بدون إعادة كل شيء من البداية.</h2>
+          </div>
+          <p>ثبّت اتجاهين بصريين، ارجع بينهما فوراً، ثم شارك نفس الحالة كرابط إذا احتجت مناقشتها مع شخص آخر.</p>
+        </div>
+
+        <div class="compare-grid">
+          <div class="compare-card">
+            <div class="compare-toolbar">
+              <button class="action-btn primary" id="saveA">حفظ كـ A</button>
+              <button class="action-btn secondary" id="saveB">حفظ كـ B</button>
+              <button class="action-btn ghost" id="loadA">عرض A</button>
+              <button class="action-btn ghost" id="loadB">عرض B</button>
+            </div>
+            <div class="ab-grid">
+              <div class="ab-card" id="cardA">${snapshotCard('A',snapshotA)}</div>
+              <div class="ab-card" id="cardB">${snapshotCard('B',snapshotB)}</div>
+            </div>
+            <div class="share-state">
+              <input id="shareUrl" value="${buildShareUrl()}" readonly aria-label="رابط حالة الاختيار" />
+              <button class="action-btn secondary" id="copyLink">نسخ الرابط</button>
+            </div>
+          </div>
+
+          <div class="advisor-card">
+            <h3>حدد الأولوية قبل الطلب</h3>
+            <p>اختيار واحد يساعد الطرف الآخر يفهم ما يهمك أكثر قبل الدخول في التفاصيل.</p>
+            <div class="choice-stack" id="priorityChoices">
+              <div class="choice-row">
+                <button class="choice ${state.priority==='easycare'?'active':''}" data-priority="easycare"><strong>سهولة العناية</strong><span>أفضلية للتنظيف والاستخدام اليومي</span></button>
+                <button class="choice ${state.priority==='visual'?'active':''}" data-priority="visual"><strong>الشكل أولاً</strong><span>القرار يبدأ من اللون والتباين</span></button>
+              </div>
+              <div class="choice-row">
+                <button class="choice ${state.priority==='storage'?'active':''}" data-priority="storage"><strong>التخزين</strong><span>أولوية للاستفادة من المساحة</span></button>
+                <button class="choice ${state.priority==='unsure'?'active':''}" data-priority="unsure"><strong>غير متأكد</strong><span>أحتاج اقتراحاً بعد معرفة المساحة</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="shell gallery-section">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">مرجع الهوية والخدمة</p>
+            <h2>ثلاثة اتجاهات منشورة من كريستوود.</h2>
+          </div>
+          <p>الموقع الرسمي يعرض المطابخ ضمن كلاسيك، مودرن ونيو كلاسيك. لا نستخدم صور ستوك أو ننسب صوراً غير موثقة للشركة.</p>
+        </div>
+        <div class="gallery-grid" style="grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:none">
+          <a class="gallery-item" href="${OFFICIAL_URL}" target="_blank" rel="noreferrer" style="min-height:220px;background:linear-gradient(145deg,#171916,#343630);display:flex;align-items:flex-end;padding:24px;color:white"><div><small style="opacity:.62">CRESTWOOD</small><h3 style="margin:8px 0 0;font-size:28px">مودرن</h3></div></a>
+          <a class="gallery-item" href="${OFFICIAL_URL}" target="_blank" rel="noreferrer" style="min-height:220px;background:linear-gradient(145deg,#d9cfbf,#8e7d68);display:flex;align-items:flex-end;padding:24px;color:#171714"><div><small style="opacity:.68">CRESTWOOD</small><h3 style="margin:8px 0 0;font-size:28px">كلاسيك</h3></div></a>
+          <a class="gallery-item" href="${OFFICIAL_URL}" target="_blank" rel="noreferrer" style="min-height:220px;background:linear-gradient(145deg,#ebe6dc,#b9aa94);display:flex;align-items:flex-end;padding:24px;color:#171714"><div><small style="opacity:.68">CRESTWOOD</small><h3 style="margin:8px 0 0;font-size:28px">نيو كلاسيك</h3></div></a>
+        </div>
+        <p class="gallery-note">هذه بطاقات اتجاه فقط. الأعمال والصور الفعلية تُراجع من موقع كريستوود الرسمي.</p>
+      </section>
+
+      <section class="shell readiness-section">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">تجهيز الطلب</p>
+            <h2>أرسل ما ينقص فقط.</h2>
+          </div>
+          <p>اختيارات النمط واللون والسطح تنتقل تلقائياً إلى الملخص؛ هنا نضيف معلومات المشروع التي يحتاجها فريق التصميم قبل المحادثة.</p>
+        </div>
+
+        <div class="readiness-layout">
+          <div class="readiness-card">
+            <h3>بيانات مفيدة قبل التواصل</h3>
+            <p>لا توجد أسعار آلية أو وعود تنفيذ. الهدف أن يصل طلب التصميم بمعلومات أوضح منذ أول تواصل.</p>
+            <div class="readiness-meter"><span id="meterBar"></span></div>
+            <div class="readiness-label" id="meterLabel">اكتمال البيانات</div>
+
+            <div class="form-grid" style="margin-top:16px">
+              <div class="field">
+                <label for="layout">شكل المساحة</label>
+                <select id="layout">
+                  <option value="">اختر</option>
+                  <option value="مستقيم" ${state.layout==='مستقيم'?'selected':''}>مستقيم</option>
+                  <option value="حرف L" ${state.layout==='حرف L'?'selected':''}>حرف L</option>
+                  <option value="حرف U" ${state.layout==='حرف U'?'selected':''}>حرف U</option>
+                  <option value="غير متأكد" ${state.layout==='غير متأكد'?'selected':''}>غير متأكد</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="city">المدينة / الحي</label>
+                <input id="city" value="${escapeHtml(state.city)}" placeholder="مثال: الرياض" />
+              </div>
+              <div class="field full">
+                <label>نطاق المشروع</label>
+                <div class="option-row">
+                  ${services.map(s=>`<button type="button" class="option ${state.services.includes(s.id)?'active':''}" data-service="${s.id}">${s.name}</button>`).join('')}
+                </div>
+              </div>
+            </div>
+
+            <button class="optional-toggle" id="optionalToggle">+ إضافة المقاسات / الأجهزة إن كانت متاحة</button>
+            <div class="form-grid optional-fields" id="optionalFields">
+              <div class="field">
+                <label for="width">العرض التقريبي بالمتر</label>
+                <input id="width" inputmode="decimal" value="${escapeHtml(state.width)}" placeholder="مثال: 4.2" />
+              </div>
+              <div class="field">
+                <label for="depth">العمق التقريبي بالمتر</label>
+                <input id="depth" inputmode="decimal" value="${escapeHtml(state.depth)}" placeholder="مثال: 3.0" />
+              </div>
+              <div class="field full">
+                <label for="appliances">الأجهزة الأساسية</label>
+                <input id="appliances" value="${escapeHtml(state.appliances)}" placeholder="فرن، ثلاجة، غسالة صحون..." />
+              </div>
+              <div class="field full">
+                <label for="note">ملاحظة مختصرة</label>
+                <textarea id="note" placeholder="أي نقطة مهمة قبل التواصل">${escapeHtml(state.note)}</textarea>
+              </div>
+            </div>
+          </div>
+
+          <aside class="summary-box">
+            <h3>ملخص جاهز للنسخ</h3>
+            <pre id="summaryText"></pre>
+            <div class="summary-actions">
+              <button class="action-btn secondary" id="copySummary">نسخ الملخص</button>
+              <button class="action-btn primary" id="openWhatsApp">إرسال الملخص عبر واتساب ↗</button>
+            </div>
+            <p class="route-truth">يفتح الزر رقم خدمة العملاء المنشور لكريستوود مع ملخص الطلب في واتساب؛ يمكنك مراجعة الرسالة قبل الإرسال.</p>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="shell footer">
+      <div><strong>كريستوود</strong><br/>تصميم وتنفيذ • مطابخ • خزائن • أعمال خشبية</div>
+      <a href="${OFFICIAL_URL}" target="_blank" rel="noreferrer">الموقع الرسمي ↗</a>
+    </footer>
+    <div class="toast" id="toast">تم النسخ</div>
+  </div>`;
+
+  bindUi();
+  initScene();
+  updateUiFromState();
+}
+
+function escapeHtml(value='') {
+  return String(value).replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+}
+
+function getById(list,id) {
+  return list.find(x=>x.id===id) || list[0];
+}
+
+function snapshotCard(label,s) {
+  if(!s) return `<h4>اختيار ${label}</h4><div class="ab-line"><span>الحالة</span><b>لم يُحفظ بعد</b></div>`;
+  return `<h4>اختيار ${label}</h4>
+    <div class="ab-line"><span>النمط</span><b>${getById(cabinetFamilies,s.family).name}</b></div>
+    <div class="ab-line"><span>السفلي</span><b>${getById(visualColors,s.base).name}</b></div>
+    <div class="ab-line"><span>العلوي</span><b>${getById(visualColors,s.upper).name}</b></div>
+    <div class="ab-line"><span>السطح</span><b>${getById(countertopFamilies,s.counter).name}</b></div>
+    <div class="ab-line"><span>التشطيب</span><b>${getById(finishes,s.finish).name}</b></div>`;
+}
+
+function currentVisualState() {
+  return {
+    family:state.family, base:state.base, upper:state.upper, counter:state.counter,
+    finish:state.finish, light:state.light
+  };
+}
+
+function buildShareUrl() {
+  const q = new URLSearchParams();
+  const shareKeys = ['request','family','base','upper','counter','finish','light'];
+  shareKeys.forEach(k => q.set(k,state[k]));
+  return location.origin + location.pathname + '?' + q.toString();
+}
+
+function buildSummary() {
+  const req = getById(requestTypes,state.request).name;
+  const fam = getById(cabinetFamilies,state.family).name;
+  const base = getById(visualColors,state.base).name;
+  const upper = getById(visualColors,state.upper).name;
+  const counter = getById(countertopFamilies,state.counter).name;
+  const finish = getById(finishes,state.finish).name;
+  const svc = services.filter(s=>state.services.includes(s.id)).map(s=>s.name).join('، ');
+  const lines = [
+    'طلب تصميم مبدئي — كريستوود',
+    `نوع المشروع: ${req}`,
+    `النمط المختار: ${fam}`,
+    `اللون السفلي: ${base} (توضيحي)`,
+    `اللون العلوي: ${upper} (توضيحي)`,
+    `اتجاه السطح: ${counter}`,
+    `التشطيب: ${finish}`,
+    state.priority ? `الأولوية: ${priorityLabel(state.priority)}` : '',
+    state.layout ? `شكل المساحة: ${state.layout}` : '',
+    state.city ? `المدينة / الحي: ${state.city}` : '',
+    state.width ? `العرض التقريبي: ${state.width} م` : '',
+    state.depth ? `العمق التقريبي: ${state.depth} م` : '',
+    state.appliances ? `الأجهزة: ${state.appliances}` : '',
+    svc ? `نطاق المشروع: ${svc}` : '',
+    state.note ? `ملاحظة: ${state.note}` : '',
+    'ملاحظة: الاختيارات البصرية توضيحية وليست كتالوجاً أو تسعيراً معتمداً.'
+  ];
+  return lines.filter(Boolean).join('\n');
+}
+
+function priorityLabel(id){
+  return ({easycare:'سهولة العناية',visual:'الشكل أولاً',storage:'التخزين',unsure:'غير متأكد'})[id] || '';
+}
+
+function bindUi(){
+  document.querySelectorAll('[data-request]').forEach(btn=>btn.addEventListener('click',()=>{
+    state.request=btn.dataset.request; syncUrlSoft(); updateUiFromState();
+  }));
+  document.querySelectorAll('[data-tab]').forEach(btn=>btn.addEventListener('click',()=>{
+    document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===btn));
+    document.querySelectorAll('[data-panel]').forEach(p=>p.classList.toggle('active',p.dataset.panel===btn.dataset.tab));
+  }));
+  document.querySelectorAll('[data-kind]').forEach(btn=>btn.addEventListener('click',()=>{
+    state[btn.dataset.kind]=btn.dataset.value;
+    syncUrlSoft(); updateUiFromState();
+  }));
+  document.querySelectorAll('[data-service]').forEach(btn=>btn.addEventListener('click',()=>{
+    const id=btn.dataset.service;
+    state.services=state.services.includes(id)?state.services.filter(x=>x!==id):[...state.services,id];
+    updateUiFromState();
+  }));
+  document.querySelectorAll('[data-priority]').forEach(btn=>btn.addEventListener('click',()=>{
+    state.priority=btn.dataset.priority; updateUiFromState();
+  }));
+
+  document.querySelector('#saveA').addEventListener('click',()=>{snapshotA=currentVisualState(); refreshCompare(); showToast('تم حفظ A')});
+  document.querySelector('#saveB').addEventListener('click',()=>{snapshotB=currentVisualState(); refreshCompare(); showToast('تم حفظ B')});
+  document.querySelector('#loadA').addEventListener('click',()=>{if(snapshotA){Object.assign(state,snapshotA);updateUiFromState();showToast('تم عرض A')}});
+  document.querySelector('#loadB').addEventListener('click',()=>{if(snapshotB){Object.assign(state,snapshotB);updateUiFromState();showToast('تم عرض B')}});
+
+  document.querySelector('#copyLink').addEventListener('click',()=>copyText(buildShareUrl(),'تم نسخ رابط الاختيار'));
+  document.querySelector('#copySummary').addEventListener('click',()=>copyText(buildSummary(),'تم نسخ الملخص'));
+  document.querySelector('#openWhatsApp').addEventListener('click',()=>{
+    const url=WHATSAPP_URL+'?text='+encodeURIComponent(buildSummary());
+    window.open(url,'_blank','noopener,noreferrer');
+  });
+  document.querySelector('#optionalToggle').addEventListener('click',()=>{
+    const box=document.querySelector('#optionalFields');box.classList.toggle('open');
+    document.querySelector('#optionalToggle').textContent=box.classList.contains('open')?'− إخفاء التفاصيل الاختيارية':'+ إضافة المقاسات / الأجهزة إن كانت متاحة';
+  });
+  ['layout','city','width','depth','appliances','note'].forEach(id=>{
+    const el=document.querySelector('#'+id);
+    const event=el.tagName==='SELECT'?'change':'input';
+    el.addEventListener(event,()=>{state[id]=el.value;updateReadiness();updateSummary();});
+  });
+  document.querySelectorAll('.gallery-item img').forEach(img=>img.addEventListener('error',()=>img.closest('.gallery-item').classList.add('failed')));
+  document.querySelector('#resetView').addEventListener('click',()=>sceneApi?.reset());
+  document.querySelector('#toggleLight').addEventListener('click',()=>{
+    state.light=state.light==='day'?'warm':'day';updateUiFromState();
+  });
+}
+
+function refreshCompare(){
+  document.querySelector('#cardA').innerHTML=snapshotCard('A',snapshotA);
+  document.querySelector('#cardB').innerHTML=snapshotCard('B',snapshotB);
+}
+
+function updateUiFromState(){
+  document.querySelectorAll('[data-request]').forEach(b=>b.classList.toggle('active',b.dataset.request===state.request));
+  document.querySelectorAll('[data-kind]').forEach(b=>b.classList.toggle('active',b.dataset.value===state[b.dataset.kind]));
+  document.querySelectorAll('[data-service]').forEach(b=>b.classList.toggle('active',state.services.includes(b.dataset.service)));
+  document.querySelectorAll('[data-priority]').forEach(b=>b.classList.toggle('active',b.dataset.priority===state.priority));
+  document.querySelector('#shareUrl').value=buildShareUrl();
+  updateSceneChoice();
+  sceneApi?.apply(state);
+  updateReadiness();
+  updateSummary();
+}
+
+function updateSceneChoice(){
+  const el=document.querySelector('#sceneChoice');
+  if(!el) return;
+  el.textContent=`${getById(cabinetFamilies,state.family).name} • ${getById(visualColors,state.base).name} / ${getById(visualColors,state.upper).name} • ${getById(countertopFamilies,state.counter).name}`;
+}
+
+function updateReadiness(){
+  const checks=[
+    !!state.request,!!state.family,!!state.base,!!state.upper,!!state.counter,
+    !!state.layout,!!state.city,state.services.length>0,!!state.priority
+  ];
+  const pct=Math.round(checks.filter(Boolean).length/checks.length*100);
+  const bar=document.querySelector('#meterBar'); const label=document.querySelector('#meterLabel');
+  if(bar) bar.style.width=pct+'%';
+  if(label) label.textContent=`اكتمال البيانات: ${pct}% — مؤشر اكتمال فقط`;
+}
+
+function updateSummary(){
+  const pre=document.querySelector('#summaryText'); if(pre) pre.textContent=buildSummary();
+}
+
+function syncUrlSoft(){
+  history.replaceState(null,'',buildShareUrl());
+}
+
+async function copyText(text,msg){
+  try{
+    await navigator.clipboard.writeText(text);showToast(msg);
+  }catch{
+    const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();showToast(msg);
+  }
+}
+
+function showToast(message){
+  const t=document.querySelector('#toast'); if(!t)return;
+  t.textContent=message;t.classList.add('show');clearTimeout(showToast.timer);
+  showToast.timer=setTimeout(()=>t.classList.remove('show'),1800);
+}
+
+function initScene(){
+  const mount=document.querySelector('#scene');
+  if(!mount) return;
+
+  try{
+    const scene=new THREE.Scene();
+    scene.background=null;
+
+    const camera=new THREE.PerspectiveCamera(38,1,.1,100);
+    camera.position.set(7.4,4.8,8.6);
+
+    const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});
+    renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.6));
+    renderer.shadowMap.enabled=true;
+    renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+    renderer.outputColorSpace=THREE.SRGBColorSpace;
+    mount.appendChild(renderer.domElement);
+
+    const controls=new OrbitControls(camera,renderer.domElement);
+    controls.target.set(.2,1.3,-.25);
+    controls.enablePan=false;
+    controls.enableDamping=true;
+    controls.dampingFactor=.08;
+    controls.minDistance=7.2;
+    controls.maxDistance=11;
+    controls.minPolarAngle=Math.PI*.25;
+    controls.maxPolarAngle=Math.PI*.48;
+    controls.minAzimuthAngle=-Math.PI*.34;
+    controls.maxAzimuthAngle=Math.PI*.34;
+
+    const hemi=new THREE.HemisphereLight(0xfff7e8,0x1a2822,2.15);
+    scene.add(hemi);
+    const key=new THREE.DirectionalLight(0xffffff,3.6);
+    key.position.set(3.5,8,5.5);key.castShadow=true;scene.add(key);
+    const warm=new THREE.PointLight(0xffc783,10,18,2);
+    warm.position.set(-3,4,3);scene.add(warm);
+
+    const room=new THREE.Group();scene.add(room);
+
+    const wallMat=new THREE.MeshStandardMaterial({color:0xeee8dd,roughness:.95});
+    const floorMat=new THREE.MeshStandardMaterial({color:0xcfc7b8,roughness:.82});
+    const metalMat=new THREE.MeshStandardMaterial({color:0xaab1b1,roughness:.24,metalness:.7});
+    const applianceMat=new THREE.MeshStandardMaterial({color:0x202627,roughness:.25,metalness:.35});
+    const glassMat=new THREE.MeshPhysicalMaterial({color:0x8aa4a3,transparent:true,opacity:.28,roughness:.1,metalness:.05});
+
+    const baseMat=new THREE.MeshStandardMaterial({color:getById(visualColors,state.base).hex,roughness:.45});
+    const upperMat=new THREE.MeshStandardMaterial({color:getById(visualColors,state.upper).hex,roughness:.45});
+    const counterMat=new THREE.MeshStandardMaterial({color:getById(countertopFamilies,state.counter).hex,roughness:.28});
+
+    const baseMeshes=[],upperMeshes=[],counterMeshes=[];
+
+    const floor=new THREE.Mesh(new THREE.PlaneGeometry(11,8),floorMat);
+    floor.rotation.x=-Math.PI/2;floor.position.y=0;floor.receiveShadow=true;room.add(floor);
+    const back=new THREE.Mesh(new THREE.BoxGeometry(8.6,4.8,.1),wallMat);
+    back.position.set(0,2.4,-2.15);back.receiveShadow=true;room.add(back);
+    const side=new THREE.Mesh(new THREE.BoxGeometry(.1,4.8,5.3),wallMat);
+    side.position.set(4.25,2.4,.5);side.receiveShadow=true;room.add(side);
+
+    function box(w,h,d,mat,x,y,z){
+      const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;room.add(m);return m;
+    }
+    function handle(x,y,z,w=.28,rot=0){
+      const h=box(w,.04,.04,metalMat,x,y,z);h.rotation.y=rot;return h;
+    }
+
+    const unitW=1.16;
+    [-2.9,-1.62,-.34,.94,2.22].forEach((x,i)=>{
+      const m=box(unitW,1.28,.78,baseMat,x,.67,-1.68);baseMeshes.push(m);
+      handle(x,.82,-1.27,.3);
+      const c=box(unitW+.03,.12,.9,counterMat,x,1.36,-1.63);counterMeshes.push(c);
+      if(i!==2){
+        const u=box(unitW,1.06,.48,upperMat,x,2.76,-1.88);upperMeshes.push(u);
+        handle(x,2.62,-1.62,.26);
+      }
+    });
+
+    [-.8,.48,1.76].forEach((z,i)=>{
+      const m=box(1.0,1.28,.78,baseMat,3.64,.67,z);m.rotation.y=Math.PI/2;baseMeshes.push(m);
+      const c=box(1.03,.12,.9,counterMat,3.6,1.36,z);c.rotation.y=Math.PI/2;counterMeshes.push(c);
+      if(i<2){
+        const u=box(1.0,1.06,.48,upperMat,3.8,2.76,z);u.rotation.y=Math.PI/2;upperMeshes.push(u);
+      }
+    });
+
+    const tall=box(1.04,2.72,.8,upperMat,-3.65,1.38,-1.68);upperMeshes.push(tall);
+    const fridge=box(.96,2.35,.72,applianceMat,2.85,1.18,-1.68);
+    const fridgeLine=box(.82,.02,.02,metalMat,2.85,1.25,-1.30);
+
+    const oven=box(.88,.92,.72,applianceMat,-.34,.72,-1.29);
+    const hob=box(.82,.045,.52,applianceMat,-.34,1.47,-1.48);
+
+    const sink=box(.78,.04,.48,metalMat,1.0,1.47,-1.52);
+    const faucet=box(.04,.48,.04,metalMat,1.18,1.67,-1.52);
+    faucet.rotation.z=-.18;
+
+    const island=box(2.65,1.05,1.18,baseMat,-.35,.56,.85);baseMeshes.push(island);
+    const islandTop=box(2.9,.13,1.38,counterMat,-.35,1.16,.85);counterMeshes.push(islandTop);
+
+    const glassBox=box(.96,.9,.04,glassMat,2.22,2.76,-1.62);
+    const glassFrame=box(1.02,.04,.06,metalMat,2.22,3.2,-1.59);
+
+    const plinthMat=new THREE.MeshStandardMaterial({color:0x292f2d,roughness:.55});
+    box(6.2,.11,.7,plinthMat,-.3,.08,-1.72);
+    const backsplash=new THREE.Mesh(new THREE.PlaneGeometry(6.5,1.05),new THREE.MeshStandardMaterial({color:0xdad2c4,roughness:.62}));
+    backsplash.position.set(-.15,1.95,-2.08);room.add(backsplash);
+
+    const reset=()=>{
+      camera.position.set(7.4,4.8,8.6);controls.target.set(.2,1.3,-.25);controls.update();
+    };
+
+    function apply(s){
+      const baseC=getById(visualColors,s.base).hex;
+      const upperC=getById(visualColors,s.upper).hex;
+      const c=getById(countertopFamilies,s.counter);
+      const family=getById(cabinetFamilies,s.family);
+      const fin=getById(finishes,s.finish);
+      baseMat.color.set(baseC);upperMat.color.set(upperC);counterMat.color.set(c.hex);
+      baseMat.roughness=Math.min(.9,(family.roughness+fin.roughness)/2);
+      upperMat.roughness=baseMat.roughness;
+      baseMat.metalness=family.metalness;upperMat.metalness=family.metalness;
+      counterMat.roughness=c.roughness;
+      if(s.light==='warm'){
+        key.intensity=2.2;warm.intensity=22;hemi.intensity=1.35;renderer.setClearColor(0x251d16,0);
+      }else{
+        key.intensity=3.6;warm.intensity=10;hemi.intensity=2.15;renderer.setClearColor(0x000000,0);
+      }
+    }
+    apply(state);
+
+    const resize=()=>{
+      const r=mount.getBoundingClientRect();
+      const w=Math.max(260,r.width),h=Math.max(280,r.height);
+      renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();
+    };
+    const ro=new ResizeObserver(resize);ro.observe(mount);resize();
+
+    let raf=0;
+    const tick=()=>{controls.update();renderer.render(scene,camera);raf=requestAnimationFrame(tick)};tick();
+
+    sceneApi={apply,reset};
+
+    window.addEventListener('beforeunload',()=>{
+      cancelAnimationFrame(raf);ro.disconnect();controls.dispose();renderer.dispose();
+    },{once:true});
+  }catch(err){
+    console.error(err);
+    mount.innerHTML='<div style="display:grid;place-items:center;height:100%;padding:30px;text-align:center;color:#dce5e0">تعذر تشغيل العرض ثلاثي الأبعاد على هذا الجهاز. يمكنك متابعة الاختيارات والطلب أسفل الصفحة.</div>';
+  }
+}
+
+render();
+</script>
+</body>
+</html>
