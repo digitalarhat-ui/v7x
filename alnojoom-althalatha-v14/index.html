@@ -1261,11 +1261,11 @@
     function buildAdvisorRecommendation(){
       const s=advisorState;
       let rec={m:"metal",b:"ivory",a:"lightgray",f:s.finish,t:"natural",l:s.light==="low"?"day":(s.light==="strong"?"neutral":"day")};
-      let title="اتجاه هادئ ثنائي اللون";
-      let why="مزيج فاتح ومتوازن يعطيك نقطة مقارنة واضحة قبل الانتقال إلى خيارات أكثر جرأة.";
+      let title="اتجاه فاتح متوازن";
+      let why="بداية فاتحة ومحايدة تساعدك ترى فرق اللونين والإضاءة قبل تضييق الاختيارات.";
 
       if(s.style==="warm"){
-        rec.m="wood"; rec.b=s.light==="low"?"ivory":"beige"; rec.a="oak";
+        rec.m="wood"; rec.b=s.light==="low"?"ivory":"sand"; rec.a="oak";
         title="اتجاه دافئ طبيعي";
         why="اتجاه دافئ للمقارنة البصرية فقط، حتى ترى العلاقة بين لون الخزائن والسطح قبل اعتماد العينات.";
       }
@@ -1277,7 +1277,7 @@
 
       if(s.contrast==="same") rec.a=rec.b;
       if(s.contrast==="high"){
-        if(["ivory","white","lightgray","beige"].includes(rec.b)) rec.a=s.style==="warm"?"walnut":"charcoal";
+        if(["ivory","white","lightgray","sand"].includes(rec.b)) rec.a=s.style==="warm"?"walnut":"charcoal";
         else rec.a="ivory";
       }
       if(s.light==="low" && ["charcoal","mocha","walnut"].includes(rec.b)) rec.b="ivory";
@@ -1369,7 +1369,7 @@
       let base="ivory",accent="oak";
       if(brightness>185){base=warm?"charcoal":"mocha";accent="oak";}
       else if(brightness<105){base="ivory";accent=warm?"oak":"lightgray";}
-      else if(warm){base="beige";accent="walnut";}
+      else if(warm){base="sand";accent="walnut";}
       else{base="ivory";accent="charcoal";}
       return {base,accent,brightness,warm};
     }
@@ -1449,7 +1449,7 @@
         x.font="600 22px Tajawal, sans-serif";x.fillStyle="#bbb3a8";
         x.fillText("الأساسية: "+colorStates[currentBaseColor].label+"   •   العلوية: "+colorStates[currentAccentColor].label+"   •   السطح: "+topStates[currentTop].label,1490,782);
         x.fillStyle="#77716b";x.font="500 17px Tajawal, sans-serif";
-        x.fillText("تصور بصري أولي — يعتمد الاختيار النهائي مع المنفذ بعد القياس والعينات.",1490,817);
+        x.fillText("تصور بصري أولي — يعتمد الاختيار النهائي مع النجوم الثلاثة بعد القياس والعينات.",1490,817);
         const a=document.createElement("a");a.download="kitchen-decision-card.jpg";a.href=out.toDataURL("image/jpeg",.9);a.click();
       };
       shot.src=canonicalShot;

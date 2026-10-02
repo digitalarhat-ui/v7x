@@ -54,7 +54,7 @@ jobs:
               baseSwatches:document.querySelectorAll('.control-group[data-kind="baseColor"] .swatch').length,
               accentSwatches:document.querySelectorAll('.control-group[data-kind="accentColor"] .swatch').length,
               tops:document.querySelectorAll('.control-group[data-kind="top"] .seg').length,
-              forbidden:['رواد الإبداع','ruaad','نجران','Higher Class','Afrah','Digital Arhat','BEASTMODE','V1.4'].filter(x=>document.documentElement.innerHTML.includes(x)),
+              forbidden:['رواد الإبداع','ruaad','نجران','Higher Class','Afrah','Digital Arhat','BEASTMODE','V1.4','wa.me','instagram.com','tiktok.com'].filter(x=>document.documentElement.innerHTML.includes(x)),
               galleryImages:[...document.querySelectorAll('#gallery img')].map(x=>({ok:x.complete&&x.naturalWidth>100,w:x.naturalWidth,h:x.naturalHeight})),
               fallbackDisplay:getComputedStyle(document.querySelector('#galleryFallback')).display
             }));
@@ -69,19 +69,35 @@ jobs:
             if((init.galleryImages.length===0||init.galleryImages.every(x=>!x.ok))&&init.fallbackDisplay==='none')throw new Error(name+': authentic gallery failsafe not visible');
 
             const before=await p.$eval('#currentChoice',el=>el.textContent);
+            if(w<=560) await p.click('.control-tab[data-tab="colors"]');
             await p.click('.control-group[data-kind="baseColor"] .swatch[data-value="sage"]');
             await p.click('.control-group[data-kind="accentColor"] .swatch[data-value="navy"]');
+            if(w<=560) await p.click('.control-tab[data-tab="surface"]');
             await p.click('.control-group[data-kind="top"] .seg[data-value="black"]');
+            if(w<=560) await p.click('.control-tab[data-tab="lighting"]');
             await p.click('.control-group[data-kind="lighting"] .seg[data-value="evening"]');
             await new Promise(r=>setTimeout(r,300));
             const after=await p.$eval('#currentChoice',el=>el.textContent);
             if(after===before||!after.includes('سيج')||!after.includes('كحلي')||!after.includes('رخامي أسود'))throw new Error(name+': 3D decision controls failed '+after);
 
             await p.click('#saveA');
+            if(w<=560) await p.click('.control-tab[data-tab="colors"]');
             await p.click('.control-group[data-kind="baseColor"] .swatch[data-value="white"]');
             await p.click('#saveB');
             const ab=await p.evaluate(()=>({a:document.querySelector('#variantASummary')?.textContent||'',b:document.querySelector('#variantBSummary')?.textContent||'',imgA:!!document.querySelector('#variantAMedia img'),imgB:!!document.querySelector('#variantBMedia img')}));
             if(!ab.a||!ab.b||ab.a===ab.b||!ab.imgA||!ab.imgB)throw new Error(name+': A/B compare failed '+JSON.stringify(ab));
+
+            // Adjacent module 1: guided visual direction.
+            await p.click('#advisorNext');
+            await p.click('#advisorNext');
+            await p.click('#advisorNext');
+            await p.click('#advisorNext');
+            const advisorReady=await p.evaluate(()=>({
+              ready:document.querySelector('#advisorGrid')?.classList.contains('result-ready'),
+              title:document.querySelector('#advisorTitle')?.textContent||'',
+              enabled:!document.querySelector('#applyAdvisor')?.disabled
+            }));
+            if(!advisorReady.ready||!advisorReady.title)throw new Error(name+': guided advisor failed '+JSON.stringify(advisorReady));
 
             await p.click('#shareDesign');
             const shareUrl=await p.url();
