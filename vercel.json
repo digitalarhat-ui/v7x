@@ -32,7 +32,8 @@
     "lamar-kitchens-riyadh.vercel.app",
     "nuwadir-alraqiya.vercel.app",
     "alshammari-project-ready.vercel.app",
-    "centro-riyadh-kitchen-studio.vercel.app"
+    "centro-riyadh-kitchen-studio.vercel.app",
+    "hamor-kitchen-studio.vercel.app"
   ],
   "redirects": [
     {
@@ -208,6 +209,17 @@
         {
           "type": "host",
           "value": "centro-riyadh-kitchen-studio.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/hamor-kitchens-v20",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "hamor-kitchen-studio.vercel.app"
         }
       ]
     }
