@@ -30,7 +30,7 @@ jobs:
             try{
               const r=await fetch(live,{redirect:'follow'});
               const t=await r.text();
-              if(r.ok && t.includes('قوة لمار للمطابخ') && t.includes('966541717080') && t.includes('lamar-authentic-failsafe') && t.includes('closest(\"button,a,input,select\")') && !t.includes('العيدروس')) break;
+              if(r.ok && t.includes('قوة لمار للمطابخ') && t.includes('966541717080') && t.includes('lamar-authentic-failsafe') && t.includes('img.onload=function()') && t.includes('closest(\"button,a,input,select\")') && !t.includes('العيدروس')) break;
             }catch{}
             if(i===29) throw new Error('Lamar clean alias did not become ready in time');
             await new Promise(r=>setTimeout(r,5000));
@@ -154,13 +154,22 @@ jobs:
               size:document.querySelector('#size')?.value||'',
               note:document.querySelector('#note')?.value||'',
               overflow:document.documentElement.scrollWidth-innerWidth,
-              fallbackHidden:document.querySelector('#webglFallback')?.hidden===true
+              fallbackHidden:document.querySelector('#webglFallback')?.hidden===true,
+              authAfter:(()=>{
+                const img=document.querySelector('#authenticCard img');
+                return {
+                  imageOk:!!(img&&img.complete&&img.naturalWidth>100),
+                  cardHidden:document.querySelector('#authenticCard')?.hidden===true,
+                  fallbackHidden:document.querySelector('#authenticFallback')?.hidden===true
+                };
+              })()
             }));
             if(restored.cabinet!=='أخضر هادئ'||restored.worktop!=='حجر دافئ'||restored.light!=='دافئة'||restored.branch!=='طريق المدينة المنورة الفرعي — الرياض'||restored.stage!=='مطبخ جديد'||restored.shape!=='مع جزيرة'||restored.size!=='4 × 3 م'||restored.note!=='أحتاج مساحة تخزين أكبر') throw new Error(name+': exact state restore failed '+JSON.stringify(restored));
             if(restored.overflow>2||!restored.fallbackHidden) throw new Error(name+': post-reload layout/WebGL failed '+JSON.stringify(restored));
+            if((!restored.authAfter.imageOk && restored.authAfter.fallbackHidden)||(!restored.authAfter.cardHidden && !restored.authAfter.imageOk)) throw new Error(name+': post-reload authentic asset visibly broken '+JSON.stringify(restored.authAfter));
 
-            const meaningful=errors.filter(e=>!e.includes('favicon')&&!e.includes('ERR_BLOCKED_BY_CLIENT')&&!e.includes('Failed to load resource'));
-            const badMeaningful=badResponses.filter(e=>!e.includes('favicon'));
+            const meaningful=errors.filter(e=>!e.includes('ERR_BLOCKED_BY_CLIENT'));
+            const badMeaningful=badResponses;
             if(meaningful.length||badMeaningful.length) throw new Error(name+': runtime/network errors '+JSON.stringify({meaningful,badMeaningful}));
 
             await p.screenshot({path:'/home/runner/work/v7x/v7x/qa-lamar-live/live-'+name+'-viewport.png',fullPage:false});
