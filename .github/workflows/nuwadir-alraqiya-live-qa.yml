@@ -6,6 +6,7 @@ on:
       - '.github/workflows/nuwadir-alraqiya-live-qa.yml'
       - 'nuwadir-alraqiya-v20/**'
       - 'vercel.json'
+      - 'favicon.ico'
   workflow_dispatch:
 permissions:
   contents: read
