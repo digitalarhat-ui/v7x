@@ -26,7 +26,8 @@
     "kitchens-sandy-khamis.vercel.app",
     "aluminum-smart-kitchen-studio.vercel.app",
     "zawq-al-khayal-kitchens.vercel.app",
-    "kitchenlab-riyadh.vercel.app"
+    "kitchenlab-riyadh.vercel.app",
+    "alaidaroos-kitchen-studio.vercel.app"
   ],
   "redirects": [
     {
@@ -136,6 +137,17 @@
         {
           "type": "host",
           "value": "kitchenlab-riyadh.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/alaidaroos-v20",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "alaidaroos-kitchen-studio.vercel.app"
         }
       ]
     }
