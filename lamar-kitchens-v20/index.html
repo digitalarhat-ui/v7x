@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow">
   <meta name="theme-color" content="#11110f">
-  <title>قوة لمار للمطابخ | تجربة قرار المطبخ قبل الاستشارة</title>
-  <meta name="description" content="تجربة تفاعلية تجريبية تساعد العميل على حفظ اتجاه اللون وسطح العمل وتجهيز سياق مختصر قبل الاستشارة مع قوة لمار للمطابخ.">
+  <title>لمار | استوديو قرار المطبخ قبل الاستشارة</title>
+  <meta name="description" content="استوديو قرار تجريبي لمطابخ لمار: نموذج 3D ثابت لاتجاهات اللون والسطح مع حفظ الحالة وتجهيز ملخص مشروع مختصر قبل الاستشارة.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -149,21 +149,37 @@
       .footer-row{display:grid}
       .stage-bottom{align-items:flex-end}.look{padding:8px;font-size:8px}
     }
-      .webgl-fallback{position:absolute;inset:0;z-index:5;display:grid;place-items:center;padding:28px;text-align:center;background:linear-gradient(145deg,#c6c1b8,#e0dbd1);color:#2b2924}
+  
+    .readiness-meter{margin-top:14px;border:1px solid var(--line);background:#f8f3eb;padding:14px 15px}
+    .readiness-head{display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:10px}
+    .readiness-head span{color:var(--gold);font-weight:700}
+    .readiness-track{height:6px;background:#ddd4c5;margin:10px 0 8px;overflow:hidden}
+    .readiness-track i{display:block;width:40%;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width .25s ease}
+    .readiness-hint{font-size:9px;color:#8c857a;line-height:1.75}
+    .authentic-card{margin:0;border:1px solid var(--line);background:#f8f3eb;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);overflow:hidden}
+    .authentic-card img{width:100%;height:430px;object-fit:cover;display:block;background:#ded7ca}
+    .authentic-card figcaption{padding:24px;display:flex;flex-direction:column;justify-content:flex-end;gap:9px}
+    .authentic-card figcaption b{font-family:"Noto Kufi Arabic";font-size:15px;line-height:1.7}
+    .authentic-card figcaption span,.authentic-fallback{font-size:10px;color:#777165;line-height:1.9}
+    .authentic-fallback{border:1px solid var(--line);background:#f8f3eb;padding:24px;text-align:center}
+    .webgl-fallback{position:absolute;inset:0;z-index:5;display:grid;place-content:center;text-align:center;padding:28px;background:linear-gradient(155deg,#bdb8af,#ddd6ca);color:#24241f}
     .webgl-fallback[hidden]{display:none}
-    .webgl-fallback div{max-width:420px;background:rgba(247,243,235,.92);border:1px solid #c8beae;padding:22px;box-shadow:0 18px 60px rgba(29,24,16,.14)}
-    .webgl-fallback strong{display:block;font-family:"Noto Kufi Arabic";font-size:18px;margin-bottom:8px}
-    .webgl-fallback span{font-size:11px;line-height:1.9;color:#736d63}
-</style>
+    .webgl-fallback b{font-family:"Noto Kufi Arabic";font-size:16px;margin:18px auto 8px;max-width:420px}
+    .webgl-fallback span{font-size:10px;line-height:1.9;max-width:440px;color:#615d56}
+    .fallback-kitchen{width:min(430px,76vw);height:180px;margin:auto;display:grid;grid-template-columns:1.4fr .9fr .9fr 1.2fr;grid-template-rows:1fr .9fr;gap:7px;align-items:stretch}
+    .fallback-kitchen i{display:block;background:#d7cfc1;border:1px solid rgba(0,0,0,.12);box-shadow:inset 0 -10px 22px rgba(0,0,0,.04)}
+    .fallback-kitchen i:nth-child(1){grid-row:1/3}.fallback-kitchen i:nth-child(2){background:#7f8c75}.fallback-kitchen i:nth-child(3){background:#d8d0c2}.fallback-kitchen i:nth-child(4){grid-row:1/3;background:#3e403d}.fallback-kitchen i:nth-child(5){grid-column:2/4;background:#ebe8e0}
+    @media(max-width:700px){.authentic-card{grid-template-columns:1fr}.authentic-card img{height:300px}.authentic-card figcaption{padding:18px}}
+  </style>
 </head>
 <body>
   <header class="topbar">
     <div class="shell nav">
       <div class="brand">
         <div class="brand-mark">ل</div>
-        <div><strong>لمار للمطابخ</strong><small>Lamar Kitchens · الرياض</small></div>
+        <div><strong>لمار</strong><small>قوة لمار للمطابخ</small></div>
       </div>
-      <div class="nav-note">نموذج تفاعلي تجريبي قبل موعد التصميم</div>
+      <div class="nav-note">استوديو قرار تفاعلي قبل موعد التصميم</div>
     </div>
   </header>
 
@@ -171,9 +187,9 @@
     <section class="hero">
       <div class="shell hero-grid">
         <div class="hero-copy">
-          <div class="kicker">تجربة قرار قبل الاستشارة</div>
-          <h1>ادخل الموعد<br>وأنت أوضح.</h1>
-          <p>جرّب اتجاه اللون وسطح العمل على نموذج ثلاثي الأبعاد، احفظ اختيارك، وأضف فقط معلومات المشروع التي تساعد مهندس التصميم على بدء النقاش من نقطة أوضح.</p>
+          <div class="kicker">استوديو قرار قبل الاستشارة</div>
+          <h1>اختَر اتجاهك<br>قبل موعد التصميم.</h1>
+          <p>جرّب اتجاهات ألوان الخزائن والأسطح على نموذج ثلاثي الأبعاد ثابت، احفظ الحالة نفسها، ثم أضف فقط معلومات المشروع التي تساعد فريق لمار على بدء الاستشارة من نقطة أوضح.</p>
           <div class="hero-actions">
             <button class="primary" id="startBtn">ابدأ من النموذج</button>
             <a class="ghost" href="#summary">شاهد شكل الملخص</a>
@@ -183,13 +199,17 @@
             <span>سياق مشروع مختصر</span>
             <span>تحويل إلى خدمة العملاء</span>
           </div>
-          <p class="truth-note">النموذج ثلاثي الأبعاد هنا تجريبي ومحايد، ولا يمثل كتالوجاً رسمياً أو منتجاً أو خامة معتمدة من لمار للمطابخ. الهدف هو توضيح رحلة ما قبل الاستشارة.</p>
+          <p class="truth-note">مشهد 3D هنا نموذج تجريبي ثابت لإثبات الفكرة، وليس كتالوج لمار الرسمي ولا تمثيلاً لخامة أو لون معتمد. الاعتماد النهائي يبقى مع فريق التصميم والقياس في لمار.</p>
         </div>
 
         <div class="studio" id="studio">
           <div class="stage" id="stage">
             <canvas id="scene" aria-label="نموذج مطبخ ثلاثي الأبعاد تفاعلي"></canvas>
-            <div class="webgl-fallback" id="webglFallback" hidden><div><strong>المشهد ثلاثي الأبعاد غير متاح على هذا الجهاز</strong><span>يمكنك متابعة معلومات المشروع أدناه والتواصل مع لمار عبر واتساب. النموذج البصري تجريبي ولا يؤثر على مسار الاستشارة.</span></div></div>
+            <div class="webgl-fallback" id="webglFallback" hidden>
+              <div class="fallback-kitchen" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+              <b>المعاينة ثلاثية الأبعاد غير متاحة على هذا الجهاز</b>
+              <span>يمكنك الاستمرار في تحديد الاتجاهات وحفظ ملخص المشروع؛ وسيتم اعتماد التصميم الفعلي مع فريق لمار.</span>
+            </div>
             <div class="stage-top">
               <div class="scene-label"><b>نموذج 3D تجريبي</b>اسحب لتدوير المشهد</div>
               <div class="orbit-tip">لون الخزائن + سطح العمل + الإضاءة</div>
@@ -209,14 +229,20 @@
                 <button class="swatch active" data-value="ivory" style="--c:#d8d0c2"><i></i>عاجي دافئ</button>
                 <button class="swatch" data-value="sage" style="--c:#7f8c75"><i></i>أخضر هادئ</button>
                 <button class="swatch" data-value="sand" style="--c:#b89f7b"><i></i>رملي</button>
+                <button class="swatch" data-value="taupe" style="--c:#8f8275"><i></i>تاوب</button>
+                <button class="swatch" data-value="clay" style="--c:#a56f5c"><i></i>طيني</button>
+                <button class="swatch" data-value="navy" style="--c:#344451"><i></i>أزرق داكن</button>
                 <button class="swatch" data-value="charcoal" style="--c:#3e403d"><i></i>فحمي</button>
+                <button class="swatch" data-value="black" style="--c:#20211f"><i></i>أسود مطفي</button>
               </div>
             </div>
             <div class="control">
               <div class="control-title">اتجاه سطح العمل</div>
               <div class="swatches" id="worktopSwatches">
                 <button class="swatch active" data-value="softwhite" style="--c:#dedbd2"><i></i>فاتح هادئ</button>
+                <button class="swatch" data-value="calacatta" style="--c:#ece8df"><i></i>أبيض بعروق</button>
                 <button class="swatch" data-value="warmstone" style="--c:#9b8d78"><i></i>حجر دافئ</button>
+                <button class="swatch" data-value="sandveil" style="--c:#c5b292"><i></i>بيج حجري</button>
                 <button class="swatch" data-value="graphite" style="--c:#4a4945"><i></i>جرافيت</button>
               </div>
             </div>
@@ -251,9 +277,9 @@
                 <div class="field">
                   <label for="branch">الفرع الأقرب</label>
                   <select id="branch">
-                    <option value="">غير محدد</option>
-                    <option>الرياض — الفرع الرئيسي</option>
-                    <option>الرياض — فرع التخصصي</option>
+                    <option value="">اختر لاحقاً</option>
+                    <option>طريق المدينة المنورة الفرعي — الرياض</option>
+                    <option>شارع التخصصي — الرياض</option>
                   </select>
                 </div>
                 <div class="field">
@@ -284,7 +310,12 @@
                   <label for="note">ملاحظة واحدة مهمة للمهندس</label>
                   <input id="note" type="text" maxlength="140" placeholder="مثال: أحتاج مساحة تخزين أكبر أو مكاناً واضحاً للأجهزة">
                 </div>
-                <div class="form-note">القياسات والخيارات هنا تمهيدية فقط. الاعتماد النهائي للخامات والمقاسات والتصميم يتم عبر فريق لمار.</div>
+                <div class="form-note">القياسات والاتجاهات البصرية هنا تمهيدية فقط وليست كتالوجاً رسمياً. الاعتماد النهائي للخامات والمقاسات والتصميم يتم عبر فريق لمار.</div>
+              </div>
+              <div class="readiness-meter" aria-live="polite">
+                <div class="readiness-head"><b>جاهزية ملخص المشروع</b><span id="readinessScore">40%</span></div>
+                <div class="readiness-track"><i id="readinessFill"></i></div>
+                <div class="readiness-hint" id="readinessHint">أضف ما تعرفه فقط؛ لا حاجة لتخمين معلومات غير متاحة.</div>
               </div>
             </div>
           </div>
@@ -318,19 +349,49 @@
                 <h3>أرسل الملخص إلى خدمة العملاء.</h3>
                 <p>يفتح واتساب على قناة خدمة العملاء الحالية مع ملخص الخيارات. هذا النموذج لا يحدد السعر ولا يلغي الاستشارة أو القياس.</p>
               </div>
-              <a class="whatsapp" id="whatsappLink" href="https://wa.me/966541717080" target="_blank" rel="noopener">متابعة عبر واتساب</a>
+              <a class="whatsapp" id="whatsappLink" href="#" target="_blank" rel="noopener">متابعة عبر واتساب</a>
             </aside>
           </div>
         </div>
       </div>
     </section>
 
+    <section class="section authentic-section">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">مرجع بصري موثّق</div>
+            <h2>من لمار نفسها،<br>لا من مكتبة صور.</h2>
+          </div>
+          <p>الصورة التالية منشورة على موقع لمار الرسمي. لا نعيد تصنيفها كمشروع محدد أو خامة محددة؛ استخدامها هنا فقط لربط التجربة بهوية لمار البصرية، بينما يبقى مشهد 3D نموذجاً تجريبياً مستقلاً.</p>
+        </div>
+        <figure class="authentic-card" id="authenticCard">
+          <img src="https://files.cdn-files-a.com/uploads/9421879/2000_6783aff57e017.png" alt="صورة منشورة على موقع لمار الرسمي" loading="lazy" decoding="async" onerror="this.closest('.authentic-card').hidden=true;document.getElementById('authenticFallback').hidden=false">
+          <figcaption><b>مصدر الصورة: موقع Lamar Kitchens الرسمي</b><span>استخدام مرجعي داخل هذا التصور فقط — ليست ادعاءً بأنها لقطة لمشروع بعينه.</span></figcaption>
+        </figure>
+        <div class="authentic-fallback" id="authenticFallback" hidden>لم يتم تحميل الأصل البصري الخارجي، لذلك أُخفي بدلاً من استبداله بصورة مخزون.</div>
+      </div>
+    </section>
 
+    <section class="section" style="padding-top:0">
+      <div class="shell">
+        <div class="question-card">
+          <div>
+            <h3>سؤال واحد للفريق</h3>
+            <p>لو وصل لفريق لمار هذا الملخص مع اختيار اللون والسطح قبل الاستشارة، هل سيختصر فعلياً جزءاً من أسئلة البداية؟</p>
+          </div>
+          <div class="question-actions">
+            <button data-answer="yes">نعم، مفيد</button>
+            <button data-answer="maybe">يحتاج تعديل</button>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer>
     <div class="shell footer-row">
-      <div><b>قوة لمار للمطابخ — الرياض</b>نموذج تفاعلي تجريبي لإيضاح فكرة ما قبل الاستشارة.</div>
+      <div><b>لمار — قوة لمار للمطابخ</b>نموذج تفاعلي تجريبي لإيضاح فكرة ما قبل الاستشارة.</div>
       <div>الخيارات والألوان المعروضة ليست كتالوجاً رسمياً ولا عرض سعر. الاعتماد النهائي يتم مع فريق لمار.</div>
     </div>
   </footer>
@@ -345,28 +406,61 @@
       branch:"",projectStage:"",shape:"",size:"",note:""
     };
     var labels={
-      cabinet:{ivory:"عاجي دافئ",sage:"أخضر هادئ",sand:"رملي",charcoal:"فحمي"},
-      worktop:{softwhite:"فاتح هادئ",warmstone:"حجر دافئ",graphite:"جرافيت"},
+      cabinet:{ivory:"عاجي دافئ",sage:"أخضر هادئ",sand:"رملي",taupe:"تاوب",clay:"طيني",navy:"أزرق داكن",charcoal:"فحمي",black:"أسود مطفي"},
+      worktop:{softwhite:"فاتح هادئ",calacatta:"أبيض بعروق",warmstone:"حجر دافئ",sandveil:"بيج حجري",graphite:"جرافيت"},
       light:{day:"نهارية",warm:"دافئة"}
     };
     var colors={
-      cabinet:{ivory:0xd8d0c2,sage:0x7f8c75,sand:0xb89f7b,charcoal:0x3e403d},
-      worktop:{softwhite:0xdedbd2,warmstone:0x9b8d78,graphite:0x4a4945}
+      cabinet:{ivory:0xd8d0c2,sage:0x7f8c75,sand:0xb89f7b,taupe:0x8f8275,clay:0xa56f5c,navy:0x344451,charcoal:0x3e403d,black:0x20211f},
+      worktop:{softwhite:0xdedbd2,calacatta:0xece8df,warmstone:0x9b8d78,sandveil:0xc5b292,graphite:0x4a4945}
     };
 
     var canvas=document.getElementById("scene");
     var stageEl=document.getElementById("stage");
     var renderer;
     try{
-      renderer=new THREE.WebGLRenderer({
-      canvas:canvas,
-      antialias:true,
-      alpha:false,
-      powerPreference:"high-performance"
-      });
+      if(!window.THREE)throw new Error("three-unavailable");
+      renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:false,powerPreference:"high-performance"});
     }catch(e){
-      canvas.hidden=true;
+      stageEl.classList.add("fallback-active");
       document.getElementById("webglFallback").hidden=false;
+      function fallbackSync(){
+        document.getElementById("stateCabinet").textContent=labels.cabinet[state.cabinet];
+        document.getElementById("stateWorktop").textContent=labels.worktop[state.worktop];
+        document.getElementById("stateLight").textContent=labels.light[state.light];
+        document.getElementById("sumCabinet").textContent=labels.cabinet[state.cabinet];
+        document.getElementById("sumWorktop").textContent=labels.worktop[state.worktop];
+        document.getElementById("sumBranch").textContent=state.branch||"غير محدد";
+        document.getElementById("sumStage").textContent=state.projectStage||"غير محددة";
+        document.getElementById("sumShape").textContent=state.shape||"غير محدد";
+        document.getElementById("sumSize").textContent=state.size||"غير مضاف";
+        document.getElementById("sumNote").textContent=state.note||"لا توجد ملاحظة إضافية";
+        var done=["branch","projectStage","shape","size","note"].filter(function(k){return String(state[k]||"").trim()}).length;
+        var score=40+done*12;
+        document.getElementById("readinessScore").textContent=score+"%";
+        document.getElementById("readinessFill").style.width=score+"%";
+        document.getElementById("readinessHint").textContent=done===5?"الملخص جاهز للإرسال إلى فريق لمار.":"أضف ما تعرفه فقط؛ المتبقي يمكن مناقشته مع فريق لمار.";
+        var p=new URLSearchParams();
+        p.set("c",state.cabinet);p.set("w",state.worktop);p.set("l",state.light);
+        if(state.branch)p.set("b",state.branch);if(state.projectStage)p.set("s",state.projectStage);if(state.shape)p.set("sh",state.shape);if(state.size)p.set("z",state.size);if(state.note)p.set("n",state.note);
+        history.replaceState(null,"",location.pathname+"?"+p.toString());
+        try{localStorage.setItem("lamar-demo-state",JSON.stringify(state))}catch(_){}
+        var lines=["السلام عليكم، هذا ملخص أولي قبل الاستشارة مع لمار:","اتجاه لون الخزائن: "+labels.cabinet[state.cabinet],"اتجاه سطح العمل: "+labels.worktop[state.worktop],"الإضاءة في النموذج: "+labels.light[state.light],"الفرع الأقرب: "+(state.branch||"غير محدد"),"مرحلة المشروع: "+(state.projectStage||"غير محددة"),"شكل المساحة: "+(state.shape||"غير محدد"),"مقاس تقريبي: "+(state.size||"غير مضاف")];
+        if(state.note)lines.push("ملاحظة للمهندس: "+state.note);
+        lines.push("الاتجاهات البصرية تجريبية وليست كتالوج لمار الرسمي؛ الاعتماد النهائي مع فريق التصميم والقياس.");
+        document.getElementById("whatsappLink").href="https://wa.me/966541717080?text="+encodeURIComponent(lines.join("\n"));
+      }
+      try{var saved=JSON.parse(localStorage.getItem("lamar-demo-state")||"null");if(saved&&typeof saved==="object")Object.keys(state).forEach(function(k){if(saved[k]!==undefined)state[k]=saved[k]});}catch(_){}
+      var fq=new URLSearchParams(location.search);
+      if(fq.get("c")&&labels.cabinet[fq.get("c")])state.cabinet=fq.get("c");if(fq.get("w")&&labels.worktop[fq.get("w")])state.worktop=fq.get("w");if(fq.get("l"))state.light=fq.get("l");if(fq.get("b"))state.branch=fq.get("b");if(fq.get("s"))state.projectStage=fq.get("s");if(fq.get("sh"))state.shape=fq.get("sh");if(fq.get("z"))state.size=fq.get("z");if(fq.get("n"))state.note=fq.get("n");
+      document.getElementById("branch").value=state.branch;document.getElementById("stageSelect").value=state.projectStage;document.getElementById("shape").value=state.shape;document.getElementById("size").value=state.size;document.getElementById("note").value=state.note;
+      document.querySelectorAll("#cabinetSwatches .swatch").forEach(function(b){b.classList.toggle("active",b.dataset.value===state.cabinet);b.addEventListener("click",function(){state.cabinet=b.dataset.value;document.querySelectorAll("#cabinetSwatches .swatch").forEach(function(x){x.classList.toggle("active",x===b)});fallbackSync()})});
+      document.querySelectorAll("#worktopSwatches .swatch").forEach(function(b){b.classList.toggle("active",b.dataset.value===state.worktop);b.addEventListener("click",function(){state.worktop=b.dataset.value;document.querySelectorAll("#worktopSwatches .swatch").forEach(function(x){x.classList.toggle("active",x===b)});fallbackSync()})});
+      document.querySelectorAll(".look").forEach(function(b){b.classList.toggle("active",b.dataset.light===state.light);b.addEventListener("click",function(){state.light=b.dataset.light;document.querySelectorAll(".look").forEach(function(x){x.classList.toggle("active",x===b)});fallbackSync()})});
+      [["branch","branch"],["stageSelect","projectStage"],["shape","shape"],["size","size"],["note","note"]].forEach(function(pair){var el=document.getElementById(pair[0]);el.addEventListener(el.tagName==="INPUT"?"input":"change",function(){state[pair[1]]=el.value.trim();fallbackSync()})});
+      document.getElementById("startBtn").addEventListener("click",function(){document.getElementById("studio").scrollIntoView({behavior:"smooth",block:"center"})});
+      document.getElementById("copyState").addEventListener("click",function(){fallbackSync();if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(location.href)});
+      fallbackSync();
       return;
     }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
@@ -462,7 +556,9 @@
 
     var stoneMaps={
       softwhite:stoneTexture("#d9d7d0","#807b70","#b1a99c",42),
+      calacatta:stoneTexture("#ebe8e0","#756f68","#c7c0b6",52),
       warmstone:stoneTexture("#a69782","#5f574d","#d1c2aa",73),
+      sandveil:stoneTexture("#c7b79a","#8d7b66","#e2d4bd",81),
       graphite:stoneTexture("#4d4b47","#b3aca0","#292a28",91)
     };
 
@@ -664,7 +760,7 @@
     var hemi=new THREE.HemisphereLight(0xffffff,0x756b5d,.82);scene.add(hemi);
     var key=new THREE.DirectionalLight(0xfff3df,3.0);
     key.position.set(4.2,7.8,5.8);key.castShadow=true;
-    var shadowSize=window.innerWidth<700?1024:2048;key.shadow.mapSize.set(shadowSize,shadowSize);
+    key.shadow.mapSize.set(2048,2048);
     key.shadow.camera.near=.5;key.shadow.camera.far=25;
     key.shadow.camera.left=-7;key.shadow.camera.right=7;key.shadow.camera.top=7;key.shadow.camera.bottom=-7;
     key.shadow.bias=-.00015;scene.add(key);
@@ -758,7 +854,7 @@
       if(state.size)p.set("z",state.size);
       if(state.note)p.set("n",state.note);
       history.replaceState(null,"",location.pathname+"?"+p.toString());
-      try{localStorage.setItem("lamar-kitchens-demo-state",JSON.stringify(state))}catch(e){}
+      try{localStorage.setItem("lamar-demo-state",JSON.stringify(state))}catch(e){}
     }
     function updateText(){
       document.getElementById("stateCabinet").textContent=labels.cabinet[state.cabinet];
@@ -771,6 +867,13 @@
       document.getElementById("sumShape").textContent=state.shape||"غير محدد";
       document.getElementById("sumSize").textContent=state.size||"غير مضاف";
       document.getElementById("sumNote").textContent=state.note||"لا توجد ملاحظة إضافية";
+      var readinessFields=["branch","projectStage","shape","size","note"];
+      var readinessDone=readinessFields.filter(function(k){return String(state[k]||"").trim().length>0}).length;
+      var readinessScore=40+readinessDone*12;
+      document.getElementById("readinessScore").textContent=readinessScore+"%";
+      document.getElementById("readinessFill").style.width=readinessScore+"%";
+      var missing=readinessFields.filter(function(k){return !String(state[k]||"").trim()});
+      document.getElementById("readinessHint").textContent=missing.length?"أضف ما تعرفه فقط؛ المتبقي يمكن مناقشته مع فريق لمار.":"الملخص جاهز للإرسال إلى فريق لمار.";
       var lines=[
         "السلام عليكم، هذا ملخص أولي قبل موعد التصميم مع لمار:",
         "اتجاه لون الخزائن: "+labels.cabinet[state.cabinet],
@@ -782,7 +885,7 @@
         "مقاس تقريبي: "+(state.size||"غير مضاف")
       ];
       if(state.note)lines.push("ملاحظة للمهندس: "+state.note);
-      lines.push("الاختيارات أعلاه تمهيدية، والاعتماد النهائي مع فريق التصميم والقياس.");
+      lines.push("الاتجاهات البصرية أعلاه تجريبية وليست كتالوج لمار الرسمي؛ الاعتماد النهائي مع فريق التصميم والقياس.");
       document.getElementById("whatsappLink").href="https://wa.me/966541717080?text="+encodeURIComponent(lines.join("\n"));
     }
     function sync(){
@@ -830,13 +933,11 @@
       });
     });
 
+    try{
+      var saved=JSON.parse(localStorage.getItem("lamar-demo-state")||"null");
+      if(saved&&typeof saved==="object")Object.keys(state).forEach(function(k){if(saved[k]!==undefined)state[k]=saved[k]});
+    }catch(e){}
     var q=new URLSearchParams(location.search);
-    if(!location.search){
-      try{
-        var cached=JSON.parse(localStorage.getItem("lamar-kitchens-demo-state")||"null");
-        if(cached&&typeof cached==="object") Object.keys(state).forEach(function(k){if(cached[k]!==undefined)state[k]=cached[k]});
-      }catch(e){}
-    }
     if(q.get("c")&&colors.cabinet[q.get("c")])state.cabinet=q.get("c");
     if(q.get("w")&&colors.worktop[q.get("w")])state.worktop=q.get("w");
     if(q.get("l")==="warm"||q.get("l")==="day")state.light=q.get("l");
