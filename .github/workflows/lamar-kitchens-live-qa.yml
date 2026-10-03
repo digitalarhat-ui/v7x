@@ -46,6 +46,7 @@ jobs:
 
           for(const [name,w,h] of sizes){
             const p=await browser.newPage();
+            await p.evaluateOnNewDocument(()=>{try{localStorage.clear()}catch{}});
             await p.setViewport({width:w,height:h,deviceScaleFactor:1});
             const errors=[],badResponses=[];
             p.on('pageerror',e=>errors.push('page:'+String(e)));
@@ -90,9 +91,11 @@ jobs:
                 imageOk:!!(img&&img.complete&&img.naturalWidth>100),
                 cardHidden:document.querySelector('#authenticCard')?.hidden===true,
                 fallbackHidden:document.querySelector('#authenticFallback')?.hidden===true,
-                src:img?.currentSrc||img?.src||''
+                src:img?.currentSrc||img?.src||'',
+                source:img?.dataset?.src||''
               };
             });
+            if(!authentic.source.includes('files.cdn-files-a.com/uploads/9421879/')) throw new Error(name+': authentic source mismatch '+JSON.stringify(authentic));
             if(!authentic.imageOk && authentic.fallbackHidden) throw new Error(name+': authentic asset failed without visible failsafe '+JSON.stringify(authentic));
 
             const before=await p.evaluate(()=>({
