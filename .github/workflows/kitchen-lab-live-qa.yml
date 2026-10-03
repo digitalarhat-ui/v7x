@@ -29,7 +29,7 @@ jobs:
             try{
               const r=await fetch(live,{redirect:'follow'});
               const t=await r.text();
-              if(r.ok && t.includes('كيتشن لاب') && t.includes('الأمتار الطولية')) break;
+              if(r.ok && t.includes('كيتشن لاب') && t.includes('الأمتار الطولية') && !t.includes('سمارت')) break;
             }catch{}
             if(i===23) throw new Error('Kitchen Lab alias did not become ready in time');
             await new Promise(r=>setTimeout(r,5000));
@@ -70,7 +70,7 @@ jobs:
             if(init.materialOptions!==2)throw new Error(name+': material family count '+init.materialOptions);
             if(init.tops<4)throw new Error(name+': worktop depth '+init.tops);
             if(init.forbidden.length)throw new Error(name+': contamination '+JSON.stringify(init.forbidden));
-            if((init.galleryImages.length===0||init.galleryImages.every(x=>!x.ok))&&init.fallbackDisplay==='none')throw new Error(name+': authentic gallery failsafe missing');
+            if(init.galleryImages.filter(x=>x.ok).length<2&&init.fallbackDisplay==='none')throw new Error(name+': authentic gallery needs two loaded first-party images or visible failsafe '+JSON.stringify(init.galleryImages));
 
             const before=await p.$eval('#currentChoice',el=>el.textContent);
             if(w<=560) await p.click('.control-tab[data-tab="colors"]');

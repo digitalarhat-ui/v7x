@@ -158,10 +158,10 @@
     h2{font-size:clamp(31px,4vw,52px);line-height:1.08;margin:0;letter-spacing:-.8px}
     .section-copy{max-width:560px;color:#aaa39a;line-height:1.85}
     .gallery-wrap{display:none;position:relative;overflow:hidden;margin-inline:0;padding:8px 17px;max-width:100%}
-    .gallery-track{display:flex;gap:16px;width:100%;justify-content:center;animation:none}
+    .gallery-track{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;width:100%;animation:none}
     .gallery-wrap:hover .gallery-track{animation-play-state:paused}
     @keyframes rail{to{transform:none}}
-    .work-card{width:min(520px,88vw);height:500px;border-radius:24px;overflow:hidden;border:1px solid var(--line);background:#151515;position:relative;flex:0 0 auto}
+    .work-card{width:100%;height:500px;border-radius:24px;overflow:hidden;border:1px solid var(--line);background:#151515;position:relative}
     .work-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
     .work-card:hover img{transform:scale(1.035)}
     .work-card::after{content:"من أعمال كيتشن لاب المنشورة";position:absolute;right:14px;bottom:14px;background:#0c0c0cbd;border:1px solid var(--line);padding:8px 11px;border-radius:999px;font-size:11px;color:#ddd}
@@ -280,8 +280,8 @@
       label.full{grid-column:auto}
       .gallery-wrap{overflow:hidden;margin-inline:0;padding-inline:12px;scrollbar-width:none}
       .gallery-wrap::-webkit-scrollbar{display:none}
-      .gallery-track{animation:none!important}
-      .work-card{height:380px;scroll-snap-align:center;width:min(100%,390px)}
+      .gallery-track{grid-template-columns:1fr;animation:none!important}
+      .work-card{height:380px;width:100%}
       .gallery-fallback{padding:20px;font-size:13px}
       .mobile-dock{display:none!important}
       footer{padding-bottom:38px}
@@ -1113,7 +1113,7 @@
     const galleryWrap=document.querySelector(".gallery-wrap");
     if(galleryWrap) galleryWrap.style.display="none";
     if(galleryFallback) galleryFallback.style.display="block";
-    const officialGallery=[1,2,7,12,15,17].map(n=>"https://www.kitchenlabksa.com/our_work/"+n+".jpeg");
+    const officialGallery=[1,2].map(n=>"https://www.kitchenlabksa.com/our_work/"+n+".jpeg");
     let galleryLoaded=0, gallerySettled=0;
     officialGallery.forEach((src,i)=>{
       const card=document.createElement("figure");
