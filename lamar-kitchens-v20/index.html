@@ -769,6 +769,7 @@
     // Camera orbit controls: the ROOM stays fixed; the camera moves.
     var dragging=false,lastX=0,lastY=0;
     function pointerDown(e){
+      if(e.target&&e.target.closest&&e.target.closest("button,a,input,select"))return;
       dragging=true;lastX=e.clientX;lastY=e.clientY;
       stageEl.setPointerCapture&&stageEl.setPointerCapture(e.pointerId);
       stageEl.style.cursor="grabbing";
