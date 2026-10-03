@@ -25,7 +25,8 @@
     "alnojoom-althalatha-kitchens.vercel.app",
     "kitchens-sandy-khamis.vercel.app",
     "aluminum-smart-kitchen-studio.vercel.app",
-    "zawq-al-khayal-kitchens.vercel.app"
+    "zawq-al-khayal-kitchens.vercel.app",
+    "kitchenlab-riyadh.vercel.app"
   ],
   "redirects": [
     {
@@ -124,6 +125,17 @@
         {
           "type": "host",
           "value": "zawq-al-khayal-kitchens.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/kitchen-lab-v14",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "kitchenlab-riyadh.vercel.app"
         }
       ]
     }
