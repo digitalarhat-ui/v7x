@@ -365,11 +365,11 @@
           </div>
           <p>الصورة التالية منشورة على موقع لمار الرسمي. لا نعيد تصنيفها كمشروع محدد أو خامة محددة؛ استخدامها هنا فقط لربط التجربة بهوية لمار البصرية، بينما يبقى مشهد 3D نموذجاً تجريبياً مستقلاً.</p>
         </div>
-        <figure class="authentic-card" id="authenticCard">
-          <img src="https://files.cdn-files-a.com/uploads/9421879/2000_6783aff57e017.png" alt="صورة منشورة على موقع لمار الرسمي" loading="lazy" decoding="async" onerror="this.closest('.authentic-card').hidden=true;document.getElementById('authenticFallback').hidden=false">
+        <figure class="authentic-card" id="authenticCard" hidden>
+          <img data-src="https://files.cdn-files-a.com/uploads/9421879/2000_6783aff57e017.png" alt="صورة منشورة على موقع لمار الرسمي" decoding="async">
           <figcaption><b>مصدر الصورة: موقع Lamar Kitchens الرسمي</b><span>استخدام مرجعي داخل هذا التصور فقط — ليست ادعاءً بأنها لقطة لمشروع بعينه.</span></figcaption>
         </figure>
-        <div class="authentic-fallback" id="authenticFallback" hidden>لم يتم تحميل الأصل البصري الخارجي، لذلك أُخفي بدلاً من استبداله بصورة مخزون.</div>
+        <div class="authentic-fallback" id="authenticFallback">المرجع البصري الرسمي لا يظهر إلا بعد اكتمال تحميله. إذا تعذر التحميل، لا نستخدم صورة مخزون بديلة.</div>
       </div>
     </section>
 
@@ -378,11 +378,7 @@
         <div class="question-card">
           <div>
             <h3>سؤال واحد للفريق</h3>
-            <p>لو وصل لفريق لمار هذا الملخص مع اختيار اللون والسطح قبل الاستشارة، هل سيختصر فعلياً جزءاً من أسئلة البداية؟</p>
-          </div>
-          <div class="question-actions">
-            <button data-answer="yes">نعم، مفيد</button>
-            <button data-answer="maybe">يحتاج تعديل</button>
+            <p>إذا طبقنا الفكرة فعلياً عندكم، ما أهم شيء تحبون أن يجهزه العميل قبل ما ينتقل للمصمم أو موعد التصميم؟</p>
           </div>
         </div>
       </div>
@@ -963,27 +959,39 @@
   (function(){
     var card=document.getElementById('authenticCard');
     var fallback=document.getElementById('authenticFallback');
-    var img=card&&card.querySelector('img');
+    var img=card&&card.querySelector('img[data-src]');
     if(!card||!fallback||!img)return;
-    var timer=null;
-    function showFallback(){
-      if(img.complete&&img.naturalWidth>100)return;
-      card.hidden=true;fallback.hidden=false;
+    var started=false;
+    function loadOfficialAsset(){
+      if(started)return;
+      started=true;
+      var source=img.dataset.src;
+      var probe=new Image();
+      probe.decoding='async';
+      probe.onload=function(){
+        if(probe.naturalWidth>100){
+          img.src=source;
+          card.hidden=false;
+          fallback.hidden=true;
+        }
+      };
+      probe.onerror=function(){
+        card.hidden=true;
+        fallback.hidden=false;
+      };
+      probe.src=source;
     }
-    function arm(){if(timer)return;timer=setTimeout(showFallback,4000)}
-    img.addEventListener('load',function(){if(timer)clearTimeout(timer)});
-    img.addEventListener('error',function(){if(timer)clearTimeout(timer);showFallback()});
-    window.addEventListener('scroll',arm,{once:true,passive:true});
-    var proximityWatch=setInterval(function(){
-      var rect=card.getBoundingClientRect();
-      if(rect.top<window.innerHeight+320&&rect.bottom>-320){clearInterval(proximityWatch);arm()}
-    },500);
     if('IntersectionObserver' in window){
       var io=new IntersectionObserver(function(entries){
-        if(entries.some(function(e){return e.isIntersecting||e.intersectionRatio>0})){arm();io.disconnect()}
-      },{rootMargin:'300px'});
-      io.observe(card);
-    }else{arm()}
+        if(entries.some(function(e){return e.isIntersecting||e.intersectionRatio>0})){
+          io.disconnect();
+          loadOfficialAsset();
+        }
+      },{rootMargin:'400px'});
+      io.observe(fallback);
+    }else{
+      window.addEventListener('scroll',loadOfficialAsset,{once:true,passive:true});
+    }
   })();
   </script>
 </body>
