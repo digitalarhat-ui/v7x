@@ -27,13 +27,13 @@ jobs:
           python3 -m http.server 4173 > /tmp/hc-server.log 2>&1 &
           sleep 2
       - name: Run WebGL visual QA
-        run: node qa/visual-qa.mjs before
-      - name: Persist BEFORE evidence to rescue branch
+        run: node qa/visual-qa.mjs after
+      - name: Persist AFTER evidence to rescue branch
         if: always()
         run: |
           mkdir -p qa-evidence
-          cp qa-artifacts/before-diagnostics.json qa-evidence/before-diagnostics.json 2>/dev/null || true
-          for f in qa-artifacts/before-*.png; do
+          cp qa-artifacts/after-diagnostics.json qa-evidence/after-diagnostics.json 2>/dev/null || true
+          for f in qa-artifacts/after-*.png; do
             [ -f "$f" ] || continue
             n=$(basename "$f")
             base64 -w0 "$f" > "qa-evidence/$n.b64"
@@ -42,13 +42,13 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add qa-evidence
           if ! git diff --cached --quiet; then
-            git commit -m "Record Higher Class BEFORE realism evidence"
+            git commit -m "Record Higher Class AFTER realism evidence"
             git push origin HEAD:higher-class-photorealism-rescue-v2
           fi
       - name: Upload screenshots and diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: higher-class-realism-before
+          name: higher-class-realism-after
           path: qa-artifacts/
           retention-days: 7
