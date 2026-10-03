@@ -973,6 +973,7 @@
     function arm(){if(timer)return;timer=setTimeout(showFallback,4000)}
     img.addEventListener('load',function(){if(timer)clearTimeout(timer)});
     img.addEventListener('error',function(){if(timer)clearTimeout(timer);showFallback()});
+    window.addEventListener('scroll',arm,{once:true,passive:true});
     if('IntersectionObserver' in window){
       var io=new IntersectionObserver(function(entries){
         if(entries.some(function(e){return e.isIntersecting||e.intersectionRatio>0})){arm();io.disconnect()}
