@@ -48,7 +48,7 @@
     .hero-proof span{border:1px solid rgba(255,255,255,.1);padding:7px 9px;color:#85847e;font-size:9px}
     .truth-note{margin-top:15px;font-size:9px!important;color:#6f706a!important;line-height:1.8!important}
     .studio{min-width:0;background:#c7c2b9;border:1px solid #292a26;box-shadow:0 48px 130px rgba(0,0,0,.42);position:relative;isolation:isolate}
-    .stage{height:min(72svh,720px);min-height:540px;position:relative;overflow:hidden;touch-action:none;background:linear-gradient(#bdb9b2,#d9d3c9)}
+    .stage{height:min(74svh,760px);min-height:560px;position:relative;overflow:hidden;touch-action:none;background:linear-gradient(#bdb9b2,#d9d3c9)}
     #scene{width:100%;height:100%;display:block}
     .stage-top{position:absolute;z-index:6;top:14px;right:14px;left:14px;display:flex;justify-content:space-between;gap:10px;pointer-events:none}
     .scene-label,.orbit-tip{background:rgba(18,19,17,.68);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(12px);color:#eae5dc;padding:9px 11px;font-size:9px;line-height:1.6}
@@ -122,7 +122,7 @@
       .hero-grid,.section-head,.decision-grid,.summary-grid{grid-template-columns:1fr}
       .hero-grid{padding-top:102px;align-content:start}
       .hero-copy{max-width:650px}
-      .stage{height:60svh;min-height:470px}
+      .stage{height:62svh;min-height:485px}
       .section{padding:64px 0}
       .proof-strip{grid-template-columns:1fr}
       .question-card{grid-template-columns:1fr}
@@ -134,7 +134,7 @@
       h1{font-size:35px;line-height:1.45}
       .hero-copy p{font-size:12px;line-height:1.9}
       .hero-actions .primary,.hero-actions .ghost{flex:1}
-      .stage{height:54svh;min-height:390px}
+      .stage{height:56svh;min-height:410px}
       .scene-label{max-width:190px}.orbit-tip{display:none}
       .material-dock{grid-template-columns:1fr}
       .control+.control{border-inline-start:0;border-top:1px solid #ddd5c8}
@@ -403,8 +403,8 @@
     scene.fog=new THREE.Fog(0xc9c4ba,12,23);
 
     var camera=new THREE.PerspectiveCamera(34,1,.1,80);
-    var orbit={theta:.62,phi:1.05,radius:10.7,target:new THREE.Vector3(-.15,1.34,.15)};
-    var orbitHome={theta:.62,phi:1.05,radius:10.7};
+    var orbit={theta:.46,phi:1.45,radius:8.55,target:new THREE.Vector3(-.10,1.34,-.78)};
+    var orbitHome={theta:.46,phi:1.45,radius:8.55};
 
     function updateCamera(){
       var sinPhi=Math.sin(orbit.phi);
@@ -540,38 +540,38 @@
       var baseY=.49,total=.72,gap=.025,h=(total-gap*(count-1))/count;
       for(var i=0;i<count;i++){
         var y=baseY-total/2+h/2+i*(h+gap);
-        frontPanel(w-.065,h,x,y,.348,cabinetMat);
-        addBox(w*.52,.015,.018,blackMetal,x,y+h*.22,.374,kitchen);
+        frontPanel(w-.065,h,x,y,-1.973,cabinetMat);
+        addBox(w*.52,.015,.018,blackMetal,x,y+h*.22,-1.947,kitchen);
       }
     }
     function doorPair(x,w){
       var doorW=(w-.09)/2;
-      frontPanel(doorW,.73,x-doorW/2-.015,.50,.348,cabinetMat);
-      frontPanel(doorW,.73,x+doorW/2+.015,.50,.348,cabinetMat);
-      addBox(.016,.36,.018,blackMetal,x-.038,.50,.374,kitchen);
-      addBox(.016,.36,.018,blackMetal,x+.038,.50,.374,kitchen);
+      frontPanel(doorW,.73,x-doorW/2-.015,.50,-1.973,cabinetMat);
+      frontPanel(doorW,.73,x+doorW/2+.015,.50,-1.973,cabinetMat);
+      addBox(.016,.36,.018,blackMetal,x-.038,.50,-1.947,kitchen);
+      addBox(.016,.36,.018,blackMetal,x+.038,.50,-1.947,kitchen);
     }
     function baseCarcass(x,w,type){
-      addBox(w,.79,.64,cabinetSideMat,x,.515,.01,kitchen);
+      addBox(w,.79,.64,cabinetSideMat,x,.515,-2.31,kitchen);
       addBox(w,.105,.60,gapMat,x,.105,.01,kitchen);
       if(type==="drawers") drawerStack(x,w,3); else doorPair(x,w);
     }
     function upperCarcass(x,w,glass){
-      addBox(w,.89,.39,cabinetSideMat,x,2.18,-.03,kitchen);
+      addBox(w,.89,.39,cabinetSideMat,x,2.18,-2.39,kitchen);
       if(glass){
         var dw=(w-.08)/2;
-        frontPanel(dw,.80,x-dw/2-.012,2.18,.178,glassMat);
-        frontPanel(dw,.80,x+dw/2+.012,2.18,.178,glassMat);
-        addBox(.012,.34,.018,blackMetal,x-.033,2.18,.207,kitchen);
-        addBox(.012,.34,.018,blackMetal,x+.033,2.18,.207,kitchen);
-        addBox(w-.12,.03,.18,darkWoodMat,x,2.02,.07,kitchen);
-        addBox(w-.12,.03,.18,darkWoodMat,x,2.35,.07,kitchen);
+        frontPanel(dw,.80,x-dw/2-.012,2.18,-2.178,glassMat);
+        frontPanel(dw,.80,x+dw/2+.012,2.18,-2.178,glassMat);
+        addBox(.012,.34,.018,blackMetal,x-.033,2.18,-2.149,kitchen);
+        addBox(.012,.34,.018,blackMetal,x+.033,2.18,-2.149,kitchen);
+        addBox(w-.12,.03,.18,darkWoodMat,x,2.02,-2.28,kitchen);
+        addBox(w-.12,.03,.18,darkWoodMat,x,2.35,-2.28,kitchen);
       }else{
         var dw2=(w-.08)/2;
-        frontPanel(dw2,.80,x-dw2/2-.012,2.18,.178,cabinetMat);
-        frontPanel(dw2,.80,x+dw2/2+.012,2.18,.178,cabinetMat);
-        addBox(.012,.34,.018,blackMetal,x-.033,2.18,.207,kitchen);
-        addBox(.012,.34,.018,blackMetal,x+.033,2.18,.207,kitchen);
+        frontPanel(dw2,.80,x-dw2/2-.012,2.18,-2.178,cabinetMat);
+        frontPanel(dw2,.80,x+dw2/2+.012,2.18,-2.178,cabinetMat);
+        addBox(.012,.34,.018,blackMetal,x-.033,2.18,-2.149,kitchen);
+        addBox(.012,.34,.018,blackMetal,x+.033,2.18,-2.149,kitchen);
       }
     }
 
@@ -580,7 +580,7 @@
     floor.rotation.x=-Math.PI/2;floor.position.y=.045;floor.receiveShadow=true;room.add(floor);
     addBox(9.2,3.35,.12,wallMat,0,1.7,-2.72,room,false);
     addBox(.12,3.35,7.2,wallSideMat,4.54,1.7,.80,room,false);
-    addBox(9.2,.12,7.2,wallSideMat,0,3.37,.80,room,false);
+    // Open-ceiling architectural cutaway: prevents camera occlusion and keeps the kitchen readable.
 
     // Full-height stone backsplash band
     addBox(6.55,.96,.055,backsplashMat,-.10,1.44,-2.625,room,false);
@@ -705,8 +705,8 @@
     function pointerMove(e){
       if(!dragging)return;
       var dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;
-      orbit.theta-=dx*.0065;
-      orbit.phi=Math.max(.73,Math.min(1.34,orbit.phi+dy*.0045));
+      orbit.theta=Math.max(.16,Math.min(.78,orbit.theta-dx*.0048));
+      orbit.phi=Math.max(1.30,Math.min(1.52,orbit.phi+dy*.0034));
       updateCamera();
     }
     function pointerUp(){dragging=false;stageEl.style.cursor="grab"}
@@ -720,9 +720,9 @@
       var w=stageEl.clientWidth,h=stageEl.clientHeight;
       renderer.setSize(w,h,false);
       camera.aspect=w/h;
-      camera.fov=w<620?42:(w<900?38:34);
+      camera.fov=w<620?39:(w<900?36:33);
       camera.updateProjectionMatrix();
-      orbit.radius=w<620?12.8:(w<900?11.8:10.7);
+      orbit.radius=w<620?9.7:(w<900?9.05:8.55);
       updateCamera();
     }
     window.addEventListener("resize",resize);
@@ -831,7 +831,7 @@
 
     document.getElementById("resetView").addEventListener("click",function(){
       orbit.theta=orbitHome.theta;orbit.phi=orbitHome.phi;
-      orbit.radius=stageEl.clientWidth<620?12.8:(stageEl.clientWidth<900?11.8:orbitHome.radius);
+      orbit.radius=stageEl.clientWidth<620?9.7:(stageEl.clientWidth<900?9.05:orbitHome.radius);
       updateCamera();
     });
     document.getElementById("startBtn").addEventListener("click",function(){document.getElementById("studio").scrollIntoView({behavior:"smooth",block:"center"})});
