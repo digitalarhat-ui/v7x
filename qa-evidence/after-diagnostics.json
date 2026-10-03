@@ -1,0 +1,131 @@
+{
+  "label": "after",
+  "startedAt": "2026-10-03T23:31:51.965Z",
+  "viewports": {
+    "390": {
+      "innerWidth": 390,
+      "innerHeight": 844,
+      "scrollWidth": 390,
+      "bodyScrollWidth": 390,
+      "stage": {
+        "x": 13,
+        "y": 452.609375,
+        "width": 364,
+        "height": 390,
+        "right": 377,
+        "bottom": 842.609375
+      },
+      "canvas": {
+        "x": 13,
+        "y": 452.609375,
+        "width": 364,
+        "height": 389
+      },
+      "webgl": true,
+      "glInfo": {
+        "vendor": "Google Inc. (Google)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+      },
+      "choice": "ناعم • عاجي + بلوط فاتح • مطفي • حجر فاتح هادئ • نهار معماري",
+      "title": "هاير كلاس | استوديو قرار المطبخ — الطائف",
+      "firstUseful3DRenderMs": 9218,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": []
+    },
+    "430": {
+      "innerWidth": 430,
+      "innerHeight": 932,
+      "scrollWidth": 430,
+      "bodyScrollWidth": 430,
+      "stage": {
+        "x": 13,
+        "y": 452.609375,
+        "width": 404,
+        "height": 390,
+        "right": 417,
+        "bottom": 842.609375
+      },
+      "canvas": {
+        "x": 13,
+        "y": 452.609375,
+        "width": 404,
+        "height": 389
+      },
+      "webgl": true,
+      "glInfo": {
+        "vendor": "Google Inc. (Google)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+      },
+      "choice": "ناعم • عاجي + بلوط فاتح • مطفي • حجر فاتح هادئ • نهار معماري",
+      "title": "هاير كلاس | استوديو قرار المطبخ — الطائف",
+      "firstUseful3DRenderMs": 10026,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": []
+    },
+    "768": {
+      "innerWidth": 768,
+      "innerHeight": 1024,
+      "scrollWidth": 768,
+      "bodyScrollWidth": 768,
+      "stage": {
+        "x": 18,
+        "y": 524.0625,
+        "width": 732,
+        "height": 480,
+        "right": 750,
+        "bottom": 1004.0625
+      },
+      "canvas": {
+        "x": 18,
+        "y": 524.0625,
+        "width": 732,
+        "height": 479
+      },
+      "webgl": true,
+      "glInfo": {
+        "vendor": "Google Inc. (Google)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+      },
+      "choice": "ناعم • عاجي + بلوط فاتح • مطفي • حجر فاتح هادئ • نهار معماري",
+      "title": "هاير كلاس | استوديو قرار المطبخ — الطائف",
+      "firstUseful3DRenderMs": 12550,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": []
+    },
+    "1440": {
+      "innerWidth": 1440,
+      "innerHeight": 1000,
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "stage": {
+        "x": 131,
+        "y": 97,
+        "width": 685.609375,
+        "height": 520,
+        "right": 816.609375,
+        "bottom": 617
+      },
+      "canvas": {
+        "x": 131,
+        "y": 97,
+        "width": 685.609375,
+        "height": 519
+      },
+      "webgl": true,
+      "glInfo": {
+        "vendor": "Google Inc. (Google)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+      },
+      "choice": "ناعم • عاجي + بلوط فاتح • مطفي • حجر فاتح هادئ • نهار معماري",
+      "title": "هاير كلاس | استوديو قرار المطبخ — الطائف",
+      "firstUseful3DRenderMs": 49664,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": []
+    }
+  },
+  "finishedAt": "2026-10-03T23:33:15.079Z"
+}
