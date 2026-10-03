@@ -73,7 +73,7 @@ jobs:
               lightingChoices:document.querySelectorAll('.look[data-light]').length,
               branchOptions:[...document.querySelectorAll('#branch option')].map(o=>o.textContent.trim()),
               officialLinks:[...document.querySelectorAll('.official-links a')].map(a=>a.href),
-              officialAvatar:(()=>{const i=document.querySelector('.official-avatar');return i?{hidden:i.hidden,complete:i.complete,naturalWidth:i.naturalWidth}:null})(),
+              officialAvatar:(()=>{const i=document.querySelector('img.official-avatar');return i?{hidden:i.hidden,complete:i.complete,naturalWidth:i.naturalWidth}:null})(),
               minTap:[...document.querySelectorAll('.swatch,.look,.question-actions button,.official-links a')].reduce((m,el)=>Math.min(m,el.getBoundingClientRect().height||999),999),
               forbidden:['لمار','966541717080','الرياض','العيدروس','Kitchen Lab','BEASTMODE','Digital Arhat'].filter(x=>document.documentElement.innerHTML.includes(x)),
               nav:performance.getEntriesByType('navigation')[0] ? {
@@ -160,7 +160,7 @@ jobs:
               overflow:document.documentElement.scrollWidth-innerWidth,
               fallbackHidden:document.querySelector('#webglFallback')?.hidden===true,
               wa:document.querySelector('#whatsappLink')?.getAttribute('href')||'',
-              avatar:(()=>{const i=document.querySelector('.official-avatar');return i?{hidden:i.hidden,complete:i.complete,naturalWidth:i.naturalWidth}:null})()
+              avatar:(()=>{const i=document.querySelector('img.official-avatar');return i?{hidden:i.hidden,complete:i.complete,naturalWidth:i.naturalWidth}:null})()
             }));
             if(restored.cabinet!=='أخضر هادئ'||restored.worktop!=='حجر دافئ'||restored.light!=='دافئة'||restored.branch!=='معرض الدمام'||restored.stage!=='مطبخ جديد'||restored.shape!=='مع جزيرة'||restored.size!=='4 × 3 م'||restored.note!=='أحتاج مساحة تخزين أكبر') throw new Error(name+': exact state restore failed '+JSON.stringify(restored));
             if(restored.overflow>2||!restored.fallbackHidden) throw new Error(name+': post-reload layout/WebGL failed '+JSON.stringify(restored));
