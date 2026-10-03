@@ -30,7 +30,7 @@ jobs:
             try{
               const r=await fetch(live,{redirect:'follow'});
               const t=await r.text();
-              if(r.ok && t.includes('قوة لمار للمطابخ') && t.includes('966541717080') && t.includes('lamar-authentic-failsafe') && !t.includes('العيدروس')) break;
+              if(r.ok && t.includes('قوة لمار للمطابخ') && t.includes('966541717080') && t.includes('lamar-authentic-failsafe') && t.includes('closest(\"button,a,input,select\")') && !t.includes('العيدروس')) break;
             }catch{}
             if(i===29) throw new Error('Lamar clean alias did not become ready in time');
             await new Promise(r=>setTimeout(r,5000));
