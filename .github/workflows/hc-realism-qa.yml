@@ -1,0 +1,40 @@
+name: Higher Class Realism QA
+
+on:
+  workflow_dispatch:
+    inputs:
+      label:
+        description: "Artifact label"
+        required: false
+        default: "before"
+  push:
+    branches:
+      - higher-class-photorealism-rescue-v2
+
+jobs:
+  visual-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Serve app
+        run: |
+          python3 -m http.server 4173 > /tmp/hc-server.log 2>&1 &
+          sleep 2
+      - name: Run visual QA
+        run: node qa/visual-qa.mjs ${{ github.event.inputs.label || 'before' }}
+      - name: Upload visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hc-realism-${{ github.run_id }}
+          path: qa-artifacts/
+          retention-days: 7
