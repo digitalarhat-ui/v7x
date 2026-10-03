@@ -29,7 +29,8 @@
     "kitchenlab-riyadh.vercel.app",
     "alaidaroos-kitchen-studio.vercel.app",
     "lamar-kitchen-studio.vercel.app",
-    "lamar-kitchens-riyadh.vercel.app"
+    "lamar-kitchens-riyadh.vercel.app",
+    "nuwadir-alraqiya.vercel.app"
   ],
   "redirects": [
     {
@@ -172,6 +173,17 @@
         {
           "type": "host",
           "value": "lamar-kitchens-riyadh.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/nuwadir-alraqiya-v20",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "nuwadir-alraqiya.vercel.app"
         }
       ]
     }
