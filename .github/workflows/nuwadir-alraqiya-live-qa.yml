@@ -49,9 +49,10 @@ jobs:
             await p.evaluateOnNewDocument(()=>{try{localStorage.clear()}catch{}});
             await p.setViewport({width:w,height:h,deviceScaleFactor:1});
 
-            const errors=[];
+            const errors=[],badResponses=[];
             p.on('pageerror',e=>errors.push('page:'+String(e)));
             p.on('console',m=>{if(m.type()==='error')errors.push('console:'+m.text())});
+            p.on('response',r=>{if(r.status()>=400)badResponses.push(r.status()+' '+r.url())});
 
             const start=Date.now();
             const res=await p.goto(live,{waitUntil:'networkidle2',timeout:60000});
@@ -168,11 +169,11 @@ jobs:
             if(restored.avatar && !restored.avatar.hidden && (!restored.avatar.complete||restored.avatar.naturalWidth<20)) throw new Error(name+': post-reload visible avatar broken '+JSON.stringify(restored.avatar));
 
             const meaningful=errors.filter(e=>!e.includes('ERR_BLOCKED_BY_CLIENT'));
-            if(meaningful.length) throw new Error(name+': runtime errors '+JSON.stringify(meaningful));
 
             await p.screenshot({path:'/home/runner/work/v7x/v7x/qa-nuwadir-live/live-'+name+'-viewport.png',fullPage:false});
             await p.screenshot({path:'/home/runner/work/v7x/v7x/qa-nuwadir-live/live-'+name+'-full.png',fullPage:true});
-            out.push({viewport:name,http:res.status(),elapsed,init,visual,ahsaWa,state,restored,errors});
+            if(meaningful.length||badResponses.length) throw new Error(name+': runtime/network errors '+JSON.stringify({meaningful,badResponses}));
+            out.push({viewport:name,http:res.status(),elapsed,init,visual,ahsaWa,state,restored,errors,badResponses});
             await p.close();
           }
 
