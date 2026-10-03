@@ -8,8 +8,11 @@ fs.mkdirSync(outDir, { recursive: true });
 
 const browser = await chromium.launch({
   headless: true,
+  executablePath: '/usr/bin/google-chrome',
   args: [
-    '--use-gl=swiftshader',
+    '--use-gl=angle',
+    '--use-angle=swiftshader',
+    '--enable-unsafe-swiftshader',
     '--enable-webgl',
     '--ignore-gpu-blocklist',
     '--disable-dev-shm-usage',
