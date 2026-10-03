@@ -958,5 +958,28 @@
     sync();
   })();
   </script>
+
+  <script id="lamar-authentic-failsafe">
+  (function(){
+    var card=document.getElementById('authenticCard');
+    var fallback=document.getElementById('authenticFallback');
+    var img=card&&card.querySelector('img');
+    if(!card||!fallback||!img)return;
+    var timer=null;
+    function showFallback(){
+      if(img.complete&&img.naturalWidth>100)return;
+      card.hidden=true;fallback.hidden=false;
+    }
+    function arm(){if(timer)return;timer=setTimeout(showFallback,4000)}
+    img.addEventListener('load',function(){if(timer)clearTimeout(timer)});
+    img.addEventListener('error',function(){if(timer)clearTimeout(timer);showFallback()});
+    if('IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(entries){
+        if(entries.some(function(e){return e.isIntersecting||e.intersectionRatio>0})){arm();io.disconnect()}
+      },{rootMargin:'300px'});
+      io.observe(card);
+    }else{arm()}
+  })();
+  </script>
 </body>
 </html>
