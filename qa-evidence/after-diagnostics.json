@@ -1,6 +1,6 @@
 {
   "label": "after",
-  "startedAt": "2026-10-03T23:31:51.965Z",
+  "startedAt": "2026-10-03T23:33:39.206Z",
   "viewports": {
     "390": {
       "innerWidth": 390,
@@ -28,7 +28,7 @@
       },
       "choice": "ناعم • عاجي + بلوط فاتح • مطفي • حجر فاتح هادئ • نهار معماري",
       "title": "هاير كلاس | استوديو قرار المطبخ — الطائف",
-      "firstUseful3DRenderMs": 9218,
+      "firstUseful3DRenderMs": 10455,
       "consoleErrors": [],
       "pageErrors": [],
       "failedRequests": []
@@ -59,7 +59,7 @@
       },
       "choice": "ناعم • عاجي + بلوط فاتح • مطفي • حجر فاتح هادئ • نهار معماري",
       "title": "هاير كلاس | استوديو قرار المطبخ — الطائف",
-      "firstUseful3DRenderMs": 10026,
+      "firstUseful3DRenderMs": 10747,
       "consoleErrors": [],
       "pageErrors": [],
       "failedRequests": []
@@ -90,7 +90,7 @@
       },
       "choice": "ناعم • عاجي + بلوط فاتح • مطفي • حجر فاتح هادئ • نهار معماري",
       "title": "هاير كلاس | استوديو قرار المطبخ — الطائف",
-      "firstUseful3DRenderMs": 12550,
+      "firstUseful3DRenderMs": 12834,
       "consoleErrors": [],
       "pageErrors": [],
       "failedRequests": []
@@ -121,11 +121,11 @@
       },
       "choice": "ناعم • عاجي + بلوط فاتح • مطفي • حجر فاتح هادئ • نهار معماري",
       "title": "هاير كلاس | استوديو قرار المطبخ — الطائف",
-      "firstUseful3DRenderMs": 49664,
+      "firstUseful3DRenderMs": 54313,
       "consoleErrors": [],
       "pageErrors": [],
       "failedRequests": []
     }
   },
-  "finishedAt": "2026-10-03T23:33:15.079Z"
+  "finishedAt": "2026-10-03T23:35:09.832Z"
 }
