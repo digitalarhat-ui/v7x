@@ -10,6 +10,9 @@ on:
   push:
     branches:
       - higher-class-photorealism-rescue-v2
+  pull_request:
+    branches:
+      - higher-class-v1-4
 
 jobs:
   visual-qa:
