@@ -1,0 +1,968 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#11110f">
+  <title>سنترو | استوديو قرار المطبخ قبل الاستشارة</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23100f0c'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-size='34' fill='%23c6a66b' font-family='Arial'%3EC%3C/text%3E%3C/svg%3E">
+  <meta name="description" content="استوديو قرار تجريبي لمطابخ سنترو: نموذج 3D ثابت لاتجاهات اللون والسطح مع حفظ الحالة وتجهيز ملخص مشروع مختصر قبل الاستشارة.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#11110f;--bg2:#191914;--paper:#f3efe6;--paper2:#e9e1d3;--ink:#191913;
+      --muted:#777165;--line:#d7cdbc;--gold:#af8d57;--gold2:#d2b57a;--sage:#7f8c75;
+      --darkline:rgba(255,255,255,.12);--radius:28px;--shadow:0 28px 90px rgba(21,18,12,.18)
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;background:var(--bg)}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans Arabic",system-ui,sans-serif;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    button,input,select{font:inherit}
+    button{cursor:pointer}
+    button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+    .shell{width:min(1220px,calc(100% - 36px));margin:auto}
+    .topbar{position:absolute;z-index:30;top:0;left:0;right:0;color:#f8f3e8}
+    .nav{height:78px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand-mark{width:42px;height:42px;border:1px solid rgba(210,181,122,.52);display:grid;place-items:center;font-family:"Noto Kufi Arabic";font-weight:700;color:var(--gold2);background:rgba(255,255,255,.02)}
+    .brand strong{display:block;font-family:"Noto Kufi Arabic";font-size:16px}
+    .brand small{display:block;color:#8f8c84;font-size:10px;margin-top:3px}
+    .nav-note{font-size:10px;color:#9b978e;border:1px solid rgba(255,255,255,.1);padding:8px 11px;background:rgba(255,255,255,.025)}
+    .hero{background:var(--bg);color:#f8f4ec;min-height:100svh;position:relative;overflow:hidden}
+    .hero:before{content:"";position:absolute;width:720px;height:720px;border-radius:50%;left:-260px;bottom:-330px;background:radial-gradient(circle,rgba(175,141,87,.2),rgba(175,141,87,0) 67%);pointer-events:none}
+    .hero-grid{min-height:100svh;padding:105px 0 42px;display:grid;grid-template-columns:.78fr 1.22fr;gap:30px;align-items:center}
+    .hero-copy{max-width:510px}
+    .kicker{font-size:11px;color:var(--gold2);font-weight:700;letter-spacing:.04em;margin-bottom:13px}
+    h1,h2,h3,p{margin-top:0}
+    h1{font-family:"Noto Kufi Arabic";font-size:clamp(39px,5.5vw,72px);line-height:1.38;letter-spacing:-1.4px;margin-bottom:17px}
+    .hero-copy p{font-size:14px;line-height:2;color:#aaa79f;margin-bottom:22px}
+    .hero-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .primary,.ghost{border:0;min-height:49px;padding:0 18px;font-weight:700;font-size:12px;transition:.2s ease}
+    .primary{background:var(--gold2);color:#1a1710}
+    .ghost{border:1px solid #383932;background:transparent;color:#eee8dc}
+    .primary:hover,.ghost:hover{transform:translateY(-1px)}
+    .hero-proof{margin-top:16px;display:flex;gap:7px;flex-wrap:wrap}
+    .hero-proof span{border:1px solid rgba(255,255,255,.1);padding:7px 9px;color:#85847e;font-size:9px}
+    .truth-note{margin-top:15px;font-size:9px!important;color:#6f706a!important;line-height:1.8!important}
+    .studio{min-width:0;background:#c7c2b9;border:1px solid #292a26;box-shadow:0 48px 130px rgba(0,0,0,.42);position:relative;isolation:isolate}
+    .stage{height:min(74svh,760px);min-height:560px;position:relative;overflow:hidden;touch-action:none;background:linear-gradient(#bdb9b2,#d9d3c9)}
+    #scene{width:100%;height:100%;display:block}
+    .stage-top{position:absolute;z-index:6;top:14px;right:14px;left:14px;display:flex;justify-content:space-between;gap:10px;pointer-events:none}
+    .scene-label,.orbit-tip{background:rgba(18,19,17,.68);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(12px);color:#eae5dc;padding:9px 11px;font-size:9px;line-height:1.6}
+    .scene-label b{display:block;color:#fff;font-size:10px;margin-bottom:2px}
+    .stage-bottom{position:absolute;z-index:7;right:14px;left:14px;bottom:14px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+    .look-row{display:flex;gap:7px;flex-wrap:wrap}
+    .look{border:1px solid rgba(255,255,255,.16);background:rgba(18,19,17,.72);color:#eee9e0;padding:9px 11px;font-size:9px;backdrop-filter:blur(12px)}
+    .look.active{background:#f5f0e6;color:#171813;border-color:#f5f0e6}
+    .reset{border:1px solid rgba(255,255,255,.16);background:rgba(18,19,17,.72);color:#f2ede4;width:42px;height:42px;display:grid;place-items:center;backdrop-filter:blur(12px)}
+    .material-dock{background:#f7f3eb;border-top:1px solid #d5cec2;display:grid;grid-template-columns:1fr 1fr}
+    .control{padding:15px 17px;min-width:0}
+    .control+ .control{border-inline-start:1px solid #ddd5c8}
+    .control-title{font-size:10px;color:#736e65;font-weight:700;margin-bottom:10px}
+    .swatches{display:flex;gap:10px;align-items:center;overflow-x:auto;scrollbar-width:none;padding:4px 2px}
+    .swatches::-webkit-scrollbar{display:none}
+    .swatch{border:0;background:transparent;color:#615d56;font-size:9px;min-width:max-content;padding:0;display:flex;align-items:center;gap:7px}
+    .swatch i{display:block;width:26px;height:26px;border-radius:50%;background:var(--c);border:1px solid rgba(0,0,0,.16);box-shadow:inset 0 0 0 3px rgba(255,255,255,.28)}
+    .swatch.active i{outline:2px solid #1c1d19;outline-offset:3px}
+    .section{padding:88px 0}
+    .section-head{display:grid;grid-template-columns:.76fr 1.24fr;gap:34px;align-items:start;margin-bottom:28px}
+    .eyebrow{font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.04em;margin-bottom:9px}
+    h2{font-family:"Noto Kufi Arabic";font-size:clamp(29px,4vw,48px);line-height:1.5;letter-spacing:-.8px;margin-bottom:0}
+    .section-head p{color:var(--muted);font-size:13px;line-height:2;max-width:620px}
+    .decision-card{background:#fffaf2;border:1px solid var(--line);box-shadow:var(--shadow);padding:30px}
+    .decision-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:26px}
+    .state-panel{background:var(--bg);color:#f5f0e6;padding:24px;min-height:100%}
+    .state-panel .label{font-size:9px;color:var(--gold2);font-weight:700}
+    .state-panel h3{font-family:"Noto Kufi Arabic";font-size:24px;line-height:1.5;margin:8px 0 14px}
+    .state-rows{display:grid;gap:0;border-top:1px solid var(--darkline)}
+    .state-row{display:flex;justify-content:space-between;gap:18px;padding:12px 0;border-bottom:1px solid var(--darkline);font-size:10px}
+    .state-row span{color:#8d8b84}
+    .state-row b{color:#eee9df;text-align:left}
+    .share-state{margin-top:18px;width:100%;border:1px solid #414239;background:transparent;color:#eee8dc;padding:12px;font-size:10px;font-weight:700}
+    .form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .field{display:grid;gap:6px}
+    .field.full{grid-column:1/-1}
+    .field label{font-size:10px;color:#6f6a61;font-weight:700}
+    .field input,.field select{width:100%;border:1px solid #d8cfc1;background:#fff;padding:13px 12px;color:#24231f;border-radius:0}
+    .form-note{grid-column:1/-1;color:#8b8479;font-size:9px;line-height:1.8;margin-top:2px}
+    .summary-section{background:#e7dfd2}
+    .summary-shell{background:#f9f5ed;border:1px solid #cfc4b4;padding:32px;box-shadow:0 28px 80px rgba(45,36,22,.12)}
+    .summary-grid{display:grid;grid-template-columns:1fr .72fr;gap:24px}
+    .summary-list{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid #d8cebf;border-right:1px solid #d8cebf}
+    .summary-item{padding:17px;border-left:1px solid #d8cebf;border-bottom:1px solid #d8cebf;min-height:82px}
+    .summary-item small{display:block;color:#91897d;font-size:9px;margin-bottom:6px}
+    .summary-item strong{display:block;font-size:13px;line-height:1.7}
+    .handoff{background:var(--bg);color:#f3eee6;padding:24px;display:flex;flex-direction:column;justify-content:space-between}
+    .handoff small{color:var(--gold2);font-size:9px}
+    .handoff h3{font-family:"Noto Kufi Arabic";font-size:23px;line-height:1.55;margin:10px 0}
+    .handoff p{color:#95938d;font-size:11px;line-height:1.9}
+    .whatsapp{display:flex;align-items:center;justify-content:center;min-height:50px;background:#f4efe5;color:#191a16;font-size:11px;font-weight:700;margin-top:18px}
+    .whatsapp[aria-disabled="true"]{opacity:.45;pointer-events:none}
+    .proof-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .proof-card{border:1px solid var(--line);background:#f8f3eb;padding:22px;min-height:150px}
+    .proof-card small{color:var(--gold);font-size:9px;font-weight:700}
+    .proof-card h3{font-family:"Noto Kufi Arabic";font-size:17px;line-height:1.55;margin:10px 0 7px}
+    .proof-card p{font-size:10px;line-height:1.9;color:#7c766d;margin:0}
+    .source-note{margin-top:12px;font-size:9px;color:#958e83}
+    .question-card{background:var(--bg);color:#f5f0e7;padding:34px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:22px}
+    .question-card h3{font-family:"Noto Kufi Arabic";font-size:23px;line-height:1.55;margin-bottom:6px}
+    .question-card p{margin:0;color:#999790;font-size:11px;line-height:1.8}
+    .question-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .question-actions button{border:1px solid #3c3d36;background:transparent;color:#eee8dd;padding:11px 14px;font-size:10px}
+    .question-actions button.active{background:var(--gold2);border-color:var(--gold2);color:#17150f}
+    footer{background:#0d0e0c;color:#6f706b;padding:30px 0 40px;font-size:9px;line-height:1.9}
+    .footer-row{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}
+    .footer-row b{color:#c8c1b5;display:block;font-size:11px;margin-bottom:4px}
+    .toast{position:fixed;z-index:80;left:50%;bottom:24px;transform:translate(-50%,20px);background:#161712;color:#f4efe5;border:1px solid #45463f;padding:11px 15px;font-size:10px;opacity:0;pointer-events:none;transition:.2s ease}
+    .toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(max-width:900px){
+      .hero-grid,.section-head,.decision-grid,.summary-grid{grid-template-columns:1fr}
+      .hero-grid{padding-top:102px;align-content:start}
+      .hero-copy{max-width:650px}
+      .stage{height:62svh;min-height:485px}
+      .section{padding:64px 0}
+      .proof-strip{grid-template-columns:1fr}
+      .question-card{grid-template-columns:1fr}
+    }
+    @media(max-width:600px){
+      .shell{width:min(100% - 22px,1220px)}
+      .nav{height:70px}.brand-mark{width:36px;height:36px}.brand strong{font-size:13px}.brand small{display:none}.nav-note{font-size:8px;padding:7px 8px}
+      .hero-grid{padding:86px 0 24px;gap:20px}
+      h1{font-size:35px;line-height:1.45}
+      .hero-copy p{font-size:12px;line-height:1.9}
+      .hero-actions .primary,.hero-actions .ghost{flex:1}
+      .stage{height:56svh;min-height:410px}
+      .scene-label{max-width:190px}.orbit-tip{display:none}
+      .material-dock{grid-template-columns:1fr}
+      .control+.control{border-inline-start:0;border-top:1px solid #ddd5c8}
+      .section{padding:52px 0}
+      .section-head{gap:10px;margin-bottom:20px}
+      h2{font-size:28px;line-height:1.55}
+      .decision-card,.summary-shell{padding:16px}
+      .form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}
+      .summary-list{grid-template-columns:1fr}
+      .proof-card{min-height:auto}
+      .question-card{padding:22px}
+      .footer-row{display:grid}
+      .stage-bottom{align-items:flex-end}.look{padding:8px;font-size:8px}
+    }
+  
+    .readiness-meter{margin-top:14px;border:1px solid var(--line);background:#f8f3eb;padding:14px 15px}
+    .readiness-head{display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:10px}
+    .readiness-head span{color:var(--gold);font-weight:700}
+    .readiness-track{height:6px;background:#ddd4c5;margin:10px 0 8px;overflow:hidden}
+    .readiness-track i{display:block;width:40%;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width .25s ease}
+    .readiness-hint{font-size:9px;color:#8c857a;line-height:1.75}
+    .authentic-card{margin:0;border:1px solid var(--line);background:#f8f3eb;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);overflow:hidden}
+    .authentic-card img{width:100%;height:430px;object-fit:cover;display:block;background:#ded7ca}
+    .authentic-card figcaption{padding:24px;display:flex;flex-direction:column;justify-content:flex-end;gap:9px}
+    .authentic-card figcaption b{font-family:"Noto Kufi Arabic";font-size:15px;line-height:1.7}
+    .authentic-card figcaption span,.authentic-fallback{font-size:10px;color:#777165;line-height:1.9}
+    .authentic-fallback{border:1px solid var(--line);background:#f8f3eb;padding:24px;text-align:center}
+    .webgl-fallback{position:absolute;inset:0;z-index:5;display:grid;place-content:center;text-align:center;padding:28px;background:linear-gradient(155deg,#bdb8af,#ddd6ca);color:#24241f}
+    .webgl-fallback[hidden]{display:none}
+    .webgl-fallback b{font-family:"Noto Kufi Arabic";font-size:16px;margin:18px auto 8px;max-width:420px}
+    .webgl-fallback span{font-size:10px;line-height:1.9;max-width:440px;color:#615d56}
+    .fallback-kitchen{width:min(430px,76vw);height:180px;margin:auto;display:grid;grid-template-columns:1.4fr .9fr .9fr 1.2fr;grid-template-rows:1fr .9fr;gap:7px;align-items:stretch}
+    .fallback-kitchen i{display:block;background:#d7cfc1;border:1px solid rgba(0,0,0,.12);box-shadow:inset 0 -10px 22px rgba(0,0,0,.04)}
+    .fallback-kitchen i:nth-child(1){grid-row:1/3}.fallback-kitchen i:nth-child(2){background:#7f8c75}.fallback-kitchen i:nth-child(3){background:#d8d0c2}.fallback-kitchen i:nth-child(4){grid-row:1/3;background:#3e403d}.fallback-kitchen i:nth-child(5){grid-column:2/4;background:#ebe8e0}
+    @media(max-width:700px){.authentic-card{grid-template-columns:1fr}.authentic-card img{height:300px}.authentic-card figcaption{padding:18px}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell nav">
+      <div class="brand">
+        <div class="brand-mark">C</div>
+        <div><strong>سنترو</strong><small>سنترو للمطابخ والخزائن</small></div>
+      </div>
+      <div class="nav-note">استوديو قرار تفاعلي قبل موعد التصميم</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <div class="kicker">استوديو قرار قبل الاستشارة</div>
+          <h1>اختَر اتجاهك<br>قبل موعد التصميم.</h1>
+          <p>جرّب اتجاهات ألوان الخزائن والأسطح على نموذج ثلاثي الأبعاد ثابت، احفظ الحالة نفسها، ثم أضف فقط معلومات المشروع التي تساعد فريق سنترو على بدء الاستشارة من نقطة أوضح.</p>
+          <div class="hero-actions">
+            <button class="primary" id="startBtn">ابدأ من النموذج</button>
+            <a class="ghost" href="#summary">شاهد شكل الملخص</a>
+          </div>
+          <div class="hero-proof">
+            <span>اختيار بصري محفوظ</span>
+            <span>سياق مشروع مختصر</span>
+            <span>تحويل إلى خدمة العملاء</span>
+          </div>
+          <p class="truth-note">مشهد 3D هنا نموذج تجريبي ثابت لإثبات الفكرة، وليس كتالوج سنترو الرسمي ولا تمثيلاً لخامة أو لون معتمد. الاعتماد النهائي يبقى مع فريق التصميم والقياس في سنترو.</p>
+        </div>
+
+        <div class="studio" id="studio">
+          <div class="stage" id="stage">
+            <canvas id="scene" aria-label="نموذج مطبخ ثلاثي الأبعاد تفاعلي"></canvas>
+            <div class="webgl-fallback" id="webglFallback" hidden>
+              <div class="fallback-kitchen" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+              <b>المعاينة ثلاثية الأبعاد غير متاحة على هذا الجهاز</b>
+              <span>يمكنك الاستمرار في تحديد الاتجاهات وحفظ ملخص المشروع؛ وسيتم اعتماد التصميم الفعلي مع فريق سنترو.</span>
+            </div>
+            <div class="stage-top">
+              <div class="scene-label"><b>نموذج 3D تجريبي</b>اسحب لتدوير المشهد</div>
+              <div class="orbit-tip">لون الخزائن + سطح العمل + الإضاءة</div>
+            </div>
+            <div class="stage-bottom">
+              <div class="look-row">
+                <button class="look active" data-light="day">إضاءة نهارية</button>
+                <button class="look" data-light="warm">إضاءة دافئة</button>
+              </div>
+              <button class="reset" id="resetView" aria-label="إعادة زاوية العرض">↻</button>
+            </div>
+          </div>
+          <div class="material-dock">
+            <div class="control">
+              <div class="control-title">اتجاه لون الخزائن</div>
+              <div class="swatches" id="cabinetSwatches">
+                <button class="swatch active" data-value="ivory" style="--c:#d8d0c2"><i></i>عاجي دافئ</button>
+                <button class="swatch" data-value="sage" style="--c:#7f8c75"><i></i>أخضر هادئ</button>
+                <button class="swatch" data-value="sand" style="--c:#b89f7b"><i></i>رملي</button>
+                <button class="swatch" data-value="taupe" style="--c:#8f8275"><i></i>تاوب</button>
+                <button class="swatch" data-value="clay" style="--c:#a56f5c"><i></i>طيني</button>
+                <button class="swatch" data-value="navy" style="--c:#344451"><i></i>أزرق داكن</button>
+                <button class="swatch" data-value="charcoal" style="--c:#3e403d"><i></i>فحمي</button>
+                <button class="swatch" data-value="black" style="--c:#20211f"><i></i>أسود مطفي</button>
+              </div>
+            </div>
+            <div class="control">
+              <div class="control-title">اتجاه سطح العمل</div>
+              <div class="swatches" id="worktopSwatches">
+                <button class="swatch active" data-value="softwhite" style="--c:#dedbd2"><i></i>فاتح هادئ</button>
+                <button class="swatch" data-value="calacatta" style="--c:#ece8df"><i></i>أبيض بعروق</button>
+                <button class="swatch" data-value="warmstone" style="--c:#9b8d78"><i></i>حجر دافئ</button>
+                <button class="swatch" data-value="sandveil" style="--c:#c5b292"><i></i>بيج حجري</button>
+                <button class="swatch" data-value="graphite" style="--c:#4a4945"><i></i>جرافيت</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="readiness">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">حفظ القرار</div>
+            <h2>من الاختيار البصري<br>إلى سياق مفيد.</h2>
+          </div>
+          <p>بدلاً من إرسال صورة منفصلة أو وصف طويل، يحتفظ النموذج بحالة الاختيار نفسها ويضيف إليها الحد الأدنى من المعلومات التي قد تفيد قبل الموعد. لا يوجد تسعير آلي ولا ادعاء بأنه بديل عن مهندس التصميم أو القياس.</p>
+        </div>
+        <div class="decision-card">
+          <div class="decision-grid">
+            <div class="state-panel">
+              <div class="label">الحالة الحالية محفوظة</div>
+              <h3>اتجاهك البصري</h3>
+              <div class="state-rows">
+                <div class="state-row"><span>لون الخزائن</span><b id="stateCabinet">عاجي دافئ</b></div>
+                <div class="state-row"><span>سطح العمل</span><b id="stateWorktop">فاتح هادئ</b></div>
+                <div class="state-row"><span>الإضاءة</span><b id="stateLight">نهارية</b></div>
+              </div>
+              <button class="share-state" id="copyState">نسخ رابط هذه الحالة</button>
+            </div>
+            <div>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="branch">موقع المشروع</label>
+                  <input id="branch" type="text" maxlength="80" placeholder="مثال: الملقا — الرياض">
+                </div>
+                <div class="field">
+                  <label for="stageSelect">مرحلة المشروع</label>
+                  <select id="stageSelect">
+                    <option value="">غير محدد</option>
+                    <option>مطبخ جديد</option>
+                    <option>تجديد مطبخ قائم</option>
+                    <option>ما زلت أستكشف الخيارات</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="shape">شكل المساحة المتوقع</label>
+                  <select id="shape">
+                    <option value="">غير محدد</option>
+                    <option>جدار واحد</option>
+                    <option>حرف L</option>
+                    <option>حرف U</option>
+                    <option>مع جزيرة</option>
+                    <option>يحدده المهندس بعد القياس</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="size">مقاس تقريبي إن كان معروفاً</label>
+                  <input id="size" type="text" inputmode="decimal" placeholder="مثال: 4 × 3 م">
+                </div>
+                <div class="field full">
+                  <label for="note">ملاحظة واحدة مهمة للمهندس</label>
+                  <input id="note" type="text" maxlength="140" placeholder="مثال: أحتاج مساحة تخزين أكبر أو مكاناً واضحاً للأجهزة">
+                </div>
+                <div class="form-note">القياسات والاتجاهات البصرية هنا تمهيدية فقط وليست كتالوجاً رسمياً. الاعتماد النهائي للخامات والمقاسات والتصميم يتم عبر فريق سنترو.</div>
+              </div>
+              <div class="readiness-meter" aria-live="polite">
+                <div class="readiness-head"><b>جاهزية ملخص المشروع</b><span id="readinessScore">40%</span></div>
+                <div class="readiness-track"><i id="readinessFill"></i></div>
+                <div class="readiness-hint" id="readinessHint">أضف ما تعرفه فقط؛ لا حاجة لتخمين معلومات غير متاحة.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section summary-section" id="summary">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">ملخص قبل الموعد</div>
+            <h2>معلومة أقل.<br>وضوح أكثر.</h2>
+          </div>
+          <p>هذا هو الناتج المقصود: ليس «تصميم مطبخ أونلاين»، بل ملخص قابل للمراجعة يربط القرار البصري بسياق المشروع ثم يعيده إلى قناة التواصل الحالية مع سنترو.</p>
+        </div>
+        <div class="summary-shell">
+          <div class="summary-grid">
+            <div class="summary-list">
+              <div class="summary-item"><small>اتجاه الخزائن</small><strong id="sumCabinet">عاجي دافئ</strong></div>
+              <div class="summary-item"><small>سطح العمل</small><strong id="sumWorktop">فاتح هادئ</strong></div>
+              <div class="summary-item"><small>موقع المشروع</small><strong id="sumBranch">غير محدد</strong></div>
+              <div class="summary-item"><small>مرحلة المشروع</small><strong id="sumStage">غير محددة</strong></div>
+              <div class="summary-item"><small>شكل المساحة</small><strong id="sumShape">غير محدد</strong></div>
+              <div class="summary-item"><small>مقاس تقريبي</small><strong id="sumSize">غير مضاف</strong></div>
+              <div class="summary-item" style="grid-column:1/-1"><small>ملاحظة للمهندس</small><strong id="sumNote">لا توجد ملاحظة إضافية</strong></div>
+            </div>
+            <aside class="handoff">
+              <div>
+                <small>الخطوة التالية</small>
+                <h3>أرسل الملخص إلى خدمة العملاء.</h3>
+                <p>يفتح واتساب على قناة خدمة العملاء الحالية مع ملخص الخيارات. هذا النموذج لا يحدد السعر ولا يلغي الاستشارة أو القياس.</p>
+              </div>
+              <a class="whatsapp" id="whatsappLink" href="#" target="_blank" rel="noopener">متابعة عبر واتساب</a>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">هوية سنترو الحالية</div>
+            <h2>التجربة مرتبطة<br>بقرار العميل.</h2>
+          </div>
+          <p>سنترو تعرض مطابخ وخزائن أوروبية بتصاميم عصرية، وتستخدم واتساب كقناة تواصل حالية. لذلك هذا النموذج لا يعرض صور مخزون ولا يدّعي أنه كتالوج رسمي؛ بل يختبر خطوة قرار تفاعلية قبل انتقال العميل إلى فريق التصميم والقياس.</p>
+        </div>
+        <div class="proof-strip">
+          <article class="proof-card"><small>01</small><h3>اختيار بصري</h3><p>العميل يختبر اتجاهاً للون الخزائن وسطح العمل على مشهد 3D تجريبي واضح.</p></article>
+          <article class="proof-card"><small>02</small><h3>حالة محفوظة</h3><p>الرابط يحتفظ بالاختيارات وسياق المشروع حتى لا يبدأ الحوار من الصفر.</p></article>
+          <article class="proof-card"><small>03</small><h3>عودة للمصمم</h3><p>الملخص ينتقل إلى واتساب، بينما القياس والاعتماد النهائي يبقيان مع فريق سنترو.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="shell">
+        <div class="question-card">
+          <div>
+            <h3>سؤال واحد للفريق</h3>
+            <p>إذا طبقنا الفكرة فعلياً عندكم، ما أهم شيء تحبون أن يجهزه العميل قبل ما ينتقل للمصمم أو موعد التصميم؟</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section" style="padding-top:0">
+      <div class="shell">
+        <div class="question-card">
+          <div>
+            <h3>الخطوة التالية — إذا ثبتت الفكرة</h3>
+            <p>تنفيذ نسخة مدفوعة محدودة لسنترو بخاماتكم واتجاهاتكم المعتمدة، وربطها بمسار الفريق وقياس عدد ملخصات المشاريع المكتملة خلال فترة اختبار محددة.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-row">
+      <div><b>سنترو — سنترو للمطابخ والخزائن</b>نموذج تفاعلي تجريبي لإيضاح فكرة ما قبل الاستشارة.</div>
+      <div>الخيارات والألوان المعروضة ليست كتالوجاً رسمياً ولا عرض سعر. الاعتماد النهائي يتم مع فريق سنترو.</div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast">تم</div>
+
+  <script src="/vendor/three-r128.min.js"></script>
+  <script>
+  (function(){
+    var state={
+      cabinet:"ivory",worktop:"softwhite",light:"day",
+      branch:"",projectStage:"",shape:"",size:"",note:""
+    };
+    var labels={
+      cabinet:{ivory:"عاجي دافئ",sage:"أخضر هادئ",sand:"رملي",taupe:"تاوب",clay:"طيني",navy:"أزرق داكن",charcoal:"فحمي",black:"أسود مطفي"},
+      worktop:{softwhite:"فاتح هادئ",calacatta:"أبيض بعروق",warmstone:"حجر دافئ",sandveil:"بيج حجري",graphite:"جرافيت"},
+      light:{day:"نهارية",warm:"دافئة"}
+    };
+    var colors={
+      cabinet:{ivory:0xd8d0c2,sage:0x7f8c75,sand:0xb89f7b,taupe:0x8f8275,clay:0xa56f5c,navy:0x344451,charcoal:0x3e403d,black:0x20211f},
+      worktop:{softwhite:0xdedbd2,calacatta:0xece8df,warmstone:0x9b8d78,sandveil:0xc5b292,graphite:0x4a4945}
+    };
+
+    var canvas=document.getElementById("scene");
+    var stageEl=document.getElementById("stage");
+    var renderer;
+    try{
+      if(!window.THREE)throw new Error("three-unavailable");
+      renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:false,powerPreference:"high-performance"});
+    }catch(e){
+      stageEl.classList.add("fallback-active");
+      document.getElementById("webglFallback").hidden=false;
+      function fallbackSync(){
+        document.getElementById("stateCabinet").textContent=labels.cabinet[state.cabinet];
+        document.getElementById("stateWorktop").textContent=labels.worktop[state.worktop];
+        document.getElementById("stateLight").textContent=labels.light[state.light];
+        document.getElementById("sumCabinet").textContent=labels.cabinet[state.cabinet];
+        document.getElementById("sumWorktop").textContent=labels.worktop[state.worktop];
+        document.getElementById("sumBranch").textContent=state.branch||"غير محدد";
+        document.getElementById("sumStage").textContent=state.projectStage||"غير محددة";
+        document.getElementById("sumShape").textContent=state.shape||"غير محدد";
+        document.getElementById("sumSize").textContent=state.size||"غير مضاف";
+        document.getElementById("sumNote").textContent=state.note||"لا توجد ملاحظة إضافية";
+        var done=["branch","projectStage","shape","size","note"].filter(function(k){return String(state[k]||"").trim()}).length;
+        var score=40+done*12;
+        document.getElementById("readinessScore").textContent=score+"%";
+        document.getElementById("readinessFill").style.width=score+"%";
+        document.getElementById("readinessHint").textContent=done===5?"الملخص جاهز للإرسال إلى فريق سنترو.":"أضف ما تعرفه فقط؛ المتبقي يمكن مناقشته مع فريق سنترو.";
+        var p=new URLSearchParams();
+        p.set("c",state.cabinet);p.set("w",state.worktop);p.set("l",state.light);
+        if(state.branch)p.set("b",state.branch);if(state.projectStage)p.set("s",state.projectStage);if(state.shape)p.set("sh",state.shape);if(state.size)p.set("z",state.size);if(state.note)p.set("n",state.note);
+        history.replaceState(null,"",location.pathname+"?"+p.toString());
+        try{localStorage.setItem("centro-demo-state",JSON.stringify(state))}catch(_){}
+        var lines=["السلام عليكم، هذا ملخص أولي قبل الاستشارة مع سنترو:","اتجاه لون الخزائن: "+labels.cabinet[state.cabinet],"اتجاه سطح العمل: "+labels.worktop[state.worktop],"الإضاءة في النموذج: "+labels.light[state.light],"موقع المشروع: "+(state.branch||"غير محدد"),"مرحلة المشروع: "+(state.projectStage||"غير محددة"),"شكل المساحة: "+(state.shape||"غير محدد"),"مقاس تقريبي: "+(state.size||"غير مضاف")];
+        if(state.note)lines.push("ملاحظة للمهندس: "+state.note);
+        lines.push("الاتجاهات البصرية تجريبية وليست كتالوج سنترو الرسمي؛ الاعتماد النهائي مع فريق التصميم والقياس.");
+        document.getElementById("whatsappLink").href="https://wa.me/966558805499?text="+encodeURIComponent(lines.join("\n"));
+      }
+      try{var saved=JSON.parse(localStorage.getItem("centro-demo-state")||"null");if(saved&&typeof saved==="object")Object.keys(state).forEach(function(k){if(saved[k]!==undefined)state[k]=saved[k]});}catch(_){}
+      var fq=new URLSearchParams(location.search);
+      if(fq.get("c")&&labels.cabinet[fq.get("c")])state.cabinet=fq.get("c");if(fq.get("w")&&labels.worktop[fq.get("w")])state.worktop=fq.get("w");if(fq.get("l"))state.light=fq.get("l");if(fq.get("b"))state.branch=fq.get("b");if(fq.get("s"))state.projectStage=fq.get("s");if(fq.get("sh"))state.shape=fq.get("sh");if(fq.get("z"))state.size=fq.get("z");if(fq.get("n"))state.note=fq.get("n");
+      document.getElementById("branch").value=state.branch;document.getElementById("stageSelect").value=state.projectStage;document.getElementById("shape").value=state.shape;document.getElementById("size").value=state.size;document.getElementById("note").value=state.note;
+      document.querySelectorAll("#cabinetSwatches .swatch").forEach(function(b){b.classList.toggle("active",b.dataset.value===state.cabinet);b.addEventListener("click",function(){state.cabinet=b.dataset.value;document.querySelectorAll("#cabinetSwatches .swatch").forEach(function(x){x.classList.toggle("active",x===b)});fallbackSync()})});
+      document.querySelectorAll("#worktopSwatches .swatch").forEach(function(b){b.classList.toggle("active",b.dataset.value===state.worktop);b.addEventListener("click",function(){state.worktop=b.dataset.value;document.querySelectorAll("#worktopSwatches .swatch").forEach(function(x){x.classList.toggle("active",x===b)});fallbackSync()})});
+      document.querySelectorAll(".look").forEach(function(b){b.classList.toggle("active",b.dataset.light===state.light);b.addEventListener("click",function(){state.light=b.dataset.light;document.querySelectorAll(".look").forEach(function(x){x.classList.toggle("active",x===b)});fallbackSync()})});
+      [["branch","branch"],["stageSelect","projectStage"],["shape","shape"],["size","size"],["note","note"]].forEach(function(pair){var el=document.getElementById(pair[0]);el.addEventListener(el.tagName==="INPUT"?"input":"change",function(){state[pair[1]]=el.value.trim();fallbackSync()})});
+      document.getElementById("startBtn").addEventListener("click",function(){document.getElementById("studio").scrollIntoView({behavior:"smooth",block:"center"})});
+      document.getElementById("copyState").addEventListener("click",function(){fallbackSync();if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(location.href)});
+      fallbackSync();
+      return;
+    }
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+    renderer.shadowMap.enabled=true;
+    renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+    renderer.outputEncoding=THREE.sRGBEncoding;
+    renderer.toneMapping=THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure=1.04;
+    renderer.physicallyCorrectLights=true;
+
+    var scene=new THREE.Scene();
+    scene.background=new THREE.Color(0xc9c4ba);
+    scene.fog=new THREE.Fog(0xc9c4ba,12,23);
+
+    var camera=new THREE.PerspectiveCamera(34,1,.1,80);
+    var orbit={theta:.46,phi:1.45,radius:8.55,target:new THREE.Vector3(-.10,1.34,-.78)};
+    var orbitHome={theta:.46,phi:1.45,radius:8.55};
+
+    function updateCamera(){
+      var sinPhi=Math.sin(orbit.phi);
+      camera.position.set(
+        orbit.target.x+orbit.radius*sinPhi*Math.sin(orbit.theta),
+        orbit.target.y+orbit.radius*Math.cos(orbit.phi),
+        orbit.target.z+orbit.radius*sinPhi*Math.cos(orbit.theta)
+      );
+      camera.lookAt(orbit.target);
+    }
+
+    function seeded(seed){
+      var t=seed>>>0;
+      return function(){
+        t+=0x6D2B79F5;
+        var r=Math.imul(t^t>>>15,1|t);
+        r^=r+Math.imul(r^r>>>7,61|r);
+        return ((r^r>>>14)>>>0)/4294967296;
+      };
+    }
+    function stoneTexture(base,veinA,veinB,seed){
+      var c=document.createElement("canvas"),ctx=c.getContext("2d"),rnd=seeded(seed);
+      c.width=c.height=512;
+      ctx.fillStyle=base;ctx.fillRect(0,0,512,512);
+      for(var i=0;i<1050;i++){
+        var a=.018+rnd()*.045;
+        ctx.fillStyle="rgba(255,255,255,"+a+")";
+        ctx.fillRect(rnd()*512,rnd()*512,1+rnd()*2,1+rnd()*2);
+      }
+      function vein(color,count,width,alpha){
+        for(var n=0;n<count;n++){
+          ctx.beginPath();
+          var y=rnd()*512-40;
+          ctx.moveTo(-20,y);
+          for(var x=0;x<570;x+=55){
+            y+=(rnd()-.5)*58;
+            ctx.lineTo(x,y);
+          }
+          ctx.strokeStyle=color;
+          ctx.globalAlpha=alpha*(.55+rnd()*.6);
+          ctx.lineWidth=width*(.6+rnd()*.9);
+          ctx.stroke();
+        }
+      }
+      vein(veinA,10,1.35,.18);
+      vein(veinB,5,.6,.17);
+      ctx.globalAlpha=1;
+      var tex=new THREE.CanvasTexture(c);
+      tex.wrapS=tex.wrapT=THREE.RepeatWrapping;
+      tex.repeat.set(2.2,.72);
+      tex.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());
+      tex.encoding=THREE.sRGBEncoding;
+      return tex;
+    }
+    function tileTexture(){
+      var c=document.createElement("canvas"),ctx=c.getContext("2d");
+      c.width=c.height=512;
+      ctx.fillStyle="#c8c1b6";ctx.fillRect(0,0,512,512);
+      ctx.strokeStyle="rgba(88,82,73,.16)";ctx.lineWidth=3;
+      for(var i=0;i<=512;i+=128){
+        ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,512);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(0,i);ctx.lineTo(512,i);ctx.stroke();
+      }
+      for(var j=0;j<1200;j++){
+        var g=188+Math.floor(Math.random()*28);
+        ctx.fillStyle="rgba("+g+","+g+","+(g-4)+",.035)";
+        ctx.fillRect(Math.random()*512,Math.random()*512,1,1);
+      }
+      var tex=new THREE.CanvasTexture(c);
+      tex.wrapS=tex.wrapT=THREE.RepeatWrapping;
+      tex.repeat.set(4.7,4.7);
+      tex.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());
+      tex.encoding=THREE.sRGBEncoding;
+      return tex;
+    }
+
+    var stoneMaps={
+      softwhite:stoneTexture("#d9d7d0","#807b70","#b1a99c",42),
+      calacatta:stoneTexture("#ebe8e0","#756f68","#c7c0b6",52),
+      warmstone:stoneTexture("#a69782","#5f574d","#d1c2aa",73),
+      sandveil:stoneTexture("#c7b79a","#8d7b66","#e2d4bd",81),
+      graphite:stoneTexture("#4d4b47","#b3aca0","#292a28",91)
+    };
+
+    var cabinetMat=new THREE.MeshPhysicalMaterial({
+      color:colors.cabinet.ivory,roughness:.43,metalness:.015,clearcoat:.18,clearcoatRoughness:.52
+    });
+    var cabinetSideMat=new THREE.MeshPhysicalMaterial({
+      color:0xbeb5a7,roughness:.52,metalness:.01,clearcoat:.1,clearcoatRoughness:.62
+    });
+    var worktopMat=new THREE.MeshPhysicalMaterial({
+      color:0xffffff,map:stoneMaps.softwhite,roughness:.26,metalness:.015,clearcoat:.3,clearcoatRoughness:.24
+    });
+    var backsplashMat=new THREE.MeshPhysicalMaterial({
+      color:0xe3ded5,map:stoneMaps.softwhite,roughness:.32,metalness:.01,clearcoat:.12
+    });
+    var brushedMetal=new THREE.MeshStandardMaterial({color:0x727773,roughness:.24,metalness:.82});
+    var blackMetal=new THREE.MeshStandardMaterial({color:0x22231f,roughness:.3,metalness:.68});
+    var applianceGlass=new THREE.MeshPhysicalMaterial({
+      color:0x171918,roughness:.08,metalness:.35,transparent:true,opacity:.94,clearcoat:.55,clearcoatRoughness:.1
+    });
+    var glassMat=new THREE.MeshPhysicalMaterial({
+      color:0x9ca7a0,roughness:.08,metalness:.05,transparent:true,opacity:.24,clearcoat:.5,clearcoatRoughness:.08
+    });
+    var wallMat=new THREE.MeshStandardMaterial({color:0xe7e1d7,roughness:.93});
+    var wallSideMat=new THREE.MeshStandardMaterial({color:0xded7cb,roughness:.95});
+    var floorMat=new THREE.MeshStandardMaterial({color:0xffffff,map:tileTexture(),roughness:.82,metalness:.01});
+    var woodMat=new THREE.MeshStandardMaterial({color:0x7c6047,roughness:.5,metalness:.01});
+    var darkWoodMat=new THREE.MeshStandardMaterial({color:0x493a30,roughness:.5,metalness:.01});
+    var gapMat=new THREE.MeshBasicMaterial({color:0x171814});
+    var warmGlowMat=new THREE.MeshStandardMaterial({color:0xffe1aa,emissive:0xffc66b,emissiveIntensity:2.6,roughness:.4});
+    var chromeMat=new THREE.MeshStandardMaterial({color:0xbfc2bd,roughness:.16,metalness:.95});
+
+    var room=new THREE.Group();scene.add(room);
+    var kitchen=new THREE.Group();room.add(kitchen);
+    var decor=new THREE.Group();room.add(decor);
+
+    function addBox(w,h,d,mat,x,y,z,parent,cast){
+      var m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
+      m.position.set(x,y,z);
+      m.castShadow=cast!==false;
+      m.receiveShadow=true;
+      (parent||kitchen).add(m);
+      return m;
+    }
+    function addCyl(rTop,rBottom,h,segments,mat,x,y,z,parent){
+      var m=new THREE.Mesh(new THREE.CylinderGeometry(rTop,rBottom,h,segments||24),mat);
+      m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;(parent||kitchen).add(m);return m;
+    }
+    function frontPanel(w,h,x,y,z,mat){
+      addBox(w+.018,h+.018,.028,gapMat,x,y,z-.012,kitchen);
+      return addBox(w,h,.034,mat||cabinetMat,x,y,z,kitchen);
+    }
+    function drawerStack(x,w,count){
+      var baseY=.49,total=.72,gap=.025,h=(total-gap*(count-1))/count;
+      for(var i=0;i<count;i++){
+        var y=baseY-total/2+h/2+i*(h+gap);
+        frontPanel(w-.065,h,x,y,-1.973,cabinetMat);
+        addBox(w*.52,.015,.018,blackMetal,x,y+h*.22,-1.947,kitchen);
+      }
+    }
+    function doorPair(x,w){
+      var doorW=(w-.09)/2;
+      frontPanel(doorW,.73,x-doorW/2-.015,.50,-1.973,cabinetMat);
+      frontPanel(doorW,.73,x+doorW/2+.015,.50,-1.973,cabinetMat);
+      addBox(.016,.36,.018,blackMetal,x-.038,.50,-1.947,kitchen);
+      addBox(.016,.36,.018,blackMetal,x+.038,.50,-1.947,kitchen);
+    }
+    function baseCarcass(x,w,type){
+      addBox(w,.79,.64,cabinetSideMat,x,.515,-2.31,kitchen);
+      addBox(w,.105,.60,gapMat,x,.105,.01,kitchen);
+      if(type==="drawers") drawerStack(x,w,3); else doorPair(x,w);
+    }
+    function upperCarcass(x,w,glass){
+      addBox(w,.89,.39,cabinetSideMat,x,2.18,-2.39,kitchen);
+      if(glass){
+        var dw=(w-.08)/2;
+        frontPanel(dw,.80,x-dw/2-.012,2.18,-2.178,glassMat);
+        frontPanel(dw,.80,x+dw/2+.012,2.18,-2.178,glassMat);
+        addBox(.012,.34,.018,blackMetal,x-.033,2.18,-2.149,kitchen);
+        addBox(.012,.34,.018,blackMetal,x+.033,2.18,-2.149,kitchen);
+        addBox(w-.12,.03,.18,darkWoodMat,x,2.02,-2.28,kitchen);
+        addBox(w-.12,.03,.18,darkWoodMat,x,2.35,-2.28,kitchen);
+      }else{
+        var dw2=(w-.08)/2;
+        frontPanel(dw2,.80,x-dw2/2-.012,2.18,-2.178,cabinetMat);
+        frontPanel(dw2,.80,x+dw2/2+.012,2.18,-2.178,cabinetMat);
+        addBox(.012,.34,.018,blackMetal,x-.033,2.18,-2.149,kitchen);
+        addBox(.012,.34,.018,blackMetal,x+.033,2.18,-2.149,kitchen);
+      }
+    }
+
+    // Architectural room shell
+    var floor=new THREE.Mesh(new THREE.PlaneGeometry(18,18),floorMat);
+    floor.rotation.x=-Math.PI/2;floor.position.y=.045;floor.receiveShadow=true;room.add(floor);
+    addBox(9.2,3.35,.12,wallMat,0,1.7,-2.72,room,false);
+    addBox(.12,3.35,7.2,wallSideMat,4.54,1.7,.80,room,false);
+    // Open-ceiling architectural cutaway: prevents camera occlusion and keeps the kitchen readable.
+
+    // Full-height stone backsplash band
+    addBox(6.55,.96,.055,backsplashMat,-.10,1.44,-2.625,room,false);
+    // Fine shelf above splash
+    addBox(6.65,.055,.25,worktopMat,-.10,1.93,-2.48,kitchen);
+
+    // Tall appliance / pantry wall
+    addBox(1.16,2.74,.70,cabinetSideMat,-3.53,1.42,-2.29,kitchen);
+    frontPanel(.49,2.58,-3.82,1.42,-1.925,cabinetMat);
+    frontPanel(.49,2.58,-3.25,1.42,-1.925,cabinetMat);
+    addBox(.022,1.02,.025,blackMetal,-3.55,1.42,-1.895,kitchen);
+
+    // Integrated fridge block
+    addBox(1.04,2.74,.70,cabinetSideMat,-2.38,1.42,-2.29,kitchen);
+    frontPanel(.96,1.82,-2.38,1.80,-1.925,cabinetMat);
+    frontPanel(.96,.67,-2.38,.50,-1.925,cabinetMat);
+    addBox(.020,.72,.025,blackMetal,-2.02,1.76,-1.895,kitchen);
+    addBox(.020,.28,.025,blackMetal,-2.02,.51,-1.895,kitchen);
+
+    // Main run: sink + drawers + hob
+    var xs=[-1.40,-.55,.30,1.15,2.00,2.85];
+    xs.forEach(function(x,i){baseCarcass(x,.80,(i===0||i===3||i===4)?"drawers":"doors")});
+    // Continuous worktop with slim edge
+    addBox(5.72,.075,.76,worktopMat,.72,.982,-2.16,kitchen);
+    addBox(5.72,.018,.765,blackMetal,.72,.935,-2.16,kitchen);
+
+    // Sink bowl and faucet
+    addBox(.78,.035,.45,brushedMetal,-.56,1.024,-2.12,kitchen);
+    addBox(.63,.027,.34,new THREE.MeshStandardMaterial({color:0x4d5551,roughness:.22,metalness:.75}),-.56,1.045,-2.12,kitchen);
+    var faucetCurve=new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-.82,1.02,-2.22),
+      new THREE.Vector3(-.82,1.42,-2.22),
+      new THREE.Vector3(-.64,1.64,-2.22),
+      new THREE.Vector3(-.38,1.55,-2.22)
+    ]);
+    var faucet=new THREE.Mesh(new THREE.TubeGeometry(faucetCurve,28,.025,10,false),chromeMat);
+    faucet.castShadow=true;kitchen.add(faucet);
+    addCyl(.028,.028,.23,16,chromeMat,-.38,1.43,-2.22,kitchen).rotation.z=Math.PI/2;
+
+    // Cooktop + oven stack
+    addBox(.78,.018,.52,applianceGlass,1.98,1.032,-2.14,kitchen);
+    for(var hb=0;hb<4;hb++){
+      var cx=1.76+(hb%2)*.42,cz=-2.28+Math.floor(hb/2)*.30;
+      var ring=new THREE.Mesh(new THREE.TorusGeometry(.105,.009,10,28),blackMetal);
+      ring.rotation.x=Math.PI/2;ring.position.set(cx,1.052,cz);kitchen.add(ring);
+    }
+    addBox(.70,.56,.035,applianceGlass,1.98,.54,-1.815,kitchen);
+    addBox(.50,.015,.024,brushedMetal,1.98,.78,-1.785,kitchen);
+
+    // Upper wall run
+    [-1.35,-.50,.35,1.20,2.05,2.90].forEach(function(x,i){upperCarcass(x,.80,i===1||i===4)});
+    // Hood slot & dark feature niche
+    addBox(.82,.90,.40,gapMat,1.20,2.18,-2.39,kitchen);
+    addBox(.66,.055,.31,brushedMetal,1.20,1.83,-2.19,kitchen);
+    addBox(.52,.018,.18,blackMetal,1.20,1.80,-2.06,kitchen);
+
+    // Under-cabinet emissive rail
+    addBox(5.05,.022,.035,warmGlowMat,.78,1.71,-2.14,kitchen,false);
+
+    // Island carcass and waterfall worktop
+    addBox(2.42,.84,.82,cabinetSideMat,.15,.49,.20,kitchen);
+    frontPanel(.72,.68,-.63,.50,.625,cabinetMat);
+    frontPanel(.72,.68,.15,.50,.625,cabinetMat);
+    frontPanel(.72,.68,.93,.50,.625,cabinetMat);
+    addBox(2.58,.085,.98,worktopMat,.15,.955,.20,kitchen);
+    addBox(.085,.98,.98,worktopMat,-1.10,.49,.20,kitchen);
+    // Island shadow line / plinth
+    addBox(2.18,.10,.70,gapMat,.15,.105,.20,kitchen);
+
+    // Minimal accessories on island
+    addCyl(.12,.10,.22,24,new THREE.MeshStandardMaterial({color:0x6f775f,roughness:.72}),.70,1.10,.10,decor);
+    addCyl(.07,.055,.34,18,new THREE.MeshStandardMaterial({color:0x3f513d,roughness:.78}),.70,1.34,.10,decor);
+    addCyl(.055,.045,.29,18,new THREE.MeshStandardMaterial({color:0x53664f,roughness:.78}),.79,1.30,.10,decor);
+    addCyl(.04,.035,.24,18,new THREE.MeshStandardMaterial({color:0x687d62,roughness:.78}),.61,1.28,.10,decor);
+
+    // Three premium stools
+    [-.55,.18,.91].forEach(function(x){
+      addCyl(.27,.25,.11,32,woodMat,x,.54,1.08,decor);
+      addCyl(.035,.035,.52,12,blackMetal,x-.16,.28,1.03,decor);
+      addCyl(.035,.035,.52,12,blackMetal,x+.16,.28,1.03,decor);
+      addCyl(.035,.035,.52,12,blackMetal,x-.16,.28,1.17,decor);
+      addCyl(.035,.035,.52,12,blackMetal,x+.16,.28,1.17,decor);
+    });
+
+    // Pendant lights
+    var pendantGlow=[];
+    [-.45,.28,.98].forEach(function(x){
+      addCyl(.016,.016,.72,12,blackMetal,x,2.97,.18,decor);
+      var shade=new THREE.Mesh(new THREE.CylinderGeometry(.11,.24,.24,32,1,true),blackMetal);
+      shade.position.set(x,2.57,.18);shade.castShadow=true;decor.add(shade);
+      var bulb=addCyl(.055,.055,.07,20,warmGlowMat,x,2.44,.18,decor);
+      pendantGlow.push(bulb);
+    });
+
+    // Framed niche + shelf on side wall
+    addBox(.055,1.42,1.62,gapMat,4.42,1.78,.55,decor,false);
+    addBox(.055,1.30,1.50,new THREE.MeshStandardMaterial({color:0xb6aa98,roughness:.84}),4.385,1.78,.55,decor,false);
+    addBox(.34,.045,1.26,darkWoodMat,4.18,1.50,.55,decor);
+    addBox(.34,.045,1.26,darkWoodMat,4.18,2.03,.55,decor);
+
+    // Soft architectural lighting
+    var hemi=new THREE.HemisphereLight(0xffffff,0x756b5d,.82);scene.add(hemi);
+    var key=new THREE.DirectionalLight(0xfff3df,3.0);
+    key.position.set(4.2,7.8,5.8);key.castShadow=true;
+    key.shadow.mapSize.set(2048,2048);
+    key.shadow.camera.near=.5;key.shadow.camera.far=25;
+    key.shadow.camera.left=-7;key.shadow.camera.right=7;key.shadow.camera.top=7;key.shadow.camera.bottom=-7;
+    key.shadow.bias=-.00015;scene.add(key);
+    var fill=new THREE.DirectionalLight(0xdce9ff,1.05);fill.position.set(-5,4,5);scene.add(fill);
+    var warm=new THREE.PointLight(0xffc97c,22,6.5,2);warm.position.set(.15,2.35,.15);scene.add(warm);
+    var underA=new THREE.PointLight(0xffd59c,7.5,3.4,2);underA.position.set(-.80,1.55,-1.88);scene.add(underA);
+    var underB=new THREE.PointLight(0xffd59c,7.5,3.4,2);underB.position.set(1.55,1.55,-1.88);scene.add(underB);
+    var windowFill=new THREE.PointLight(0xd7e8ff,11,8,2);windowFill.position.set(4.0,2.5,3.3);scene.add(windowFill);
+
+    // Camera orbit controls: the ROOM stays fixed; the camera moves.
+    var dragging=false,lastX=0,lastY=0;
+    function pointerDown(e){
+      if(e.target&&e.target.closest&&e.target.closest("button,a,input,select"))return;
+      dragging=true;lastX=e.clientX;lastY=e.clientY;
+      stageEl.setPointerCapture&&stageEl.setPointerCapture(e.pointerId);
+      stageEl.style.cursor="grabbing";
+    }
+    function pointerMove(e){
+      if(!dragging)return;
+      var dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;
+      orbit.theta=Math.max(.16,Math.min(.78,orbit.theta-dx*.0048));
+      orbit.phi=Math.max(1.30,Math.min(1.52,orbit.phi+dy*.0034));
+      updateCamera();
+    }
+    function pointerUp(){dragging=false;stageEl.style.cursor="grab"}
+    stageEl.style.cursor="grab";
+    stageEl.addEventListener("pointerdown",pointerDown);
+    stageEl.addEventListener("pointermove",pointerMove);
+    stageEl.addEventListener("pointerup",pointerUp);
+    stageEl.addEventListener("pointercancel",pointerUp);
+
+    function resize(){
+      var w=stageEl.clientWidth,h=stageEl.clientHeight;
+      renderer.setSize(w,h,false);
+      camera.aspect=w/h;
+      camera.fov=w<620?39:(w<900?36:33);
+      camera.updateProjectionMatrix();
+      orbit.radius=w<620?9.7:(w<900?9.05:8.55);
+      updateCamera();
+    }
+    window.addEventListener("resize",resize);
+    resize();
+
+    function animate(){
+      requestAnimationFrame(animate);
+      renderer.render(scene,camera);
+    }
+    animate();
+
+    function showToast(msg){
+      var t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");
+      clearTimeout(showToast.t);showToast.t=setTimeout(function(){t.classList.remove("show")},1700);
+    }
+    function applyVisual(){
+      cabinetMat.color.setHex(colors.cabinet[state.cabinet]);
+      cabinetSideMat.color.copy(cabinetMat.color).multiplyScalar(.90);
+      worktopMat.map=stoneMaps[state.worktop];
+      backsplashMat.map=stoneMaps[state.worktop];
+      worktopMat.needsUpdate=true;
+      backsplashMat.needsUpdate=true;
+      if(state.light==="warm"){
+        scene.background.setHex(0xb9aa96);
+        scene.fog.color.setHex(0xb9aa96);
+        renderer.toneMappingExposure=.94;
+        hemi.intensity=.56;
+        key.intensity=2.15;key.color.setHex(0xffd2a1);
+        fill.intensity=.55;
+        warm.intensity=34;
+        underA.intensity=10.5;underB.intensity=10.5;
+        windowFill.intensity=5.5;
+      }else{
+        scene.background.setHex(0xc9c4ba);
+        scene.fog.color.setHex(0xc9c4ba);
+        renderer.toneMappingExposure=1.04;
+        hemi.intensity=.82;
+        key.intensity=3.0;key.color.setHex(0xfff3df);
+        fill.intensity=1.05;
+        warm.intensity=22;
+        underA.intensity=7.5;underB.intensity=7.5;
+        windowFill.intensity=11;
+      }
+    }
+    function setActive(group,value){
+      document.querySelectorAll(group+" button").forEach(function(b){b.classList.toggle("active",b.dataset.value===value)});
+    }
+    function updateUrl(){
+      var p=new URLSearchParams();
+      p.set("c",state.cabinet);p.set("w",state.worktop);p.set("l",state.light);
+      if(state.branch)p.set("b",state.branch);
+      if(state.projectStage)p.set("s",state.projectStage);
+      if(state.shape)p.set("sh",state.shape);
+      if(state.size)p.set("z",state.size);
+      if(state.note)p.set("n",state.note);
+      history.replaceState(null,"",location.pathname+"?"+p.toString());
+      try{localStorage.setItem("centro-demo-state",JSON.stringify(state))}catch(e){}
+    }
+    function updateText(){
+      document.getElementById("stateCabinet").textContent=labels.cabinet[state.cabinet];
+      document.getElementById("stateWorktop").textContent=labels.worktop[state.worktop];
+      document.getElementById("stateLight").textContent=labels.light[state.light];
+      document.getElementById("sumCabinet").textContent=labels.cabinet[state.cabinet];
+      document.getElementById("sumWorktop").textContent=labels.worktop[state.worktop];
+      document.getElementById("sumBranch").textContent=state.branch||"غير محدد";
+      document.getElementById("sumStage").textContent=state.projectStage||"غير محددة";
+      document.getElementById("sumShape").textContent=state.shape||"غير محدد";
+      document.getElementById("sumSize").textContent=state.size||"غير مضاف";
+      document.getElementById("sumNote").textContent=state.note||"لا توجد ملاحظة إضافية";
+      var readinessFields=["branch","projectStage","shape","size","note"];
+      var readinessDone=readinessFields.filter(function(k){return String(state[k]||"").trim().length>0}).length;
+      var readinessScore=40+readinessDone*12;
+      document.getElementById("readinessScore").textContent=readinessScore+"%";
+      document.getElementById("readinessFill").style.width=readinessScore+"%";
+      var missing=readinessFields.filter(function(k){return !String(state[k]||"").trim()});
+      document.getElementById("readinessHint").textContent=missing.length?"أضف ما تعرفه فقط؛ المتبقي يمكن مناقشته مع فريق سنترو.":"الملخص جاهز للإرسال إلى فريق سنترو.";
+      var lines=[
+        "السلام عليكم، هذا ملخص أولي قبل موعد التصميم مع سنترو:",
+        "اتجاه لون الخزائن: "+labels.cabinet[state.cabinet],
+        "اتجاه سطح العمل: "+labels.worktop[state.worktop],
+        "الإضاءة في النموذج: "+labels.light[state.light],
+        "موقع المشروع: "+(state.branch||"غير محدد"),
+        "مرحلة المشروع: "+(state.projectStage||"غير محددة"),
+        "شكل المساحة: "+(state.shape||"غير محدد"),
+        "مقاس تقريبي: "+(state.size||"غير مضاف")
+      ];
+      if(state.note)lines.push("ملاحظة للمهندس: "+state.note);
+      lines.push("الاتجاهات البصرية أعلاه تجريبية وليست كتالوج سنترو الرسمي؛ الاعتماد النهائي مع فريق التصميم والقياس.");
+      document.getElementById("whatsappLink").href="https://wa.me/966558805499?text="+encodeURIComponent(lines.join("\n"));
+    }
+    function sync(){
+      applyVisual();updateText();updateUrl();
+    }
+
+    document.querySelectorAll("#cabinetSwatches .swatch").forEach(function(b){
+      b.addEventListener("click",function(){state.cabinet=b.dataset.value;setActive("#cabinetSwatches",state.cabinet);sync()});
+    });
+    document.querySelectorAll("#worktopSwatches .swatch").forEach(function(b){
+      b.addEventListener("click",function(){state.worktop=b.dataset.value;setActive("#worktopSwatches",state.worktop);sync()});
+    });
+    document.querySelectorAll(".look").forEach(function(b){
+      b.addEventListener("click",function(){
+        state.light=b.dataset.light;document.querySelectorAll(".look").forEach(function(x){x.classList.toggle("active",x===b)});sync();
+      });
+    });
+
+    var inputs=[
+      ["branch","branch"],["stageSelect","projectStage"],["shape","shape"],["size","size"],["note","note"]
+    ];
+    inputs.forEach(function(pair){
+      var el=document.getElementById(pair[0]);
+      el.addEventListener(el.tagName==="INPUT"?"input":"change",function(){state[pair[1]]=el.value.trim();sync()});
+    });
+
+    document.getElementById("resetView").addEventListener("click",function(){
+      orbit.theta=orbitHome.theta;orbit.phi=orbitHome.phi;
+      orbit.radius=stageEl.clientWidth<620?9.7:(stageEl.clientWidth<900?9.05:orbitHome.radius);
+      updateCamera();
+    });
+    document.getElementById("startBtn").addEventListener("click",function(){document.getElementById("studio").scrollIntoView({behavior:"smooth",block:"center"})});
+    document.getElementById("copyState").addEventListener("click",function(){
+      updateUrl();
+      var u=location.href;
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(u).then(function(){showToast("تم نسخ رابط الحالة")}).catch(function(){showToast("الرابط محفوظ في شريط العنوان")});
+      }else{showToast("الرابط محفوظ في شريط العنوان")}
+    });
+    document.querySelectorAll(".question-actions button").forEach(function(b){
+      b.addEventListener("click",function(){
+        document.querySelectorAll(".question-actions button").forEach(function(x){x.classList.remove("active")});
+        b.classList.add("active");
+        showToast(b.dataset.answer==="yes"?"تم تسجيل: مفيد":"تم تسجيل: يحتاج تعديل");
+      });
+    });
+
+    try{
+      var saved=JSON.parse(localStorage.getItem("centro-demo-state")||"null");
+      if(saved&&typeof saved==="object")Object.keys(state).forEach(function(k){if(saved[k]!==undefined)state[k]=saved[k]});
+    }catch(e){}
+    var q=new URLSearchParams(location.search);
+    if(q.get("c")&&colors.cabinet[q.get("c")])state.cabinet=q.get("c");
+    if(q.get("w")&&colors.worktop[q.get("w")])state.worktop=q.get("w");
+    if(q.get("l")==="warm"||q.get("l")==="day")state.light=q.get("l");
+    if(q.get("b"))state.branch=q.get("b");
+    if(q.get("s"))state.projectStage=q.get("s");
+    if(q.get("sh"))state.shape=q.get("sh");
+    if(q.get("z"))state.size=q.get("z");
+    if(q.get("n"))state.note=q.get("n");
+
+    document.getElementById("branch").value=state.branch;
+    document.getElementById("stageSelect").value=state.projectStage;
+    document.getElementById("shape").value=state.shape;
+    document.getElementById("size").value=state.size;
+    document.getElementById("note").value=state.note;
+    setActive("#cabinetSwatches",state.cabinet);
+    setActive("#worktopSwatches",state.worktop);
+    document.querySelectorAll(".look").forEach(function(b){b.classList.toggle("active",b.dataset.light===state.light)});
+    sync();
+  })();
+  </script>
+
+
+</body>
+</html>
