@@ -974,6 +974,10 @@
     img.addEventListener('load',function(){if(timer)clearTimeout(timer)});
     img.addEventListener('error',function(){if(timer)clearTimeout(timer);showFallback()});
     window.addEventListener('scroll',arm,{once:true,passive:true});
+    var proximityWatch=setInterval(function(){
+      var rect=card.getBoundingClientRect();
+      if(rect.top<window.innerHeight+320&&rect.bottom>-320){clearInterval(proximityWatch);arm()}
+    },500);
     if('IntersectionObserver' in window){
       var io=new IntersectionObserver(function(entries){
         if(entries.some(function(e){return e.isIntersecting||e.intersectionRatio>0})){arm();io.disconnect()}
