@@ -6,6 +6,7 @@
   <meta name="robots" content="noindex,nofollow">
   <meta name="theme-color" content="#11110f">
   <title>لمار | استوديو قرار المطبخ قبل الاستشارة</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23100f0c'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-size='34' fill='%23c6a66b' font-family='Arial'%3EL%3C/text%3E%3C/svg%3E">
   <meta name="description" content="استوديو قرار تجريبي لمطابخ لمار: نموذج 3D ثابت لاتجاهات اللون والسطح مع حفظ الحالة وتجهيز ملخص مشروع مختصر قبل الاستشارة.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -967,20 +968,20 @@
       if(started)return;
       started=true;
       var source=img.dataset.src;
-      var probe=new Image();
-      probe.decoding='async';
-      probe.onload=function(){
-        if(probe.naturalWidth>100){
-          img.src=source;
+      img.onload=function(){
+        if(img.naturalWidth>100){
           card.hidden=false;
           fallback.hidden=true;
+        }else{
+          card.hidden=true;
+          fallback.hidden=false;
         }
       };
-      probe.onerror=function(){
+      img.onerror=function(){
         card.hidden=true;
         fallback.hidden=false;
       };
-      probe.src=source;
+      img.src=source;
     }
     if('IntersectionObserver' in window){
       var io=new IntersectionObserver(function(entries){
