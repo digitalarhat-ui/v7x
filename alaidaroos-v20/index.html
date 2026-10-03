@@ -1,0 +1,609 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#11110f">
+  <title>العيدروس | تجربة قرار المطبخ قبل الموعد</title>
+  <meta name="description" content="نموذج تفاعلي تجريبي يساعد العميل على حفظ اتجاه اللون والسطح وتجهيز ملخص واضح قبل موعد التصميم مع العيدروس.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#11110f;--bg2:#191914;--paper:#f3efe6;--paper2:#e9e1d3;--ink:#191913;
+      --muted:#777165;--line:#d7cdbc;--gold:#af8d57;--gold2:#d2b57a;--sage:#7f8c75;
+      --darkline:rgba(255,255,255,.12);--radius:28px;--shadow:0 28px 90px rgba(21,18,12,.18)
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;background:var(--bg)}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans Arabic",system-ui,sans-serif;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    button,input,select{font:inherit}
+    button{cursor:pointer}
+    button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+    .shell{width:min(1220px,calc(100% - 36px));margin:auto}
+    .topbar{position:absolute;z-index:30;top:0;left:0;right:0;color:#f8f3e8}
+    .nav{height:78px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand-mark{width:42px;height:42px;border:1px solid rgba(210,181,122,.52);display:grid;place-items:center;font-family:"Noto Kufi Arabic";font-weight:700;color:var(--gold2);background:rgba(255,255,255,.02)}
+    .brand strong{display:block;font-family:"Noto Kufi Arabic";font-size:16px}
+    .brand small{display:block;color:#8f8c84;font-size:10px;margin-top:3px}
+    .nav-note{font-size:10px;color:#9b978e;border:1px solid rgba(255,255,255,.1);padding:8px 11px;background:rgba(255,255,255,.025)}
+    .hero{background:var(--bg);color:#f8f4ec;min-height:100svh;position:relative;overflow:hidden}
+    .hero:before{content:"";position:absolute;width:720px;height:720px;border-radius:50%;left:-260px;bottom:-330px;background:radial-gradient(circle,rgba(175,141,87,.2),rgba(175,141,87,0) 67%);pointer-events:none}
+    .hero-grid{min-height:100svh;padding:105px 0 42px;display:grid;grid-template-columns:.78fr 1.22fr;gap:30px;align-items:center}
+    .hero-copy{max-width:510px}
+    .kicker{font-size:11px;color:var(--gold2);font-weight:700;letter-spacing:.04em;margin-bottom:13px}
+    h1,h2,h3,p{margin-top:0}
+    h1{font-family:"Noto Kufi Arabic";font-size:clamp(39px,5.5vw,72px);line-height:1.38;letter-spacing:-1.4px;margin-bottom:17px}
+    .hero-copy p{font-size:14px;line-height:2;color:#aaa79f;margin-bottom:22px}
+    .hero-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .primary,.ghost{border:0;min-height:49px;padding:0 18px;font-weight:700;font-size:12px;transition:.2s ease}
+    .primary{background:var(--gold2);color:#1a1710}
+    .ghost{border:1px solid #383932;background:transparent;color:#eee8dc}
+    .primary:hover,.ghost:hover{transform:translateY(-1px)}
+    .hero-proof{margin-top:16px;display:flex;gap:7px;flex-wrap:wrap}
+    .hero-proof span{border:1px solid rgba(255,255,255,.1);padding:7px 9px;color:#85847e;font-size:9px}
+    .truth-note{margin-top:15px;font-size:9px!important;color:#6f706a!important;line-height:1.8!important}
+    .studio{min-width:0;background:#c7c2b9;border:1px solid #292a26;box-shadow:0 42px 120px rgba(0,0,0,.34);position:relative}
+    .stage{height:min(68svh,680px);min-height:510px;position:relative;overflow:hidden;touch-action:none;background:linear-gradient(#bdb9b2,#d9d3c9)}
+    #scene{width:100%;height:100%;display:block}
+    .stage-top{position:absolute;z-index:6;top:14px;right:14px;left:14px;display:flex;justify-content:space-between;gap:10px;pointer-events:none}
+    .scene-label,.orbit-tip{background:rgba(18,19,17,.68);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(12px);color:#eae5dc;padding:9px 11px;font-size:9px;line-height:1.6}
+    .scene-label b{display:block;color:#fff;font-size:10px;margin-bottom:2px}
+    .stage-bottom{position:absolute;z-index:7;right:14px;left:14px;bottom:14px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+    .look-row{display:flex;gap:7px;flex-wrap:wrap}
+    .look{border:1px solid rgba(255,255,255,.16);background:rgba(18,19,17,.72);color:#eee9e0;padding:9px 11px;font-size:9px;backdrop-filter:blur(12px)}
+    .look.active{background:#f5f0e6;color:#171813;border-color:#f5f0e6}
+    .reset{border:1px solid rgba(255,255,255,.16);background:rgba(18,19,17,.72);color:#f2ede4;width:42px;height:42px;display:grid;place-items:center;backdrop-filter:blur(12px)}
+    .material-dock{background:#f7f3eb;border-top:1px solid #d5cec2;display:grid;grid-template-columns:1fr 1fr}
+    .control{padding:15px 17px;min-width:0}
+    .control+ .control{border-inline-start:1px solid #ddd5c8}
+    .control-title{font-size:10px;color:#736e65;font-weight:700;margin-bottom:10px}
+    .swatches{display:flex;gap:10px;align-items:center;overflow-x:auto;scrollbar-width:none;padding:4px 2px}
+    .swatches::-webkit-scrollbar{display:none}
+    .swatch{border:0;background:transparent;color:#615d56;font-size:9px;min-width:max-content;padding:0;display:flex;align-items:center;gap:7px}
+    .swatch i{display:block;width:26px;height:26px;border-radius:50%;background:var(--c);border:1px solid rgba(0,0,0,.16);box-shadow:inset 0 0 0 3px rgba(255,255,255,.28)}
+    .swatch.active i{outline:2px solid #1c1d19;outline-offset:3px}
+    .section{padding:88px 0}
+    .section-head{display:grid;grid-template-columns:.76fr 1.24fr;gap:34px;align-items:start;margin-bottom:28px}
+    .eyebrow{font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.04em;margin-bottom:9px}
+    h2{font-family:"Noto Kufi Arabic";font-size:clamp(29px,4vw,48px);line-height:1.5;letter-spacing:-.8px;margin-bottom:0}
+    .section-head p{color:var(--muted);font-size:13px;line-height:2;max-width:620px}
+    .decision-card{background:#fffaf2;border:1px solid var(--line);box-shadow:var(--shadow);padding:30px}
+    .decision-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:26px}
+    .state-panel{background:var(--bg);color:#f5f0e6;padding:24px;min-height:100%}
+    .state-panel .label{font-size:9px;color:var(--gold2);font-weight:700}
+    .state-panel h3{font-family:"Noto Kufi Arabic";font-size:24px;line-height:1.5;margin:8px 0 14px}
+    .state-rows{display:grid;gap:0;border-top:1px solid var(--darkline)}
+    .state-row{display:flex;justify-content:space-between;gap:18px;padding:12px 0;border-bottom:1px solid var(--darkline);font-size:10px}
+    .state-row span{color:#8d8b84}
+    .state-row b{color:#eee9df;text-align:left}
+    .share-state{margin-top:18px;width:100%;border:1px solid #414239;background:transparent;color:#eee8dc;padding:12px;font-size:10px;font-weight:700}
+    .form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .field{display:grid;gap:6px}
+    .field.full{grid-column:1/-1}
+    .field label{font-size:10px;color:#6f6a61;font-weight:700}
+    .field input,.field select{width:100%;border:1px solid #d8cfc1;background:#fff;padding:13px 12px;color:#24231f;border-radius:0}
+    .form-note{grid-column:1/-1;color:#8b8479;font-size:9px;line-height:1.8;margin-top:2px}
+    .summary-section{background:#e7dfd2}
+    .summary-shell{background:#f9f5ed;border:1px solid #cfc4b4;padding:32px;box-shadow:0 28px 80px rgba(45,36,22,.12)}
+    .summary-grid{display:grid;grid-template-columns:1fr .72fr;gap:24px}
+    .summary-list{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid #d8cebf;border-right:1px solid #d8cebf}
+    .summary-item{padding:17px;border-left:1px solid #d8cebf;border-bottom:1px solid #d8cebf;min-height:82px}
+    .summary-item small{display:block;color:#91897d;font-size:9px;margin-bottom:6px}
+    .summary-item strong{display:block;font-size:13px;line-height:1.7}
+    .handoff{background:var(--bg);color:#f3eee6;padding:24px;display:flex;flex-direction:column;justify-content:space-between}
+    .handoff small{color:var(--gold2);font-size:9px}
+    .handoff h3{font-family:"Noto Kufi Arabic";font-size:23px;line-height:1.55;margin:10px 0}
+    .handoff p{color:#95938d;font-size:11px;line-height:1.9}
+    .whatsapp{display:flex;align-items:center;justify-content:center;min-height:50px;background:#f4efe5;color:#191a16;font-size:11px;font-weight:700;margin-top:18px}
+    .whatsapp[aria-disabled="true"]{opacity:.45;pointer-events:none}
+    .proof-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .proof-card{border:1px solid var(--line);background:#f8f3eb;padding:22px;min-height:150px}
+    .proof-card small{color:var(--gold);font-size:9px;font-weight:700}
+    .proof-card h3{font-family:"Noto Kufi Arabic";font-size:17px;line-height:1.55;margin:10px 0 7px}
+    .proof-card p{font-size:10px;line-height:1.9;color:#7c766d;margin:0}
+    .source-note{margin-top:12px;font-size:9px;color:#958e83}
+    .question-card{background:var(--bg);color:#f5f0e7;padding:34px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:22px}
+    .question-card h3{font-family:"Noto Kufi Arabic";font-size:23px;line-height:1.55;margin-bottom:6px}
+    .question-card p{margin:0;color:#999790;font-size:11px;line-height:1.8}
+    .question-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .question-actions button{border:1px solid #3c3d36;background:transparent;color:#eee8dd;padding:11px 14px;font-size:10px}
+    .question-actions button.active{background:var(--gold2);border-color:var(--gold2);color:#17150f}
+    footer{background:#0d0e0c;color:#6f706b;padding:30px 0 40px;font-size:9px;line-height:1.9}
+    .footer-row{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}
+    .footer-row b{color:#c8c1b5;display:block;font-size:11px;margin-bottom:4px}
+    .toast{position:fixed;z-index:80;left:50%;bottom:24px;transform:translate(-50%,20px);background:#161712;color:#f4efe5;border:1px solid #45463f;padding:11px 15px;font-size:10px;opacity:0;pointer-events:none;transition:.2s ease}
+    .toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(max-width:900px){
+      .hero-grid,.section-head,.decision-grid,.summary-grid{grid-template-columns:1fr}
+      .hero-grid{padding-top:102px;align-content:start}
+      .hero-copy{max-width:650px}
+      .stage{height:56svh;min-height:430px}
+      .section{padding:64px 0}
+      .proof-strip{grid-template-columns:1fr}
+      .question-card{grid-template-columns:1fr}
+    }
+    @media(max-width:600px){
+      .shell{width:min(100% - 22px,1220px)}
+      .nav{height:70px}.brand-mark{width:36px;height:36px}.brand strong{font-size:13px}.brand small{display:none}.nav-note{font-size:8px;padding:7px 8px}
+      .hero-grid{padding:86px 0 24px;gap:20px}
+      h1{font-size:35px;line-height:1.45}
+      .hero-copy p{font-size:12px;line-height:1.9}
+      .hero-actions .primary,.hero-actions .ghost{flex:1}
+      .stage{height:47svh;min-height:350px}
+      .scene-label{max-width:190px}.orbit-tip{display:none}
+      .material-dock{grid-template-columns:1fr}
+      .control+.control{border-inline-start:0;border-top:1px solid #ddd5c8}
+      .section{padding:52px 0}
+      .section-head{gap:10px;margin-bottom:20px}
+      h2{font-size:28px;line-height:1.55}
+      .decision-card,.summary-shell{padding:16px}
+      .form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}
+      .summary-list{grid-template-columns:1fr}
+      .proof-card{min-height:auto}
+      .question-card{padding:22px}
+      .footer-row{display:grid}
+      .stage-bottom{align-items:flex-end}.look{padding:8px;font-size:8px}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell nav">
+      <div class="brand">
+        <div class="brand-mark">ع</div>
+        <div><strong>العيدروس</strong><small>عالم من التصاميم</small></div>
+      </div>
+      <div class="nav-note">نموذج تفاعلي تجريبي قبل موعد التصميم</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <div class="kicker">تجربة قرار قبل الاستشارة</div>
+          <h1>ادخل الموعد<br>وأنت أوضح.</h1>
+          <p>جرّب اتجاه اللون وسطح العمل على نموذج ثلاثي الأبعاد، احفظ اختيارك، وأضف فقط معلومات المشروع التي تساعد مهندس التصميم على بدء النقاش من نقطة أوضح.</p>
+          <div class="hero-actions">
+            <button class="primary" id="startBtn">ابدأ من النموذج</button>
+            <a class="ghost" href="#summary">شاهد شكل الملخص</a>
+          </div>
+          <div class="hero-proof">
+            <span>اختيار بصري محفوظ</span>
+            <span>سياق مشروع مختصر</span>
+            <span>تحويل إلى خدمة العملاء</span>
+          </div>
+          <p class="truth-note">النموذج ثلاثي الأبعاد هنا تجريبي ومحايد، ولا يمثل كتالوجاً رسمياً أو منتجاً منفذاً من العيدروس. الهدف هو توضيح رحلة ما قبل الاستشارة.</p>
+        </div>
+
+        <div class="studio" id="studio">
+          <div class="stage" id="stage">
+            <canvas id="scene" aria-label="نموذج مطبخ ثلاثي الأبعاد تفاعلي"></canvas>
+            <div class="stage-top">
+              <div class="scene-label"><b>نموذج 3D تجريبي</b>اسحب لتدوير المشهد</div>
+              <div class="orbit-tip">لون الخزائن + سطح العمل + الإضاءة</div>
+            </div>
+            <div class="stage-bottom">
+              <div class="look-row">
+                <button class="look active" data-light="day">إضاءة نهارية</button>
+                <button class="look" data-light="warm">إضاءة دافئة</button>
+              </div>
+              <button class="reset" id="resetView" aria-label="إعادة زاوية العرض">↻</button>
+            </div>
+          </div>
+          <div class="material-dock">
+            <div class="control">
+              <div class="control-title">اتجاه لون الخزائن</div>
+              <div class="swatches" id="cabinetSwatches">
+                <button class="swatch active" data-value="ivory" style="--c:#d8d0c2"><i></i>عاجي دافئ</button>
+                <button class="swatch" data-value="sage" style="--c:#7f8c75"><i></i>أخضر هادئ</button>
+                <button class="swatch" data-value="sand" style="--c:#b89f7b"><i></i>رملي</button>
+                <button class="swatch" data-value="charcoal" style="--c:#3e403d"><i></i>فحمي</button>
+              </div>
+            </div>
+            <div class="control">
+              <div class="control-title">اتجاه سطح العمل</div>
+              <div class="swatches" id="worktopSwatches">
+                <button class="swatch active" data-value="softwhite" style="--c:#dedbd2"><i></i>فاتح هادئ</button>
+                <button class="swatch" data-value="warmstone" style="--c:#9b8d78"><i></i>حجر دافئ</button>
+                <button class="swatch" data-value="graphite" style="--c:#4a4945"><i></i>جرافيت</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="readiness">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">حفظ القرار</div>
+            <h2>من الاختيار البصري<br>إلى سياق مفيد.</h2>
+          </div>
+          <p>بدلاً من إرسال صورة منفصلة أو وصف طويل، يحتفظ النموذج بحالة الاختيار نفسها ويضيف إليها الحد الأدنى من المعلومات التي قد تفيد قبل الموعد. لا يوجد تسعير آلي ولا ادعاء بأنه بديل عن مهندس التصميم أو القياس.</p>
+        </div>
+        <div class="decision-card">
+          <div class="decision-grid">
+            <div class="state-panel">
+              <div class="label">الحالة الحالية محفوظة</div>
+              <h3>اتجاهك البصري</h3>
+              <div class="state-rows">
+                <div class="state-row"><span>لون الخزائن</span><b id="stateCabinet">عاجي دافئ</b></div>
+                <div class="state-row"><span>سطح العمل</span><b id="stateWorktop">فاتح هادئ</b></div>
+                <div class="state-row"><span>الإضاءة</span><b id="stateLight">نهارية</b></div>
+              </div>
+              <button class="share-state" id="copyState">نسخ رابط هذه الحالة</button>
+            </div>
+            <div>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="branch">الفرع الأقرب</label>
+                  <select id="branch">
+                    <option value="">اختر لاحقاً</option>
+                    <option>مكة المكرمة</option>
+                    <option>جدة</option>
+                    <option>الطائف</option>
+                    <option>الباحة</option>
+                    <option>جازان</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="stageSelect">مرحلة المشروع</label>
+                  <select id="stageSelect">
+                    <option value="">غير محدد</option>
+                    <option>مطبخ جديد</option>
+                    <option>تجديد مطبخ قائم</option>
+                    <option>ما زلت أستكشف الخيارات</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="shape">شكل المساحة المتوقع</label>
+                  <select id="shape">
+                    <option value="">غير محدد</option>
+                    <option>جدار واحد</option>
+                    <option>حرف L</option>
+                    <option>حرف U</option>
+                    <option>مع جزيرة</option>
+                    <option>يحدده المهندس بعد القياس</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="size">مقاس تقريبي إن كان معروفاً</label>
+                  <input id="size" type="text" inputmode="decimal" placeholder="مثال: 4 × 3 م">
+                </div>
+                <div class="field full">
+                  <label for="note">ملاحظة واحدة مهمة للمهندس</label>
+                  <input id="note" type="text" maxlength="140" placeholder="مثال: أحتاج مساحة تخزين أكبر أو مكاناً واضحاً للأجهزة">
+                </div>
+                <div class="form-note">القياسات والخيارات هنا تمهيدية فقط. الاعتماد النهائي للخامات والمقاسات والتصميم يتم عبر فريق العيدروس.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section summary-section" id="summary">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">ملخص قبل الموعد</div>
+            <h2>معلومة أقل.<br>وضوح أكثر.</h2>
+          </div>
+          <p>هذا هو الناتج المقصود: ليس «تصميم مطبخ أونلاين»، بل ملخص قابل للمراجعة يربط القرار البصري بسياق المشروع ثم يعيده إلى قناة التواصل الحالية مع العيدروس.</p>
+        </div>
+        <div class="summary-shell">
+          <div class="summary-grid">
+            <div class="summary-list">
+              <div class="summary-item"><small>اتجاه الخزائن</small><strong id="sumCabinet">عاجي دافئ</strong></div>
+              <div class="summary-item"><small>سطح العمل</small><strong id="sumWorktop">فاتح هادئ</strong></div>
+              <div class="summary-item"><small>الفرع</small><strong id="sumBranch">غير محدد</strong></div>
+              <div class="summary-item"><small>مرحلة المشروع</small><strong id="sumStage">غير محددة</strong></div>
+              <div class="summary-item"><small>شكل المساحة</small><strong id="sumShape">غير محدد</strong></div>
+              <div class="summary-item"><small>مقاس تقريبي</small><strong id="sumSize">غير مضاف</strong></div>
+              <div class="summary-item" style="grid-column:1/-1"><small>ملاحظة للمهندس</small><strong id="sumNote">لا توجد ملاحظة إضافية</strong></div>
+            </div>
+            <aside class="handoff">
+              <div>
+                <small>الخطوة التالية</small>
+                <h3>أرسل الملخص إلى خدمة العملاء.</h3>
+                <p>يفتح واتساب على قناة خدمة العملاء الحالية مع ملخص الخيارات. هذا النموذج لا يحدد السعر ولا يلغي الاستشارة أو القياس.</p>
+              </div>
+              <a class="whatsapp" id="whatsappLink" href="#" target="_blank" rel="noopener">متابعة عبر واتساب</a>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">مرتكز على الواقع</div>
+            <h2>لا نحتاج صورة<br>غير موثقة.</h2>
+          </div>
+          <p>بدلاً من إدخال صور مخزون أو أعمال غير مؤكدة في النموذج، تعتمد هذه النسخة على هوية العيدروس ومشاريع منشورة بالاسم في موقعهم الرسمي، بينما يظل مشهد 3D معلناً بوضوح كنموذج تجريبي محايد.</p>
+        </div>
+        <div class="proof-strip">
+          <article class="proof-card"><small>مشروع منشور</small><h3>محطة قطار الحرمين</h3><p>اسم المشروع ظاهر ضمن قسم المشاريع في الموقع الرسمي للعیدروس.</p></article>
+          <article class="proof-card"><small>مشروع منشور</small><h3>مباني الأحلام</h3><p>اسم المشروع ظاهر ضمن قسم المشاريع في الموقع الرسمي للعیدروس.</p></article>
+          <article class="proof-card"><small>مشروع منشور</small><h3>كافيهات بارنيز</h3><p>اسم المشروع ظاهر ضمن قسم المشاريع في الموقع الرسمي للعیدروس.</p></article>
+        </div>
+        <div class="source-note">تم تجنب أي صورة غير قابلة للنسبة بثقة إلى العيدروس داخل هذه النسخة التجريبية.</div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="shell">
+        <div class="question-card">
+          <div>
+            <h3>سؤال واحد للفريق</h3>
+            <p>لو وصل هذا الملخص للمهندس قبل الموعد، هل سيساعده فعلياً على بدء الاستشارة من نقطة أوضح؟</p>
+          </div>
+          <div class="question-actions">
+            <button data-answer="yes">نعم، مفيد</button>
+            <button data-answer="maybe">يحتاج تعديل</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-row">
+      <div><b>العيدروس — عالم من التصاميم</b>نموذج تفاعلي تجريبي لإيضاح فكرة ما قبل الاستشارة.</div>
+      <div>الخيارات والألوان المعروضة ليست كتالوجاً رسمياً ولا عرض سعر. الاعتماد النهائي يتم مع فريق العيدروس.</div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast">تم</div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+  (function(){
+    var state={
+      cabinet:"ivory",worktop:"softwhite",light:"day",
+      branch:"",projectStage:"",shape:"",size:"",note:""
+    };
+    var labels={
+      cabinet:{ivory:"عاجي دافئ",sage:"أخضر هادئ",sand:"رملي",charcoal:"فحمي"},
+      worktop:{softwhite:"فاتح هادئ",warmstone:"حجر دافئ",graphite:"جرافيت"},
+      light:{day:"نهارية",warm:"دافئة"}
+    };
+    var colors={
+      cabinet:{ivory:0xd8d0c2,sage:0x7f8c75,sand:0xb89f7b,charcoal:0x3e403d},
+      worktop:{softwhite:0xdedbd2,warmstone:0x9b8d78,graphite:0x4a4945}
+    };
+
+    var canvas=document.getElementById("scene");
+    var stageEl=document.getElementById("stage");
+    var renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:false});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.8));
+    renderer.shadowMap.enabled=true;
+    renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+    renderer.outputEncoding=THREE.sRGBEncoding;
+
+    var scene=new THREE.Scene();
+    scene.background=new THREE.Color(0xc8c3ba);
+    scene.fog=new THREE.Fog(0xc8c3ba,9,18);
+
+    var camera=new THREE.PerspectiveCamera(35,1,.1,60);
+    camera.position.set(7.8,5.6,9.6);
+    camera.lookAt(0,1.55,0);
+
+    var hemi=new THREE.HemisphereLight(0xffffff,0x6d665c,1.05);
+    scene.add(hemi);
+    var key=new THREE.DirectionalLight(0xffffff,2.15);
+    key.position.set(4,8,5);key.castShadow=true;
+    key.shadow.mapSize.width=1024;key.shadow.mapSize.height=1024;
+    scene.add(key);
+    var warm=new THREE.PointLight(0xffd5a0,.35,18);
+    warm.position.set(-3,4,4);scene.add(warm);
+
+    var floorMat=new THREE.MeshStandardMaterial({color:0xbdb6ac,roughness:.88,metalness:.02});
+    var floor=new THREE.Mesh(new THREE.PlaneGeometry(18,18),floorMat);
+    floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;scene.add(floor);
+
+    var wallMat=new THREE.MeshStandardMaterial({color:0xe3ded5,roughness:.9});
+    var wall=new THREE.Mesh(new THREE.BoxGeometry(9,.12,4.8),wallMat);
+    wall.rotation.x=Math.PI/2;wall.position.set(0,2.35,-2.5);wall.receiveShadow=true;scene.add(wall);
+
+    var kitchen=new THREE.Group();scene.add(kitchen);
+    var cabinetMat=new THREE.MeshStandardMaterial({color:colors.cabinet.ivory,roughness:.56,metalness:.02});
+    var worktopMat=new THREE.MeshStandardMaterial({color:colors.worktop.softwhite,roughness:.34,metalness:.04});
+    var handleMat=new THREE.MeshStandardMaterial({color:0x5b574f,roughness:.36,metalness:.65});
+    var darkMat=new THREE.MeshStandardMaterial({color:0x252623,roughness:.48});
+    var glassMat=new THREE.MeshStandardMaterial({color:0x8e9691,roughness:.18,metalness:.1,transparent:true,opacity:.42});
+
+    function box(w,h,d,mat,x,y,z,cast){
+      var m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
+      m.position.set(x,y,z);m.castShadow=cast!==false;m.receiveShadow=true;kitchen.add(m);return m;
+    }
+    function baseUnit(x,w){
+      box(w,.92,.62,cabinetMat,x,.47,0);
+      box(w+.04,.07,.69,worktopMat,x,.965,.02);
+      var door=box(w*.46,.76,.035,cabinetMat,x-w*.245,.47,.323);
+      var door2=box(w*.46,.76,.035,cabinetMat,x+w*.245,.47,.323);
+      box(.018,.46,.045,handleMat,x-.055,.47,.348);
+      box(.018,.46,.045,handleMat,x+.055,.47,.348);
+    }
+    [-2.55,-1.65,-.75,.15,1.05,1.95].forEach(function(x){baseUnit(x,.82)});
+    box(.78,.92,.62,darkMat,2.85,.47,0);
+    box(.82,.07,.69,worktopMat,2.85,.965,.02);
+    box(.52,.5,.04,darkMat,2.85,.51,.335);
+
+    function upperUnit(x,w,glass){
+      box(w,.82,.38,glass?glassMat:cabinetMat,x,2.2,-.08);
+      box(.018,.48,.045,handleMat,x+.23,2.17,.115);
+    }
+    [-2.35,-1.45,-.55,.35,1.25].forEach(function(x,i){upperUnit(x,.82,i===1||i===3)});
+    box(1.12,.82,.38,cabinetMat,2.35,2.2,-.08);
+    box(.035,.48,.045,handleMat,2.58,2.17,.115);
+
+    box(1.65,.08,.76,worktopMat,.4,.97,1.62);
+    box(.68,.86,.63,cabinetMat,.4,.47,1.61);
+    box(.56,.035,.03,handleMat,.4,.5,1.94);
+    box(.44,.035,.3,darkMat,.4,1.02,1.62);
+    box(.5,.015,.34,new THREE.MeshStandardMaterial({color:0x151614,roughness:.2,metalness:.45}),.4,1.055,1.62);
+
+    var sink=box(.72,.035,.42,new THREE.MeshStandardMaterial({color:0x6d716e,roughness:.25,metalness:.8}),-1.15,1.025,.02);
+    sink.position.z=.03;
+
+    box(1.2,2.55,.62,darkMat,-3.35,1.28,0);
+    box(.54,1.72,.035,new THREE.MeshStandardMaterial({color:0x444844,roughness:.2,metalness:.6}),-3.35,1.42,.325);
+
+    var led=new THREE.PointLight(0xffe6bd,.9,6);
+    led.position.set(0,1.65,.3);scene.add(led);
+
+    kitchen.rotation.y=-.10;
+
+    var dragging=false,lastX=0,lastY=0,targetRot=-.10,targetTilt=0;
+    function pointerDown(e){dragging=true;lastX=e.clientX;lastY=e.clientY;stageEl.setPointerCapture&&stageEl.setPointerCapture(e.pointerId)}
+    function pointerMove(e){
+      if(!dragging)return;
+      var dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;
+      targetRot+=dx*.006;
+      targetTilt=Math.max(-.16,Math.min(.14,targetTilt+dy*.002));
+    }
+    function pointerUp(){dragging=false}
+    stageEl.addEventListener("pointerdown",pointerDown);
+    stageEl.addEventListener("pointermove",pointerMove);
+    stageEl.addEventListener("pointerup",pointerUp);
+    stageEl.addEventListener("pointercancel",pointerUp);
+
+    function resize(){
+      var w=stageEl.clientWidth,h=stageEl.clientHeight;
+      renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();
+      if(w<620){camera.position.set(8.9,5.9,10.8)}else{camera.position.set(7.8,5.6,9.6)}
+      camera.lookAt(0,1.5,0);
+    }
+    window.addEventListener("resize",resize);resize();
+    function animate(){
+      requestAnimationFrame(animate);
+      kitchen.rotation.y+=(targetRot-kitchen.rotation.y)*.08;
+      kitchen.rotation.x+=(targetTilt-kitchen.rotation.x)*.08;
+      renderer.render(scene,camera);
+    }
+    animate();
+
+    function showToast(msg){
+      var t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");
+      clearTimeout(showToast.t);showToast.t=setTimeout(function(){t.classList.remove("show")},1700);
+    }
+    function applyVisual(){
+      cabinetMat.color.setHex(colors.cabinet[state.cabinet]);
+      worktopMat.color.setHex(colors.worktop[state.worktop]);
+      if(state.light==="warm"){
+        scene.background.setHex(0xb7aa98);hemi.intensity=.72;key.intensity=1.45;key.color.setHex(0xffd7a8);warm.intensity=1.25;led.intensity=1.2;
+      }else{
+        scene.background.setHex(0xc8c3ba);hemi.intensity=1.05;key.intensity=2.15;key.color.setHex(0xffffff);warm.intensity=.35;led.intensity=.9;
+      }
+    }
+    function setActive(group,value){
+      document.querySelectorAll(group+" button").forEach(function(b){b.classList.toggle("active",b.dataset.value===value)});
+    }
+    function updateUrl(){
+      var p=new URLSearchParams();
+      p.set("c",state.cabinet);p.set("w",state.worktop);p.set("l",state.light);
+      if(state.branch)p.set("b",state.branch);
+      if(state.projectStage)p.set("s",state.projectStage);
+      if(state.shape)p.set("sh",state.shape);
+      if(state.size)p.set("z",state.size);
+      history.replaceState(null,"",location.pathname+"?"+p.toString());
+      try{localStorage.setItem("alaidaroos-demo-state",JSON.stringify(state))}catch(e){}
+    }
+    function updateText(){
+      document.getElementById("stateCabinet").textContent=labels.cabinet[state.cabinet];
+      document.getElementById("stateWorktop").textContent=labels.worktop[state.worktop];
+      document.getElementById("stateLight").textContent=labels.light[state.light];
+      document.getElementById("sumCabinet").textContent=labels.cabinet[state.cabinet];
+      document.getElementById("sumWorktop").textContent=labels.worktop[state.worktop];
+      document.getElementById("sumBranch").textContent=state.branch||"غير محدد";
+      document.getElementById("sumStage").textContent=state.projectStage||"غير محددة";
+      document.getElementById("sumShape").textContent=state.shape||"غير محدد";
+      document.getElementById("sumSize").textContent=state.size||"غير مضاف";
+      document.getElementById("sumNote").textContent=state.note||"لا توجد ملاحظة إضافية";
+      var lines=[
+        "السلام عليكم، هذا ملخص أولي قبل موعد التصميم مع العيدروس:",
+        "اتجاه لون الخزائن: "+labels.cabinet[state.cabinet],
+        "اتجاه سطح العمل: "+labels.worktop[state.worktop],
+        "الإضاءة في النموذج: "+labels.light[state.light],
+        "الفرع الأقرب: "+(state.branch||"غير محدد"),
+        "مرحلة المشروع: "+(state.projectStage||"غير محددة"),
+        "شكل المساحة: "+(state.shape||"غير محدد"),
+        "مقاس تقريبي: "+(state.size||"غير مضاف")
+      ];
+      if(state.note)lines.push("ملاحظة للمهندس: "+state.note);
+      lines.push("الاختيارات أعلاه تمهيدية، والاعتماد النهائي مع فريق التصميم والقياس.");
+      document.getElementById("whatsappLink").href="https://wa.me/966553590616?text="+encodeURIComponent(lines.join("\n"));
+    }
+    function sync(){
+      applyVisual();updateText();updateUrl();
+    }
+
+    document.querySelectorAll("#cabinetSwatches .swatch").forEach(function(b){
+      b.addEventListener("click",function(){state.cabinet=b.dataset.value;setActive("#cabinetSwatches",state.cabinet);sync()});
+    });
+    document.querySelectorAll("#worktopSwatches .swatch").forEach(function(b){
+      b.addEventListener("click",function(){state.worktop=b.dataset.value;setActive("#worktopSwatches",state.worktop);sync()});
+    });
+    document.querySelectorAll(".look").forEach(function(b){
+      b.addEventListener("click",function(){
+        state.light=b.dataset.light;document.querySelectorAll(".look").forEach(function(x){x.classList.toggle("active",x===b)});sync();
+      });
+    });
+
+    var inputs=[
+      ["branch","branch"],["stageSelect","projectStage"],["shape","shape"],["size","size"],["note","note"]
+    ];
+    inputs.forEach(function(pair){
+      var el=document.getElementById(pair[0]);
+      el.addEventListener(el.tagName==="INPUT"?"input":"change",function(){state[pair[1]]=el.value.trim();sync()});
+    });
+
+    document.getElementById("resetView").addEventListener("click",function(){targetRot=-.10;targetTilt=0});
+    document.getElementById("startBtn").addEventListener("click",function(){document.getElementById("studio").scrollIntoView({behavior:"smooth",block:"center"})});
+    document.getElementById("copyState").addEventListener("click",function(){
+      updateUrl();
+      var u=location.href;
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(u).then(function(){showToast("تم نسخ رابط الحالة")}).catch(function(){showToast("الرابط محفوظ في شريط العنوان")});
+      }else{showToast("الرابط محفوظ في شريط العنوان")}
+    });
+    document.querySelectorAll(".question-actions button").forEach(function(b){
+      b.addEventListener("click",function(){
+        document.querySelectorAll(".question-actions button").forEach(function(x){x.classList.remove("active")});
+        b.classList.add("active");
+        showToast(b.dataset.answer==="yes"?"تم تسجيل: مفيد":"تم تسجيل: يحتاج تعديل");
+      });
+    });
+
+    var q=new URLSearchParams(location.search);
+    if(q.get("c")&&colors.cabinet[q.get("c")])state.cabinet=q.get("c");
+    if(q.get("w")&&colors.worktop[q.get("w")])state.worktop=q.get("w");
+    if(q.get("l")==="warm"||q.get("l")==="day")state.light=q.get("l");
+    if(q.get("b"))state.branch=q.get("b");
+    if(q.get("s"))state.projectStage=q.get("s");
+    if(q.get("sh"))state.shape=q.get("sh");
+    if(q.get("z"))state.size=q.get("z");
+
+    document.getElementById("branch").value=state.branch;
+    document.getElementById("stageSelect").value=state.projectStage;
+    document.getElementById("shape").value=state.shape;
+    document.getElementById("size").value=state.size;
+    document.getElementById("note").value=state.note;
+    setActive("#cabinetSwatches",state.cabinet);
+    setActive("#worktopSwatches",state.worktop);
+    document.querySelectorAll(".look").forEach(function(b){b.classList.toggle("active",b.dataset.light===state.light)});
+    sync();
+  })();
+  </script>
+</body>
+</html>
