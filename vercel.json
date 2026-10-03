@@ -30,7 +30,8 @@
     "alaidaroos-kitchen-studio.vercel.app",
     "lamar-kitchen-studio.vercel.app",
     "lamar-kitchens-riyadh.vercel.app",
-    "nuwadir-alraqiya.vercel.app"
+    "nuwadir-alraqiya.vercel.app",
+    "alshammari-project-ready.vercel.app"
   ],
   "redirects": [
     {
@@ -184,6 +185,17 @@
         {
           "type": "host",
           "value": "nuwadir-alraqiya.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/alshammari-project-readiness-v1",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "alshammari-project-ready.vercel.app"
         }
       ]
     }
