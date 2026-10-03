@@ -133,10 +133,11 @@
 
 <footer class="footer">نموذج تجريبي توضيحي من Digital Arhat — غير تابع رسمياً لـ Luxury Car USA. بيانات السيارة والأسعار والهواتف مأخوذة من إعلانات عامة حديثة للبائع. النموذج الثلاثي الأبعاد توضيحي وليس مسحاً فعلياً للسيارة، وأحداث الجلسة/النية محاكاة وليست بيانات عملاء حقيقية.</footer>
 
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"}}</script>
 <script type="module">
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js';
-import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/controls/OrbitControls.js';
-import {RoundedBoxGeometry} from 'https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/geometries/RoundedBoxGeometry.js';
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 const navs=[...document.querySelectorAll('.navbtn')],mnavs=[...document.querySelectorAll('.mnav')],panels=[...document.querySelectorAll('.panel')];
 function showPanel(n){panels.forEach((p,i)=>p.classList.toggle('on',i===n));navs.forEach((b,i)=>b.classList.toggle('on',i===n));mnavs.forEach((b,i)=>b.classList.toggle('on',i===n));window.scrollTo({top:0,behavior:'smooth'})}
