@@ -34,7 +34,8 @@
     "alshammari-project-ready.vercel.app",
     "centro-riyadh-kitchen-studio.vercel.app",
     "hamor-kitchen-studio.vercel.app",
-    "rukn-sabahiyah-auto.vercel.app"
+    "rukn-sabahiyah-auto.vercel.app",
+    "luxurycar-decision-twin.vercel.app"
   ],
   "redirects": [
     {
@@ -232,6 +233,17 @@
         {
           "type": "host",
           "value": "rukn-sabahiyah-auto.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/luxurycar-auto-decision-twin-v2",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "luxurycar-decision-twin.vercel.app"
         }
       ]
     }
