@@ -33,7 +33,8 @@
     "nuwadir-alraqiya.vercel.app",
     "alshammari-project-ready.vercel.app",
     "centro-riyadh-kitchen-studio.vercel.app",
-    "hamor-kitchen-studio.vercel.app"
+    "hamor-kitchen-studio.vercel.app",
+    "rukn-sabahiyah-auto.vercel.app"
   ],
   "redirects": [
     {
@@ -220,6 +221,17 @@
         {
           "type": "host",
           "value": "hamor-kitchen-studio.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/rukn-sabahiyah-auto",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "rukn-sabahiyah-auto.vercel.app"
         }
       ]
     }
