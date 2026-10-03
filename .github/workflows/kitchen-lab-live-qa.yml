@@ -57,7 +57,7 @@ jobs:
               accentSwatches:document.querySelectorAll('.control-group[data-kind="accentColor"] .swatch').length,
               materialOptions:document.querySelectorAll('.control-group[data-kind="material"] .seg').length,
               tops:document.querySelectorAll('.control-group[data-kind="top"] .seg').length,
-              forbidden:['المنيوم سمارت','aluminumsmart.com','أفراح الحكمي','Afrah','النجوم الثلاثة','Digital Arhat','BEASTMODE','V1.4'].filter(x=>document.documentElement.innerHTML.includes(x)),
+              forbidden:['سمارت','aluminumsmart.com','575576349','أفراح الحكمي','Afrah','Higher Class','النجوم الثلاثة','Digital Arhat','BEASTMODE','V1.4'].filter(x=>document.documentElement.innerHTML.includes(x)),
               galleryImages:[...document.querySelectorAll('#gallery img')].map(x=>({ok:x.complete&&x.naturalWidth>100,w:x.naturalWidth,h:x.naturalHeight})),
               fallbackDisplay:getComputedStyle(document.querySelector('#galleryFallback')).display
             }));
