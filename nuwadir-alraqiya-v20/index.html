@@ -209,7 +209,7 @@
           <div class="hero-proof">
             <span>اختيار بصري محفوظ</span>
             <span>سياق مشروع مختصر</span>
-            <span>تحويل إلى واتساب المعرض</span>
+            <span>تحويل إلى قنوات نوادر الرسمية</span>
           </div>
           <p class="truth-note">مشهد 3D هنا نموذج تجريبي ثابت لإثبات الفكرة، وليس كتالوج نوادر الرسمي ولا تمثيلاً لخامة أو لون معتمد. الاعتماد النهائي يبقى مع فريق نوادر.</p>
         </div>
@@ -358,10 +358,10 @@
             <aside class="handoff">
               <div>
                 <small>الخطوة التالية</small>
-                <h3>أرسل الملخص إلى واتساب المعرض.</h3>
-                <p>يفتح واتساب على قناة واتساب المعرض الحالية مع ملخص الخيارات. هذا النموذج لا يحدد السعر ولا يلغي الاستشارة أو القياس.</p>
+                <h3>راجع الملخص ثم افتح قنوات نوادر الرسمية.</h3>
+                <p>يفتح صفحة نوادر الرسمية لاختيار قناة التواصل المتاحة. هذا النموذج لا يحدد السعر ولا يلغي الاستشارة أو القياس.</p>
               </div>
-              <a class="whatsapp" id="whatsappLink" href="#" target="_blank" rel="noopener">متابعة عبر واتساب</a>
+              <a class="whatsapp" id="whatsappLink" href="#" target="_blank" rel="noopener">فتح قنوات التواصل الرسمية</a>
             </aside>
           </div>
         </div>
@@ -471,7 +471,7 @@
         var lines=["السلام عليكم، هذا ملخص أولي قبل الاستشارة مع نوادر:","اتجاه لون الخزائن: "+labels.cabinet[state.cabinet],"اتجاه سطح العمل: "+labels.worktop[state.worktop],"الإضاءة في النموذج: "+labels.light[state.light],"الفرع الأقرب: "+(state.branch||"غير محدد"),"مرحلة المشروع: "+(state.projectStage||"غير محددة"),"شكل المساحة: "+(state.shape||"غير محدد"),"مقاس تقريبي: "+(state.size||"غير مضاف")];
         if(state.note)lines.push("ملاحظة للفريق: "+state.note);
         lines.push("الاتجاهات البصرية تجريبية وليست كتالوج نوادر الرسمي؛ الاعتماد النهائي مع فريق نوادر.");
-        var waNumber=state.branch==="معرض الأحساء"?"966539455822":"966550503109";document.getElementById("whatsappLink").href="https://wa.me/"+waNumber+"?text="+encodeURIComponent(lines.join("\n"));
+        document.getElementById("whatsappLink").href="https://linktr.ee/alraqiyakitchens";
       }
       try{var saved=JSON.parse(localStorage.getItem("nuwadir-demo-state")||"null");if(saved&&typeof saved==="object")Object.keys(state).forEach(function(k){if(saved[k]!==undefined)state[k]=saved[k]});}catch(_){}
       var fq=new URLSearchParams(location.search);
@@ -910,7 +910,7 @@
       ];
       if(state.note)lines.push("ملاحظة للفريق: "+state.note);
       lines.push("الاتجاهات البصرية أعلاه تجريبية وليست كتالوج نوادر الرسمي؛ الاعتماد النهائي مع فريق نوادر.");
-      var waNumber=state.branch==="معرض الأحساء"?"966539455822":"966550503109";document.getElementById("whatsappLink").href="https://wa.me/"+waNumber+"?text="+encodeURIComponent(lines.join("\n"));
+      document.getElementById("whatsappLink").href="https://linktr.ee/alraqiyakitchens";
     }
     function sync(){
       applyVisual();updateText();updateUrl();
