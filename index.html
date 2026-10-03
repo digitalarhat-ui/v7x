@@ -288,6 +288,15 @@
     @media(prefers-reduced-motion:reduce){
       html{scroll-behavior:auto}.gallery-track{animation:none}.reveal{opacity:1;transform:none;transition:none}.btn{transition:none}
     }
+  
+    .client-material-truth{grid-column:1/-1;border:1px solid rgba(255,255,255,.10);border-radius:16px;padding:12px;background:rgba(255,255,255,.035)}
+    .client-material-title{font-size:.78rem;font-weight:800;color:#d9bf84;margin-bottom:9px}
+    .client-material-pair{display:flex;gap:9px}
+    .client-material-pair figure{margin:0;display:flex;align-items:center;gap:8px;min-width:0;flex:1;padding:7px 8px;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(0,0,0,.15)}
+    .client-material-pair img{width:42px;height:42px;border-radius:9px;object-fit:cover;box-shadow:0 2px 10px rgba(0,0,0,.22)}
+    .client-material-pair figcaption{font-size:.74rem;color:#ece7dc;line-height:1.35}
+    .client-material-note{font-size:.66rem;color:#918d86;line-height:1.55;margin-top:8px}
+    @media(max-width:560px){.client-material-truth{padding:10px}.client-material-pair img{width:36px;height:36px}.client-material-pair figcaption{font-size:.68rem}}
   </style>
   <script type="importmap">
     {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}
@@ -342,7 +351,7 @@
             <div class="control-group" data-kind="baseColor">
               <span class="control-title">لون الخزائن — الأساسية</span>
               <div class="swatches" aria-label="ألوان الخزائن الأساسية التوضيحية">
-                <button class="swatch active" style="--swatch:#f1eee6" data-value="ivory" title="عاجي" aria-label="عاجي"></button>
+                <button class="swatch active" style="--swatch:#8b9b8a" data-value="clientSage" title="ساج مرجعي — من الخامة المرسلة" aria-label="ساج مرجعي"></button>\n                <button class="swatch" style="--swatch:#eadfce;background-image:linear-gradient(90deg,#efe7dc,#d8c9b4)" data-value="clientWood" title="خشب فاتح مرجعي — من الخامة المرسلة" aria-label="خشب فاتح مرجعي"></button>\n                <button class="swatch" style="--swatch:#f1eee6" data-value="ivory" title="عاجي" aria-label="عاجي"></button>
                 <button class="swatch" style="--swatch:#fbfaf6" data-value="white" title="أبيض دافئ" aria-label="أبيض دافئ"></button>
                 <button class="swatch" style="--swatch:#c9c9c5" data-value="lightgray" title="رمادي فاتح" aria-label="رمادي فاتح"></button>
                 <button class="swatch" style="--swatch:#9c9992" data-value="stone" title="رمادي حجري" aria-label="رمادي حجري"></button>
@@ -355,7 +364,7 @@
                 <button class="swatch" style="--swatch:#b78a5e" data-value="oak" title="بلوط فاتح" aria-label="بلوط فاتح"></button>
                 <button class="swatch" style="--swatch:#5a3b2b" data-value="walnut" title="جوز داكن" aria-label="جوز داكن"></button>
               </div>
-              <span class="swatch-name" id="baseColorName">عاجي</span>
+              <span class="swatch-name" id="baseColorName">ساج مرجعي</span>
             </div>
             <div class="control-group" data-kind="accentColor">
               <span class="control-title">لون الخزائن — العلوية</span>
@@ -370,10 +379,10 @@
                 <button class="swatch" style="--swatch:#b7aa98" data-value="cashmere" title="كشمير" aria-label="كشمير"></button>
                 <button class="swatch" style="--swatch:#7c5d4c" data-value="mocha" title="موكا" aria-label="موكا"></button>
                 <button class="swatch" style="--swatch:#6c705d" data-value="olive" title="زيتوني هادئ" aria-label="زيتوني هادئ"></button>
-                <button class="swatch active" style="--swatch:#b78a5e" data-value="oak" title="بلوط فاتح" aria-label="بلوط فاتح"></button>
+                <button class="swatch active" style="--swatch:#eadfce;background-image:linear-gradient(90deg,#efe7dc,#d8c9b4)" data-value="clientWood" title="خشب فاتح مرجعي — من الخامة المرسلة" aria-label="خشب فاتح مرجعي"></button>\n                <button class="swatch" style="--swatch:#8b9b8a" data-value="clientSage" title="ساج مرجعي — من الخامة المرسلة" aria-label="ساج مرجعي"></button>\n                <button class="swatch" style="--swatch:#b78a5e" data-value="oak" title="بلوط فاتح" aria-label="بلوط فاتح"></button>
                 <button class="swatch" style="--swatch:#5a3b2b" data-value="walnut" title="جوز داكن" aria-label="جوز داكن"></button>
               </div>
-              <span class="swatch-name" id="accentColorName">بلوط فاتح</span>
+              <span class="swatch-name" id="accentColorName">خشب فاتح مرجعي</span>
             </div>
             <div class="control-group" data-kind="finish">
               <span class="control-title">اللمسة النهائية</span>
@@ -393,11 +402,19 @@
               <button class="seg" data-value="evening">مساء دافئ</button>
               <button class="seg" data-value="neutral">عرض محايد</button>
             </div>
+            <div class="client-material-truth" aria-label="الخامات المرسلة من العميل">
+              <div class="client-material-title">الخامات المرسلة منكم</div>
+              <div class="client-material-pair">
+                <figure><img src="assets/client-sage-reference.webp" alt="مرجع الساج المرسل من العميل"><figcaption>ساج مرجعي</figcaption></figure>
+                <figure><img src="assets/client-light-wood.webp" alt="مرجع الخشب الفاتح المرسل من العميل"><figcaption>خشب فاتح مرجعي</figcaption></figure>
+              </div>
+              <div class="client-material-note">المرجع الأصلي والتطبيق البصري — اتجاه بصري مرجعي، وليس معايرة لونية أو كتالوج خامات معتمداً.</div>
+            </div>
             <div class="decision-actions">
               <button class="mini-action primary" id="shareDesign" type="button">نسخ رابط هذا الاختيار</button>
               <a class="mini-action" href="#compare">مقارنة أ / ب</a>
             </div>
-            <div class="viewer-note"><span id="currentChoice">ناعم • عاجي + بلوط فاتح • مطفي • فاتح بعروق</span><br>الألوان والأسطح هنا توضيحية وليست كتالوجاً معتمداً؛ الاعتماد النهائي لدى هاير كلاس.</div>
+            <div class="viewer-note"><span id="currentChoice">ناعم • ساج مرجعي + خشب فاتح مرجعي • مطفي • حجر فاتح هادئ</span><br>الألوان والأسطح هنا توضيحية وليست كتالوجاً معتمداً؛ الاعتماد النهائي لدى هاير كلاس.</div>
           </div>
         </div>
       </div>
@@ -595,12 +612,12 @@
         <div class="form-card reveal">
           <select id="materialInput" hidden><option>ناعم</option><option>خشبي خفيف</option><option>خشبي أوضح</option></select>
           <select id="finishInput" hidden><option>مطفي</option><option>لمعة خفيفة</option></select>
-          <select id="baseColorInput" hidden><option>عاجي</option><option>أبيض دافئ</option><option>رمادي فاتح</option><option>رمادي حجري</option><option>فحمي</option><option>أسود دافئ</option><option>بيج رملي</option><option>كشمير</option><option>موكا</option><option>زيتوني هادئ</option><option>بلوط فاتح</option><option>جوز داكن</option></select>
-          <select id="accentColorInput" hidden><option>عاجي</option><option>أبيض دافئ</option><option>رمادي فاتح</option><option>رمادي حجري</option><option>فحمي</option><option>أسود دافئ</option><option>بيج رملي</option><option>كشمير</option><option>موكا</option><option>زيتوني هادئ</option><option>بلوط فاتح</option><option>جوز داكن</option></select>
-          <select id="topInput" hidden><option>فاتح بعروق</option><option>رملي دافئ</option><option>رمادي هادئ</option><option>داكن بعروق</option></select>
+          <select id="baseColorInput" hidden><option selected>ساج مرجعي</option><option>خشب فاتح مرجعي</option><option>عاجي</option><option>أبيض دافئ</option><option>رمادي فاتح</option><option>رمادي حجري</option><option>فحمي</option><option>أسود دافئ</option><option>بيج رملي</option><option>كشمير</option><option>موكا</option><option>زيتوني هادئ</option><option>بلوط فاتح</option><option>جوز داكن</option></select>
+          <select id="accentColorInput" hidden><option>ساج مرجعي</option><option selected>خشب فاتح مرجعي</option><option>عاجي</option><option>أبيض دافئ</option><option>رمادي فاتح</option><option>رمادي حجري</option><option>فحمي</option><option>أسود دافئ</option><option>بيج رملي</option><option>كشمير</option><option>موكا</option><option>زيتوني هادئ</option><option>بلوط فاتح</option><option>جوز داكن</option></select>
+          <select id="topInput" hidden><option selected>حجر فاتح هادئ</option><option>رملي دافئ</option><option>رمادي هادئ</option><option>داكن بعروق</option></select>
           <div class="current-selection-card">
             <div class="selection-label">اختيارك الحالي من النموذج</div>
-            <div class="selection-value" id="formCurrentChoice">ناعم • عاجي + بلوط فاتح • مطفي • فاتح بعروق</div>
+            <div class="selection-value" id="formCurrentChoice">ناعم • ساج مرجعي + خشب فاتح مرجعي • مطفي • حجر فاتح هادئ</div>
             <a href="#stage">تعديل الاختيار</a>
           </div>
           <div class="form-grid">
@@ -656,71 +673,97 @@
   <script type="module">
     import * as THREE from "three";
     import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+    import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
+    import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+    import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
 
     const stage = document.getElementById("stage");
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0c0c0c);
-    scene.fog = new THREE.Fog(0x0c0c0c, 9, 18);
+    scene.background = new THREE.Color(0x252623);
+    scene.fog = new THREE.Fog(0x252623, 12, 24);
 
-    const camera = new THREE.PerspectiveCamera(36, 1, .1, 100);
-    camera.position.set(7.2, 4.8, 8.4);
+    const camera = new THREE.PerspectiveCamera(34, 1, .1, 100);
+    camera.position.set(5.0, 3.15, 6.7);
 
-    const renderer = new THREE.WebGLRenderer({antialias:true,alpha:false,preserveDrawingBuffer:true});
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const renderer = new THREE.WebGLRenderer({antialias:true,alpha:false,preserveDrawingBuffer:true,powerPreference:"high-performance"});
+    const mobileQuality=matchMedia("(max-width: 560px)").matches;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, mobileQuality?1.55:2));
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.08;
+    renderer.toneMappingExposure = 1.0;
     stage.appendChild(renderer.domElement);
+
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    pmrem.compileEquirectangularShader();
+    const roomEnvironment = new RoomEnvironment();
+    const envRT = pmrem.fromScene(roomEnvironment, .04);
+    scene.environment = envRT.texture;
+    scene.environmentIntensity = .82;
+    roomEnvironment.dispose();
+    pmrem.dispose();
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
+    controls.dampingFactor = .065;
     controls.enablePan = false;
-    controls.minDistance = 6.4;
+    controls.minDistance = 5.3;
     controls.maxDistance = 11.5;
-    controls.minPolarAngle = .82;
-    controls.maxPolarAngle = 1.34;
-    controls.minAzimuthAngle = -.12;
-    controls.maxAzimuthAngle = 1.38;
-    controls.target.set(-.15,1.35,-1.48);
+    controls.minPolarAngle = .84;
+    controls.maxPolarAngle = 1.30;
+    controls.minAzimuthAngle = -.14;
+    controls.maxAzimuthAngle = 1.30;
+    controls.target.set(-.05,1.35,-1.50);
 
-    const hemi = new THREE.HemisphereLight(0xfff5df,0x1a1f24,2.3);
+    RectAreaLightUniformsLib.init();
+    const hemi = new THREE.HemisphereLight(0xfffbf3,0x626966,1.25);
     scene.add(hemi);
-    const key = new THREE.DirectionalLight(0xffe0aa,4.5);
-    key.position.set(5,8,4); key.castShadow = true;
-    key.shadow.mapSize.set(2048,2048);
-    key.shadow.camera.left=-6; key.shadow.camera.right=6;
-    key.shadow.camera.top=6; key.shadow.camera.bottom=-3;
+    const key = new THREE.DirectionalLight(0xfff7e9,2.75);
+    key.position.set(4.8,7.5,4.4); key.castShadow = true;
+    key.shadow.mapSize.set(mobileQuality?1536:2048,mobileQuality?1536:2048);
+    key.shadow.camera.left=-5.8; key.shadow.camera.right=5.8;
+    key.shadow.camera.top=5.6; key.shadow.camera.bottom=-2.8;
     key.shadow.camera.near=.5; key.shadow.camera.far=18;
-    key.shadow.bias=-.00035;
+    key.shadow.bias=-.00018;
+    key.shadow.normalBias=.018;
     scene.add(key);
-    const rim = new THREE.DirectionalLight(0x8bb4ff,2.1);
-    rim.position.set(-4,5,-3); scene.add(rim);
-    const roomFill = new THREE.DirectionalLight(0xffe7c1,1.35);
-    roomFill.position.set(-2.8,4.2,3.4);
+
+    const windowFill = new THREE.RectAreaLight(0xfff9ef,3.0,5.6,4.0);
+    windowFill.position.set(-3.6,4.8,3.6);
+    windowFill.lookAt(-.3,1.45,-1.55);
+    scene.add(windowFill);
+
+    const roomFill = new THREE.DirectionalLight(0xf4f5f1,.72);
+    roomFill.position.set(-3.2,3.8,2.5);
     scene.add(roomFill);
 
     const floor = new THREE.Mesh(
       new THREE.PlaneGeometry(22,22),
-      new THREE.MeshStandardMaterial({color:0x161616,roughness:.92})
+      new THREE.MeshStandardMaterial({color:0x41423f,roughness:.86,metalness:0})
     );
     floor.rotation.x=-Math.PI/2; floor.receiveShadow=true; scene.add(floor);
 
-    const wallMat=new THREE.MeshStandardMaterial({color:0x242321,roughness:.95});
+    const wallMat=new THREE.MeshStandardMaterial({color:0x55534d,roughness:.82,metalness:0});
     const backWall=boxRaw(8.7,3.65,.18,0,1.825,-2.24,wallMat);
-    const sideWall=boxRaw(.14,3.65,5.4,-4.28,1.825,.35,new THREE.MeshStandardMaterial({color:0x1d1d1c,roughness:.96}));
-    boxRaw(8.7,.16,1.02,0,3.48,-1.78,new THREE.MeshStandardMaterial({color:0x1b1a19,roughness:.9}));
+    const sideWall=boxRaw(.14,3.65,5.4,-4.28,1.825,.35,new THREE.MeshStandardMaterial({color:0x4a4a46,roughness:.88}));
+    boxRaw(8.7,.16,1.02,0,3.48,-1.78,new THREE.MeshStandardMaterial({color:0x3f403d,roughness:.86}));
 
     const cabinetMeshes=[];
     const baseCabinetMeshes=[];
     const upperCabinetMeshes=[];
     const topMeshes=[];
-    const handleMat=new THREE.MeshStandardMaterial({color:0x272727,metalness:.86,roughness:.2});
-    const darkInsetMat=new THREE.MeshStandardMaterial({color:0x111214,metalness:.38,roughness:.18});
-    const glassMat=new THREE.MeshPhysicalMaterial({color:0x87949b,roughness:.12,transmission:.48,transparent:true,opacity:.46,metalness:.05});
-    const backsplashMat=new THREE.MeshStandardMaterial({color:0x343330,roughness:.62});
-    const warmLightMat=new THREE.MeshStandardMaterial({color:0xffe0aa,emissive:0xffc875,emissiveIntensity:4.2});
+
+    const handleMat=new THREE.MeshStandardMaterial({color:0x4d4f4e,metalness:.92,roughness:.30,envMapIntensity:1.15});
+    const steelMat=new THREE.MeshStandardMaterial({color:0xb5b7b3,metalness:.94,roughness:.34,envMapIntensity:1.25});
+    const darkGlassMat=new THREE.MeshPhysicalMaterial({color:0x101313,metalness:.08,roughness:.16,clearcoat:.35,clearcoatRoughness:.12,envMapIntensity:1.1});
+    const glassMat=new THREE.MeshPhysicalMaterial({
+      color:0xdde8e5,metalness:0,roughness:.08,transmission:.94,opacity:1,
+      thickness:.025,ior:1.45,clearcoat:.18,clearcoatRoughness:.12,
+      envMapIntensity:1.25,side:THREE.DoubleSide
+    });
+    const backsplashMat=new THREE.MeshStandardMaterial({color:0x6b6963,roughness:.60,metalness:0});
+    const warmLightMat=new THREE.MeshStandardMaterial({color:0xffe7bd,emissive:0xffd69a,emissiveIntensity:1.15,roughness:.55});
 
     function boxRaw(w,h,d,x,y,z,mat){
       const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
@@ -728,120 +771,191 @@
       mesh.castShadow=true; mesh.receiveShadow=true; scene.add(mesh);
       return mesh;
     }
-    function box(w,h,d,x,y,z,mat){return boxRaw(w,h,d,x,y,z,mat);}
+    function roundedGeometry(w,h,d,r=.014,segments=3){
+      const rr=Math.max(.002,Math.min(r,w*.12,h*.12,d*.22));
+      return new RoundedBoxGeometry(w,h,d,segments,rr);
+    }
+    function box(w,h,d,x,y,z,mat,r=.014){
+      const mesh=new THREE.Mesh(roundedGeometry(w,h,d,r,3),mat);
+      mesh.position.set(x,y,z);
+      mesh.castShadow=true; mesh.receiveShadow=true; scene.add(mesh);
+      return mesh;
+    }
+    function cylinder(radius,length,x,y,z,mat,axis="y",segments=24){
+      const mesh=new THREE.Mesh(new THREE.CylinderGeometry(radius,radius,length,segments,1,false),mat);
+      if(axis==="x")mesh.rotation.z=Math.PI/2;
+      if(axis==="z")mesh.rotation.x=Math.PI/2;
+      mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;scene.add(mesh);return mesh;
+    }
+    function addHandle(x,y,z,length,vertical=true){
+      const main=cylinder(.012,length,x,y,z,handleMat,vertical?"y":"x",20);
+      const gap=length*.34;
+      const pts=vertical?[[x,y-gap,z-.022],[x,y+gap,z-.022]]:[[x-gap,y,z-.022],[x+gap,y,z-.022]];
+      pts.forEach(p=>cylinder(.009,.045,p[0],p[1],p[2],handleMat,"z",16));
+      return main;
+    }
 
     function canvasTexture(kind){
-      const c=document.createElement("canvas"); c.width=c.height=256;
+      const c=document.createElement("canvas"); c.width=c.height=512;
       const x=c.getContext("2d");
-      x.fillStyle="#d9d5cf"; x.fillRect(0,0,256,256);
+      x.fillStyle="#d8d4cc"; x.fillRect(0,0,512,512);
       if(kind==="wood"){
-        for(let i=0;i<34;i++){
-          const y=8+i*7.4;
-          x.strokeStyle=i%3===0?"rgba(55,35,22,.22)":"rgba(70,48,30,.11)";
-          x.lineWidth=i%4===0?2:1;
+        x.fillStyle="#ded2c0";x.fillRect(0,0,512,512);
+        for(let i=0;i<54;i++){
+          const xx=8+i*9.7;
+          x.strokeStyle=i%4===0?"rgba(84,62,39,.16)":"rgba(92,70,46,.07)";
+          x.lineWidth=i%5===0?1.35:.65;
           x.beginPath();
-          for(let px=0;px<=256;px+=12){
-            const py=y+Math.sin((px+i*11)/25)*2.4+Math.sin((px+i*7)/51)*1.2;
-            if(px===0)x.moveTo(px,py);else x.lineTo(px,py);
+          for(let py=-10;py<=522;py+=14){
+            const px=xx+Math.sin((py+i*19)/41)*2.1+Math.sin((py+i*7)/93)*1.1;
+            if(py===-10)x.moveTo(px,py);else x.lineTo(px,py);
           }
           x.stroke();
         }
       }else if(kind==="clad"){
-        for(let i=0;i<256;i+=18){
-          x.fillStyle=i%36===0?"rgba(20,20,20,.13)":"rgba(255,255,255,.045)";
-          x.fillRect(i,0,2,256);
+        x.fillStyle="#d9d4ca";x.fillRect(0,0,512,512);
+        for(let i=0;i<512;i+=24){
+          x.fillStyle=i%48===0?"rgba(40,40,38,.09)":"rgba(255,255,255,.035)";
+          x.fillRect(i,0,1.5,512);
         }
-      }else if(kind==="marble"){
-        x.fillStyle="#e7e2da";x.fillRect(0,0,256,256);
-        for(let i=0;i<9;i++){
-          x.strokeStyle=i%2?"rgba(65,65,65,.14)":"rgba(125,115,105,.18)";
-          x.lineWidth=i%3===0?2:1;
+      }else if(kind==="stone"){
+        x.fillStyle="#ddd9d2";x.fillRect(0,0,512,512);
+        for(let i=0;i<7;i++){
+          const offset=30+i*76;
+          x.strokeStyle=i%2?"rgba(71,72,70,.10)":"rgba(128,122,114,.13)";
+          x.lineWidth=i%3===0?2.2:1.1;
           x.beginPath();
-          for(let px=-20;px<290;px+=14){
-            const py=25+i*25+px*.23+Math.sin((px+i*31)/19)*5;
-            if(px===-20)x.moveTo(px,py);else x.lineTo(px,py);
+          for(let px=-60;px<580;px+=12){
+            const py=offset+px*.17+Math.sin((px+i*33)/31)*9+Math.sin((px+i*17)/79)*5;
+            if(px===-60)x.moveTo(px,py);else x.lineTo(px,py);
           }
           x.stroke();
+          if(i%2===0){
+            x.strokeStyle="rgba(255,255,255,.15)";x.lineWidth=.7;x.stroke();
+          }
         }
       }
-      const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(2.2,2.2);
-      t.colorSpace=THREE.SRGBColorSpace; return t;
+      const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping;
+      t.colorSpace=THREE.SRGBColorSpace;
+      if(kind==="stone")t.repeat.set(1.1,1.1); else t.repeat.set(1.25,1.0);
+      t.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());
+      return t;
     }
+
+    const textureLoader=new THREE.TextureLoader();
+    const clientWoodTexture=textureLoader.load("assets/client-light-wood.webp");
+    clientWoodTexture.colorSpace=THREE.SRGBColorSpace;
+    clientWoodTexture.wrapS=clientWoodTexture.wrapT=THREE.RepeatWrapping;
+    clientWoodTexture.repeat.set(1.0,1.12);
+    clientWoodTexture.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());
+
+    const sageMicroTexture=textureLoader.load("assets/client-sage-micro.webp");
+    sageMicroTexture.colorSpace=THREE.NoColorSpace;
+    sageMicroTexture.wrapS=sageMicroTexture.wrapT=THREE.RepeatWrapping;
+    sageMicroTexture.repeat.set(2.2,2.2);
+    sageMicroTexture.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy());
 
     const woodTexture=canvasTexture("wood");
     const cladTexture=canvasTexture("clad");
-    const marbleTexture=canvasTexture("marble");
+    const stoneTexture=canvasTexture("stone");
 
-    const baseCabinetMat=new THREE.MeshStandardMaterial({color:0xf1eee6,metalness:.02,roughness:.48});
-    const upperCabinetMat=new THREE.MeshStandardMaterial({color:0xb78a5e,metalness:.02,roughness:.50});
-    const topMat=new THREE.MeshStandardMaterial({color:0xe2ded6,map:marbleTexture,metalness:.03,roughness:.27});
+    const baseCabinetMat=new THREE.MeshPhysicalMaterial({color:0x8b9b8a,metalness:0,roughness:.57,clearcoat:.035,clearcoatRoughness:.72,envMapIntensity:.86});
+    const upperCabinetMat=new THREE.MeshPhysicalMaterial({color:0xffffff,map:clientWoodTexture,metalness:0,roughness:.50,clearcoat:.025,clearcoatRoughness:.75,envMapIntensity:.90});
+    const topMat=new THREE.MeshPhysicalMaterial({color:0xdcd8d0,map:stoneTexture,metalness:0,roughness:.44,clearcoat:.08,clearcoatRoughness:.58,envMapIntensity:.92});
 
     function registerCabinet(mesh,zone){
+      mesh.userData.zone=zone;
       cabinetMeshes.push(mesh);
       (zone==="upper"?upperCabinetMeshes:baseCabinetMeshes).push(mesh);
     }
 
     function addFrontPanel(x,y,z,w,h,mat,zone,handleSide="right"){
-      const door=box(w,h,.045,x,y,z,mat); registerCabinet(door,zone);
-      const hx=handleSide==="right"?x+w/2-.09:x-w/2+.09;
-      box(.018,Math.min(.48,h*.58),.028,hx,y,z+.042,handleMat);
+      const door=box(w,h,.05,x,y,z,mat,.010); registerCabinet(door,zone);
+      const hx=handleSide==="right"?x+w/2-.105:x-w/2+.105;
+      addHandle(hx,y,z+.050,Math.min(.43,h*.50),true);
       return door;
     }
 
     function addBaseUnit(x,w=.82,drawers=false){
-      box(w,1.02,.67,x,.51,-1.68,baseCabinetMat); registerCabinet(scene.children[scene.children.length-1],"base");
+      const carcass=box(w,1.02,.67,x,.51,-1.68,baseCabinetMat,.018); registerCabinet(carcass,"base");
       if(drawers){
-        [0.18,.51,.84].forEach(y=>{
-          const panel=box(w-.055,.285,.045,x,y,-1.32,baseCabinetMat);registerCabinet(panel,"base");
-          box(.34,.018,.028,x,y+.09,-1.286,handleMat);
+        [0.19,.51,.83].forEach(y=>{
+          const panel=box(w-.085,.255,.05,x,y,-1.318,baseCabinetMat,.009);registerCabinet(panel,"base");
+          addHandle(x,y+.055,-1.263,.30,false);
         });
       }else{
-        addFrontPanel(x,.51,-1.32,w-.055,.93,baseCabinetMat,"base");
+        addFrontPanel(x,.51,-1.318,w-.085,.89,baseCabinetMat,"base");
       }
     }
 
     function addUpperUnit(x,w=.82,glass=false){
-      box(w,.86,.47,x,2.18,-1.76,upperCabinetMat); registerCabinet(scene.children[scene.children.length-1],"upper");
+      const carcass=box(w,.86,.47,x,2.18,-1.76,upperCabinetMat,.016); registerCabinet(carcass,"upper");
       if(glass){
-        const fw=.055, fh=.065, frontZ=-1.50;
-        const topFrame=box(w-.055,fh,.045,x,2.18+.36,frontZ,upperCabinetMat);registerCabinet(topFrame,"upper");
-        const bottomFrame=box(w-.055,fh,.045,x,2.18-.36,frontZ,upperCabinetMat);registerCabinet(bottomFrame,"upper");
-        const leftFrame=box(fw,.66,.045,x-w/2+.055,2.18,frontZ,upperCabinetMat);registerCabinet(leftFrame,"upper");
-        const rightFrame=box(fw,.66,.045,x+w/2-.055,2.18,frontZ,upperCabinetMat);registerCabinet(rightFrame,"upper");
-        box(w-.17,.65,.018,x,2.18,-1.474,glassMat);
-        box(.20,.018,.028,x+w/2-.16,2.18,-1.448,handleMat);
+        const fw=.052, fh=.055, frontZ=-1.505;
+        const topFrame=box(w-.08,fh,.05,x,2.18+.355,frontZ,upperCabinetMat,.008);registerCabinet(topFrame,"upper");
+        const bottomFrame=box(w-.08,fh,.05,x,2.18-.355,frontZ,upperCabinetMat,.008);registerCabinet(bottomFrame,"upper");
+        const leftFrame=box(fw,.655,.05,x-w/2+.06,2.18,frontZ,upperCabinetMat,.008);registerCabinet(leftFrame,"upper");
+        const rightFrame=box(fw,.655,.05,x+w/2-.06,2.18,frontZ,upperCabinetMat,.008);registerCabinet(rightFrame,"upper");
+        const glass=box(w-.18,.64,.018,x,2.18,-1.474,glassMat,.004);
+        glass.castShadow=false;
+        addHandle(x+w/2-.16,2.18,-1.443,.18,true);
       }else{
-        addFrontPanel(x,2.18,-1.50,w-.055,.79,upperCabinetMat,"upper");
+        addFrontPanel(x,2.18,-1.505,w-.085,.765,upperCabinetMat,"upper");
       }
     }
 
-    // Fixed Single-Wall composition, visually close to a five-metre run.
-    box(4.18,.14,.58,-.05,.07,-1.70,new THREE.MeshStandardMaterial({color:0x171717,roughness:.55}));
+    // Fixed Single-Wall composition. Layout/zoning intentionally unchanged; only execution realism is refined.
+    box(4.18,.16,.50,-.05,.08,-1.76,new THREE.MeshStandardMaterial({color:0x1a1b1a,roughness:.58}),.012);
     [-1.62,-.82,-.02,.78,1.58].forEach((x,i)=>addBaseUnit(x,.74,i===1||i===3));
-    const counterBack=box(4.12,.095,.79,-.05,1.075,-1.66,topMat);topMeshes.push(counterBack);
-    box(4.12,1.04,.055,-.05,1.64,-2.115,backsplashMat);
+
+    const counterBack=box(4.18,.055,.84,-.05,1.05,-1.65,topMat,.012);topMeshes.push(counterBack);
+    box(4.12,1.02,.045,-.05,1.57,-2.105,backsplashMat,.008);
+
     [-1.62,-.82,-.02,.78,1.58].forEach((x,i)=>addUpperUnit(x,.74,i===0||i===4));
-    box(.88,2.84,.72,2.46,1.42,-1.68,baseCabinetMat); registerCabinet(scene.children[scene.children.length-1],"base");
-    addFrontPanel(2.46,2.15,-1.30,.80,1.20,baseCabinetMat,"base");
-    box(.70,1.23,.055,2.46,.78,-1.292,darkInsetMat);
-    box(.58,.56,.06,2.46,.98,-1.255,new THREE.MeshStandardMaterial({color:0x060606,metalness:.48,roughness:.12}));
-    box(.58,.035,.035,2.46,.70,-1.215,handleMat);
-    box(.72,.035,.47,-1.30,1.135,-1.61,new THREE.MeshStandardMaterial({color:0x24272a,metalness:.92,roughness:.17}));
-    box(.64,.035,.48,.82,1.135,-1.61,new THREE.MeshStandardMaterial({color:0x080909,metalness:.28,roughness:.10}));
-    const faucetStem=box(.055,.47,.055,-1.30,1.39,-1.92,handleMat);
-    const faucetArm=box(.055,.055,.28,-1.30,1.60,-1.80,handleMat);
-    const strip=box(3.88,.028,.042,-.05,1.72,-1.49,warmLightMat);
-    box(.96,.055,.27,-2.18,2.48,-1.83,new THREE.MeshStandardMaterial({color:0x5b412f,roughness:.52}));
-    [2.64,2.93].forEach(y=>box(.24,.24,.22,-2.28,y,-1.72,new THREE.MeshStandardMaterial({color:0x8d755f,roughness:.62})));
-    const rug=new THREE.Mesh(new THREE.PlaneGeometry(4.2,1.72),new THREE.MeshStandardMaterial({color:0x282522,roughness:1}));
-    rug.rotation.x=-Math.PI/2; rug.position.set(.08,.012,.25); scene.add(rug);
+
+    const tall=box(.88,2.84,.72,2.46,1.42,-1.68,baseCabinetMat,.020); registerCabinet(tall,"base");
+    addFrontPanel(2.46,2.16,-1.305,.79,1.17,baseCabinetMat,"base");
+    box(.68,1.20,.05,2.46,.77,-1.296,darkGlassMat,.014);
+    box(.57,.52,.065,2.46,.98,-1.257,darkGlassMat,.018);
+    addHandle(2.46,.70,-1.215,.50,false);
+
+    // Believable sink: metallic rim + inset basin rather than a single black slab.
+    box(.76,.025,.52,-1.30,1.087,-1.59,steelMat,.022);
+    box(.61,.035,.37,-1.30,1.095,-1.585,new THREE.MeshStandardMaterial({color:0x707573,metalness:.88,roughness:.40,envMapIntensity:1.1}),.040);
+    box(.51,.018,.28,-1.30,1.108,-1.575,new THREE.MeshStandardMaterial({color:0x303533,metalness:.42,roughness:.48}),.045);
+
+    // Faucet with cylindrical stem and curved spout.
+    cylinder(.024,.43,-1.30,1.32,-1.91,steelMat,"y",24);
+    const faucetCurve=new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-1.30,1.52,-1.91),
+      new THREE.Vector3(-1.30,1.67,-1.91),
+      new THREE.Vector3(-1.30,1.70,-1.76),
+      new THREE.Vector3(-1.30,1.57,-1.68)
+    ]);
+    const faucet=new THREE.Mesh(new THREE.TubeGeometry(faucetCurve,28,.018,12,false),steelMat);
+    faucet.castShadow=true;scene.add(faucet);
+
+    // Cooktop / dark appliance glass.
+    box(.64,.022,.48,.82,1.088,-1.61,darkGlassMat,.018);
+
+    const strip=box(3.88,.018,.035,-.05,1.72,-1.485,warmLightMat,.006);
+    const stripArea=new THREE.RectAreaLight(0xffe8c6,.85,3.55,.32);
+    stripArea.position.set(-.05,1.69,-1.42);stripArea.lookAt(-.05,1.05,-1.40);scene.add(stripArea);
+
+    box(.96,.045,.27,-2.18,2.48,-1.83,new THREE.MeshStandardMaterial({color:0x62503f,roughness:.58}),.010);
+    [2.64,2.93].forEach(y=>box(.24,.24,.22,-2.28,y,-1.72,new THREE.MeshStandardMaterial({color:0x8d755f,roughness:.67}),.016));
+
+    const rug=new THREE.Mesh(new THREE.PlaneGeometry(4.2,1.72),new THREE.MeshStandardMaterial({color:0x776d62,roughness:.96}));
+    rug.rotation.x=-Math.PI/2; rug.position.set(.08,.013,.25); rug.receiveShadow=true;scene.add(rug);
 
     const materialStates = {
-      metal:{metalness:.02,roughness:.46,texture:null},
-      wood:{metalness:.03,roughness:.56,texture:"wood"},
-      clad:{metalness:.02,roughness:.50,texture:"grain"}
+      metal:{metalness:0,roughness:.54,texture:null},
+      wood:{metalness:0,roughness:.56,texture:"wood"},
+      clad:{metalness:0,roughness:.52,texture:"grain"}
     };
     const colorStates = {
+      clientSage:{label:"ساج مرجعي",hex:0x8b9b8a,reference:"sage"},
+      clientWood:{label:"خشب فاتح مرجعي",hex:0xffffff,reference:"wood"},
       ivory:{label:"عاجي",hex:0xf1eee6}, white:{label:"أبيض دافئ",hex:0xfbfaf6},
       lightgray:{label:"رمادي فاتح",hex:0xc9c9c5}, stone:{label:"رمادي حجري",hex:0x9c9992},
       charcoal:{label:"فحمي",hex:0x4a4c4e}, black:{label:"أسود دافئ",hex:0x242322},
@@ -850,37 +964,69 @@
       oak:{label:"بلوط فاتح",hex:0xb78a5e}, walnut:{label:"جوز داكن",hex:0x5a3b2b}
     };
     const topStates = {
-      natural:{label:"فاتح بعروق",color:0xe5dfd4,metalness:.02,roughness:.24},
-      industrial:{label:"رملي دافئ",color:0xc7b79f,metalness:.02,roughness:.34},
-      cast:{label:"رمادي هادئ",color:0x8e8d89,metalness:.02,roughness:.32},
-      dark:{label:"داكن بعروق",color:0x242321,metalness:.03,roughness:.22}
+      natural:{label:"حجر فاتح هادئ",color:0xdcd8d0,metalness:0,roughness:.44},
+      industrial:{label:"رملي دافئ",color:0xc7b79f,metalness:0,roughness:.49},
+      cast:{label:"رمادي هادئ",color:0x9b9b97,metalness:0,roughness:.47},
+      dark:{label:"حجر داكن",color:0x393836,metalness:0,roughness:.41}
     };
-    let currentMaterial="metal", currentFinish="matte", currentBaseColor="ivory", currentAccentColor="oak", currentTop="natural", currentLighting="day";
-    function materialRoughness(base){ return currentFinish==="gloss" ? Math.max(.16,base-.18) : Math.min(.72,base+.05); }
-    function applyMaterial(value){
-      currentMaterial=value; const src=materialStates[value];
-      cabinetMeshes.forEach(m=>{m.material.metalness=src.metalness;m.material.roughness=materialRoughness(src.roughness);m.material.map=src.texture==="wood"?woodTexture:(src.texture==="grain"?cladTexture:null);if(m.material.map)m.material.map.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());m.material.needsUpdate=true;});
+
+    let currentMaterial="metal", currentFinish="matte", currentBaseColor="clientSage", currentAccentColor="clientWood", currentTop="natural", currentLighting="day";
+
+    function materialRoughness(base){ return currentFinish==="gloss" ? Math.max(.24,base-.18) : Math.min(.72,base+.03); }
+
+    function configureZone(zone){
+      const key=zone==="upper"?currentAccentColor:currentBaseColor;
+      const state=colorStates[key];
+      const mat=zone==="upper"?upperCabinetMat:baseCabinetMat;
+      mat.color.setHex(state.hex);
+      mat.metalness=0;
+      mat.bumpMap=null;
+      mat.bumpScale=0;
+      if(state.reference==="wood"){
+        mat.map=clientWoodTexture;
+        mat.roughness=materialRoughness(.50);
+      }else if(state.reference==="sage"){
+        mat.map=null;
+        mat.bumpMap=sageMicroTexture;
+        mat.bumpScale=.005;
+        mat.roughness=materialRoughness(.57);
+      }else{
+        const src=materialStates[currentMaterial];
+        mat.map=src.texture==="wood"?woodTexture:(src.texture==="grain"?cladTexture:null);
+        mat.roughness=materialRoughness(src.roughness);
+      }
+      mat.envMapIntensity=.90;
+      mat.needsUpdate=true;
     }
-    function applyCabinetColor(zone,value){const state=colorStates[value],targets=zone==="upper"?upperCabinetMeshes:baseCabinetMeshes;targets.forEach(m=>{m.material.color.setHex(state.hex);m.material.needsUpdate=true;});if(zone==="upper")currentAccentColor=value;else currentBaseColor=value;}
-    function applyFinish(value){currentFinish=value;applyMaterial(currentMaterial);}
-    function applyTop(value){currentTop=value;const src=topStates[value];topMeshes.forEach(m=>{m.material.color.setHex(src.color);m.material.metalness=src.metalness;m.material.roughness=src.roughness;m.material.map=marbleTexture;m.material.needsUpdate=true;});}
+
+    function applyMaterial(value){
+      currentMaterial=value;
+      configureZone("base");configureZone("upper");
+    }
+    function applyCabinetColor(zone,value){
+      if(zone==="upper")currentAccentColor=value;else currentBaseColor=value;
+      configureZone(zone);
+    }
+    function applyFinish(value){currentFinish=value;configureZone("base");configureZone("upper");}
+    function applyTop(value){
+      currentTop=value;const src=topStates[value];
+      topMeshes.forEach(m=>{m.material.color.setHex(src.color);m.material.metalness=src.metalness;m.material.roughness=src.roughness;m.material.map=stoneTexture;m.material.needsUpdate=true;});
+    }
+
     const lightingStates={
-      day:{label:"نهار طبيعي",bg:0x111418,hemi:0xfff7e8,ground:0x273342,hemiI:2.5,key:0xfff0d4,keyI:4.8,rim:0x9fc5ff,rimI:2.4,strip:2.8},
-      evening:{label:"مساء دافئ",bg:0x120d0a,hemi:0xffd2a0,ground:0x24150f,hemiI:1.65,key:0xffb86b,keyI:4.0,rim:0xff7d4d,rimI:1.15,strip:7.0},
-      neutral:{label:"عرض محايد",bg:0x0d0d0d,hemi:0xffffff,ground:0x202020,hemiI:2.2,key:0xffffff,keyI:4.1,rim:0xd9e4ff,rimI:1.8,strip:4.0}
+      day:{label:"نهار معماري",bg:0x252623,hemi:0xfffbf3,ground:0x626966,hemiI:1.25,key:0xfff7e9,keyI:2.75,fill:0xf4f5f1,fillI:.72,area:3.0,strip:1.15,exposure:1.0},
+      evening:{label:"مساء دافئ",bg:0x211d19,hemi:0xffe6c7,ground:0x54463f,hemiI:1.02,key:0xffd5a8,keyI:2.25,fill:0xffd9b0,fillI:.55,area:1.9,strip:2.1,exposure:.94},
+      neutral:{label:"عرض محايد",bg:0x262726,hemi:0xffffff,ground:0x666b68,hemiI:1.15,key:0xffffff,keyI:2.45,fill:0xffffff,fillI:.68,area:2.6,strip:.95,exposure:.98}
     };
     function applyLighting(value){
-      currentLighting=value;
-      const s=lightingStates[value];
-      scene.background.setHex(s.bg);
-      scene.fog.color.setHex(s.bg);
-      hemi.color.setHex(s.hemi); hemi.groundColor.setHex(s.ground); hemi.intensity=s.hemiI;
-      key.color.setHex(s.key); key.intensity=s.keyI;
-      rim.color.setHex(s.rim); rim.intensity=s.rimI;
-      roomFill.color.setHex(value==="evening"?0xffc982:(value==="neutral"?0xffffff:0xffe7c1));
-      roomFill.intensity=value==="evening"?1.55:1.35;
+      currentLighting=value;const s=lightingStates[value];
+      scene.background.setHex(s.bg);scene.fog.color.setHex(s.bg);
+      hemi.color.setHex(s.hemi);hemi.groundColor.setHex(s.ground);hemi.intensity=s.hemiI;
+      key.color.setHex(s.key);key.intensity=s.keyI;
+      roomFill.color.setHex(s.fill);roomFill.intensity=s.fillI;
+      windowFill.intensity=s.area;stripArea.intensity=value==="evening"?1.3:.85;
       strip.material.emissiveIntensity=s.strip;
-      renderer.toneMappingExposure=value==="evening" ? .98 : 1.08;
+      renderer.toneMappingExposure=s.exposure;
     }
 
     const materialMap={metal:"ناعم",wood:"خشبي خفيف",clad:"خشبي أوضح"};
@@ -949,9 +1095,9 @@
     applyLighting("day");
 
     function defaultCameraForWidth(width){
-      if(width<560)return {fov:42,pos:[5.85,3.65,8.85]};
-      if(width<900)return {fov:37,pos:[5.45,3.45,7.65]};
-      return {fov:33,pos:[5.10,3.20,6.75]};
+      if(width<560)return {fov:38,pos:[4.85,3.10,7.55]};
+      if(width<900)return {fov:35,pos:[4.95,3.10,6.95]};
+      return {fov:32,pos:[4.82,3.00,6.35]};
     }
     function resetCameraView(){
       const rect=stage.getBoundingClientRect();
