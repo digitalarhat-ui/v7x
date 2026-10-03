@@ -30,7 +30,7 @@ jobs:
             try{
               const r=await fetch(live,{redirect:'follow'});
               const t=await r.text();
-              if(r.ok && t.includes('قوة لمار للمطابخ') && t.includes('966541717080') && !t.includes('العيدروس')) break;
+              if(r.ok && t.includes('قوة لمار للمطابخ') && t.includes('966541717080') && t.includes('lamar-authentic-failsafe') && !t.includes('العيدروس')) break;
             }catch{}
             if(i===29) throw new Error('Lamar clean alias did not become ready in time');
             await new Promise(r=>setTimeout(r,5000));
@@ -83,7 +83,7 @@ jobs:
             if(init.cabinetChoices<8||init.worktopChoices<5||init.lightingChoices!==2) throw new Error(name+': decision controls incomplete '+JSON.stringify(init));
             if(init.forbidden.length) throw new Error(name+': cross-prospect contamination '+JSON.stringify(init.forbidden));
             await p.$eval('#authenticCard',el=>el.scrollIntoView({block:'center'}));
-            await new Promise(r=>setTimeout(r,2500));
+            await new Promise(r=>setTimeout(r,5000));
             const authentic=await p.evaluate(()=>{
               const img=document.querySelector('#authenticCard img');
               return {
