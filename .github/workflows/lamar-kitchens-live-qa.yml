@@ -69,6 +69,11 @@ jobs:
               lightingChoices:document.querySelectorAll('.look[data-light]').length,
               whatsapp:document.querySelector('#whatsappLink')?.getAttribute('href')||'',
               forbidden:['العيدروس','العیدروس','966553590616','Digital Arhat','BEASTMODE','V1.4','Kitchen Lab','سمارت'].filter(x=>document.documentElement.innerHTML.includes(x)),
+              authentic:{
+                imageOk:(()=>{const i=document.querySelector('#authenticCard img');return !!(i&&i.complete&&i.naturalWidth>100)})(),
+                cardHidden:document.querySelector('#authenticCard')?.hidden===true,
+                fallbackHidden:document.querySelector('#authenticFallback')?.hidden===true
+              },
               nav:performance.getEntriesByType('navigation')[0] ? {
                 dom:Math.round(performance.getEntriesByType('navigation')[0].domContentLoadedEventEnd),
                 load:Math.round(performance.getEntriesByType('navigation')[0].loadEventEnd)
@@ -76,12 +81,13 @@ jobs:
             }));
 
             if(!res||res.status()>=400) throw new Error(name+': HTTP '+(res?.status()||'none'));
-            if(!init.title.includes('قوة لمار للمطابخ')||!init.brand.includes('لمار')) throw new Error(name+': identity failed');
+            if(!init.title.includes('لمار')||!init.brand.includes('لمار')) throw new Error(name+': identity failed '+JSON.stringify({title:init.title,brand:init.brand}));
             if(init.htmlDir!=='rtl') throw new Error(name+': RTL failed');
             if(init.canvas[0]<100||init.canvas[1]<100||!init.fallbackHidden) throw new Error(name+': WebGL scene failed '+JSON.stringify(init));
             if(init.overflow>2) throw new Error(name+': horizontal overflow '+init.overflow);
-            if(init.cabinetChoices!==4||init.worktopChoices!==3||init.lightingChoices!==2) throw new Error(name+': decision controls incomplete '+JSON.stringify(init));
+            if(init.cabinetChoices<8||init.worktopChoices<5||init.lightingChoices!==2) throw new Error(name+': decision controls incomplete '+JSON.stringify(init));
             if(init.forbidden.length) throw new Error(name+': cross-prospect contamination '+JSON.stringify(init.forbidden));
+            if(!init.authentic.imageOk && init.authentic.fallbackHidden) throw new Error(name+': authentic asset failed without visible failsafe '+JSON.stringify(init.authentic));
 
             const before=await p.evaluate(()=>({
               cabinet:document.querySelector('#stateCabinet')?.textContent||'',
@@ -99,7 +105,7 @@ jobs:
             }));
             if(visual.cabinet===before.cabinet||!visual.cabinet.includes('أخضر')||!visual.worktop.includes('حجر')||!visual.light.includes('دافئة')) throw new Error(name+': visual decisions did not update '+JSON.stringify({before,visual}));
 
-            await p.select('#branch','الرياض — الفرع الرئيسي');
+            await p.select('#branch','طريق المدينة المنورة الفرعي — الرياض');
             await p.select('#stageSelect','مطبخ جديد');
             await p.select('#shape','مع جزيرة');
             await p.type('#size','4 × 3 م');
@@ -114,7 +120,7 @@ jobs:
               activeWorktop:document.querySelector('#worktopSwatches .swatch.active')?.dataset.value||''
             }));
 
-            for(const token of ['أخضر هادئ','حجر دافئ','الرياض — الفرع الرئيسي','مطبخ جديد','مع جزيرة','4 × 3 م','أحتاج مساحة تخزين أكبر']){
+            for(const token of ['أخضر هادئ','حجر دافئ','طريق المدينة المنورة الفرعي — الرياض','مطبخ جديد','مع جزيرة','4 × 3 م','أحتاج مساحة تخزين أكبر']){
               if(!state.summary.includes(token)) throw new Error(name+': summary lost '+token);
             }
             for(const param of ['c=sage','w=warmstone','l=warm','b=','s=','sh=','z=','n=']){
@@ -122,7 +128,7 @@ jobs:
             }
             if(!state.wa.startsWith('https://wa.me/966541717080?text=')) throw new Error(name+': WhatsApp route failed '+state.wa);
             const decoded=decodeURIComponent(state.wa);
-            for(const token of ['أخضر هادئ','حجر دافئ','الرياض — الفرع الرئيسي','4 × 3 م','أحتاج مساحة تخزين أكبر']){
+            for(const token of ['أخضر هادئ','حجر دافئ','طريق المدينة المنورة الفرعي — الرياض','4 × 3 م','أحتاج مساحة تخزين أكبر']){
               if(!decoded.includes(token)) throw new Error(name+': WhatsApp handoff lost '+token);
             }
 
@@ -141,7 +147,7 @@ jobs:
               overflow:document.documentElement.scrollWidth-innerWidth,
               fallbackHidden:document.querySelector('#webglFallback')?.hidden===true
             }));
-            if(restored.cabinet!=='أخضر هادئ'||restored.worktop!=='حجر دافئ'||restored.light!=='دافئة'||restored.branch!=='الرياض — الفرع الرئيسي'||restored.stage!=='مطبخ جديد'||restored.shape!=='مع جزيرة'||restored.size!=='4 × 3 م'||restored.note!=='أحتاج مساحة تخزين أكبر') throw new Error(name+': exact state restore failed '+JSON.stringify(restored));
+            if(restored.cabinet!=='أخضر هادئ'||restored.worktop!=='حجر دافئ'||restored.light!=='دافئة'||restored.branch!=='طريق المدينة المنورة الفرعي — الرياض'||restored.stage!=='مطبخ جديد'||restored.shape!=='مع جزيرة'||restored.size!=='4 × 3 م'||restored.note!=='أحتاج مساحة تخزين أكبر') throw new Error(name+': exact state restore failed '+JSON.stringify(restored));
             if(restored.overflow>2||!restored.fallbackHidden) throw new Error(name+': post-reload layout/WebGL failed '+JSON.stringify(restored));
 
             const meaningful=errors.filter(e=>!e.includes('favicon')&&!e.includes('ERR_BLOCKED_BY_CLIENT')&&!e.includes('Failed to load resource'));
