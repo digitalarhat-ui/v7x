@@ -69,11 +69,6 @@ jobs:
               lightingChoices:document.querySelectorAll('.look[data-light]').length,
               whatsapp:document.querySelector('#whatsappLink')?.getAttribute('href')||'',
               forbidden:['العيدروس','العیدروس','966553590616','Digital Arhat','BEASTMODE','V1.4','Kitchen Lab','سمارت'].filter(x=>document.documentElement.innerHTML.includes(x)),
-              authentic:{
-                imageOk:(()=>{const i=document.querySelector('#authenticCard img');return !!(i&&i.complete&&i.naturalWidth>100)})(),
-                cardHidden:document.querySelector('#authenticCard')?.hidden===true,
-                fallbackHidden:document.querySelector('#authenticFallback')?.hidden===true
-              },
               nav:performance.getEntriesByType('navigation')[0] ? {
                 dom:Math.round(performance.getEntriesByType('navigation')[0].domContentLoadedEventEnd),
                 load:Math.round(performance.getEntriesByType('navigation')[0].loadEventEnd)
@@ -87,7 +82,18 @@ jobs:
             if(init.overflow>2) throw new Error(name+': horizontal overflow '+init.overflow);
             if(init.cabinetChoices<8||init.worktopChoices<5||init.lightingChoices!==2) throw new Error(name+': decision controls incomplete '+JSON.stringify(init));
             if(init.forbidden.length) throw new Error(name+': cross-prospect contamination '+JSON.stringify(init.forbidden));
-            if(!init.authentic.imageOk && init.authentic.fallbackHidden) throw new Error(name+': authentic asset failed without visible failsafe '+JSON.stringify(init.authentic));
+            await p.$eval('#authenticCard',el=>el.scrollIntoView({block:'center'}));
+            await new Promise(r=>setTimeout(r,2500));
+            const authentic=await p.evaluate(()=>{
+              const img=document.querySelector('#authenticCard img');
+              return {
+                imageOk:!!(img&&img.complete&&img.naturalWidth>100),
+                cardHidden:document.querySelector('#authenticCard')?.hidden===true,
+                fallbackHidden:document.querySelector('#authenticFallback')?.hidden===true,
+                src:img?.currentSrc||img?.src||''
+              };
+            });
+            if(!authentic.imageOk && authentic.fallbackHidden) throw new Error(name+': authentic asset failed without visible failsafe '+JSON.stringify(authentic));
 
             const before=await p.evaluate(()=>({
               cabinet:document.querySelector('#stateCabinet')?.textContent||'',
@@ -156,7 +162,7 @@ jobs:
 
             await p.screenshot({path:'/home/runner/work/v7x/v7x/qa-lamar-live/live-'+name+'-viewport.png',fullPage:false});
             await p.screenshot({path:'/home/runner/work/v7x/v7x/qa-lamar-live/live-'+name+'-full.png',fullPage:true});
-            out.push({viewport:name,http:res.status(),elapsed,init,visual,state,restored,errors,badResponses});
+            out.push({viewport:name,http:res.status(),elapsed,init,authentic,visual,state,restored,errors,badResponses});
             await p.close();
           }
 
