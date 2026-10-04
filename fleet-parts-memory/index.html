@@ -32,6 +32,28 @@ a{color:inherit}
 .pill{color:#d3dae0}.pill.warn{border-color:rgba(243,182,58,.35);background:rgba(243,182,58,.08);color:#ffda91}
 .lang.active{background:var(--amber);color:#17130a;border-color:var(--amber)}
 .hero{padding:54px 0 28px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(420px,.95fr);gap:28px;align-items:center}
+.hero-copy{min-width:0}
+.microproof{margin-top:14px;color:#78838d;font-size:10px;line-height:1.5}
+.hero-demo{padding:16px;min-height:420px;position:relative;overflow:hidden;background:
+  linear-gradient(180deg,rgba(25,32,37,.98),rgba(12,17,20,.98)),
+  radial-gradient(450px 220px at 50% 0%,rgba(243,182,58,.12),transparent 65%)}
+.hero-demo:before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:28px 28px;pointer-events:none}
+.demo-top{display:flex;justify-content:space-between;gap:10px;align-items:center;position:relative;z-index:2}
+.demo-state{font-size:10px;padding:6px 9px;border-radius:999px;border:1px solid #3a444d;color:#c9d2d8;background:#11171b}
+.scan-stage{height:210px;margin-top:14px;border:1px solid #303942;border-radius:16px;background:linear-gradient(180deg,#0c1114,#11181c);position:relative;overflow:hidden;display:grid;place-items:center}
+.scanner-line{position:absolute;left:6%;right:6%;height:2px;background:linear-gradient(90deg,transparent,var(--amber),transparent);box-shadow:0 0 18px rgba(243,182,58,.75);top:12%;opacity:0}
+.hero-demo.scanning .scanner-line{opacity:1;animation:scanLine 1.35s ease-in-out 1}
+.machine-visual{position:absolute;right:22px;bottom:18px;text-align:right;opacity:.52}
+.mv-brand{font-size:11px;font-weight:900;letter-spacing:.12em}.mv-model{font-size:28px;font-weight:950;letter-spacing:-.04em}.mv-serial{font-family:ui-monospace,monospace;font-size:10px;color:#82909b}
+.hero-qr{width:116px;height:116px;border:10px solid #fff;background:repeating-conic-gradient(#111 0 25%,#fff 0 50%) 0/14px 14px;border-radius:9px;box-shadow:0 12px 35px rgba(0,0,0,.35)}
+.scan-result{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin-top:12px;position:relative;z-index:2;opacity:.48;transition:.35s}
+.hero-demo.scanned .scan-result{opacity:1}
+.result-machine{display:flex;gap:9px;align-items:center}.result-icon{width:34px;height:34px;border-radius:9px;background:#222b31;display:grid;place-items:center;font-weight:900;color:#f2d381}.result-machine b{display:block;font-size:12px}.result-machine small{display:block;color:#7f8b95;font-size:9px;margin-top:2px}
+.result-memory{text-align:center;border-inline-start:1px solid #303941;padding-inline-start:12px}.result-memory b{display:block;font-size:22px;color:#aaf1c6}.result-memory span{display:block;color:#7f8a94;font-size:8px;max-width:90px;line-height:1.35}
+.scan-result .btn{grid-column:1/-1}
+.demo-caption{position:relative;z-index:2;color:#66727d;font-size:9px;line-height:1.45;margin-top:9px}
+@keyframes scanLine{0%{top:12%}50%{top:82%}100%{top:12%}}
 .eyebrow{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);font-weight:900}
 h1,h2,h3,p{margin-top:0}
 h1{font-size:clamp(36px,6vw,72px);line-height:1.02;letter-spacing:-.055em;max-width:980px;margin:10px 0 16px}
@@ -63,9 +85,11 @@ h2{font-size:22px;letter-spacing:-.025em}
 .passhead{position:relative;display:flex;gap:12px;align-items:flex-start}.passlogo{width:48px;height:48px;border-radius:13px;background:#1d1c17;color:#f4d681;display:grid;place-items:center;font-weight:900}.passhead small{display:block;opacity:.58;margin-top:3px}
 .qr{margin-inline-start:auto;width:82px;height:82px;border:8px solid #fff;background:
 repeating-conic-gradient(#111 0 25%,#fff 0 50%) 0/12px 12px;border-radius:6px;position:relative}.qr:after{content:"DEMO";position:absolute;inset:auto 5px 5px;background:#fff;color:#111;font-size:8px;font-weight:900;text-align:center;padding:2px}
+.qr-button{padding:0;cursor:pointer;appearance:none}.qr-button:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,0,0,.18)}.qr-tap{position:absolute;inset:auto 4px -28px;white-space:nowrap;color:#5e5644;font-size:8px;font-weight:900}
 .passrows{position:relative;margin-top:28px}.passrow{display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-bottom:1px solid rgba(0,0,0,.12);font-size:12px}.passrow:last-child{border-bottom:0}.passrow span{opacity:.62}.passfoot{position:absolute;bottom:16px;right:18px;left:18px;font-size:9px;opacity:.55}
+.memory-head{align-items:center}.memory-badge{margin-inline-start:auto;border:1px solid rgba(88,210,143,.28);color:#9debbc;background:rgba(88,210,143,.06);border-radius:999px;padding:6px 9px;font-size:8px;font-weight:900;letter-spacing:.06em}
 .memory{display:grid;gap:9px}
-.part{border:1px solid #303943;background:#0e1317;border-radius:14px;padding:13px}.parttop{display:flex;gap:12px;align-items:flex-start}.part h3{font-size:14px;margin:0 0 4px}.part p{font-size:11px;color:var(--muted);line-height:1.55;margin:0}.verify{margin-inline-start:auto;color:#9af0bd;background:rgba(88,210,143,.08);border:1px solid rgba(88,210,143,.28);padding:6px 8px;border-radius:999px;font-size:9px;font-weight:900;white-space:nowrap}
+.part{border:1px solid #303943;background:linear-gradient(180deg,#0f1519,#0c1114);border-radius:14px;padding:13px;transition:.25s}.part:hover{border-color:#45515b;transform:translateY(-1px)}.part.fresh{animation:freshPart 1.2s ease both;border-color:rgba(88,210,143,.55);box-shadow:0 0 0 2px rgba(88,210,143,.08)}@keyframes freshPart{0%{transform:scale(.985);background:rgba(88,210,143,.16)}100%{transform:none}}.parttop{display:flex;gap:12px;align-items:flex-start}.part h3{font-size:14px;margin:0 0 4px}.part p{font-size:11px;color:var(--muted);line-height:1.55;margin:0}.verify{margin-inline-start:auto;color:#9af0bd;background:rgba(88,210,143,.08);border:1px solid rgba(88,210,143,.28);padding:6px 8px;border-radius:999px;font-size:9px;font-weight:900;white-space:nowrap}
 .part .meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.mini{background:#151b20;border:1px solid #2e373f;border-radius:10px;padding:8px}.mini small{display:block;color:#7f8a95;font-size:8px;text-transform:uppercase;letter-spacing:.09em}.mini b{display:block;font-size:11px;margin-top:4px}
 .partactions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.partactions button{border-radius:9px;padding:8px 10px;font-size:10px}
 .requestbox{margin-top:12px;border:1px dashed #47525d;border-radius:14px;padding:14px;background:#0e1317}
@@ -73,14 +97,19 @@ repeating-conic-gradient(#111 0 25%,#fff 0 50%) 0/12px 12px;border-radius:6px;po
 .field{display:grid;gap:5px}.field.full{grid-column:1/-1}.field label{font-size:10px;color:#a9b2ba;font-weight:800}.field input,.field select,.field textarea{width:100%;background:#0b1013;border:1px solid #323c45;border-radius:10px;color:var(--text);padding:10px 11px;outline:none}.field textarea{min-height:90px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:#7b642c;box-shadow:0 0 0 3px rgba(243,182,58,.07)}
 .bind{display:flex;align-items:center;gap:8px;border:1px solid rgba(88,210,143,.24);background:rgba(88,210,143,.05);border-radius:11px;padding:10px;font-size:11px;color:#b7ebc9}
 .timeline{display:grid;gap:10px}.event{display:grid;grid-template-columns:18px 1fr;gap:10px}.event .dot{width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(88,210,143,.08);margin-top:4px}.event b{font-size:11px}.event small{display:block;color:var(--muted);font-size:10px;line-height:1.55;margin-top:3px}
+.value-band{padding-top:4px}.valuegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.valuecard{border:1px solid #303942;background:#0f1519;border-radius:14px;padding:14px;min-height:130px}.valuecard span{display:block;color:var(--amber);font-size:9px;font-weight:900;letter-spacing:.14em}.valuecard b{display:block;font-size:13px;margin-top:9px}.valuecard small{display:block;color:var(--muted);font-size:10px;line-height:1.55;margin-top:5px}
 .owner{display:grid;grid-template-columns:1.05fr .95fr;gap:14px}.graph{border:1px solid #303941;background:#0d1216;border-radius:16px;padding:15px;min-height:320px;position:relative;overflow:hidden}.nodes{display:grid;grid-template-columns:1fr 1fr;gap:10px}.node{border:1px solid #34404a;background:#141b20;border-radius:12px;padding:11px}.node b{font-size:12px}.node small{display:block;color:var(--muted);font-size:9px;margin-top:3px;line-height:1.45}.node.em{border-color:#7f6424;background:#18150f}.ownerlist{display:grid;gap:8px}.owneritem{border:1px solid #303942;background:#0f1418;border-radius:13px;padding:12px}.owneritem b{font-size:12px}.owneritem small{display:block;color:var(--muted);font-size:10px;line-height:1.55;margin-top:4px}
 details{overflow:hidden}summary{list-style:none;padding:16px 18px;cursor:pointer;font-weight:900;font-size:13px;color:#dce2e6}summary::-webkit-details-marker{display:none}summary:after{content:"+";float:left;color:var(--amber);font-size:18px}[dir="ltr"] summary:after{float:right}details[open] summary{border-bottom:1px solid var(--line)}details[open] summary:after{content:"−"}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.68);z-index:60;display:none;align-items:flex-end;justify-content:center}.modal.on{display:flex}.sheet{width:min(720px,100%);max-height:88vh;overflow:auto;background:#151b20;border:1px solid var(--line);border-radius:20px 20px 0 0;padding:18px}.sheet h2{font-size:19px}.close{float:left}
+.save-success{margin-top:12px;border:1px solid rgba(88,210,143,.35);background:rgba(88,210,143,.08);border-radius:14px;padding:12px;display:flex;gap:10px;align-items:center}.save-check{width:34px;height:34px;border-radius:50%;background:#1c6841;display:grid;place-items:center;font-weight:900;color:#eafff2}.save-success b{display:block;font-size:12px}.save-success small{display:block;color:#a9dcbc;font-size:10px;margin-top:3px}
+.mobile-dock{display:none;position:fixed;left:10px;right:10px;bottom:10px;z-index:45;background:rgba(12,17,20,.92);backdrop-filter:blur(14px);border:1px solid #303942;border-radius:15px;padding:7px;gap:7px;box-shadow:0 18px 45px rgba(0,0,0,.38)}
+.mobile-dock .btn{flex:1}
 .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;transition:.25s;background:#18211d;border:1px solid #2c6444;color:#d8ffe6;padding:11px 14px;border-radius:12px;font-size:11px;z-index:80}.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 .footer{padding:28px 0 40px;color:#727d87;font-size:10px;line-height:1.6}
 .hidden{display:none!important}
-@media(max-width:900px){.proofstrip{grid-template-columns:1fr 1fr}.fleetgrid{grid-template-columns:1fr}.passport,.owner{grid-template-columns:1fr}.machine{min-height:0}}
-@media(max-width:520px){.wrap{padding:0 10px}.topin{height:62px}.brand small,.pill{display:none}.hero{padding:34px 0 20px}h1{font-size:38px;line-height:1.07}.lead{font-size:13px}.proofstrip{grid-template-columns:1fr}.cardpad{padding:14px}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}.part .meta{grid-template-columns:1fr}.qr{width:70px;height:70px}.actions{gap:5px}.lang{padding:8px 10px}.passcard{min-height:330px}.cta .btn{flex:1}}
+@media(max-width:980px){.hero-grid{grid-template-columns:1fr}.hero-demo{min-height:390px}.proofstrip{grid-template-columns:1fr 1fr}.fleetgrid{grid-template-columns:1fr}.passport,.owner{grid-template-columns:1fr}.machine{min-height:0}.valuegrid{grid-template-columns:1fr}}
+@media(max-width:520px){.wrap{padding:0 10px}.topin{height:62px}.brand small,.pill{display:none}.hero{padding:28px 0 18px}h1{font-size:36px;line-height:1.06}.lead{font-size:13px}.hero-demo{min-height:355px;padding:12px}.scan-stage{height:180px}.hero-qr{width:96px;height:96px}.proofstrip{grid-template-columns:1fr}.cardpad{padding:14px}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}.part .meta{grid-template-columns:1fr}.qr{width:70px;height:70px}.actions{gap:5px}.lang{padding:8px 10px}.passcard{min-height:330px}.cta .btn{flex:1}.memory-badge{display:none}.mobile-dock{display:flex}.footer{padding-bottom:86px}.toast{bottom:78px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
@@ -97,13 +126,41 @@ details{overflow:hidden}summary{list-style:none;padding:16px 18px;cursor:pointer
 
 <main class="wrap">
 <section class="hero">
-  <div class="eyebrow" id="eyebrow">MACHINE PASSPORT + VERIFIED PARTS MEMORY</div>
-  <h1 id="hero">سجّل معدتك مرة واحدة. وفي الطلب القادم… لا تبدأ من الصفر.</h1>
-  <p class="lead muted" id="heroBody">كل معدة تحصل على ملف دائم. وكل قطعة يؤكدها المختص يمكن حفظها في ذاكرة المعدة، ليصبح إعادة الطلب أسرع وأكثر وضوحًا بدون إعادة نفس البحث من البداية.</p>
-  <div class="cta">
-    <button class="btn primary" id="openFleet">افتح أسطولًا تجريبيًا</button>
-    <button class="btn ghost" id="showLoop">شاهد حلقة “تحقق مرة → تذكر دائمًا”</button>
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <div class="eyebrow" id="eyebrow">MACHINE PASSPORT + VERIFIED PARTS MEMORY</div>
+      <h1 id="hero">سجّل معدتك مرة واحدة. وفي الطلب القادم… لا تبدأ من الصفر.</h1>
+      <p class="lead muted" id="heroBody">كل معدة تحصل على ملف دائم. وكل قطعة يؤكدها المختص يمكن حفظها في ذاكرة المعدة، ليصبح إعادة الطلب أسرع وأكثر وضوحًا بدون إعادة نفس البحث من البداية.</p>
+      <div class="cta">
+        <button class="btn primary" id="heroScan">جرّب مسح جواز المعدة</button>
+        <button class="btn ghost" id="openFleet">افتح الأسطول التجريبي</button>
+      </div>
+      <div class="microproof" id="microproof">لا تخمين في التوافق • لا مخزون أو سعر حي • اعتماد المختص إلزامي</div>
+    </div>
+
+    <div class="hero-demo card" id="heroDemo">
+      <div class="demo-top">
+        <span class="eyebrow" id="heroDemoEye">SCAN → REMEMBER → REORDER</span>
+        <span class="demo-state" id="heroDemoState">جاهز للمسح</span>
+      </div>
+      <div class="scan-stage" id="scanStage">
+        <div class="scanner-line"></div>
+        <div class="machine-visual">
+          <div class="mv-brand">SANY</div>
+          <div class="mv-model">SAC600E</div>
+          <div class="mv-serial">SN-87492</div>
+        </div>
+        <div class="hero-qr" aria-hidden="true"></div>
+      </div>
+      <div class="scan-result" id="scanResult">
+        <div class="result-machine"><span class="result-icon">S</span><div><b>SANY SAC600E</b><small id="scanSerial">SN-87492 · Riyadh Project A</small></div></div>
+        <div class="result-memory"><b id="scanMemoryCount">3</b><span id="scanMemoryLabel">قطع موثقة محفوظة لهذه المعدة</span></div>
+        <button class="btn success" id="heroQuickReorder">إعادة طلب فلتر هيدروليك</button>
+      </div>
+      <div class="demo-caption" id="heroDemoCaption">هذه محاكاة لتجربة QR مستقبلية؛ لا يتم مسح QR حقيقي في هذا النموذج.</div>
+    </div>
   </div>
+
   <div class="proofstrip">
     <div class="proof"><b id="p1">هوية المعدة محفوظة</b><small id="p1s">العلامة، الموديل، السيريال والموقع ترتبط بملف واحد بدل إعادة إرسالها في كل مرة.</small></div>
     <div class="proof"><b id="p2">ذاكرة قطع موثقة</b><small id="p2s">القطعة لا تصبح “موثقة” إلا بعد اعتماد مختص. لا توجد مطابقة تلقائية نهائية.</small></div>
@@ -124,7 +181,7 @@ details{overflow:hidden}summary{list-style:none;padding:16px 18px;cursor:pointer
       <div class="passhead">
         <div class="passlogo" id="passBrand">S</div>
         <div><h2 id="passName" style="margin:2px 0 4px">SANY SAC600E</h2><small id="passId">Machine Passport · DEMO-001</small></div>
-        <div class="qr" title="Illustrative QR — not scannable"></div>
+        <button class="qr qr-button" id="passportScan" title="Simulate scan" aria-label="Simulate machine passport scan"><span class="qr-tap" id="qrTap">جرّب المسح</span></button>
       </div>
       <div class="passrows">
         <div class="passrow"><span id="lBrand">العلامة</span><b id="vBrand">SANY</b></div>
@@ -138,7 +195,7 @@ details{overflow:hidden}summary{list-style:none;padding:16px 18px;cursor:pointer
 
     <div>
       <div class="card cardpad">
-        <div class="sectionhead" style="margin-bottom:10px"><div class="n">✓</div><div><h2 id="memoryTitle">ذاكرة القطع الموثقة</h2><div class="muted" id="memorySub">هذه السجلات توضيحية وليست ادعاءً بتوافق فعلي مع معدة حقيقية.</div></div></div>
+        <div class="sectionhead memory-head" style="margin-bottom:10px"><div class="n">✓</div><div><h2 id="memoryTitle">ذاكرة القطع الموثقة</h2><div class="muted" id="memorySub">هذه السجلات توضيحية وليست ادعاءً بتوافق فعلي مع معدة حقيقية.</div></div><span class="memory-badge" id="memoryBadge">VERIFY ONCE → REUSE</span></div>
         <div class="memory" id="memoryList"></div>
         <div class="requestbox">
           <b id="newPartTitle">تحتاج قطعة جديدة لهذه المعدة؟</b>
@@ -154,6 +211,14 @@ details{overflow:hidden}summary{list-style:none;padding:16px 18px;cursor:pointer
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="section value-band">
+  <div class="valuegrid">
+    <div class="valuecard"><span>01</span><b id="v1">المعدة معروفة</b><small id="v1s">لا حاجة لإعادة إرسال العلامة والموديل والسيريال في كل طلب.</small></div>
+    <div class="valuecard"><span>02</span><b id="v2">القطعة الموثقة لا تُنسى</b><small id="v2s">نتيجة اعتماد المختص تصبح ذاكرة مرتبطة بالمعدة بدل أن تضيع في المحادثات.</small></div>
+    <div class="valuecard"><span>03</span><b id="v3">إعادة الطلب تبدأ من الذاكرة</b><small id="v3s">العميل يختار سجلًا سبق اعتماده ويطلب الكمية والاستعجال فقط.</small></div>
   </div>
 </section>
 
@@ -208,9 +273,11 @@ details{overflow:hidden}summary{list-style:none;padding:16px 18px;cursor:pointer
   <h2 id="requestTitle">طلب جديد جاهز لمراجعة المختص</h2>
   <div class="card cardpad" style="box-shadow:none" id="requestSummary"></div>
   <div class="cta"><button class="btn success" id="verifyAndSave">محاكاة: المختص يؤكد ويحفظ في ذاكرة المعدة</button><button class="btn ghost" id="copyRequest">نسخ الملخص</button></div>
+  <div class="save-success hidden" id="saveSuccess"><span class="save-check">✓</span><div><b id="saveSuccessTitle">تمت إضافة القطعة إلى ذاكرة المعدة</b><small id="saveSuccessSub">في الطلب القادم ستظهر كسجل قابل لإعادة الاستخدام لهذه المعدة.</small></div></div>
   <div class="warning" style="margin-top:10px;border:1px solid rgba(243,182,58,.25);background:rgba(243,182,58,.06);border-radius:12px;padding:11px;color:#ead3a4;font-size:10px;line-height:1.6" id="requestWarn">زر “التحقق والحفظ” يحاكي خطوة بشرية فقط. لا توجد مطابقة فعلية أو ERP أو مخزون في هذا النموذج.</div>
 </div></div>
 
+<div class="mobile-dock"><button class="btn primary" id="mobileScan">جرّب مسح المعدة</button><button class="btn ghost" id="mobileFleet">أسطولي</button></div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -233,7 +300,8 @@ const I18N={
  en:{
   brand:'Fleet Parts Memory',subbrand:'Concept by Digital Arhat for a multi-brand heavy-duty parts workflow',conceptPill:'Concept demo — illustrative data',
   eyebrow:'MACHINE PASSPORT + VERIFIED PARTS MEMORY',hero:'Register the machine once. Next time you need a part… do not start from zero.',heroBody:'Each machine gets a persistent profile. Each specialist-approved part can become part of that machine’s memory, making repeat requests clearer without repeating the same identification work.',
-  openFleet:'Open demo fleet',showLoop:'See the “verify once → remember forever” loop',
+  openFleet:'Open demo fleet',heroScan:'Simulate machine-passport scan',showLoop:'See the “verify once → remember forever” loop',microproof:'No fitment guessing • no live stock or pricing • specialist approval required',
+  heroDemoEye:'SCAN → REMEMBER → REORDER',heroDemoState:'Ready to scan',scanMemoryLabel:'verified parts remembered for this machine',heroQuickReorder:'Reorder hydraulic filter',heroDemoCaption:'This simulates a future QR experience; this demo does not scan a real QR code.',
   p1:'Machine identity is remembered',p1s:'Brand, model, serial and site stay attached to one profile instead of being re-sent every time.',
   p2:'Verified parts memory',p2s:'A part becomes “verified” only after specialist approval. There is no autonomous final fitment decision.',
   p3:'Reorder from memory',p3s:'Customers can request the same previously approved item for that machine without restarting the search.',
@@ -241,9 +309,10 @@ const I18N={
   fleetTitle:'My Fleet — ABC Contracting',fleetSub:'Illustrative data only. Pick a machine to see its passport and verified-parts memory.',
   passportTitle:'Machine Passport + Parts Memory',passportSub:'A new request starts with the machine identity already attached, not an anonymous message with no context.',
   lBrand:'Brand',lModel:'Model',lSerial:'Serial',lSite:'Site',lMemory:'Verified parts',passFoot:'Demo QR is not scannable. A production version requires appropriate permissions and privacy controls.',
-  memoryTitle:'Verified Parts Memory',memorySub:'These records are illustrative and are not claims of actual fitment to a real machine.',
+  memoryTitle:'Verified Parts Memory',memorySub:'These records are illustrative and are not claims of actual fitment to a real machine.',memoryBadge:'VERIFY ONCE → REUSE',
   newPartTitle:'Need a new part for this machine?',newPartSub:'The request inherits the machine identity automatically. Add only what you know; final approval stays with the specialist.',
   reqDescL:'Part / issue description',reqQtyL:'Quantity',reqUrgencyL:'Urgency',reqPhotoL:'Photo — optional',buildRequest:'Prepare for specialist review',
+  v1:'Machine identity is known',v1s:'No need to resend brand, model and serial on every request.',v2:'Approved fitment is not forgotten',v2s:'Specialist knowledge becomes machine memory instead of disappearing inside chats.',v3:'Reorders start from memory',v3s:'The customer selects a previously approved record and only adds quantity and urgency.',
   historyTitle:'Machine memory grows with every approval',historySub:'Knowledge confirmed today does not have to disappear inside a chat; it can become reusable machine history.',
   ownerSummary:'For the owner and sales team: see the data value behind the experience',
   graphEye:'FITMENT MEMORY GRAPH — DEMO',graphTitle:'Every approval creates a relationship that can be reused',graphNote:'This is not an inventory or demand forecast. The concept is that an approved relationship can later support reorders and installed-base analysis after the commercial value is validated.',
@@ -254,7 +323,7 @@ const I18N={
   reorderEye:'REORDER FROM VERIFIED MEMORY',reorderTitle:'Reorder a previously approved part',reQtyL:'Quantity',reUrgL:'Urgency',reNoteL:'Note — optional',createReorder:'Create reorder request',
   reorderWarn:'The “verified” record here is demo data only. In production, changes in serial/application must be checked before pricing or order.',
   requestEye:'MACHINE-BOUND REQUEST',requestTitle:'New request ready for specialist review',verifyAndSave:'Demo: specialist verifies & saves to machine memory',copyRequest:'Copy summary',
-  requestWarn:'“Verify & save” simulates a human action only. There is no real fitment, ERP or stock lookup in this demo.'
+  requestWarn:'“Verify & save” simulates a human action only. There is no real fitment, ERP or stock lookup in this demo.',saveSuccessTitle:'Part added to machine memory',saveSuccessSub:'Next time it will appear as a reusable record for this machine.'
  }
 };
 function t(id){return I18N[lang]?.[id]||null}
@@ -278,6 +347,7 @@ function renderMachine(){
  $('passBrand').textContent=current.icon;$('passName').textContent=current.brand+' '+current.model;$('passId').textContent='Machine Passport · '+current.id.toUpperCase()+'-DEMO';
  $('vBrand').textContent=current.brand;$('vModel').textContent=current.model;$('vSerial').textContent=current.serial;$('vSite').textContent=current.site;$('vMemory').textContent=current.memory.length;
  $('bindNote').textContent=(lang==='ar'?'✓ هذا الطلب مرتبط تلقائيًا بـ ':'✓ This request is automatically bound to ')+current.brand+' '+current.model+' / '+current.serial;
+ $('scanMemoryCount').textContent=current.memory.length;$('scanSerial').textContent=current.serial+' · '+current.site;
  $('memoryList').innerHTML=current.memory.map(p=>`<div class="part">
    <div class="parttop"><div><h3>${lang==='ar'?p.nameAr:p.nameEn}</h3><p>${lang==='ar'?'سجل توضيحي محفوظ في ذاكرة هذه المعدة.':'Illustrative record stored in this machine memory.'}</p></div><span class="verify">${lang==='ar'?'✓ اعتماد مختص':'✓ Specialist approved'}</span></div>
    <div class="meta"><div class="mini"><small>${lang==='ar'?'معرّف الذاكرة':'Memory ID'}</small><b>${p.ref}</b></div><div class="mini"><small>${lang==='ar'?'آخر توريد توضيحي':'Demo last supplied'}</small><b>${p.last}</b></div><div class="mini"><small>${lang==='ar'?'أساس الحفظ':'Saved basis'}</small><b>${lang==='ar'?p.basisAr:p.basisEn}</b></div></div>
@@ -314,9 +384,22 @@ $('buildRequest').onclick=()=>{
 };
 $('verifyAndSave').onclick=()=>{
  if(!generatedRequest)return;
- const fakeId='MEM-'+String(Math.floor(100+Math.random()*899));
- current.memory.unshift({id:'new'+Date.now(),nameAr:generatedRequest.desc,nameEn:generatedRequest.desc,ref:fakeId,last:'2026-10-04',basisAr:'محاكاة اعتماد مختص في النموذج',basisEn:'Demo specialist-approval simulation'});
- $('requestModal').classList.remove('on');renderFleet();renderMachine();toast(lang==='ar'?'✓ تم حفظ العلاقة في ذاكرة المعدة — محاكاة فقط':'✓ Saved to machine memory — demo simulation only')
+ const fakeId='MEM-DEMO-009';
+ const newId='demo-saved-part';
+ if(!current.memory.some(x=>x.id===newId)){
+   current.memory.unshift({id:newId,nameAr:generatedRequest.desc,nameEn:generatedRequest.desc,ref:fakeId,last:'2026-10-04',basisAr:'محاكاة اعتماد مختص في النموذج',basisEn:'Demo specialist-approval simulation'});
+ }
+ $('saveSuccess').classList.remove('hidden');
+ $('verifyAndSave').disabled=true;
+ renderFleet();renderMachine();
+ setTimeout(()=>{
+   $('requestModal').classList.remove('on');
+   $('saveSuccess').classList.add('hidden');
+   $('verifyAndSave').disabled=false;
+   document.querySelector('[data-reorder="demo-saved-part"]')?.closest('.part')?.classList.add('fresh');
+   document.getElementById('memoryTitle').scrollIntoView({behavior:'smooth',block:'start'});
+   toast(lang==='ar'?'✓ أصبحت القطعة جزءًا من ذاكرة المعدة — محاكاة فقط':'✓ Part added to machine memory — demo simulation only');
+ },900)
 };
 $('copyRequest').onclick=()=>{
  if(!generatedRequest)return;
@@ -326,12 +409,28 @@ $('copyRequest').onclick=()=>{
 $('createReorder').onclick=()=>{
  if(!reorderPart)return;
  $('reorderModal').classList.remove('on');
- toast((lang==='ar'?'✓ تم إنشاء طلب إعادة توريد لـ ':'✓ Reorder request created for ')+(lang==='ar'?reorderPart.nameAr:reorderPart.nameEn)+' — '+(lang==='ar'?'بانتظار التوفر والسعر':'awaiting stock and price'))
+ toast((lang==='ar'?'✓ طلب إعادة توريد جاهز: ':'✓ Reorder request ready: ')+(lang==='ar'?reorderPart.nameAr:reorderPart.nameEn)+' · '+current.brand+' '+current.model+' · '+(lang==='ar'?'بانتظار تأكيد التوفر والسعر':'awaiting stock and price confirmation'))
 };
 $('closeReorder').onclick=()=>$('reorderModal').classList.remove('on');
 $('closeRequest').onclick=()=>$('requestModal').classList.remove('on');
+function simulateScan(){
+  const demo=$('heroDemo');
+  demo.classList.remove('scanned');demo.classList.add('scanning');
+  $('heroDemoState').textContent=lang==='ar'?'جارٍ قراءة جواز المعدة…':'Reading machine passport…';
+  setTimeout(()=>{
+    demo.classList.remove('scanning');demo.classList.add('scanned');
+    $('heroDemoState').textContent=lang==='ar'?'تم التعرف على المعدة':'Machine recognised';
+    $('scanMemoryCount').textContent=current.memory.length;
+    $('scanSerial').textContent=current.serial+' · '+current.site;
+  },1350);
+}
+$('heroScan').onclick=simulateScan;
+$('passportScan').onclick=simulateScan;
+$('mobileScan').onclick=simulateScan;
+$('heroQuickReorder').onclick=()=>{current=FLEET[0];renderFleet();renderMachine();openReorder('p1')};
+$('mobileFleet').onclick=()=>document.getElementById('fleetSection').scrollIntoView({behavior:'smooth'});
 $('openFleet').onclick=()=>document.getElementById('fleetSection').scrollIntoView({behavior:'smooth'});
-$('showLoop').onclick=()=>document.getElementById('ownerDetails').scrollIntoView({behavior:'smooth'});
+$('showLoop') && ($('showLoop').onclick=()=>document.getElementById('ownerDetails').scrollIntoView({behavior:'smooth'}));
 document.querySelectorAll('.lang').forEach(b=>b.onclick=()=>setLang(b.dataset.lang));
 document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('on')}));
 renderFleet();renderMachine();
