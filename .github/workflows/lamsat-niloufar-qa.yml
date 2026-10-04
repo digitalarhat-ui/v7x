@@ -1,0 +1,68 @@
+name: Lamsat Niloufar Kitchen Visual QA
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'lamsat-niloufar-kitchen-studio-v20/**'
+      - 'qa/lamsat-niloufar-visual-qa.mjs'
+      - '.github/workflows/lamsat-niloufar-qa.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  visual-qa:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Playwright Chromium
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Serve V7X locally
+        run: |
+          python3 -m http.server 4173 > /tmp/lamsat-niloufar-server.log 2>&1 &
+          sleep 2
+
+      - name: Run 390 430 1440 visual and interaction QA
+        run: node qa/lamsat-niloufar-visual-qa.mjs
+
+      - name: Preserve screenshot evidence as repository text
+        if: success()
+        run: |
+          mkdir -p qa-evidence/lamsat-niloufar
+          for f in qa-artifacts/lamsat-niloufar/*.png; do
+            base64 -w0 "$f" > "qa-evidence/lamsat-niloufar/$(basename "$f").b64"
+          done
+          cp qa-artifacts/lamsat-niloufar/diagnostics.json qa-evidence/lamsat-niloufar/diagnostics.json
+
+      - name: Upload visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lamsat-niloufar-visual-qa-${{ github.run_id }}
+          path: qa-artifacts/lamsat-niloufar/
+          retention-days: 7
+
+      - name: Commit passing QA evidence
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add qa-evidence/lamsat-niloufar
+          if ! git diff --cached --quiet; then
+            git commit -m "Record Lamsat Niloufar visual QA evidence"
+            git push
+          fi
