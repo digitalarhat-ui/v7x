@@ -1,4 +1,4 @@
-name: Higher Class Realism QA
+name: Higher Class V3 Reconstruction QA
 
 on:
   workflow_dispatch:
@@ -6,20 +6,36 @@ on:
       label:
         description: "Artifact label"
         required: false
-        default: "before"
+        default: "v3-after"
   push:
     branches:
-      - higher-class-photorealism-rescue-v2
-  pull_request:
-    branches:
-      - higher-class-v1-4
+      - higher-class-photorealism-rescue-v3
+
+permissions:
+  contents: write
 
 jobs:
-  visual-qa:
+  reconstruct-and-qa:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install authored-asset pipeline
+        run: |
+          python -m pip install --upgrade pip
+          pip install cadquery==2.8.0 trimesh==4.11.1 scipy pillow
+      - name: Build Higher Class authored GLB + PBR assets
+        run: python tools/build_hc_v3_asset.py
+      - name: Assert primitive hero core is removed
+        run: |
+          ! grep -q 'RoundedBoxGeometry' index.html
+          ! grep -q 'new THREE.BoxGeometry' index.html
+          grep -q 'GLTFLoader' index.html
+          grep -q 'higher-class-fixed-kitchen-v3.glb' index.html
+          test -s assets/higher-class-fixed-kitchen-v3.glb
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -30,20 +46,30 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Serve app
         run: |
-          python3 -m http.server 4173 > /tmp/hc-server.log 2>&1 &
+          python3 -m http.server 4173 > /tmp/hc-v3-server.log 2>&1 &
           sleep 2
-      - name: Run visual QA
-        run: node qa/visual-qa.mjs ${{ github.event.inputs.label || 'before' }}
-      - name: Run regression QA
+      - name: Run V3 visual QA
+        run: node qa/visual-qa.mjs ${{ github.event.inputs.label || 'v3-after' }}
+      - name: Run V3 regression QA
         run: node qa/regression-qa.mjs
       - name: Package final source
         if: always()
         run: |
-          zip -r qa-artifacts/HIGHER-CLASS-PHOTOREALISM-RESCUE-V2-FINAL.zip index.html assets vercel.json qa .github/workflows/hc-realism-qa.yml
-      - name: Upload visual evidence
+          zip -r qa-artifacts/HIGHER-CLASS-PHOTOREALISM-RESCUE-V3-FINAL.zip index.html assets vercel.json qa tools .github/workflows/hc-realism-qa.yml
+      - name: Upload V3 visual evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: hc-realism-${{ github.run_id }}
+          name: hc-v3-${{ github.run_id }}
           path: qa-artifacts/
           retention-days: 7
+      - name: Commit generated authored assets
+        if: success() && github.actor != 'github-actions[bot]'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets
+          if ! git diff --cached --quiet; then
+            git commit -m "Build Higher Class V3 authored GLB assets"
+            git push
+          fi
