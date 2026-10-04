@@ -37,6 +37,7 @@ for(const vp of viewports){
   await page.addStyleTag({content:'*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}'});
 
   const metrics=await page.evaluate(()=>{
+    if(window.demo3d?.renderNow)window.demo3d.renderNow();
     const stage=document.querySelector('#stage');
     const canvas=document.querySelector('#scene');
     const sr=stage?.getBoundingClientRect();
