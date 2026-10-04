@@ -170,6 +170,32 @@
           "value": "private, no-store, max-age=0"
         }
       ]
+    },
+    {
+      "source": "/modern-sector-decision-twin-v31",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/modern-sector-decision-twin-v31/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
     }
   ],
   "alias": [
@@ -204,7 +230,8 @@
     "lamsat-niloufar-kitchens.vercel.app",
     "bayt-alabdae-kitchens.vercel.app",
     "ebdaa-almona-kitchens.vercel.app",
-    "fleet-parts-memory.vercel.app"
+    "fleet-parts-memory.vercel.app",
+    "modern-sector-decision-twin.vercel.app"
   ],
   "redirects": [
     {
@@ -556,6 +583,18 @@
         {
           "type": "host",
           "value": "fleet-parts-memory.vercel.app"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/modern-sector-decision-twin-v31",
+      "has": [
+        {
+          "type": "host",
+          "value": "modern-sector-decision-twin.vercel.app"
         }
       ]
     }
