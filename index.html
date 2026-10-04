@@ -1281,8 +1281,8 @@
       const p=new URLSearchParams(location.search);
       const s={
         m:materialStates[p.get("m")]?p.get("m"):"metal",
-        b:colorStates[p.get("b")]?p.get("b"):"ivory",
-        a:colorStates[p.get("a")]?p.get("a"):"oak",
+        b:colorStates[p.get("b")]?p.get("b"):"clientSage",
+        a:colorStates[p.get("a")]?p.get("a"):"clientWood",
         f:["matte","gloss"].includes(p.get("f"))?p.get("f"):"matte",
         t:topStates[p.get("t")]?p.get("t"):"natural",
         l:lightingStates[p.get("l")]?p.get("l"):"day"
