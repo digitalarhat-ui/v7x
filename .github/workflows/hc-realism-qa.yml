@@ -34,6 +34,8 @@ jobs:
           sleep 2
       - name: Run visual QA
         run: node qa/visual-qa.mjs ${{ github.event.inputs.label || 'before' }}
+      - name: Run regression QA
+        run: node qa/regression-qa.mjs
       - name: Upload visual evidence
         if: always()
         uses: actions/upload-artifact@v4
