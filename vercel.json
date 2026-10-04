@@ -40,6 +40,32 @@
           "value": "private, no-store, max-age=0"
         }
       ]
+    },
+    {
+      "source": "/dar-aljawdah-kitchen-studio-v20",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/dar-aljawdah-kitchen-studio-v20/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
     }
   ],
   "alias": [
@@ -69,7 +95,8 @@
     "kitchens66-jubail.vercel.app",
     "dyar-kitchen-studio.vercel.app",
     "rawae-dream-kitchens.vercel.app",
-    "dynamic-parts-sales-copilot.vercel.app"
+    "dynamic-parts-sales-copilot.vercel.app",
+    "dar-aljawdah-kitchens.vercel.app"
   ],
   "redirects": [
     {
@@ -366,6 +393,17 @@
         {
           "type": "host",
           "value": "dynamic-parts-sales-copilot.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/dar-aljawdah-kitchen-studio-v20",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "dar-aljawdah-kitchens.vercel.app"
         }
       ]
     }
