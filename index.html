@@ -977,20 +977,23 @@
     cylinder(.036,.028,2.32,1.205,-1.245,handleMat,"z",24);
     cylinder(.036,.028,2.60,1.205,-1.245,handleMat,"z",24);
 
-    // Believable sink: metallic rim + inset basin rather than a single black slab.
-    box(.76,.018,.52,-1.30,1.084,-1.59,steelMat,.004);
-    box(.62,.028,.38,-1.30,1.078,-1.585,new THREE.MeshStandardMaterial({color:0x777d79,metalness:.90,roughness:.36,envMapIntensity:1.18}),.006);
-    box(.52,.018,.29,-1.30,1.070,-1.575,new THREE.MeshStandardMaterial({color:0x2d3230,metalness:.48,roughness:.44}),.004);
+    // Undermount sink illusion: visible steel lip, recessed bowl, no flat black slab.
+    const sinkBowlMat=new THREE.MeshStandardMaterial({color:0x5f6764,metalness:.88,roughness:.34,envMapIntensity:1.18});
+    box(.62,.018,.38,-1.30,1.024,-1.59,sinkBowlMat,.012);
+    box(.70,.018,.025,-1.30,1.052,-1.405,steelMat,.003);
+    box(.70,.018,.025,-1.30,1.052,-1.775,steelMat,.003);
+    box(.025,.018,.37,-1.637,1.052,-1.59,steelMat,.003);
+    box(.025,.018,.37,-.963,1.052,-1.59,steelMat,.003);
 
     // Faucet with cylindrical stem and curved spout.
-    cylinder(.024,.43,-1.30,1.32,-1.91,steelMat,"y",24);
+    cylinder(.028,.43,-1.30,1.32,-1.91,steelMat,"y",28);
     const faucetCurve=new THREE.CatmullRomCurve3([
       new THREE.Vector3(-1.30,1.52,-1.91),
       new THREE.Vector3(-1.30,1.67,-1.91),
       new THREE.Vector3(-1.30,1.70,-1.76),
       new THREE.Vector3(-1.30,1.57,-1.68)
     ]);
-    const faucet=new THREE.Mesh(new THREE.TubeGeometry(faucetCurve,28,.018,12,false),steelMat);
+    const faucet=new THREE.Mesh(new THREE.TubeGeometry(faucetCurve,36,.022,14,false),steelMat);
     faucet.castShadow=true;scene.add(faucet);
 
     // Cooktop / dark appliance glass.
