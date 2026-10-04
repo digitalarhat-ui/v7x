@@ -694,8 +694,8 @@
 
     const stage = document.getElementById("stage");
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x20211f);
-    scene.fog = new THREE.Fog(0x20211f, 18, 34);
+    scene.background = new THREE.Color(0xc8c2b8);
+    scene.fog = new THREE.Fog(0xc8c2b8, 24, 48);
 
     const camera = new THREE.PerspectiveCamera(34, 1, .1, 100);
     camera.position.set(5.0, 3.15, 6.7);
@@ -707,7 +707,7 @@
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.0;
+    renderer.toneMappingExposure = .92;
     stage.appendChild(renderer.domElement);
 
     const pmrem = new THREE.PMREMGenerator(renderer);
@@ -715,7 +715,7 @@
     const roomEnvironment = new RoomEnvironment();
     const envRT = pmrem.fromScene(roomEnvironment, .04);
     scene.environment = envRT.texture;
-    scene.environmentIntensity = .62;
+    scene.environmentIntensity = .88;
     roomEnvironment.dispose();
     pmrem.dispose();
 
@@ -729,40 +729,40 @@
     controls.maxPolarAngle = 1.30;
     controls.minAzimuthAngle = -.14;
     controls.maxAzimuthAngle = 1.30;
-    controls.target.set(.08,1.34,-1.50);
+    controls.target.set(.10,1.34,-1.56);
 
     RectAreaLightUniformsLib.init();
-    const hemi = new THREE.HemisphereLight(0xfffbf3,0x4a4f4c,.54);
+    const hemi = new THREE.HemisphereLight(0xffffff,0x6c6862,.78);
     scene.add(hemi);
-    const key = new THREE.DirectionalLight(0xfff7e9,2.38);
-    key.position.set(4.8,7.5,4.4); key.castShadow = true;
+    const key = new THREE.DirectionalLight(0xfff8ec,2.05);
+    key.position.set(4.2,7.8,5.2); key.castShadow = true;
     key.shadow.mapSize.set(mobileQuality?1024:1536,mobileQuality?1024:1536);
     key.shadow.camera.left=-5.8; key.shadow.camera.right=5.8;
     key.shadow.camera.top=5.6; key.shadow.camera.bottom=-2.8;
     key.shadow.camera.near=.5; key.shadow.camera.far=18;
-    key.shadow.bias=-.00018;
-    key.shadow.normalBias=.018;
+    key.shadow.bias=-.00012;
+    key.shadow.normalBias=.010;
     scene.add(key);
 
-    const windowFill = new THREE.RectAreaLight(0xfff9ef,1.10,5.6,4.0);
-    windowFill.position.set(-3.6,4.8,3.6);
+    const windowFill = new THREE.RectAreaLight(0xfff9ef,2.05,5.8,4.2);
+    windowFill.position.set(-3.7,4.6,3.8);
     windowFill.lookAt(-.3,1.45,-1.55);
     scene.add(windowFill);
 
-    const roomFill = new THREE.DirectionalLight(0xf4f5f1,.22);
+    const roomFill = new THREE.DirectionalLight(0xf7f7f2,.46);
     roomFill.position.set(-3.2,3.8,2.5);
     scene.add(roomFill);
 
     const floor = new THREE.Mesh(
       new THREE.PlaneGeometry(22,22),
-      new THREE.MeshStandardMaterial({color:0x2f312f,roughness:.90,metalness:0})
+      new THREE.MeshStandardMaterial({color:0x8b847a,roughness:.94,metalness:0})
     );
     floor.rotation.x=-Math.PI/2; floor.receiveShadow=true; scene.add(floor);
 
-    const wallMat=new THREE.MeshStandardMaterial({color:0x41423e,roughness:.86,metalness:0});
+    const wallMat=new THREE.MeshStandardMaterial({color:0xd8d4cb,roughness:.78,metalness:0});
     const backWall=boxRaw(8.7,3.65,.18,0,1.825,-2.24,wallMat);
-    const sideWall=boxRaw(.14,3.65,5.4,-4.28,1.825,.35,new THREE.MeshStandardMaterial({color:0x373936,roughness:.90}));
-    boxRaw(8.7,.16,1.02,0,3.48,-1.78,new THREE.MeshStandardMaterial({color:0x343532,roughness:.88}));
+    const sideWall=boxRaw(.14,3.65,5.4,-4.28,1.825,.35,new THREE.MeshStandardMaterial({color:0xc8c4bc,roughness:.84,metalness:0}));
+    boxRaw(8.7,.16,1.02,0,3.48,-1.78,new THREE.MeshStandardMaterial({color:0xe2ded6,roughness:.86,metalness:0}));
 
     const cabinetMeshes=[];
     const baseCabinetMeshes=[];
@@ -770,16 +770,16 @@
     const tallCabinetMeshes=[];
     const topMeshes=[];
 
-    const handleMat=new THREE.MeshStandardMaterial({color:0x8d918e,metalness:.94,roughness:.30,envMapIntensity:1.42});
-    const steelMat=new THREE.MeshStandardMaterial({color:0xaeb3b0,metalness:.95,roughness:.31,envMapIntensity:1.40});
+    const handleMat=new THREE.MeshStandardMaterial({color:0x949b99,metalness:.94,roughness:.28,envMapIntensity:1.55});
+    const steelMat=new THREE.MeshStandardMaterial({color:0xb8bfbc,metalness:.96,roughness:.27,envMapIntensity:1.58});
     const darkGlassMat=new THREE.MeshPhysicalMaterial({color:0x101313,metalness:.08,roughness:.16,clearcoat:.35,clearcoatRoughness:.12,envMapIntensity:1.1});
     const glassMat=new THREE.MeshPhysicalMaterial({
       color:0xf4fbf8,metalness:0,roughness:.035,transmission:.98,opacity:1,
       thickness:.014,ior:1.48,clearcoat:.06,clearcoatRoughness:.18,
       envMapIntensity:1.62,attenuationColor:new THREE.Color(0xe3eee9),attenuationDistance:3.2,side:THREE.DoubleSide
     });
-    const backsplashMat=new THREE.MeshStandardMaterial({color:0x5a5b56,roughness:.67,metalness:0});
-    const warmLightMat=new THREE.MeshStandardMaterial({color:0xffe7bd,emissive:0xffd69a,emissiveIntensity:.72,roughness:.60});
+    const backsplashMat=new THREE.MeshPhysicalMaterial({color:0xbcb7ae,roughness:.48,metalness:0,clearcoat:.025,clearcoatRoughness:.78,envMapIntensity:.72});
+    const warmLightMat=new THREE.MeshStandardMaterial({color:0xffe8c8,emissive:0xffd8a6,emissiveIntensity:.48,roughness:.64});
 
     function boxRaw(w,h,d,x,y,z,mat){
       const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
@@ -814,7 +814,7 @@
     function canvasTexture(kind){
       const c=document.createElement("canvas"); c.width=c.height=512;
       const x=c.getContext("2d");
-      x.fillStyle="#d8d4cc"; x.fillRect(0,0,512,512);
+      x.fillStyle="#d7d2ca"; x.fillRect(0,0,512,512);
       if(kind==="wood"){
         x.fillStyle="#ded2c0";x.fillRect(0,0,512,512);
         for(let i=0;i<54;i++){
@@ -836,10 +836,10 @@
         }
       }else if(kind==="stone"){
         x.fillStyle="#ddd9d2";x.fillRect(0,0,512,512);
-        for(let i=0;i<7;i++){
+        for(let i=0;i<4;i++){
           const offset=30+i*76;
-          x.strokeStyle=i%2?"rgba(71,72,70,.10)":"rgba(128,122,114,.13)";
-          x.lineWidth=i%3===0?2.2:1.1;
+          x.strokeStyle=i%2?"rgba(71,72,70,.055)":"rgba(128,122,114,.075)";
+          x.lineWidth=i%3===0?1.35:.75;
           x.beginPath();
           for(let px=-60;px<580;px+=12){
             const py=offset+px*.17+Math.sin((px+i*33)/31)*9+Math.sin((px+i*17)/79)*5;
@@ -847,13 +847,13 @@
           }
           x.stroke();
           if(i%2===0){
-            x.strokeStyle="rgba(255,255,255,.15)";x.lineWidth=.7;x.stroke();
+            x.strokeStyle="rgba(255,255,255,.09)";x.lineWidth=.55;x.stroke();
           }
         }
       }
       const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping;
       t.colorSpace=THREE.SRGBColorSpace;
-      if(kind==="stone")t.repeat.set(1.1,1.1); else t.repeat.set(1.25,1.0);
+      if(kind==="stone")t.repeat.set(.72,.72); else t.repeat.set(1.25,1.0);
       t.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());
       return t;
     }
@@ -862,7 +862,7 @@
     const clientWoodTexture=textureLoader.load("assets/client-light-wood.webp");
     clientWoodTexture.colorSpace=THREE.SRGBColorSpace;
     clientWoodTexture.wrapS=clientWoodTexture.wrapT=THREE.RepeatWrapping;
-    clientWoodTexture.repeat.set(.52,.78);
+    clientWoodTexture.repeat.set(.38,.62);
     clientWoodTexture.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());
 
     const sageMicroTexture=textureLoader.load("assets/client-sage-micro.webp");
@@ -876,12 +876,12 @@
     const cladTexture=canvasTexture("clad");
     const stoneTexture=canvasTexture("stone");
 
-    const baseCabinetMat=new THREE.MeshPhysicalMaterial({color:0x8b9b8a,metalness:0,roughness:.53,clearcoat:.025,clearcoatRoughness:.78,envMapIntensity:.92});
-    const upperCabinetMat=new THREE.MeshPhysicalMaterial({color:0xffffff,map:clientWoodTexture,metalness:0,roughness:.47,clearcoat:.02,clearcoatRoughness:.80,envMapIntensity:.96});
+    const baseCabinetMat=new THREE.MeshPhysicalMaterial({color:0x8b9b8a,metalness:0,roughness:.57,clearcoat:.018,clearcoatRoughness:.82,envMapIntensity:1.02});
+    const upperCabinetMat=new THREE.MeshPhysicalMaterial({color:0xffffff,map:clientWoodTexture,metalness:0,roughness:.52,clearcoat:.015,clearcoatRoughness:.84,envMapIntensity:1.02});
     const tallCabinetMat=baseCabinetMat.clone();
-    const topMat=new THREE.MeshPhysicalMaterial({color:0xc8c5be,map:stoneTexture,metalness:0,roughness:.52,clearcoat:.035,clearcoatRoughness:.74,envMapIntensity:.86});
-    const revealMat=new THREE.MeshStandardMaterial({color:0x242624,metalness:0,roughness:.82,envMapIntensity:.45});
-    const displayBackMat=new THREE.MeshStandardMaterial({color:0x252a27,metalness:0,roughness:.74,envMapIntensity:.50});
+    const topMat=new THREE.MeshPhysicalMaterial({color:0xd7d2c9,map:stoneTexture,metalness:0,roughness:.56,clearcoat:.025,clearcoatRoughness:.80,envMapIntensity:.86});
+    const revealMat=new THREE.MeshStandardMaterial({color:0x454640,metalness:0,roughness:.90,envMapIntensity:.32});
+    const displayBackMat=new THREE.MeshStandardMaterial({color:0x5c615c,metalness:0,roughness:.78,envMapIntensity:.44});
 
     function registerCabinet(mesh,zone){
       mesh.userData.zone=zone;
@@ -935,8 +935,8 @@
     box(4.00,.17,.39,-.05,.085,-1.84,new THREE.MeshStandardMaterial({color:0x141514,roughness:.78}),.004);
     [-1.62,-.82,-.02,.78,1.58].forEach((x,i)=>addBaseUnit(x,.74,i===1||i===3));
 
-    const counterBack=box(4.18,.055,.72,-.05,1.047,-1.67,topMat,.006);topMeshes.push(counterBack);
-    box(4.08,.018,.69,-.05,1.012,-1.67,new THREE.MeshStandardMaterial({color:0x3a3b38,roughness:.66,metalness:0}),.002);
+    const counterBack=box(4.22,.052,.82,-.05,1.048,-1.69,topMat,.006);topMeshes.push(counterBack);
+    box(4.12,.014,.76,-.05,1.012,-1.69,new THREE.MeshStandardMaterial({color:0x65645f,roughness:.72,metalness:0}),.002);
     box(4.12,1.02,.045,-.05,1.57,-2.105,backsplashMat,.008);
 
     [-1.62,-.82,-.02,.78,1.58].forEach((x,i)=>addUpperUnit(x,.74,i===0||i===4));
@@ -967,13 +967,23 @@
     box(.64,.014,.48,.82,1.082,-1.61,darkGlassMat,.004);
 
     const strip=box(3.88,.010,.022,-.05,1.72,-1.495,warmLightMat,.002);
-    const stripArea=new THREE.RectAreaLight(0xffe8c6,.85,3.55,.32);
+    const stripArea=new THREE.RectAreaLight(0xffe8c6,1.05,3.55,.28);
     stripArea.position.set(-.05,1.69,-1.42);stripArea.lookAt(-.05,1.05,-1.40);scene.add(stripArea);
 
-    box(.96,.045,.27,-2.18,2.48,-1.83,new THREE.MeshStandardMaterial({color:0x62503f,roughness:.58}),.010);
-    [2.64,2.93].forEach(y=>box(.24,.24,.22,-2.28,y,-1.72,new THREE.MeshStandardMaterial({color:0x8d755f,roughness:.67}),.016));
+    box(.96,.035,.27,-2.18,2.48,-1.83,new THREE.MeshStandardMaterial({color:0x7b684f,roughness:.64}),.006);
+    [2.64,2.93].forEach(y=>box(.22,.22,.20,-2.28,y,-1.72,new THREE.MeshStandardMaterial({color:0xa38a6e,roughness:.70}),.008));
 
-    const rug=new THREE.Mesh(new THREE.PlaneGeometry(4.2,1.72),new THREE.MeshStandardMaterial({color:0x4c4741,roughness:.98}));
+    // Subtle architectural contact shadow bands: depth cues only, not decorative geometry.
+    box(4.02,.020,.028,-.05,.185,-1.438,new THREE.MeshBasicMaterial({color:0x343630,transparent:true,opacity:.34}),.002).castShadow=false;
+    box(4.04,.018,.025,-.05,1.675,-1.520,new THREE.MeshBasicMaterial({color:0x454641,transparent:true,opacity:.22}),.002).castShadow=false;
+
+    // Warm interior display lighting for the two glass cabinets.
+    [-1.62,1.58].forEach(x=>{
+      const glow=new THREE.RectAreaLight(0xfff1d7,.62,.46,.42);
+      glow.position.set(x,2.37,-1.53); glow.lookAt(x,2.14,-1.70); scene.add(glow);
+    });
+
+    const rug=new THREE.Mesh(new THREE.PlaneGeometry(4.2,1.72),new THREE.MeshStandardMaterial({color:0x9a8c7c,roughness:.98}));
     rug.rotation.x=-Math.PI/2; rug.position.set(.08,.013,.25); rug.receiveShadow=true;scene.add(rug);
 
     const materialStates = {
@@ -1014,18 +1024,18 @@
         mat.map=clientWoodTexture;
         mat.bumpMap=woodMicroTexture;
         mat.bumpScale=.0024;
-        mat.roughness=materialRoughness(.47);
+        mat.roughness=materialRoughness(.52);
       }else if(state.reference==="sage"){
         mat.map=null;
         mat.bumpMap=sageMicroTexture;
-        mat.bumpScale=.0035;
-        mat.roughness=materialRoughness(.53);
+        mat.bumpScale=.0022;
+        mat.roughness=materialRoughness(.57);
       }else{
         const src=materialStates[currentMaterial];
         mat.map=src.texture==="wood"?woodTexture:(src.texture==="grain"?cladTexture:null);
         mat.roughness=materialRoughness(src.roughness);
       }
-      mat.envMapIntensity=.90;
+      mat.envMapIntensity=1.0;
       mat.needsUpdate=true;
     }
 
@@ -1045,9 +1055,9 @@
     }
 
     const lightingStates={
-      day:{label:"نهار معماري",bg:0x20211f,hemi:0xfffbf3,ground:0x4a4f4c,hemiI:.54,key:0xfff7e9,keyI:2.38,fill:0xf4f5f1,fillI:.22,area:1.10,strip:.82,exposure:.88},
-      evening:{label:"مساء دافئ",bg:0x1d1b18,hemi:0xffe6c7,ground:0x443b36,hemiI:.66,key:0xffd5a8,keyI:1.85,fill:0xffd9b0,fillI:.28,area:1.05,strip:1.40,exposure:.86},
-      neutral:{label:"عرض محايد",bg:0x222321,hemi:0xffffff,ground:0x505451,hemiI:.52,key:0xffffff,keyI:2.18,fill:0xffffff,fillI:.20,area:1.02,strip:.68,exposure:.86}
+      day:{label:"نهار معماري",bg:0xc8c2b8,hemi:0xffffff,ground:0x6c6862,hemiI:.78,key:0xfff8ec,keyI:2.05,fill:0xf7f7f2,fillI:.46,area:2.05,strip:.48,exposure:.92},
+      evening:{label:"مساء دافئ",bg:0x6d6358,hemi:0xffead2,ground:0x5f554d,hemiI:.60,key:0xffd7ad,keyI:1.55,fill:0xffe2c1,fillI:.34,area:1.35,strip:1.05,exposure:.86},
+      neutral:{label:"عرض محايد",bg:0xb9b8b3,hemi:0xffffff,ground:0x70716d,hemiI:.72,key:0xffffff,keyI:1.80,fill:0xffffff,fillI:.42,area:1.75,strip:.40,exposure:.90}
     };
     function applyLighting(value){
       currentLighting=value;const s=lightingStates[value];
@@ -1126,16 +1136,16 @@
     applyLighting("day");
 
     function defaultCameraForWidth(width){
-      if(width<560)return {fov:36,pos:[4.45,2.92,6.72]};
-      if(width<900)return {fov:33,pos:[4.55,2.92,6.18]};
-      return {fov:30,pos:[4.42,2.82,5.72]};
+      if(width<560)return {fov:38,pos:[4.65,2.48,7.15]};
+      if(width<900)return {fov:35,pos:[4.55,2.48,6.65]};
+      return {fov:33,pos:[4.32,2.46,6.05]};
     }
     function resetCameraView(){
       const rect=stage.getBoundingClientRect();
       const preset=defaultCameraForWidth(rect.width);
       camera.fov=preset.fov;
       camera.position.set(...preset.pos);
-      controls.target.set(.08,1.34,-1.50);
+      controls.target.set(.10,1.34,-1.56);
       scene.rotation.y=0;
       camera.updateProjectionMatrix();
       controls.update();
@@ -1157,7 +1167,7 @@
     let t=0;
     function animate(){
       requestAnimationFrame(animate); t+=.003;
-      if(!matchMedia("(prefers-reduced-motion: reduce)").matches && !isInteracting){ scene.rotation.y=Math.sin(t)*.025; }
+      if(!matchMedia("(prefers-reduced-motion: reduce)").matches && !isInteracting){ scene.rotation.y=Math.sin(t)*.012; }
       controls.update(); renderer.render(scene,camera);
     }
     animate();
@@ -1242,7 +1252,7 @@
       const oldSceneY=scene.rotation.y;
       scene.rotation.y=0;
       camera.position.set(6.15,3.55,7.45);
-      controls.target.set(.08,1.34,-1.50);
+      controls.target.set(.10,1.34,-1.56);
       controls.update();
       renderer.render(scene,camera);
       const shot=renderer.domElement.toDataURL("image/jpeg",.84);
