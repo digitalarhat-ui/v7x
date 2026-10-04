@@ -906,54 +906,54 @@
     }
 
     function addFrontPanel(x,y,z,w,h,mat,zone,handleSide="right"){
-      const reveal=box(w+.026,h+.026,.010,x,y,z-.018,revealMat,.002); reveal.castShadow=false;
-      const door=box(w,h,.022,x,y,z,mat,.004); registerCabinet(door,zone);
-      const hx=handleSide==="right"?x+w/2-.105:x-w/2+.105;
-      addHandle(hx,y,z+.026,Math.min(.43,h*.50),true);
+      const reveal=box(w+.012,h+.012,.008,x,y,z-.012,revealMat,.0015); reveal.castShadow=false;
+      const door=box(w,h,.020,x,y,z,mat,.003); registerCabinet(door,zone);
+      const hx=handleSide==="right"?x+w/2-.075:x-w/2+.075;
+      addHandle(hx,y,z+.024,Math.min(.38,h*.46),true);
       return door;
     }
 
     function addBaseUnit(x,w=.82,drawers=false){
       const carcass=box(w,1.02,.67,x,.51,-1.68,baseCabinetMat,.007); registerCabinet(carcass,"base");
       if(drawers){
-        const reveal=box(w-.055,.91,.010,x,.51,-1.349,revealMat,.002); reveal.castShadow=false;
+        const reveal=box(w-.022,.925,.008,x,.51,-1.347,revealMat,.0015); reveal.castShadow=false;
         [0.19,.51,.83].forEach(y=>{
-          const panel=box(w-.105,.238,.022,x,y,-1.330,baseCabinetMat,.004);registerCabinet(panel,"base");
-          addHandle(x,y+.050,-1.299,.29,false);
+          const panel=box(w-.035,.258,.020,x,y,-1.330,baseCabinetMat,.003);registerCabinet(panel,"base");
+          addHandle(x,y+.050,-1.300,.27,false);
         });
       }else{
-        addFrontPanel(x,.51,-1.330,w-.105,.89,baseCabinetMat,"base");
+        addFrontPanel(x,.51,-1.330,w-.035,.925,baseCabinetMat,"base");
       }
     }
 
     function addUpperUnit(x,w=.82,glass=false){
       const carcass=box(w,.86,.47,x,2.18,-1.76,upperCabinetMat,.006); registerCabinet(carcass,"upper");
       if(glass){
-        const fw=.046, fh=.048, frontZ=-1.512;
-        const topFrame=box(w-.08,fh,.05,x,2.18+.355,frontZ,upperCabinetMat,.008);registerCabinet(topFrame,"upper");
-        const bottomFrame=box(w-.08,fh,.05,x,2.18-.355,frontZ,upperCabinetMat,.008);registerCabinet(bottomFrame,"upper");
-        const leftFrame=box(fw,.655,.05,x-w/2+.06,2.18,frontZ,upperCabinetMat,.008);registerCabinet(leftFrame,"upper");
-        const rightFrame=box(fw,.655,.05,x+w/2-.06,2.18,frontZ,upperCabinetMat,.008);registerCabinet(rightFrame,"upper");
-        box(w-.19,.63,.018,x,2.18,-1.705,displayBackMat,.004).castShadow=false;
-        box(w-.20,.014,.34,x,2.03,-1.63,upperCabinetMat,.003);
-        box(w-.20,.014,.34,x,2.33,-1.63,upperCabinetMat,.003);
-        const glass=box(w-.18,.64,.010,x,2.18,-1.498,glassMat,.002);
+        const fw=.034, fh=.036, frontZ=-1.512;
+        const topFrame=box(w-.025,fh,.036,x,2.18+.382,frontZ,upperCabinetMat,.003);registerCabinet(topFrame,"upper");
+        const bottomFrame=box(w-.025,fh,.036,x,2.18-.382,frontZ,upperCabinetMat,.003);registerCabinet(bottomFrame,"upper");
+        const leftFrame=box(fw,.765,.036,x-w/2+.035,2.18,frontZ,upperCabinetMat,.003);registerCabinet(leftFrame,"upper");
+        const rightFrame=box(fw,.765,.036,x+w/2-.035,2.18,frontZ,upperCabinetMat,.003);registerCabinet(rightFrame,"upper");
+        box(w-.10,.735,.014,x,2.18,-1.705,displayBackMat,.002).castShadow=false;
+        box(w-.10,.012,.34,x,2.03,-1.63,upperCabinetMat,.002);
+        box(w-.10,.012,.34,x,2.33,-1.63,upperCabinetMat,.002);
+        const glass=box(w-.085,.725,.008,x,2.18,-1.498,glassMat,.0015);
         glass.castShadow=false;
-        addHandle(x+w/2-.16,2.18,-1.475,.18,true);
+        addHandle(x+w/2-.085,2.18,-1.475,.16,true);
       }else{
-        addFrontPanel(x,2.18,-1.512,w-.105,.765,upperCabinetMat,"upper");
+        addFrontPanel(x,2.18,-1.512,w-.035,.815,upperCabinetMat,"upper");
       }
     }
 
     // Fixed Single-Wall composition. Layout/zoning intentionally unchanged; only execution realism is refined.
     box(4.00,.17,.39,-.05,.085,-1.84,new THREE.MeshStandardMaterial({color:0x141514,roughness:.78}),.004);
-    [-1.62,-.82,-.02,.78,1.58].forEach((x,i)=>addBaseUnit(x,.74,i===1||i===3));
+    [-1.62,-.82,-.02,.78,1.58].forEach((x,i)=>addBaseUnit(x,.785,i===1||i===3));
 
     const counterBack=box(4.22,.052,.82,-.05,1.048,-1.69,topMat,.006);topMeshes.push(counterBack);
     box(4.12,.014,.76,-.05,1.012,-1.69,new THREE.MeshStandardMaterial({color:0x65645f,roughness:.72,metalness:0}),.002);
     box(4.12,1.02,.045,-.05,1.57,-2.105,backsplashMat,.008);
 
-    [-1.62,-.82,-.02,.78,1.58].forEach((x,i)=>addUpperUnit(x,.74,i===0||i===4));
+    [-1.62,-.82,-.02,.78,1.58].forEach((x,i)=>addUpperUnit(x,.785,i===0||i===4));
 
     // Architectural joinery details: keep the same cabinet zoning, add believable finishing panels and rails.
     box(4.10,.045,.49,-.05,2.64,-1.76,upperCabinetMat,.003);
@@ -1013,7 +1013,7 @@
       glow.position.set(x,2.37,-1.53); glow.lookAt(x,2.14,-1.70); scene.add(glow);
     });
 
-    const rug=new THREE.Mesh(new THREE.PlaneGeometry(4.2,1.72),new THREE.MeshStandardMaterial({color:0x9a8c7c,roughness:.98}));
+    const rug=new THREE.Mesh(new THREE.PlaneGeometry(3.65,1.25),new THREE.MeshStandardMaterial({color:0xb1a18e,roughness:.98}));
     rug.rotation.x=-Math.PI/2; rug.position.set(.08,.013,.25); rug.receiveShadow=true;scene.add(rug);
 
     const materialStates = {
@@ -1056,9 +1056,9 @@
         mat.bumpScale=.0024;
         mat.roughness=materialRoughness(.52);
       }else if(state.reference==="sage"){
-        mat.map=clientSageTexture;
+        mat.map=null;
         mat.bumpMap=sageMicroTexture;
-        mat.bumpScale=.0014;
+        mat.bumpScale=.0007;
         mat.roughness=materialRoughness(.60);
       }else{
         const src=materialStates[currentMaterial];
