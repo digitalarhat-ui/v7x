@@ -1,6 +1,6 @@
 {
   "target": "http://127.0.0.1:4173/lamsat-niloufar-kitchen-studio-v20/",
-  "startedAt": "2026-10-04T14:09:34.420Z",
+  "startedAt": "2026-10-04T16:46:28.621Z",
   "viewports": {
     "390": {
       "innerWidth": 390,
@@ -55,7 +55,7 @@
         "size": "4.5 × 3 م",
         "note": "أفضل تخزيناً أكثر."
       },
-      "firstUseful3DRenderMs": 1579,
+      "firstUseful3DRenderMs": 1557,
       "consoleErrors": [],
       "pageErrors": [],
       "failedRequests": []
@@ -113,7 +113,7 @@
         "size": "4.5 × 3 م",
         "note": "أفضل تخزيناً أكثر."
       },
-      "firstUseful3DRenderMs": 1499,
+      "firstUseful3DRenderMs": 1512,
       "consoleErrors": [],
       "pageErrors": [],
       "failedRequests": []
@@ -171,11 +171,11 @@
         "size": "4.5 × 3 م",
         "note": "أفضل تخزيناً أكثر."
       },
-      "firstUseful3DRenderMs": 1531,
+      "firstUseful3DRenderMs": 1548,
       "consoleErrors": [],
       "pageErrors": [],
       "failedRequests": []
     }
   },
-  "finishedAt": "2026-10-04T14:11:36.081Z"
+  "finishedAt": "2026-10-04T16:48:27.819Z"
 }
