@@ -66,6 +66,32 @@
           "value": "public, max-age=0, must-revalidate"
         }
       ]
+    },
+    {
+      "source": "/lamsat-niloufar-kitchen-studio-v20",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "private, no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/lamsat-niloufar-kitchen-studio-v20/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "private, no-store, max-age=0"
+        }
+      ]
     }
   ],
   "alias": [
@@ -96,7 +122,8 @@
     "dyar-kitchen-studio.vercel.app",
     "rawae-dream-kitchens.vercel.app",
     "dynamic-parts-sales-copilot.vercel.app",
-    "dar-aljawdah-kitchens.vercel.app"
+    "dar-aljawdah-kitchens.vercel.app",
+    "lamsat-niloufar-kitchens.vercel.app"
   ],
   "redirects": [
     {
@@ -404,6 +431,17 @@
         {
           "type": "host",
           "value": "dar-aljawdah-kitchens.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/lamsat-niloufar-kitchen-studio-v20",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "lamsat-niloufar-kitchens.vercel.app"
         }
       ]
     }
