@@ -420,8 +420,8 @@
             <div class="client-material-truth" aria-label="الخامات المرسلة من العميل">
               <div class="client-material-title">الخامات المرسلة منكم</div>
               <div class="client-material-pair">
-                <figure><img src="assets/client-sage-reference.webp" alt="مرجع الساج المرسل من العميل"><figcaption>ساج مرجعي</figcaption></figure>
-                <figure><img src="assets/client-light-wood.webp" alt="مرجع الخشب الفاتح المرسل من العميل"><figcaption>خشب فاتح مرجعي</figcaption></figure>
+                <figure><img src="assets/client-sage-original.jpg" alt="مرجع الساج المرسل من العميل"><figcaption>ساج مرجعي</figcaption></figure>
+                <figure><img src="assets/client-light-wood-original.jpg" alt="مرجع الخشب الفاتح المرسل من العميل"><figcaption>خشب فاتح مرجعي</figcaption></figure>
               </div>
               <div class="client-material-note">المرجع الأصلي والتطبيق البصري — اتجاه بصري مرجعي، وليس معايرة لونية أو كتالوج خامات معتمداً.</div>
             </div>
@@ -688,341 +688,153 @@
   <script type="module">
     import * as THREE from "three";
     import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-    import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
+    import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
     import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
 
     const stage = document.getElementById("stage");
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x8f8a82);
-    scene.fog = new THREE.Fog(0x8f8a82, 30, 62);
+    scene.background = new THREE.Color(0xaaa59e);
+    scene.fog = new THREE.Fog(0xaaa59e, 24, 52);
 
     const camera = new THREE.PerspectiveCamera(34, 1, .1, 100);
-    camera.position.set(5.0, 3.15, 6.7);
+    camera.position.set(4.72,2.48,6.72);
 
     const renderer = new THREE.WebGLRenderer({antialias:true,alpha:false,preserveDrawingBuffer:true,powerPreference:"high-performance"});
     const mobileQuality=matchMedia("(max-width: 560px)").matches;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, mobileQuality?1.35:1.65));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, mobileQuality?1.28:1.65));
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = .76;
+    renderer.toneMappingExposure = .92;
     stage.appendChild(renderer.domElement);
 
     const pmrem = new THREE.PMREMGenerator(renderer);
-    // RoomEnvironment is generated directly; avoid unnecessary equirectangular precompile.
     const roomEnvironment = new RoomEnvironment();
-    const envRT = pmrem.fromScene(roomEnvironment, .04);
+    const envRT = pmrem.fromScene(roomEnvironment, .045);
     scene.environment = envRT.texture;
-    scene.environmentIntensity = .64;
+    scene.environmentIntensity = .92;
     roomEnvironment.dispose();
     pmrem.dispose();
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.dampingFactor = .065;
+    controls.dampingFactor = .07;
     controls.enablePan = false;
-    controls.minDistance = 5.3;
-    controls.maxDistance = 11.5;
-    controls.minPolarAngle = .84;
+    controls.minDistance = 5.2;
+    controls.maxDistance = 10.8;
+    controls.minPolarAngle = .92;
     controls.maxPolarAngle = 1.30;
-    controls.minAzimuthAngle = -.14;
-    controls.maxAzimuthAngle = 1.30;
-    controls.target.set(.10,1.34,-1.56);
+    controls.minAzimuthAngle = -.08;
+    controls.maxAzimuthAngle = 1.12;
+    controls.target.set(.10,1.35,-1.56);
 
     RectAreaLightUniformsLib.init();
-    const hemi = new THREE.HemisphereLight(0xfffdf9,0x514e49,.40);
+    const hemi = new THREE.HemisphereLight(0xffffff,0x5e5a55,.58);
     scene.add(hemi);
-    const key = new THREE.DirectionalLight(0xfff8ec,1.58);
-    key.position.set(4.2,7.8,5.2); key.castShadow = true;
-    key.shadow.mapSize.set(mobileQuality?1024:1536,mobileQuality?1024:1536);
-    key.shadow.camera.left=-5.8; key.shadow.camera.right=5.8;
-    key.shadow.camera.top=5.6; key.shadow.camera.bottom=-2.8;
-    key.shadow.camera.near=.5; key.shadow.camera.far=18;
-    key.shadow.bias=-.00012;
-    key.shadow.normalBias=.010;
+    const key = new THREE.DirectionalLight(0xfffaf2,1.72);
+    key.position.set(4.6,7.8,5.6); key.castShadow=true;
+    key.shadow.mapSize.set(mobileQuality?1024:2048,mobileQuality?1024:2048);
+    key.shadow.camera.left=-5.5;key.shadow.camera.right=5.5;key.shadow.camera.top=5.2;key.shadow.camera.bottom=-2.4;
+    key.shadow.camera.near=.5;key.shadow.camera.far=18;
+    key.shadow.bias=-.00010;key.shadow.normalBias=.009;
     scene.add(key);
-
-    const windowFill = new THREE.RectAreaLight(0xfff9ef,1.05,5.8,4.2);
-    windowFill.position.set(-3.7,4.6,3.8);
-    windowFill.lookAt(-.3,1.45,-1.55);
-    scene.add(windowFill);
-
-    const roomFill = new THREE.DirectionalLight(0xf7f7f2,.16);
-    roomFill.position.set(-3.2,3.8,2.5);
-    scene.add(roomFill);
-
-    const floor = new THREE.Mesh(
-      new THREE.PlaneGeometry(22,22),
-      new THREE.MeshStandardMaterial({color:0x736e68,roughness:.94,metalness:0})
-    );
-    floor.rotation.x=-Math.PI/2; floor.receiveShadow=true; scene.add(floor);
-
-    const wallMat=new THREE.MeshStandardMaterial({color:0xb6b0a7,roughness:.86,metalness:0});
-    const backWall=boxRaw(8.7,3.65,.18,0,1.825,-2.24,wallMat);
-    const sideWall=boxRaw(.14,3.65,5.4,-4.28,1.825,.35,new THREE.MeshStandardMaterial({color:0xa19b93,roughness:.89,metalness:0}));
-    boxRaw(8.7,.16,1.02,0,3.48,-1.78,new THREE.MeshStandardMaterial({color:0xc5bfb6,roughness:.90,metalness:0}));
-
-    const cabinetMeshes=[];
-    const baseCabinetMeshes=[];
-    const upperCabinetMeshes=[];
-    const tallCabinetMeshes=[];
-    const topMeshes=[];
-
-    const handleMat=new THREE.MeshStandardMaterial({color:0x949b99,metalness:.94,roughness:.28,envMapIntensity:1.55});
-    const steelMat=new THREE.MeshStandardMaterial({color:0xb8bfbc,metalness:.96,roughness:.27,envMapIntensity:1.58});
-    const darkGlassMat=new THREE.MeshPhysicalMaterial({color:0x101313,metalness:.08,roughness:.16,clearcoat:.35,clearcoatRoughness:.12,envMapIntensity:1.1});
-    const glassMat=new THREE.MeshPhysicalMaterial({
-      color:0xeaf1ee,metalness:0,roughness:.055,transmission:.92,opacity:1,
-      thickness:.018,ior:1.47,clearcoat:.035,clearcoatRoughness:.22,
-      envMapIntensity:1.30,attenuationColor:new THREE.Color(0xd7e2dd),attenuationDistance:2.4,side:THREE.DoubleSide
+    const windowFill = new THREE.RectAreaLight(0xfffbf4,1.42,5.8,4.2);
+    windowFill.position.set(-3.8,4.8,3.8);windowFill.lookAt(-.25,1.45,-1.58);scene.add(windowFill);
+    const roomFill = new THREE.DirectionalLight(0xf7f7f3,.30);
+    roomFill.position.set(-3.3,3.8,2.8);scene.add(roomFill);
+    const stripArea = new THREE.RectAreaLight(0xffe8c6,.66,3.55,.25);
+    stripArea.position.set(-.02,1.72,-1.44);stripArea.lookAt(-.02,1.05,-1.42);scene.add(stripArea);
+    [-1.62,1.58].forEach(x=>{
+      const glow=new THREE.RectAreaLight(0xfff1d7,.45,.48,.42);
+      glow.position.set(x,2.36,-1.50);glow.lookAt(x,2.14,-1.72);scene.add(glow);
     });
-    const backsplashMat=new THREE.MeshPhysicalMaterial({color:0xbcb7ae,roughness:.48,metalness:0,clearcoat:.025,clearcoatRoughness:.78,envMapIntensity:.72});
-    const warmLightMat=new THREE.MeshStandardMaterial({color:0xffe8c8,emissive:0xffd8a6,emissiveIntensity:.48,roughness:.64});
-
-    function boxRaw(w,h,d,x,y,z,mat){
-      const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
-      mesh.position.set(x,y,z);
-      mesh.castShadow=true; mesh.receiveShadow=true; scene.add(mesh);
-      return mesh;
-    }
-    function roundedGeometry(w,h,d,r=.006,segments=3){
-      const rr=Math.max(.002,Math.min(r,w*.12,h*.12,d*.22));
-      return new RoundedBoxGeometry(w,h,d,segments,rr);
-    }
-    function box(w,h,d,x,y,z,mat,r=.006){
-      const mesh=new THREE.Mesh(roundedGeometry(w,h,d,r,3),mat);
-      mesh.position.set(x,y,z);
-      mesh.castShadow=true; mesh.receiveShadow=true; scene.add(mesh);
-      return mesh;
-    }
-    function cylinder(radius,length,x,y,z,mat,axis="y",segments=24){
-      const mesh=new THREE.Mesh(new THREE.CylinderGeometry(radius,radius,length,segments,1,false),mat);
-      if(axis==="x")mesh.rotation.z=Math.PI/2;
-      if(axis==="z")mesh.rotation.x=Math.PI/2;
-      mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;scene.add(mesh);return mesh;
-    }
-    function addHandle(x,y,z,length,vertical=true){
-      const main=cylinder(.014,length,x,y,z,handleMat,vertical?"y":"x",24);
-      const gap=length*.34;
-      const pts=vertical?[[x,y-gap,z-.022],[x,y+gap,z-.022]]:[[x-gap,y,z-.022],[x+gap,y,z-.022]];
-      pts.forEach(p=>cylinder(.010,.050,p[0],p[1],p[2],handleMat,"z",18));
-      return main;
-    }
-
-    function canvasTexture(kind){
-      const c=document.createElement("canvas"); c.width=c.height=512;
-      const x=c.getContext("2d");
-      x.fillStyle="#d7d2ca"; x.fillRect(0,0,512,512);
-      if(kind==="wood"){
-        x.fillStyle="#ded2c0";x.fillRect(0,0,512,512);
-        for(let i=0;i<54;i++){
-          const xx=8+i*9.7;
-          x.strokeStyle=i%4===0?"rgba(84,62,39,.16)":"rgba(92,70,46,.07)";
-          x.lineWidth=i%5===0?1.35:.65;
-          x.beginPath();
-          for(let py=-10;py<=522;py+=14){
-            const px=xx+Math.sin((py+i*19)/41)*2.1+Math.sin((py+i*7)/93)*1.1;
-            if(py===-10)x.moveTo(px,py);else x.lineTo(px,py);
-          }
-          x.stroke();
-        }
-      }else if(kind==="clad"){
-        x.fillStyle="#d9d4ca";x.fillRect(0,0,512,512);
-        for(let i=0;i<512;i+=24){
-          x.fillStyle=i%48===0?"rgba(40,40,38,.09)":"rgba(255,255,255,.035)";
-          x.fillRect(i,0,1.5,512);
-        }
-      }else if(kind==="floor"){
-        x.fillStyle="#817b73";x.fillRect(0,0,512,512);
-        x.strokeStyle="rgba(38,36,33,.16)";x.lineWidth=2;
-        [128,256,384].forEach(v=>{x.beginPath();x.moveTo(v,0);x.lineTo(v,512);x.stroke();x.beginPath();x.moveTo(0,v);x.lineTo(512,v);x.stroke();});
-        x.strokeStyle="rgba(255,255,255,.045)";x.lineWidth=1;
-        for(let i=0;i<30;i++){const y=(i*37)%512;x.beginPath();x.moveTo(0,y);x.lineTo(512,y+Math.sin(i)*3);x.stroke();}
-      }else if(kind==="stone"){
-        x.fillStyle="#ddd9d2";x.fillRect(0,0,512,512);
-        for(let i=0;i<4;i++){
-          const offset=30+i*76;
-          x.strokeStyle=i%2?"rgba(71,72,70,.055)":"rgba(128,122,114,.075)";
-          x.lineWidth=i%3===0?1.35:.75;
-          x.beginPath();
-          for(let px=-60;px<580;px+=12){
-            const py=offset+px*.17+Math.sin((px+i*33)/31)*9+Math.sin((px+i*17)/79)*5;
-            if(px===-60)x.moveTo(px,py);else x.lineTo(px,py);
-          }
-          x.stroke();
-          if(i%2===0){
-            x.strokeStyle="rgba(255,255,255,.09)";x.lineWidth=.55;x.stroke();
-          }
-        }
-      }
-      const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping;
-      t.colorSpace=THREE.SRGBColorSpace;
-      if(kind==="stone")t.repeat.set(.72,.72); else if(kind==="floor")t.repeat.set(3.0,3.0); else t.repeat.set(1.25,1.0);
-      t.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());
-      return t;
-    }
 
     const textureLoader=new THREE.TextureLoader();
-    const clientWoodTexture=textureLoader.load("assets/client-light-wood.webp");
-    const clientSageTexture=textureLoader.load("assets/client-sage-reference.webp");
-    clientWoodTexture.colorSpace=THREE.SRGBColorSpace;
-    clientWoodTexture.wrapS=clientWoodTexture.wrapT=THREE.RepeatWrapping;
-    clientWoodTexture.repeat.set(.25,.50);
-    clientWoodTexture.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());
-    clientSageTexture.colorSpace=THREE.SRGBColorSpace;
-    clientSageTexture.wrapS=clientSageTexture.wrapT=THREE.RepeatWrapping;
-    clientSageTexture.repeat.set(.85,.85);
-    clientSageTexture.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());
-
-    const sageMicroTexture=textureLoader.load("assets/client-sage-micro.webp");
-    sageMicroTexture.colorSpace=THREE.NoColorSpace;
-    sageMicroTexture.wrapS=sageMicroTexture.wrapT=THREE.RepeatWrapping;
-    sageMicroTexture.repeat.set(2.2,2.2);
-    sageMicroTexture.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy());
-
-    const woodTexture=canvasTexture("wood");
-    const woodMicroTexture=canvasTexture("wood"); woodMicroTexture.colorSpace=THREE.NoColorSpace; woodMicroTexture.repeat.set(.64,.86);
-    const cladTexture=canvasTexture("clad");
-    const stoneTexture=canvasTexture("stone");
-    const floorTexture=canvasTexture("floor");
-    floor.material.map=floorTexture;
-    floor.material.needsUpdate=true;
-
-    const baseCabinetMat=new THREE.MeshPhysicalMaterial({color:0x8b9b8a,metalness:0,roughness:.57,clearcoat:.018,clearcoatRoughness:.82,envMapIntensity:1.02});
-    const upperCabinetMat=new THREE.MeshPhysicalMaterial({color:0xffffff,map:clientWoodTexture,metalness:0,roughness:.52,clearcoat:.015,clearcoatRoughness:.84,envMapIntensity:1.02});
-    const tallCabinetMat=baseCabinetMat.clone();
-    const topMat=new THREE.MeshPhysicalMaterial({color:0xd7d2c9,map:stoneTexture,metalness:0,roughness:.56,clearcoat:.025,clearcoatRoughness:.80,envMapIntensity:.86});
-    const revealMat=new THREE.MeshStandardMaterial({color:0x454640,metalness:0,roughness:.90,envMapIntensity:.32});
-    const displayBackMat=new THREE.MeshStandardMaterial({color:0x414843,metalness:0,roughness:.76,envMapIntensity:.46});
-
-    function registerCabinet(mesh,zone){
-      mesh.userData.zone=zone;
-      cabinetMeshes.push(mesh);
-      if(zone==="upper")upperCabinetMeshes.push(mesh);
-      else if(zone==="tall")tallCabinetMeshes.push(mesh);
-      else baseCabinetMeshes.push(mesh);
+    async function loadTex(url,{srgb=false,repeat=true}={}){
+      const t=await textureLoader.loadAsync(url);
+      if(srgb)t.colorSpace=THREE.SRGBColorSpace;else t.colorSpace=THREE.NoColorSpace;
+      if(repeat){t.wrapS=t.wrapT=THREE.RepeatWrapping;}
+      t.anisotropy=Math.min(mobileQuality?4:8,renderer.capabilities.getMaxAnisotropy());
+      return t;
     }
-
-    function addFrontPanel(x,y,z,w,h,mat,zone,handleSide="right"){
-      const reveal=box(w+.012,h+.012,.008,x,y,z-.012,revealMat,.0015); reveal.castShadow=false;
-      const door=box(w,h,.020,x,y,z,mat,.003); registerCabinet(door,zone);
-      const hx=handleSide==="right"?x+w/2-.075:x-w/2+.075;
-      addHandle(hx,y,z+.024,Math.min(.38,h*.46),true);
-      return door;
-    }
-
-    function addBaseUnit(x,w=.82,drawers=false){
-      const carcass=box(w,.85,.67,x,.595,-1.68,baseCabinetMat,.006); registerCabinet(carcass,"base");
-      if(drawers){
-        const reveal=box(w-.015,.812,.008,x,.595,-1.347,revealMat,.0015); reveal.castShadow=false;
-        [.315,.585,.855].forEach(y=>{
-          const panel=box(w-.030,.250,.020,x,y,-1.330,baseCabinetMat,.003);registerCabinet(panel,"base");
-          addHandle(x,y+.035,-1.300,.27,false);
-        });
-      }else{
-        addFrontPanel(x,.595,-1.330,w-.030,.806,baseCabinetMat,"base");
-      }
-    }
-
-    function addUpperUnit(x,w=.82,glass=false){
-      const carcass=box(w,.86,.47,x,2.18,-1.76,upperCabinetMat,.006); registerCabinet(carcass,"upper");
-      if(glass){
-        const fw=.034, fh=.036, frontZ=-1.512;
-        const topFrame=box(w-.025,fh,.036,x,2.18+.382,frontZ,upperCabinetMat,.003);registerCabinet(topFrame,"upper");
-        const bottomFrame=box(w-.025,fh,.036,x,2.18-.382,frontZ,upperCabinetMat,.003);registerCabinet(bottomFrame,"upper");
-        const leftFrame=box(fw,.765,.036,x-w/2+.035,2.18,frontZ,upperCabinetMat,.003);registerCabinet(leftFrame,"upper");
-        const rightFrame=box(fw,.765,.036,x+w/2-.035,2.18,frontZ,upperCabinetMat,.003);registerCabinet(rightFrame,"upper");
-        box(w-.10,.735,.014,x,2.18,-1.705,displayBackMat,.002).castShadow=false;
-        box(w-.10,.012,.34,x,2.03,-1.63,upperCabinetMat,.002);
-        box(w-.10,.012,.34,x,2.33,-1.63,upperCabinetMat,.002);
-        const glass=box(w-.085,.725,.008,x,2.18,-1.498,glassMat,.0015);
-        glass.castShadow=false;
-        addHandle(x+w/2-.085,2.18,-1.475,.16,true);
-      }else{
-        addFrontPanel(x,2.18,-1.512,w-.035,.815,upperCabinetMat,"upper");
-      }
-    }
-
-    // Fixed Single-Wall composition. Layout/zoning intentionally unchanged; only execution realism is refined.
-    box(4.00,.17,.39,-.05,.085,-1.84,new THREE.MeshStandardMaterial({color:0x141514,roughness:.78}),.004);
-    [-1.62,-.82,-.02,.78,1.58].forEach((x,i)=>addBaseUnit(x,.785,i===1||i===3));
-
-    const counterBack=box(4.22,.036,.82,-.05,1.038,-1.69,topMat,.0045);topMeshes.push(counterBack);
-    box(4.12,.012,.76,-.05,1.014,-1.69,new THREE.MeshStandardMaterial({color:0x4e504b,roughness:.76,metalness:0}),.002);
-    box(4.12,1.02,.045,-.05,1.57,-2.105,backsplashMat,.008);
-
-    [-1.62,-.82,-.02,.78,1.58].forEach((x,i)=>addUpperUnit(x,.785,i===0||i===4));
-
-    // Architectural joinery details: keep the same cabinet zoning, add believable finishing panels and rails.
-    box(4.10,.045,.49,-.05,2.64,-1.76,upperCabinetMat,.003);
-    box(4.10,.030,.49,-.05,1.745,-1.76,upperCabinetMat,.002);
-    box(.034,1.02,.69,-2.015,.51,-1.68,baseCabinetMat,.002);
-    box(.034,1.02,.69,1.975,.51,-1.68,baseCabinetMat,.002);
-    box(.034,.86,.49,-2.015,2.18,-1.76,upperCabinetMat,.002);
-    box(.034,.86,.49,1.975,2.18,-1.76,upperCabinetMat,.002);
-
-    const tall=box(.88,2.84,.72,2.46,1.42,-1.68,tallCabinetMat,.008); registerCabinet(tall,"tall");
-    addFrontPanel(2.46,2.18,-1.305,.840,1.260,tallCabinetMat,"tall");
-    box(.68,1.20,.024,2.46,.77,-1.304,darkGlassMat,.004);
-    box(.57,.52,.034,2.46,.98,-1.275,darkGlassMat,.005);
-    addHandle(2.46,.70,-1.215,.50,false);
-    // Recessed oven frame and hardware; same tall-unit location, only more credible visible construction.
-    const ovenFrameMat=new THREE.MeshStandardMaterial({color:0x555a58,metalness:.88,roughness:.34,envMapIntensity:1.25});
-    box(.64,.035,.028,2.46,1.255,-1.268,ovenFrameMat,.003);
-    box(.64,.035,.028,2.46,.390,-1.268,ovenFrameMat,.003);
-    box(.035,.86,.028,2.157,.825,-1.268,ovenFrameMat,.003);
-    box(.035,.86,.028,2.763,.825,-1.268,ovenFrameMat,.003);
-    cylinder(.036,.028,2.32,1.205,-1.245,handleMat,"z",24);
-    cylinder(.036,.028,2.60,1.205,-1.245,handleMat,"z",24);
-
-    // Undermount sink illusion: visible steel lip, recessed bowl, no flat black slab.
-    const sinkBowlMat=new THREE.MeshStandardMaterial({color:0x5f6764,metalness:.88,roughness:.34,envMapIntensity:1.18});
-    box(.62,.018,.38,-1.30,1.024,-1.59,sinkBowlMat,.012);
-    box(.70,.018,.025,-1.30,1.052,-1.405,steelMat,.003);
-    box(.70,.018,.025,-1.30,1.052,-1.775,steelMat,.003);
-    box(.025,.018,.37,-1.637,1.052,-1.59,steelMat,.003);
-    box(.025,.018,.37,-.963,1.052,-1.59,steelMat,.003);
-
-    // Faucet with cylindrical stem and curved spout.
-    cylinder(.028,.43,-1.30,1.32,-1.91,steelMat,"y",28);
-    const faucetCurve=new THREE.CatmullRomCurve3([
-      new THREE.Vector3(-1.30,1.52,-1.91),
-      new THREE.Vector3(-1.30,1.67,-1.91),
-      new THREE.Vector3(-1.30,1.70,-1.76),
-      new THREE.Vector3(-1.30,1.57,-1.68)
+    const [woodAlbedo,woodNormal,woodRough,sageAlbedo,sageNormal,sageRough,stoneAlbedo,stoneNormal,stoneRough]=await Promise.all([
+      loadTex("assets/hc-wood-albedo.jpg",{srgb:true}),
+      loadTex("assets/hc-wood-normal.png"),
+      loadTex("assets/hc-wood-roughness.png"),
+      loadTex("assets/hc-sage-albedo.jpg",{srgb:true}),
+      loadTex("assets/hc-sage-normal.png"),
+      loadTex("assets/hc-sage-roughness.png"),
+      loadTex("assets/hc-stone-albedo.jpg",{srgb:true}),
+      loadTex("assets/hc-stone-normal.png"),
+      loadTex("assets/hc-stone-roughness.png")
     ]);
-    const faucet=new THREE.Mesh(new THREE.TubeGeometry(faucetCurve,36,.022,14,false),steelMat);
-    faucet.castShadow=true;scene.add(faucet);
 
-    // Cooktop / dark appliance glass.
-    box(.64,.014,.48,.82,1.082,-1.61,darkGlassMat,.004);
+    woodAlbedo.repeat.set(.72,.72);woodNormal.repeat.copy(woodAlbedo.repeat);woodRough.repeat.copy(woodAlbedo.repeat);
+    sageAlbedo.repeat.set(1.05,1.05);sageNormal.repeat.copy(sageAlbedo.repeat);sageRough.repeat.copy(sageAlbedo.repeat);
+    stoneAlbedo.repeat.set(.52,.52);stoneNormal.repeat.copy(stoneAlbedo.repeat);stoneRough.repeat.copy(stoneAlbedo.repeat);
 
-    const strip=box(3.88,.010,.022,-.05,1.72,-1.495,warmLightMat,.002);
-    const stripArea=new THREE.RectAreaLight(0xffe8c6,1.05,3.55,.28);
-    stripArea.position.set(-.05,1.69,-1.42);stripArea.lookAt(-.05,1.05,-1.40);scene.add(stripArea);
+    const baseCabinetMat=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:.62,envMapIntensity:.92});
+    const upperCabinetMat=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:.56,envMapIntensity:.95});
+    const tallCabinetMat=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:.62,envMapIntensity:.92});
+    const topMat=new THREE.MeshPhysicalMaterial({color:0xffffff,map:stoneAlbedo,normalMap:stoneNormal,roughnessMap:stoneRough,normalScale:new THREE.Vector2(.13,.13),metalness:0,roughness:.56,clearcoat:.025,clearcoatRoughness:.82,envMapIntensity:.86});
+    const glassMat=new THREE.MeshPhysicalMaterial({color:0xe9f0ed,metalness:0,roughness:.055,transmission:.94,opacity:1,thickness:.010,ior:1.47,clearcoat:.03,clearcoatRoughness:.22,envMapIntensity:1.30,attenuationColor:new THREE.Color(0xd8e3de),attenuationDistance:2.8,side:THREE.DoubleSide});
+    const handleMat=new THREE.MeshStandardMaterial({color:0x8f9694,metalness:.94,roughness:.29,envMapIntensity:1.45});
+    const metalMat=new THREE.MeshStandardMaterial({color:0xaeb6b2,metalness:.95,roughness:.30,envMapIntensity:1.50});
+    const applianceMat=new THREE.MeshPhysicalMaterial({color:0x151817,metalness:.20,roughness:.17,clearcoat:.32,clearcoatRoughness:.16,envMapIntensity:1.18});
+    const carcassMat=new THREE.MeshStandardMaterial({color:0x444641,metalness:0,roughness:.82,envMapIntensity:.42});
+    const backsplashMat=new THREE.MeshPhysicalMaterial({color:0xbdb8af,metalness:0,roughness:.53,clearcoat:.018,clearcoatRoughness:.86,envMapIntensity:.68});
+    const kickMat=new THREE.MeshStandardMaterial({color:0x262826,metalness:0,roughness:.79});
+    const roomFloorMat=new THREE.MeshStandardMaterial({color:0x8d8780,metalness:0,roughness:.90,envMapIntensity:.42});
+    const roomWallMat=new THREE.MeshStandardMaterial({color:0xc6c0b7,metalness:0,roughness:.86,envMapIntensity:.38});
+    const roomCeilingMat=new THREE.MeshStandardMaterial({color:0xd8d3cb,metalness:0,roughness:.90,envMapIntensity:.34});
+    const skirtingMat=new THREE.MeshStandardMaterial({color:0xb0aaa2,metalness:0,roughness:.82});
+    const lightMat=new THREE.MeshStandardMaterial({color:0xffe8c6,emissive:0xffd9a6,emissiveIntensity:.42,roughness:.62});
 
-    // Subtle architectural contact shadow bands: depth cues only, not decorative geometry.
-    box(4.02,.020,.028,-.05,.185,-1.438,new THREE.MeshBasicMaterial({color:0x343630,transparent:true,opacity:.34}),.002).castShadow=false;
-    box(4.04,.018,.025,-.05,1.675,-1.520,new THREE.MeshBasicMaterial({color:0x454641,transparent:true,opacity:.22}),.002).castShadow=false;
-
-    // Warm interior display lighting for the two glass cabinets.
-    [-1.62,1.58].forEach(x=>{
-      const glow=new THREE.RectAreaLight(0xfff1d7,.62,.46,.42);
-      glow.position.set(x,2.37,-1.53); glow.lookAt(x,2.14,-1.70); scene.add(glow);
+    const zoneMeshes={base:[],upper:[],tall:[],top:[],glass:[],handles:[],metal:[],appliance:[],carcass:[],room:[],kick:[],back:[],light:[]};
+    const loader=new GLTFLoader();
+    const gltf=await loader.loadAsync("assets/higher-class-fixed-kitchen-v3.glb");
+    const assetRoot=gltf.scene;
+    assetRoot.name="HC_FIXED_KITCHEN";
+    assetRoot.traverse(obj=>{
+      if(!obj.isMesh)return;
+      obj.castShadow=!obj.name.startsWith("HC_GLASS")&&!obj.name.startsWith("HC_LIGHT");
+      obj.receiveShadow=!obj.name.startsWith("HC_GLASS");
+      const n=obj.name;
+      if(n.startsWith("HC_BASE_FRONTS")){obj.material=baseCabinetMat;zoneMeshes.base.push(obj);}
+      else if(n.startsWith("HC_UPPER_FRONTS")){obj.material=upperCabinetMat;zoneMeshes.upper.push(obj);}
+      else if(n.startsWith("HC_TALL_FRONTS")){obj.material=tallCabinetMat;zoneMeshes.tall.push(obj);}
+      else if(n.startsWith("HC_COUNTERTOP")){obj.material=topMat;zoneMeshes.top.push(obj);}
+      else if(n.startsWith("HC_GLASS")){obj.material=glassMat;zoneMeshes.glass.push(obj);}
+      else if(n.startsWith("HC_HANDLES")){obj.material=handleMat;zoneMeshes.handles.push(obj);}
+      else if(n.startsWith("HC_METAL")){obj.material=metalMat;zoneMeshes.metal.push(obj);}
+      else if(n.startsWith("HC_APPLIANCE")){obj.material=applianceMat;zoneMeshes.appliance.push(obj);}
+      else if(n.startsWith("HC_CARCASS")){obj.material=carcassMat;zoneMeshes.carcass.push(obj);}
+      else if(n.startsWith("HC_BACKSPLASH")){obj.material=backsplashMat;zoneMeshes.back.push(obj);}
+      else if(n.startsWith("HC_KICK")){obj.material=kickMat;zoneMeshes.kick.push(obj);}
+      else if(n.startsWith("HC_LIGHT")){obj.material=lightMat;zoneMeshes.light.push(obj);}
+      else if(n.startsWith("HC_ROOM")){
+        if(n.includes("FLOOR"))obj.material=roomFloorMat;
+        else if(n.includes("CEILING"))obj.material=roomCeilingMat;
+        else if(n.includes("SKIRTING"))obj.material=skirtingMat;
+        else obj.material=roomWallMat;
+        zoneMeshes.room.push(obj);
+      }
     });
-
-    // Keep the foreground architectural and uncluttered; no decorative rug in the management proof.
+    scene.add(assetRoot);
+    window.__HC_V3_ASSET_READY__=true;
+    window.__HC_V3_ZONE_COUNTS__=Object.fromEntries(Object.entries(zoneMeshes).map(([k,v])=>[k,v.length]));
+    window.__HC_CAMERA__=camera;window.__HC_CONTROLS__=controls;window.__HC_RENDERER__=renderer;window.__HC_SCENE__=scene;
 
     const materialStates = {
-      metal:{metalness:0,roughness:.54,texture:null},
-      wood:{metalness:0,roughness:.56,texture:"wood"},
-      clad:{metalness:0,roughness:.52,texture:"grain"}
+      metal:{metalness:0,roughness:.58,texture:null},
+      wood:{metalness:0,roughness:.60,texture:"wood"},
+      clad:{metalness:0,roughness:.56,texture:"grain"}
     };
     const colorStates = {
-      clientSage:{label:"ساج مرجعي",hex:0x8b9b8a,reference:"sage"},
-      clientWood:{label:"خشب فاتح مرجعي",hex:0xe5d7c8,reference:"wood"},
+      clientSage:{label:"ساج مرجعي",hex:0x95a498,reference:"sage"},
+      clientWood:{label:"خشب فاتح مرجعي",hex:0xeadfce,reference:"wood"},
       ivory:{label:"عاجي",hex:0xf1eee6}, white:{label:"أبيض دافئ",hex:0xfbfaf6},
       lightgray:{label:"رمادي فاتح",hex:0xc9c9c5}, stone:{label:"رمادي حجري",hex:0x9c9992},
       charcoal:{label:"فحمي",hex:0x4a4c4e}, black:{label:"أسود دافئ",hex:0x242322},
@@ -1031,72 +843,48 @@
       oak:{label:"بلوط فاتح",hex:0xb78a5e}, walnut:{label:"جوز داكن",hex:0x5a3b2b}
     };
     const topStates = {
-      natural:{label:"حجر فاتح هادئ",color:0xdcd8d0,metalness:0,roughness:.44},
-      industrial:{label:"رملي دافئ",color:0xc7b79f,metalness:0,roughness:.49},
-      cast:{label:"رمادي هادئ",color:0x9b9b97,metalness:0,roughness:.47},
-      dark:{label:"حجر داكن",color:0x393836,metalness:0,roughness:.41}
+      natural:{label:"حجر فاتح هادئ",color:0xf1ede4,metalness:0,roughness:.57},
+      industrial:{label:"رملي دافئ",color:0xd0c0a8,metalness:0,roughness:.60},
+      cast:{label:"رمادي هادئ",color:0xb0b0aa,metalness:0,roughness:.59},
+      dark:{label:"حجر داكن",color:0x53514e,metalness:0,roughness:.53}
     };
 
     let currentMaterial="metal", currentFinish="matte", currentBaseColor="clientSage", currentAccentColor="clientWood", currentTallColor="clientSage", currentTop="natural", currentLighting="day";
-
-    function materialRoughness(base){ return currentFinish==="gloss" ? Math.max(.24,base-.18) : Math.min(.72,base+.03); }
+    function materialRoughness(base){return currentFinish==="gloss"?Math.max(.30,base-.16):Math.min(.76,base+.02);}
 
     function configureZone(zone){
-      const key=zone==="upper"?currentAccentColor:(zone==="tall"?currentTallColor:currentBaseColor);
-      const state=colorStates[key];
+      const keyName=zone==="upper"?currentAccentColor:(zone==="tall"?currentTallColor:currentBaseColor);
+      const state=colorStates[keyName];
       const mat=zone==="upper"?upperCabinetMat:(zone==="tall"?tallCabinetMat:baseCabinetMat);
-      mat.color.setHex(state.hex);
-      mat.metalness=0;
-      mat.bumpMap=null;
-      mat.bumpScale=0;
+      mat.color.setHex(state.hex);mat.metalness=0;
+      mat.map=null;mat.normalMap=null;mat.roughnessMap=null;mat.normalScale.set(.1,.1);
       if(state.reference==="wood"){
-        mat.map=clientWoodTexture;
-        mat.bumpMap=woodMicroTexture;
-        mat.bumpScale=.0032;
-        mat.roughness=materialRoughness(.54);
+        mat.color.setHex(0xffffff);mat.map=woodAlbedo;mat.normalMap=woodNormal;mat.roughnessMap=woodRough;mat.normalScale.set(.16,.16);mat.roughness=materialRoughness(.56);
       }else if(state.reference==="sage"){
-        mat.map=null;
-        mat.bumpMap=sageMicroTexture;
-        mat.bumpScale=.0007;
-        mat.roughness=materialRoughness(.60);
+        mat.color.setHex(0xffffff);mat.map=sageAlbedo;mat.normalMap=sageNormal;mat.roughnessMap=sageRough;mat.normalScale.set(.055,.055);mat.roughness=materialRoughness(.63);
       }else{
-        const src=materialStates[currentMaterial];
-        mat.map=src.texture==="wood"?woodTexture:(src.texture==="grain"?cladTexture:null);
-        mat.roughness=materialRoughness(src.roughness);
+        const src=materialStates[currentMaterial];mat.roughness=materialRoughness(src.roughness);
+        if(currentMaterial==="wood"){mat.normalMap=woodNormal;mat.roughnessMap=woodRough;mat.normalScale.set(.055,.055);}
+        if(currentMaterial==="clad"){mat.normalMap=sageNormal;mat.roughnessMap=sageRough;mat.normalScale.set(.035,.035);}
       }
-      mat.envMapIntensity=.68;
-      mat.needsUpdate=true;
+      mat.envMapIntensity=.92;mat.needsUpdate=true;
     }
-
-    function applyMaterial(value){
-      currentMaterial=value;
-      configureZone("base");configureZone("upper");configureZone("tall");
-    }
-    function applyCabinetColor(zone,value){
-      if(zone==="upper"){currentAccentColor=value;configureZone("upper");}
-      else{currentBaseColor=value;currentTallColor=value;configureZone("base");configureZone("tall");}
-    }
+    function applyMaterial(value){currentMaterial=value;configureZone("base");configureZone("upper");configureZone("tall");}
+    function applyCabinetColor(zone,value){if(zone==="upper"){currentAccentColor=value;configureZone("upper");}else{currentBaseColor=value;currentTallColor=value;configureZone("base");configureZone("tall");}}
     function applyTallColor(value){currentTallColor=value;configureZone("tall");}
     function applyFinish(value){currentFinish=value;configureZone("base");configureZone("upper");configureZone("tall");}
-    function applyTop(value){
-      currentTop=value;const src=topStates[value];
-      topMeshes.forEach(m=>{m.material.color.setHex(src.color);m.material.metalness=src.metalness;m.material.roughness=src.roughness;m.material.map=stoneTexture;m.material.needsUpdate=true;});
-    }
+    function applyTop(value){currentTop=value;const src=topStates[value];topMat.color.setHex(src.color);topMat.metalness=src.metalness;topMat.roughness=src.roughness;topMat.needsUpdate=true;}
 
     const lightingStates={
-      day:{label:"نهار معماري",bg:0x8f8a82,hemi:0xfffdf9,ground:0x514e49,hemiI:.36,key:0xfff8ec,keyI:1.52,fill:0xf7f7f2,fillI:.13,area:.92,strip:.28,exposure:.69},
-      evening:{label:"مساء دافئ",bg:0x57514b,hemi:0xffead2,ground:0x46413d,hemiI:.30,key:0xffd7ad,keyI:1.18,fill:0xffe2c1,fillI:.12,area:.72,strip:.72,exposure:.70},
-      neutral:{label:"عرض محايد",bg:0x858580,hemi:0xffffff,ground:0x535552,hemiI:.30,key:0xffffff,keyI:1.34,fill:0xffffff,fillI:.11,area:.78,strip:.24,exposure:.70}
+      day:{label:"نهار معماري",bg:0xaaa59e,hemi:0xffffff,ground:0x625e58,hemiI:.58,key:0xfffaf2,keyI:1.72,fill:0xf7f7f3,fillI:.30,area:1.42,strip:.42,exposure:.92},
+      evening:{label:"مساء دافئ",bg:0x625a52,hemi:0xffead2,ground:0x4b443e,hemiI:.34,key:0xffd7ad,keyI:1.22,fill:0xffe1bf,fillI:.15,area:.82,strip:.78,exposure:.78},
+      neutral:{label:"عرض محايد",bg:0x9f9e99,hemi:0xffffff,ground:0x60615d,hemiI:.54,key:0xffffff,keyI:1.48,fill:0xffffff,fillI:.26,area:1.18,strip:.34,exposure:.88}
     };
     function applyLighting(value){
-      currentLighting=value;const s=lightingStates[value];
-      scene.background.setHex(s.bg);scene.fog.color.setHex(s.bg);
+      currentLighting=value;const s=lightingStates[value];scene.background.setHex(s.bg);scene.fog.color.setHex(s.bg);
       hemi.color.setHex(s.hemi);hemi.groundColor.setHex(s.ground);hemi.intensity=s.hemiI;
-      key.color.setHex(s.key);key.intensity=s.keyI;
-      roomFill.color.setHex(s.fill);roomFill.intensity=s.fillI;
-      windowFill.intensity=s.area;stripArea.intensity=value==="evening"?.72:.42;
-      strip.material.emissiveIntensity=s.strip;
-      renderer.toneMappingExposure=s.exposure;
+      key.color.setHex(s.key);key.intensity=s.keyI;roomFill.color.setHex(s.fill);roomFill.intensity=s.fillI;
+      windowFill.intensity=s.area;stripArea.intensity=s.strip;lightMat.emissiveIntensity=s.strip;renderer.toneMappingExposure=s.exposure;
     }
 
     const materialMap={metal:"ناعم",wood:"خشبي خفيف",clad:"خشبي أوضح"};
@@ -1165,9 +953,9 @@
     applyLighting("day");
 
     function defaultCameraForWidth(width){
-      if(width<560)return {fov:38,pos:[4.65,2.48,7.15]};
-      if(width<900)return {fov:35,pos:[4.55,2.48,6.65]};
-      return {fov:33,pos:[4.32,2.46,6.05]};
+      if(width<560)return {fov:39,pos:[4.70,2.52,7.35]};
+      if(width<900)return {fov:36,pos:[4.62,2.50,6.88]};
+      return {fov:34,pos:[4.72,2.48,6.72]};
     }
     function resetCameraView(){
       const rect=stage.getBoundingClientRect();
@@ -1196,10 +984,11 @@
     let t=0;
     function animate(){
       requestAnimationFrame(animate); t+=.003;
-      if(!matchMedia("(prefers-reduced-motion: reduce)").matches && !isInteracting){ scene.rotation.y=Math.sin(t)*.012; }
+      
       controls.update(); renderer.render(scene,camera);
     }
     animate();
+    window.__HC_RENDER_INFO__={asset:"higher-class-fixed-kitchen-v3.glb",primitiveCore:false};
 
     const materialInput=document.getElementById("materialInput");
     const finishInput=document.getElementById("finishInput");
@@ -1209,387 +998,3 @@
     const layoutInput=document.getElementById("layoutInput");
     const lengthInput=document.getElementById("lengthInput");
     const wallBInput=document.getElementById("wallBInput");
-    const wallCInput=document.getElementById("wallCInput");
-    const heightInput=document.getElementById("heightInput");
-    const noteInput=document.getElementById("noteInput");
-    const summary=document.getElementById("summary");
-
-    const labelToMaterial={"ناعم":"metal","خشبي خفيف":"wood","خشبي أوضح":"clad"};
-    const labelToFinish={"مطفي":"matte","لمعة خفيفة":"gloss"};
-    const labelToColor=Object.fromEntries(Object.entries(colorStates).map(([k,v])=>[v.label,k]));
-    const labelToTop=Object.fromEntries(Object.entries(topStates).map(([k,v])=>[v.label,k]));
-
-    materialInput.addEventListener("change",()=>{applyMaterial(labelToMaterial[materialInput.value]);syncControl("material",labelToMaterial[materialInput.value]);updateSummary();updateShareUrl();});
-    finishInput.addEventListener("change",()=>{applyFinish(labelToFinish[finishInput.value]);syncControl("finish",labelToFinish[finishInput.value]);updateSummary();updateShareUrl();});
-    baseColorInput.addEventListener("change",()=>{applyCabinetColor("base",labelToColor[baseColorInput.value]);syncControl("baseColor",labelToColor[baseColorInput.value]);updateSummary();updateShareUrl();});
-    accentColorInput.addEventListener("change",()=>{applyCabinetColor("upper",labelToColor[accentColorInput.value]);syncControl("accentColor",labelToColor[accentColorInput.value]);updateSummary();updateShareUrl();});
-    topInput.addEventListener("change",()=>{applyTop(labelToTop[topInput.value]);syncControl("top",labelToTop[topInput.value]);updateSummary();updateShareUrl();});
-
-    function syncControl(kind,value){
-      const group=document.querySelector('.control-group[data-kind="'+kind+'"]');
-      if(!group)return;
-      const all=group.querySelectorAll(".seg,.swatch");
-      all.forEach(el=>el.classList.toggle("active",el.dataset.value===value));
-      if(kind==="baseColor")document.getElementById("baseColorName").textContent=colorStates[value].label;
-      if(kind==="accentColor")document.getElementById("accentColorName").textContent=colorStates[value].label;
-    }
-
-    function getState(){
-      return {m:currentMaterial,b:currentBaseColor,a:currentAccentColor,x:currentTallColor,f:currentFinish,t:currentTop,l:currentLighting};
-    }
-
-    function stateSummary(s){
-      const zones=colorStates[s.b].label+" + "+colorStates[s.a].label+(s.x&&s.x!==s.b?" + عمود "+colorStates[s.x].label:"");
-      return [materialMap[s.m],zones,finishMap[s.f],topStates[s.t].label,lightingStates[s.l].label].join(" • ");
-    }
-
-    function updateCurrentChoice(){
-      const tallPart=currentTallColor!==currentBaseColor?" • عمود "+colorStates[currentTallColor].label:"";
-      const value=materialMap[currentMaterial]+" • "+colorStates[currentBaseColor].label+" + "+colorStates[currentAccentColor].label+tallPart+" • "+finishMap[currentFinish]+" • "+topStates[currentTop].label+" • "+lightingStates[currentLighting].label;
-      const el=document.getElementById("currentChoice");
-      if(el)el.textContent=value;
-      const formEl=document.getElementById("formCurrentChoice");
-      if(formEl)formEl.textContent=value;
-    }
-
-    function updateShareUrl(){
-      updateCurrentChoice();
-      const s=getState();
-      const u=new URL(location.href);
-      ["m","b","a","x","f","t","l"].forEach(k=>u.searchParams.set(k,s[k]));
-      history.replaceState(null,"",u);
-      return u.toString();
-    }
-
-    function applySavedState(s){
-      if(!s)return;
-      currentMaterial=s.m; currentBaseColor=s.b; currentAccentColor=s.a; currentTallColor=s.x||s.b; currentFinish=s.f; currentTop=s.t; currentLighting=s.l;
-      applyCabinetColor("base",s.b); applyCabinetColor("upper",s.a); applyTallColor(s.x||s.b); applyFinish(s.f); applyMaterial(s.m); applyTop(s.t); applyLighting(s.l);
-      materialInput.value=materialMap[s.m]; finishInput.value=finishMap[s.f]; baseColorInput.value=colorStates[s.b].label; accentColorInput.value=colorStates[s.a].label; topInput.value=topStates[s.t].label;
-      ["material","baseColor","accentColor","finish","top","lighting"].forEach(kind=>{
-        const map={material:s.m,baseColor:s.b,accentColor:s.a,finish:s.f,top:s.t,lighting:s.l};
-        syncControl(kind,map[kind]);
-      });
-      updateSummary(); updateShareUrl();
-    }
-
-    let savedA=null,savedB=null;
-    function captureComparisonShot(){
-      const oldPos=camera.position.clone();
-      const oldQuat=camera.quaternion.clone();
-      const oldTarget=controls.target.clone();
-      const oldSceneY=scene.rotation.y;
-      scene.rotation.y=0;
-      camera.position.set(6.15,3.55,7.45);
-      controls.target.set(.10,1.34,-1.56);
-      controls.update();
-      renderer.render(scene,camera);
-      const shot=renderer.domElement.toDataURL("image/jpeg",.84);
-      camera.position.copy(oldPos);
-      camera.quaternion.copy(oldQuat);
-      controls.target.copy(oldTarget);
-      scene.rotation.y=oldSceneY;
-      controls.update();
-      renderer.render(scene,camera);
-      return shot;
-    }
-
-    function captureVariant(slot){
-      const shot=captureComparisonShot();
-      const state={...getState(),shot};
-      if(slot==="A")savedA=state;else savedB=state;
-      const media=document.getElementById("variant"+slot+"Media");
-      const summaryEl=document.getElementById("variant"+slot+"Summary");
-      media.innerHTML='<img src="'+shot+'" alt="معاينة الخيار '+slot+'">';
-      media.closest(".variant-card").classList.add("has-snapshot");
-      summaryEl.textContent=stateSummary(state);
-      document.getElementById("apply"+slot).disabled=false;
-      document.getElementById("save"+slot).textContent="تحديث";
-      updateCompareResult();
-    }
-
-    function updateCompareResult(){
-      const el=document.getElementById("compareResult");
-      if(!savedA||!savedB){el.textContent="احفظ خيارين ليظهر الفرق بينهما هنا.";return;}
-      const diffs=[];
-      if(savedA.m!==savedB.m)diffs.push("الخامة");
-      if(savedA.b!==savedB.b)diffs.push("لون الخزائن الأساسية");
-      if(savedA.a!==savedB.a)diffs.push("لون الخزائن العلوية");
-      if(savedA.f!==savedB.f)diffs.push("التشطيب");
-      if(savedA.t!==savedB.t)diffs.push("سطح العمل");
-      if(savedA.l!==savedB.l)diffs.push("الإضاءة");
-      el.textContent=diffs.length ? "الفرق بين الخيارين: "+diffs.join("، ")+". يمكنك تطبيق أي خيار والعودة للتعديل مباشرة." : "الخياران متطابقان حالياً — غيّر لوناً أو خامة أو إضاءة ثم احفظ الخيار الثاني.";
-    }
-
-    document.getElementById("saveA").addEventListener("click",()=>captureVariant("A"));
-    document.getElementById("saveB").addEventListener("click",()=>captureVariant("B"));
-    function applyVariant(slot,state){
-      applySavedState(state);
-      document.querySelectorAll(".variant-card").forEach(x=>x.classList.remove("applied"));
-      document.getElementById("variant"+slot).classList.add("applied");
-      document.querySelector(".viewer-card").scrollIntoView({behavior:"smooth",block:"center"});
-    }
-    document.getElementById("applyA").addEventListener("click",()=>applyVariant("A",savedA));
-    document.getElementById("applyB").addEventListener("click",()=>applyVariant("B",savedB));
-    document.getElementById("shareDesign").addEventListener("click",async()=>{
-      const url=updateShareUrl();
-      const btn=document.getElementById("shareDesign");
-      try{await navigator.clipboard.writeText(url);const old=btn.textContent;btn.textContent="تم نسخ رابط الاختيار ✓";setTimeout(()=>btn.textContent=old,1800);}
-      catch(e){prompt("انسخ رابط الاختيار",url);}
-    });
-
-    function loadStateFromUrl(){
-      const p=new URLSearchParams(location.search);
-      const s={
-        m:materialStates[p.get("m")]?p.get("m"):"metal",
-        b:colorStates[p.get("b")]?p.get("b"):"clientSage",
-        a:colorStates[p.get("a")]?p.get("a"):"clientWood",
-        x:colorStates[p.get("x")]?p.get("x"):"clientSage",
-        f:["matte","gloss"].includes(p.get("f"))?p.get("f"):"matte",
-        t:topStates[p.get("t")]?p.get("t"):"natural",
-        l:lightingStates[p.get("l")]?p.get("l"):"day"
-      };
-      applySavedState(s);
-    }
-
-    const curatedLooks={
-      balanced:{m:"metal",b:"clientSage",a:"clientWood",x:"clientSage",f:"matte",t:"natural",l:"neutral"},
-      wood:{m:"metal",b:"clientWood",a:"clientWood",x:"clientSage",f:"matte",t:"natural",l:"day"},
-      sage:{m:"metal",b:"clientSage",a:"clientSage",x:"clientWood",f:"matte",t:"cast",l:"neutral"}
-    };
-    document.querySelectorAll(".look-btn").forEach(btn=>btn.addEventListener("click",()=>{
-      const s=curatedLooks[btn.dataset.look];
-      applySavedState(s);
-      document.querySelectorAll(".look-btn").forEach(x=>x.classList.toggle("active",x===btn));
-      document.querySelector(".viewer-card").scrollIntoView({behavior:"smooth",block:"center"});
-    }));
-
-    const advisorState={hardware:"hydraulic",storage:"mix",lighting:"calm",priority:"storage"};
-    let fitoutSelection="", fitoutDraft="";
-    const hardwareLabels={hydraulic:"Blum هيدروليكي",electric:"Blum كهربائي",designer:"يُحسم مع المصمم"};
-    const storageLabels={inside:"تنظيم داخلي",outside:"إضافات خارجية",mix:"مزيج داخلي وخارجي"};
-    const fitoutLightingLabels={calm:"هادئة ومندمجة",later:"تُحسم مع المصمم"};
-    const priorityLabels={ease:"سهولة الاستخدام",storage:"التخزين",look:"التفاصيل الجمالية"};
-    function buildAdvisorRecommendation(){
-      document.getElementById("advisorTitle").textContent="تفضيلاتك جاهزة للملخص";
-      document.getElementById("advisorWhy").textContent="هذه نقطة تنظيم للمحادثة مع المصمم؛ الاختيار الفني النهائي يبقى مع هاير كلاس.";
-      document.getElementById("advisorMaterial").textContent=hardwareLabels[advisorState.hardware];
-      document.getElementById("advisorBase").textContent=storageLabels[advisorState.storage];
-      document.getElementById("advisorAccent").textContent=fitoutLightingLabels[advisorState.lighting];
-      document.getElementById("advisorFinish").textContent=priorityLabels[advisorState.priority];
-      fitoutDraft=["Blum: "+hardwareLabels[advisorState.hardware],"الإضافات: "+storageLabels[advisorState.storage],"الإضاءة: "+fitoutLightingLabels[advisorState.lighting],"الأولوية: "+priorityLabels[advisorState.priority]].join(" • ");
-    }
-    const advisorCards=[...document.querySelectorAll("[data-advisor]")];
-    let advisorStep=0;
-    function renderAdvisorStep(){advisorCards.forEach((card,i)=>card.classList.toggle("active-step",i===advisorStep));document.getElementById("advisorStepLabel").textContent="السؤال "+["١","٢","٣","٤"][advisorStep]+" من ٤";document.querySelectorAll(".advisor-dot").forEach((dot,i)=>dot.classList.toggle("active",i<=advisorStep));document.getElementById("advisorPrev").disabled=advisorStep===0;document.getElementById("advisorNext").textContent=advisorStep===advisorCards.length-1?"عرض الملخص":"التالي";}
-    document.getElementById("advisorPrev").addEventListener("click",()=>{advisorStep=Math.max(0,advisorStep-1);renderAdvisorStep();});
-    document.getElementById("advisorNext").addEventListener("click",()=>{if(advisorStep<advisorCards.length-1){advisorStep++;renderAdvisorStep();}else{buildAdvisorRecommendation();document.getElementById("advisorGrid").classList.add("result-ready");document.querySelector(".advisor-result").scrollIntoView({behavior:"smooth",block:"center"});}});
-    document.getElementById("advisorRestart").addEventListener("click",()=>{advisorStep=0;document.getElementById("advisorGrid").classList.remove("result-ready");renderAdvisorStep();document.querySelector("#fitout .advisor-progress").scrollIntoView({behavior:"smooth",block:"center"});});
-    document.querySelectorAll("[data-advisor]").forEach(card=>{card.addEventListener("click",e=>{const btn=e.target.closest(".choice");if(!btn)return;card.querySelectorAll(".choice").forEach(x=>x.classList.remove("active"));btn.classList.add("active");advisorState[card.dataset.advisor]=btn.dataset.value;buildAdvisorRecommendation();});});
-    document.getElementById("applyAdvisor").addEventListener("click",()=>{buildAdvisorRecommendation();fitoutSelection=fitoutDraft;updateSummary();document.querySelector("#request").scrollIntoView({behavior:"smooth",block:"start"});});
-    buildAdvisorRecommendation();renderAdvisorStep();
-
-    let roomImage=null;
-    let roomRecommendation=null;
-
-    function quantizedPalette(img){
-      const c=document.createElement("canvas");
-      const max=140, scale=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight));
-      c.width=Math.max(1,Math.round(img.naturalWidth*scale));
-      c.height=Math.max(1,Math.round(img.naturalHeight*scale));
-      const x=c.getContext("2d",{willReadFrequently:true});
-      x.drawImage(img,0,0,c.width,c.height);
-      const data=x.getImageData(0,0,c.width,c.height).data;
-      const buckets=new Map();
-      let totalR=0,totalG=0,totalB=0,count=0;
-      for(let i=0;i<data.length;i+=16){
-        const r=data[i],g=data[i+1],b=data[i+2],a=data[i+3];
-        if(a<200)continue;
-        const lum=(r+g+b)/3;
-        if(lum<18||lum>245)continue;
-        const qr=Math.round(r/40)*40,qg=Math.round(g/40)*40,qb=Math.round(b/40)*40;
-        const key=[Math.min(240,qr),Math.min(240,qg),Math.min(240,qb)].join(",");
-        buckets.set(key,(buckets.get(key)||0)+1);
-        totalR+=r;totalG+=g;totalB+=b;count++;
-      }
-      const top=[...buckets.entries()].sort((a,b)=>b[1]-a[1]).slice(0,4).map(([k])=>k.split(",").map(Number));
-      return {top,avg:count?[totalR/count,totalG/count,totalB/count]:[150,150,150]};
-    }
-
-    function recommendFromRoom(avg){
-      const [r,g,b]=avg;
-      const brightness=(r+g+b)/3;
-      const warm=r-b>12;
-      let base="ivory",accent="oak";
-      if(brightness>185){base=warm?"charcoal":"mocha";accent="oak";}
-      else if(brightness<105){base="ivory";accent=warm?"oak":"lightgray";}
-      else if(warm){base="beige";accent="walnut";}
-      else{base="ivory";accent="charcoal";}
-      return {base,accent,brightness,warm};
-    }
-
-    function handleRoomFile(file){
-      if(!file||!file.type.startsWith("image/"))return;
-      if(file.size>18*1024*1024){
-        document.getElementById("roomAnalysis").textContent="حجم الصورة كبير جداً. اختر صورة أقل من 18MB لتجربة أسرع على الجوال.";
-        return;
-      }
-      const reader=new FileReader();
-      reader.onload=()=>{
-        const img=document.getElementById("roomPreview");
-        img.onload=()=>{
-          roomImage=img;
-          const analysis=quantizedPalette(img);
-          const rec=recommendFromRoom(analysis.avg);
-          roomRecommendation=rec;
-          const palette=document.getElementById("detectedPalette");
-          palette.innerHTML="";
-          analysis.top.forEach(rgb=>{
-            const sw=document.createElement("span");sw.className="detected-color";sw.style.setProperty("--c","rgb("+rgb.join(",")+")");palette.appendChild(sw);
-          });
-          document.getElementById("roomBase").textContent=colorStates[rec.base].label;
-          document.getElementById("roomAccent").textContent=colorStates[rec.accent].label;
-          const tone=rec.warm?"دافئة":"محايدة/باردة";
-          const light=rec.brightness>180?"مضيئة":rec.brightness<110?"داكنة":"متوسطة السطوع";
-          document.getElementById("roomAnalysis").textContent="الصورة تبدو "+light+" وبنغمة "+tone+". لذلك نقترح هذه التركيبة كنقطة بداية للمقارنة داخل 3D، لا كحكم لوني نهائي.";
-          const status=document.getElementById("roomStatus");
-          status.innerHTML='<span>'+light+'</span><span>'+tone+'</span><span>تحليل محلي على جهازك</span>';
-          document.getElementById("roomSide").classList.add("ready");
-          document.getElementById("applyRoomPalette").disabled=false;
-          document.getElementById("saveDecisionCard").disabled=false;
-          document.getElementById("roomUpload").classList.add("has-image");
-          document.getElementById("uploadEmpty").hidden=true;
-          img.hidden=false;
-          document.getElementById("changeRoomPhoto").style.display="inline-flex";
-        };
-        img.src=reader.result;
-      };
-      reader.readAsDataURL(file);
-    }
-    document.getElementById("roomFile").addEventListener("change",e=>handleRoomFile(e.target.files&&e.target.files[0]));
-    document.getElementById("roomFileChange").addEventListener("change",e=>handleRoomFile(e.target.files&&e.target.files[0]));
-
-    document.getElementById("applyRoomPalette").addEventListener("click",()=>{
-      if(!roomRecommendation)return;
-      const s=getState();
-      s.b=roomRecommendation.base;s.a=roomRecommendation.accent;
-      applySavedState(s);
-      document.querySelector(".viewer-card").scrollIntoView({behavior:"smooth",block:"center"});
-    });
-
-    document.getElementById("saveDecisionCard").addEventListener("click",async()=>{
-      if(!roomImage)return;
-      await document.fonts.ready;
-      const canonicalShot=captureComparisonShot();
-      const out=document.createElement("canvas");out.width=1600;out.height=900;
-      const x=out.getContext("2d");
-      x.fillStyle="#0b0b0b";x.fillRect(0,0,out.width,out.height);
-      x.direction="rtl";
-      x.fillStyle="#f6f2e9";x.font="700 42px Tajawal, sans-serif";x.fillText("بطاقة قرار المطبخ",1510,64);
-      x.fillStyle="#d6b56d";x.font="600 22px Tajawal, sans-serif";x.fillText("هاير كلاس — تصور أولي",1510,104);
-
-      function cover(img,dx,dy,dw,dh){
-        const iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height;
-        const scale=Math.max(dw/iw,dh/ih),sw=dw/scale,sh=dh/scale,sx=(iw-sw)/2,sy=(ih-sh)/2;
-        x.drawImage(img,sx,sy,sw,sh,dx,dy,dw,dh);
-      }
-      cover(roomImage,820,150,700,520);
-      const shot=new Image();
-      shot.onload=()=>{
-        cover(shot,80,150,700,520);
-        x.fillStyle="#161616";x.fillRect(80,700,1440,140);
-        x.fillStyle="#f0e7d8";x.font="700 26px Tajawal, sans-serif";
-        x.fillText("الخامة: "+materialMap[currentMaterial]+"   •   التشطيب: "+finishMap[currentFinish],1490,742);
-        x.font="600 22px Tajawal, sans-serif";x.fillStyle="#bbb3a8";
-        x.fillText("الأساسية: "+colorStates[currentBaseColor].label+"   •   العلوية: "+colorStates[currentAccentColor].label+"   •   السطح: "+topStates[currentTop].label,1490,782);
-        x.fillStyle="#77716b";x.font="500 17px Tajawal, sans-serif";
-        x.fillText("تصور بصري أولي — يعتمد الاختيار النهائي مع المنفذ بعد القياس والعينات.",1490,817);
-        const a=document.createElement("a");a.download="kitchen-decision-card.jpg";a.href=out.toDataURL("image/jpeg",.9);a.click();
-      };
-      shot.src=canonicalShot;
-    });
-
-    function selectedAppliances(){
-      return [...document.querySelectorAll('input[name="appliance"]:checked')].map(x=>x.value);
-    }
-
-    function setReady(id,done,label){
-      const el=document.getElementById(id);
-      el.classList.toggle("done",done);
-      el.textContent=(done?"✓ ":"")+label;
-    }
-
-    function updateReadiness(){
-      const hasLayout=Boolean(layoutInput.value);
-      const hasLength=Boolean(lengthInput.value.trim());
-      const hasAppliances=selectedAppliances().length>0;
-      const hasExtra=Boolean(wallBInput.value.trim()||wallCInput.value.trim()||heightInput.value.trim()||noteInput.value.trim());
-
-      let score=45;
-      if(hasLayout)score+=15;
-      if(hasLength)score+=20;
-      if(hasAppliances)score+=10;
-      if(hasExtra)score+=10;
-      score=Math.min(100,score);
-
-      const missing=[];
-      if(!hasLayout)missing.push("شكل المساحة");
-      if(!hasLength)missing.push("الطول الرئيسي");
-      if(!hasAppliances)missing.push("الأجهزة");
-
-      document.getElementById("readinessScore").textContent=score+"%";
-      document.getElementById("readinessFill").style.width=score+"%";
-      document.getElementById("readinessMissing").textContent=missing.length
-        ? "التفاصيل الأساسية المتبقية: "+missing.join("، ")+"."
-        : (hasExtra?"الطلب منظم وجاهز للنسخ قبل التواصل.":"الأساسيات جاهزة؛ يمكنك إضافة ملاحظة أو مقاس إضافي إن وجد.");
-
-      setReady("readyVisual",true,"الاختيار البصري");
-      setReady("readyLayout",hasLayout,"شكل المساحة");
-      setReady("readyLength",hasLength,"المقاس الرئيسي");
-      setReady("readyAppliances",hasAppliances,"الأجهزة");
-      setReady("readyExtra",hasExtra,"تفصيل إضافي");
-    }
-
-    function updateSummary(){
-      const visualTall=currentTallColor!==currentBaseColor?" • العمود الطويل: "+colorStates[currentTallColor].label:"";
-      const parts=["طلب مطبخ — هاير كلاس / فرع الطائف","الاختيار البصري: "+materialInput.value+" • "+baseColorInput.value+" + "+accentColorInput.value+visualTall+" • "+finishInput.value+" • "+topInput.value];
-      if(fitoutSelection)parts.push("تفضيلات التجهيز: "+fitoutSelection);
-      if(layoutInput.value)parts.push("شكل المساحة: "+layoutInput.value);
-      const dims=[];if(lengthInput.value.trim())dims.push("الرئيسي "+lengthInput.value.trim()+"م");if(wallBInput.value.trim())dims.push("ب "+wallBInput.value.trim()+"م");if(wallCInput.value.trim())dims.push("ج "+wallCInput.value.trim()+"م");if(heightInput.value.trim())dims.push("الارتفاع "+heightInput.value.trim()+"م");if(dims.length)parts.push("المقاسات التقريبية: "+dims.join(" • "));
-      const appliances=selectedAppliances();if(appliances.length)parts.push("أماكن الأجهزة: "+appliances.join("، "));if(noteInput.value.trim())parts.push("ملاحظة: "+noteInput.value.trim());
-      parts.push("المعاينة والمقاسات أولية؛ الاعتماد النهائي للتصميم والخامات والتسعير مع هاير كلاس.");
-      summary.textContent=parts.join("\n");updateReadiness();
-    }
-    [materialInput,finishInput,baseColorInput,accentColorInput,topInput,layoutInput,lengthInput,wallBInput,wallCInput,heightInput,noteInput].forEach(el=>el.addEventListener("input",updateSummary));
-    document.querySelectorAll('input[name="appliance"]').forEach(el=>el.addEventListener("change",updateSummary));
-    updateSummary();
-    loadStateFromUrl();
-    updateCurrentChoice();
-
-    async function copyRequest(button){
-      try{
-        await navigator.clipboard.writeText(summary.textContent);
-        const old=button.textContent;button.textContent="تم النسخ ✓";setTimeout(()=>button.textContent=old,1700);
-        return true;
-      }catch(e){
-        const range=document.createRange();range.selectNode(summary);
-        const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);
-        return false;
-      }
-    }
-
-    document.getElementById("copyBtn").addEventListener("click",async e=>{
-      await copyRequest(e.currentTarget);
-    });
-
-    document.getElementById("handoffBtn").addEventListener("click",e=>{
-      const button=e.currentTarget;
-      window.open("https://higher-class.sa/taif","_blank","noopener,noreferrer");
-      copyRequest(button).then(copied=>{if(copied){const old=button.dataset.original||"نسخ الملخص وفتح حجز الطائف";button.dataset.original=old;button.textContent="تم النسخ — ضعه في الملاحظات ✓";setTimeout(()=>button.textContent=old,2200);}});
-    });
-
-    const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("show")}),{threshold:.12});
-    document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
-  </script>
-</body>
-</html>
