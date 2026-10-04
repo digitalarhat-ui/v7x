@@ -36,7 +36,8 @@
     "hamor-kitchen-studio.vercel.app",
     "rukn-sabahiyah-auto.vercel.app",
     "luxurycar-decision-twin.vercel.app",
-    "sdn-taiba-kitchen-studio.vercel.app"
+    "sdn-taiba-kitchen-studio.vercel.app",
+    "dakhakhni-kitchen-studio.vercel.app"
   ],
   "redirects": [
     {
@@ -256,6 +257,17 @@
         {
           "type": "host",
           "value": "sdn-taiba-kitchen-studio.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/dakhakhni-kitchen-studio-v20",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "dakhakhni-kitchen-studio.vercel.app"
         }
       ]
     }
