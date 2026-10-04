@@ -709,7 +709,8 @@
         if(k==="warm"){scene.background.setHex(0x8e7a68);scene.fog.color.setHex(0x8e7a68);hemi.color.setHex(0xffd7ad);hemi.groundColor.setHex(0x5a514a);hemi.intensity=.55;sun.color.setHex(0xffc68b);sun.intensity=1.28;warm.intensity=1.3;renderer.toneMappingExposure=.92}
         else{scene.background.setHex(0xe7e1d7);scene.fog.color.setHex(0xe7e1d7);hemi.color.setHex(0xfff7e8);hemi.groundColor.setHex(0x716d63);hemi.intensity=.8;sun.color.setHex(0xfff2d8);sun.intensity=2.15;warm.intensity=.45;renderer.toneMappingExposure=1.05}
       }
-      window.demo3d={setCabinet:setCabinet,setAccent:setAccent,setWorktop:setWorktop,setLight:setLight};\n      window.__LN_RENDERER__=renderer;window.__LN_SCENE__=scene;window.__LN_CAMERA__=camera;
+      window.demo3d={setCabinet:setCabinet,setAccent:setAccent,setWorktop:setWorktop,setLight:setLight};
+      window.__LN_RENDERER__=renderer;window.__LN_SCENE__=scene;window.__LN_CAMERA__=camera;
       setCabinet(state.cabinet);setAccent(state.accent);setWorktop(state.worktop);setLight(state.light);
       (function loop(){requestAnimationFrame(loop);renderer.render(scene,camera)})();
     }catch(err){
