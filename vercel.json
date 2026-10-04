@@ -38,7 +38,8 @@
     "luxurycar-decision-twin.vercel.app",
     "sdn-taiba-kitchen-studio.vercel.app",
     "dakhakhni-kitchen-studio.vercel.app",
-    "mahad-aldar-kitchen-studio.vercel.app"
+    "mahad-aldar-kitchen-studio.vercel.app",
+    "aldar-closets-kitchen.vercel.app"
   ],
   "redirects": [
     {
@@ -280,6 +281,17 @@
         {
           "type": "host",
           "value": "mahad-aldar-kitchen-studio.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/aldar-closets-kitchen-studio-v20",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "aldar-closets-kitchen.vercel.app"
         }
       ]
     }
