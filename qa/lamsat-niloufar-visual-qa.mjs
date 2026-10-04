@@ -91,6 +91,11 @@ for(const vp of viewports){
   assert(metrics.canvas&&metrics.canvas.width>300&&metrics.canvas.right<=vp.width+1,'CANVAS_LAYOUT_FAIL '+vp.name);
   assert(metrics.whatsapp.includes('966570309451'),'WHATSAPP_ROUTE_FAIL '+vp.name);
 
+  await page.evaluate(()=>window.scrollTo(0,0));
+  await page.waitForTimeout(120);
+  await page.screenshot({path:path.join(outDir,'viewport-default-'+vp.name+'.png'),fullPage:false});
+  await page.locator('#stage').screenshot({path:path.join(outDir,'stage-default-'+vp.name+'.png')});
+
   await page.locator('#cabinetSwatches [data-value="charcoal"]').click();
   await page.locator('#accentSwatches [data-value="darkwood"]').click();
   await page.locator('#worktopSwatches [data-value="calacatta"]').click();
@@ -131,6 +136,8 @@ for(const vp of viewports){
   assert(restored.cabinet==='charcoal'&&restored.accent==='darkwood'&&restored.worktop==='calacatta'&&restored.light==='warm','STATE_RESTORE_VISUAL_FAIL '+vp.name);
   assert(restored.shape==='شكل L'&&restored.zone==='القطيف'&&restored.size==='4.5 × 3 م'&&restored.note==='أفضل تخزيناً أكثر.','STATE_RESTORE_CONTEXT_FAIL '+vp.name);
 
+  await page.evaluate(()=>window.scrollTo(0,0));
+  await page.waitForTimeout(120);
   await page.screenshot({path:path.join(outDir,'viewport-'+vp.name+'.png'),fullPage:false});
   await page.locator('#stage').screenshot({path:path.join(outDir,'stage-'+vp.name+'.png')});
 
