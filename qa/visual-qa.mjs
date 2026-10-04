@@ -39,7 +39,8 @@ for(const vp of viewports){
   await page.goto('http://127.0.0.1:4173',{waitUntil:'networkidle',timeout:90000});
   await page.waitForSelector('#stage canvas',{state:'visible',timeout:30000});
   await page.waitForFunction(()=>window.__HC_V3_ASSET_READY__===true,null,{timeout:90000});
-  await page.waitForTimeout(900);
+  await page.addStyleTag({content:'*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}'});
+  await page.waitForTimeout(700);
   const useful=Date.now()-start;
 
   const metrics=await page.evaluate(()=>{
@@ -83,7 +84,12 @@ for(const vp of viewports){
       ['G-tall-appliance',[4.55,1.78,2.58],[2.46,1.25,-1.38]],
       ['H-contact-depth',[1.55,.72,2.22],[.00,.27,-1.47]]
     ];
-    for(const [name,pos,target] of shots){await setShot(page,pos,target);await stage.screenshot({path:path.join(outDir,`${label}-${name}.png`)});}
+    for(const [name,pos,target] of shots){
+      await setShot(page,pos,target);
+      const box=await stage.boundingBox();
+      if(!box)throw new Error('QA stage box missing for '+name);
+      await page.screenshot({path:path.join(outDir,`${label}-${name}.png`),clip:{x:Math.max(0,box.x),y:Math.max(0,box.y),width:Math.min(box.width,vp.width-Math.max(0,box.x)),height:Math.min(box.height,vp.height-Math.max(0,box.y))}});
+    }
     await page.click('#resetView');await page.waitForTimeout(250);
   }
   report.viewports[vp.name]={...metrics,firstUseful3DRenderMs:useful,consoleErrors,pageErrors,failedRequests};
