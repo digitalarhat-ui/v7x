@@ -36,6 +36,10 @@ jobs:
         run: node qa/visual-qa.mjs ${{ github.event.inputs.label || 'before' }}
       - name: Run regression QA
         run: node qa/regression-qa.mjs
+      - name: Package final source
+        if: always()
+        run: |
+          zip -r qa-artifacts/HIGHER-CLASS-PHOTOREALISM-RESCUE-V2-FINAL.zip index.html assets vercel.json qa .github/workflows/hc-realism-qa.yml
       - name: Upload visual evidence
         if: always()
         uses: actions/upload-artifact@v4
