@@ -24,13 +24,18 @@ function check(name, pass, detail = '') { checks[name] = { pass: Boolean(pass), 
 
 await page.goto('http://127.0.0.1:4173', { waitUntil: 'networkidle', timeout: 60000 });
 await page.waitForSelector('#stage canvas', { state: 'visible', timeout: 30000 });
-await page.waitForTimeout(1800);
+await page.waitForFunction(() => window.__HC_V3_ASSET_READY__ === true, null, { timeout: 90000 });
+await page.waitForTimeout(600);
 
 const webgl = await page.evaluate(() => {
   const c = document.querySelector('#stage canvas');
   try { return Boolean(c && (c.getContext('webgl2') || c.getContext('webgl'))); } catch { return false; }
 });
 check('webgl', webgl);
+
+const assetInfo = await page.evaluate(() => ({ ready: window.__HC_V3_ASSET_READY__ === true, info: window.__HC_RENDER_INFO__, zones: window.__HC_V3_ZONE_COUNTS__ }));
+check('authored_glb_loaded', assetInfo.ready && assetInfo.info?.primitiveCore === false && assetInfo.info?.asset === 'higher-class-fixed-kitchen-v3.glb', JSON.stringify(assetInfo));
+check('material_zones', ['base','upper','tall','top','glass','handles','metal','appliance','carcass','room'].every(k => (assetInfo.zones?.[k] || 0) > 0), JSON.stringify(assetInfo.zones));
 
 const initial = await page.locator('#currentChoice').innerText();
 check('management_default', initial.includes('ساج مرجعي') && initial.includes('خشب فاتح مرجعي'), initial);
