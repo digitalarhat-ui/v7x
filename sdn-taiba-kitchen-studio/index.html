@@ -213,7 +213,7 @@
             </div>
             <div class="stage-top">
               <div class="scene-label"><b>نموذج 3D تجريبي</b>اسحب لتدوير المشهد</div>
-              <div class="orbit-tip">لون الخزائن + سطح العمل + الإضاءة</div>
+              <div class="orbit-tip">خامات + انعكاسات + إضاءة واقعية</div>
             </div>
             <div class="stage-bottom">
               <div class="look-row">
@@ -485,21 +485,52 @@
       fallbackSync();
       return;
     }
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+    var compactQuality=window.matchMedia&&window.matchMedia("(max-width:560px)").matches;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,compactQuality?1.35:1.7));
     renderer.shadowMap.enabled=true;
     renderer.shadowMap.type=THREE.PCFSoftShadowMap;
     renderer.outputEncoding=THREE.sRGBEncoding;
     renderer.toneMapping=THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure=1.04;
+    renderer.toneMappingExposure=.79;
     renderer.physicallyCorrectLights=true;
 
     var scene=new THREE.Scene();
-    scene.background=new THREE.Color(0xc9c4ba);
-    scene.fog=new THREE.Fog(0xc9c4ba,12,23);
+    scene.background=new THREE.Color(0x96928b);
+    scene.fog=new THREE.Fog(0x96928b,22,42);
 
-    var camera=new THREE.PerspectiveCamera(34,1,.1,80);
-    var orbit={theta:.46,phi:1.45,radius:8.55,target:new THREE.Vector3(-.10,1.34,-.78)};
-    var orbitHome={theta:.46,phi:1.45,radius:8.55};
+    // Soft studio environment: gives metal, glass and stone something real to reflect
+    // without importing an unrelated HDR photo.
+    function environmentFace(top,bottom,hotspot){
+      var c=document.createElement("canvas"),x=c.getContext("2d");
+      c.width=c.height=256;
+      var g=x.createLinearGradient(0,0,0,256);
+      g.addColorStop(0,top);g.addColorStop(1,bottom);
+      x.fillStyle=g;x.fillRect(0,0,256,256);
+      if(hotspot){
+        var r=x.createRadialGradient(78,76,8,78,76,125);
+        r.addColorStop(0,"rgba(255,250,238,.96)");
+        r.addColorStop(.35,"rgba(244,235,218,.38)");
+        r.addColorStop(1,"rgba(255,255,255,0)");
+        x.fillStyle=r;x.fillRect(0,0,256,256);
+      }
+      return c;
+    }
+    try{
+      var envCube=new THREE.CubeTexture([
+        environmentFace("#f6f2e8","#8d8982",true),
+        environmentFace("#d5d0c7","#77736e",false),
+        environmentFace("#fffaf0","#b7b0a5",true),
+        environmentFace("#a49f96","#696661",false),
+        environmentFace("#eae6dd","#817c75",true),
+        environmentFace("#d2cdc4","#74716b",false)
+      ]);
+      envCube.encoding=THREE.sRGBEncoding;envCube.needsUpdate=true;
+      scene.environment=envCube;
+    }catch(_){}
+
+    var camera=new THREE.PerspectiveCamera(31,1,.1,90);
+    var orbit={theta:.43,phi:1.34,radius:8.95,target:new THREE.Vector3(-.05,1.30,-.96)};
+    var orbitHome={theta:.43,phi:1.34,radius:8.95};
 
     function updateCamera(){
       var sinPhi=Math.sin(orbit.phi);
@@ -576,6 +607,25 @@
       return tex;
     }
 
+    function microTexture(seed){
+      var c=document.createElement("canvas"),ctx=c.getContext("2d"),rnd=seeded(seed);
+      c.width=c.height=256;
+      ctx.fillStyle="#9a9a9a";ctx.fillRect(0,0,256,256);
+      for(var i=0;i<6000;i++){
+        var v=118+Math.floor(rnd()*34);
+        ctx.fillStyle="rgba("+v+","+v+","+v+","+(.025+rnd()*.045)+")";
+        ctx.fillRect(rnd()*256,rnd()*256,1,1);
+      }
+      var tex=new THREE.CanvasTexture(c);
+      tex.wrapS=tex.wrapT=THREE.RepeatWrapping;
+      tex.repeat.set(5,5);
+      tex.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());
+      return tex;
+    }
+
+    var cabinetMicro=microTexture(991);
+    var stoneMicro=microTexture(221);
+
     var stoneMaps={
       softwhite:stoneTexture("#d9d7d0","#807b70","#b1a99c",42),
       calacatta:stoneTexture("#ebe8e0","#756f68","#c7c0b6",52),
@@ -585,33 +635,38 @@
     };
 
     var cabinetMat=new THREE.MeshPhysicalMaterial({
-      color:colors.cabinet.ivory,roughness:.43,metalness:.015,clearcoat:.18,clearcoatRoughness:.52
+      color:colors.cabinet.ivory,roughness:.39,metalness:0,clearcoat:.10,clearcoatRoughness:.68,
+      bumpMap:cabinetMicro,bumpScale:.006,envMapIntensity:.78
     });
     var cabinetSideMat=new THREE.MeshPhysicalMaterial({
-      color:0xbeb5a7,roughness:.52,metalness:.01,clearcoat:.1,clearcoatRoughness:.62
+      color:0xbeb5a7,roughness:.47,metalness:0,clearcoat:.06,clearcoatRoughness:.76,
+      bumpMap:cabinetMicro,bumpScale:.005,envMapIntensity:.70
     });
     var worktopMat=new THREE.MeshPhysicalMaterial({
-      color:0xffffff,map:stoneMaps.softwhite,roughness:.26,metalness:.015,clearcoat:.3,clearcoatRoughness:.24
+      color:0xffffff,map:stoneMaps.softwhite,roughness:.34,metalness:0,clearcoat:.15,clearcoatRoughness:.46,
+      bumpMap:stoneMicro,bumpScale:.012,envMapIntensity:.92
     });
     var backsplashMat=new THREE.MeshPhysicalMaterial({
-      color:0xe3ded5,map:stoneMaps.softwhite,roughness:.32,metalness:.01,clearcoat:.12
+      color:0xe3ded5,map:stoneMaps.softwhite,roughness:.46,metalness:0,clearcoat:.05,clearcoatRoughness:.78,
+      bumpMap:stoneMicro,bumpScale:.008,envMapIntensity:.62
     });
-    var brushedMetal=new THREE.MeshStandardMaterial({color:0x727773,roughness:.24,metalness:.82});
-    var blackMetal=new THREE.MeshStandardMaterial({color:0x22231f,roughness:.3,metalness:.68});
+    var brushedMetal=new THREE.MeshStandardMaterial({color:0x89908d,roughness:.31,metalness:.91,envMapIntensity:1.25});
+    var blackMetal=new THREE.MeshStandardMaterial({color:0x252622,roughness:.34,metalness:.82,envMapIntensity:.88});
     var applianceGlass=new THREE.MeshPhysicalMaterial({
-      color:0x171918,roughness:.08,metalness:.35,transparent:true,opacity:.94,clearcoat:.55,clearcoatRoughness:.1
+      color:0x111312,roughness:.12,metalness:.30,transparent:true,opacity:.96,clearcoat:.42,clearcoatRoughness:.16,envMapIntensity:1.2
     });
     var glassMat=new THREE.MeshPhysicalMaterial({
-      color:0x9ca7a0,roughness:.08,metalness:.05,transparent:true,opacity:.24,clearcoat:.5,clearcoatRoughness:.08
+      color:0xb8c1bb,roughness:.10,metalness:0,transparent:true,opacity:.17,clearcoat:.24,clearcoatRoughness:.18,
+      envMapIntensity:1.05,side:THREE.DoubleSide
     });
-    var wallMat=new THREE.MeshStandardMaterial({color:0xe7e1d7,roughness:.93});
-    var wallSideMat=new THREE.MeshStandardMaterial({color:0xded7cb,roughness:.95});
-    var floorMat=new THREE.MeshStandardMaterial({color:0xffffff,map:tileTexture(),roughness:.82,metalness:.01});
-    var woodMat=new THREE.MeshStandardMaterial({color:0x7c6047,roughness:.5,metalness:.01});
-    var darkWoodMat=new THREE.MeshStandardMaterial({color:0x493a30,roughness:.5,metalness:.01});
-    var gapMat=new THREE.MeshBasicMaterial({color:0x171814});
-    var warmGlowMat=new THREE.MeshStandardMaterial({color:0xffe1aa,emissive:0xffc66b,emissiveIntensity:2.6,roughness:.4});
-    var chromeMat=new THREE.MeshStandardMaterial({color:0xbfc2bd,roughness:.16,metalness:.95});
+    var wallMat=new THREE.MeshStandardMaterial({color:0xdad5cc,roughness:.91,metalness:0});
+    var wallSideMat=new THREE.MeshStandardMaterial({color:0xcfc9c0,roughness:.93,metalness:0});
+    var floorMat=new THREE.MeshStandardMaterial({color:0xf2f0eb,map:tileTexture(),roughness:.72,metalness:0,bumpMap:stoneMicro,bumpScale:.004});
+    var woodMat=new THREE.MeshStandardMaterial({color:0x745943,roughness:.48,metalness:0,envMapIntensity:.55});
+    var darkWoodMat=new THREE.MeshStandardMaterial({color:0x42352c,roughness:.52,metalness:0,envMapIntensity:.50});
+    var gapMat=new THREE.MeshStandardMaterial({color:0x151613,roughness:.74,metalness:.05});
+    var warmGlowMat=new THREE.MeshStandardMaterial({color:0xffe8cd,emissive:0xffcf91,emissiveIntensity:.85,roughness:.56});
+    var chromeMat=new THREE.MeshStandardMaterial({color:0xc8cdca,roughness:.19,metalness:.98,envMapIntensity:1.45});
 
     var room=new THREE.Group();scene.add(room);
     var kitchen=new THREE.Group();room.add(kitchen);
@@ -629,9 +684,22 @@
       var m=new THREE.Mesh(new THREE.CylinderGeometry(rTop,rBottom,h,segments||24),mat);
       m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;(parent||kitchen).add(m);return m;
     }
+    function roundedFrontGeometry(w,h,d){
+      var r=Math.min(.018,w*.035,h*.035);
+      var sh=new THREE.Shape();
+      sh.moveTo(-w/2+r,-h/2);
+      sh.lineTo(w/2-r,-h/2);sh.quadraticCurveTo(w/2,-h/2,w/2,-h/2+r);
+      sh.lineTo(w/2,h/2-r);sh.quadraticCurveTo(w/2,h/2,w/2-r,h/2);
+      sh.lineTo(-w/2+r,h/2);sh.quadraticCurveTo(-w/2,h/2,-w/2,h/2-r);
+      sh.lineTo(-w/2,-h/2+r);sh.quadraticCurveTo(-w/2,-h/2,-w/2+r,-h/2);
+      var g=new THREE.ExtrudeGeometry(sh,{depth:d,bevelEnabled:true,bevelSegments:2,steps:1,bevelSize:.006,bevelThickness:.006,curveSegments:3});
+      g.translate(0,0,-d/2);
+      return g;
+    }
     function frontPanel(w,h,x,y,z,mat){
-      addBox(w+.018,h+.018,.028,gapMat,x,y,z-.012,kitchen);
-      return addBox(w,h,.034,mat||cabinetMat,x,y,z,kitchen);
+      addBox(w+.022,h+.022,.023,gapMat,x,y,z-.019,kitchen);
+      var m=new THREE.Mesh(roundedFrontGeometry(w,h,.038),mat||cabinetMat);
+      m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;kitchen.add(m);return m;
     }
     function drawerStack(x,w,count){
       var baseY=.49,total=.72,gap=.025,h=(total-gap*(count-1))/count;
@@ -677,6 +745,17 @@
     floor.rotation.x=-Math.PI/2;floor.position.y=.045;floor.receiveShadow=true;room.add(floor);
     addBox(9.2,3.35,.12,wallMat,0,1.7,-2.72,room,false);
     addBox(.12,3.35,7.2,wallSideMat,4.54,1.7,.80,room,false);
+    // Small skirting and a luminous side-window cue add scale and believable daylight.
+    addBox(9.0,.07,.06,new THREE.MeshStandardMaterial({color:0xb8b2a9,roughness:.84}),0,.09,-2.64,room,false);
+    var windowGlass=new THREE.MeshPhysicalMaterial({color:0xdfe9ef,roughness:.08,metalness:0,transparent:true,opacity:.38,clearcoat:.18,envMapIntensity:1.15});
+    addBox(.032,1.48,2.10,windowGlass,4.455,2.08,-.30,room,false);
+    addBox(.045,1.62,.055,blackMetal,4.42,2.08,-1.36,room,false);
+    addBox(.045,1.62,.055,blackMetal,4.42,2.08,.76,room,false);
+    addBox(.045,.055,2.18,blackMetal,4.42,2.87,-.30,room,false);
+    addBox(.045,.055,2.18,blackMetal,4.42,1.29,-.30,room,false);
+    addBox(.045,1.50,.035,blackMetal,4.41,2.08,-.30,room,false);
+    var outdoorGlow=new THREE.MeshBasicMaterial({color:0xf8f4e9});
+    addBox(.025,1.40,2.00,outdoorGlow,4.49,2.08,-.30,room,false);
     // Open-ceiling architectural cutaway: prevents camera occlusion and keeps the kitchen readable.
 
     // Full-height stone backsplash band
@@ -704,9 +783,14 @@
     addBox(5.72,.075,.76,worktopMat,.72,.982,-2.16,kitchen);
     addBox(5.72,.018,.765,blackMetal,.72,.935,-2.16,kitchen);
 
-    // Sink bowl and faucet
-    addBox(.78,.035,.45,brushedMetal,-.56,1.024,-2.12,kitchen);
-    addBox(.63,.027,.34,new THREE.MeshStandardMaterial({color:0x4d5551,roughness:.22,metalness:.75}),-.56,1.045,-2.12,kitchen);
+    // Undermount sink illusion: thin steel lip + visibly recessed bowl.
+    var sinkBowlMat=new THREE.MeshStandardMaterial({color:0x555d5a,roughness:.38,metalness:.90,envMapIntensity:1.20});
+    addBox(.76,.016,.43,brushedMetal,-.56,1.028,-2.12,kitchen);
+    addBox(.62,.028,.31,sinkBowlMat,-.56,1.014,-2.12,kitchen);
+    addBox(.66,.012,.020,chromeMat,-.56,1.044,-1.957,kitchen);
+    addBox(.66,.012,.020,chromeMat,-.56,1.044,-2.283,kitchen);
+    addBox(.020,.012,.32,chromeMat,-.875,1.044,-2.12,kitchen);
+    addBox(.020,.012,.32,chromeMat,-.245,1.044,-2.12,kitchen);
     var faucetCurve=new THREE.CatmullRomCurve3([
       new THREE.Vector3(-.82,1.02,-2.22),
       new THREE.Vector3(-.82,1.42,-2.22),
@@ -747,11 +831,11 @@
     // Island shadow line / plinth
     addBox(2.18,.10,.70,gapMat,.15,.105,.20,kitchen);
 
-    // Minimal accessories on island
-    addCyl(.12,.10,.22,24,new THREE.MeshStandardMaterial({color:0x6f775f,roughness:.72}),.70,1.10,.10,decor);
-    addCyl(.07,.055,.34,18,new THREE.MeshStandardMaterial({color:0x3f513d,roughness:.78}),.70,1.34,.10,decor);
-    addCyl(.055,.045,.29,18,new THREE.MeshStandardMaterial({color:0x53664f,roughness:.78}),.79,1.30,.10,decor);
-    addCyl(.04,.035,.24,18,new THREE.MeshStandardMaterial({color:0x687d62,roughness:.78}),.61,1.28,.10,decor);
+    // Restrained real-world countertop props; no stylised plant geometry.
+    var ceramicMat=new THREE.MeshStandardMaterial({color:0xd8d0c4,roughness:.78,metalness:0});
+    addCyl(.13,.11,.15,36,ceramicMat,.68,1.075,.10,decor);
+    var bowl=new THREE.Mesh(new THREE.TorusGeometry(.13,.028,12,36),ceramicMat);
+    bowl.rotation.x=Math.PI/2;bowl.position.set(.25,1.055,.10);bowl.castShadow=true;decor.add(bowl);
 
     // Three premium stools
     [-.55,.18,.91].forEach(function(x){
@@ -778,19 +862,25 @@
     addBox(.34,.045,1.26,darkWoodMat,4.18,1.50,.55,decor);
     addBox(.34,.045,1.26,darkWoodMat,4.18,2.03,.55,decor);
 
-    // Soft architectural lighting
-    var hemi=new THREE.HemisphereLight(0xffffff,0x756b5d,.82);scene.add(hemi);
-    var key=new THREE.DirectionalLight(0xfff3df,3.0);
-    key.position.set(4.2,7.8,5.8);key.castShadow=true;
-    key.shadow.mapSize.set(2048,2048);
-    key.shadow.camera.near=.5;key.shadow.camera.far=25;
-    key.shadow.camera.left=-7;key.shadow.camera.right=7;key.shadow.camera.top=7;key.shadow.camera.bottom=-7;
-    key.shadow.bias=-.00015;scene.add(key);
-    var fill=new THREE.DirectionalLight(0xdce9ff,1.05);fill.position.set(-5,4,5);scene.add(fill);
-    var warm=new THREE.PointLight(0xffc97c,22,6.5,2);warm.position.set(.15,2.35,.15);scene.add(warm);
-    var underA=new THREE.PointLight(0xffd59c,7.5,3.4,2);underA.position.set(-.80,1.55,-1.88);scene.add(underA);
-    var underB=new THREE.PointLight(0xffd59c,7.5,3.4,2);underB.position.set(1.55,1.55,-1.88);scene.add(underB);
-    var windowFill=new THREE.PointLight(0xd7e8ff,11,8,2);windowFill.position.set(4.0,2.5,3.3);scene.add(windowFill);
+    // Subtle contact-shadow strips deepen joinery without fake outlines.
+    var contactMat=new THREE.MeshBasicMaterial({color:0x242520,transparent:true,opacity:.18});
+    addBox(5.92,.018,.024,.72,.116,-1.93,contactMat,kitchen,false);
+    addBox(2.28,.018,.68,.15,.108,.20,contactMat,kitchen,false);
+    addBox(5.40,.014,.020,.78,1.692,-2.135,contactMat,kitchen,false);
+
+    // Physically quieter daylight. Realism comes from broad contrast, not neon intensity.
+    var hemi=new THREE.HemisphereLight(0xfffcf5,0x504b45,.38);scene.add(hemi);
+    var key=new THREE.DirectionalLight(0xfff7e8,1.56);
+    key.position.set(4.6,7.4,5.6);key.castShadow=true;
+    key.shadow.mapSize.set(compactQuality?1024:2048,compactQuality?1024:2048);
+    key.shadow.camera.near=.5;key.shadow.camera.far=24;
+    key.shadow.camera.left=-6.4;key.shadow.camera.right=6.4;key.shadow.camera.top=6.2;key.shadow.camera.bottom=-4.0;
+    key.shadow.bias=-.00010;key.shadow.normalBias=.012;scene.add(key);
+    var fill=new THREE.DirectionalLight(0xe4edf5,.24);fill.position.set(-4.8,3.6,5.0);scene.add(fill);
+    var warm=new THREE.PointLight(0xffd7aa,4.2,5.4,2);warm.position.set(.20,2.42,.12);scene.add(warm);
+    var underA=new THREE.PointLight(0xffd9ad,1.45,2.7,2);underA.position.set(-.80,1.55,-1.88);scene.add(underA);
+    var underB=new THREE.PointLight(0xffd9ad,1.45,2.7,2);underB.position.set(1.55,1.55,-1.88);scene.add(underB);
+    var windowFill=new THREE.PointLight(0xf4f8ff,3.2,9.0,2);windowFill.position.set(4.0,2.65,.30);scene.add(windowFill);
 
     // Camera orbit controls: the ROOM stays fixed; the camera moves.
     var dragging=false,lastX=0,lastY=0;
@@ -818,9 +908,9 @@
       var w=stageEl.clientWidth,h=stageEl.clientHeight;
       renderer.setSize(w,h,false);
       camera.aspect=w/h;
-      camera.fov=w<620?39:(w<900?36:33);
+      camera.fov=w<620?37:(w<900?34:31);
       camera.updateProjectionMatrix();
-      orbit.radius=w<620?9.7:(w<900?9.05:8.55);
+      orbit.radius=w<620?10.05:(w<900?9.45:8.95);
       updateCamera();
     }
     window.addEventListener("resize",resize);
@@ -844,25 +934,25 @@
       worktopMat.needsUpdate=true;
       backsplashMat.needsUpdate=true;
       if(state.light==="warm"){
-        scene.background.setHex(0xb9aa96);
-        scene.fog.color.setHex(0xb9aa96);
-        renderer.toneMappingExposure=.94;
-        hemi.intensity=.56;
-        key.intensity=2.15;key.color.setHex(0xffd2a1);
-        fill.intensity=.55;
-        warm.intensity=34;
-        underA.intensity=10.5;underB.intensity=10.5;
-        windowFill.intensity=5.5;
+        scene.background.setHex(0x8f8376);
+        scene.fog.color.setHex(0x8f8376);
+        renderer.toneMappingExposure=.75;
+        hemi.intensity=.30;
+        key.intensity=1.20;key.color.setHex(0xffddbb);
+        fill.intensity=.14;
+        warm.intensity=6.6;
+        underA.intensity=2.15;underB.intensity=2.15;
+        windowFill.intensity=1.35;
       }else{
-        scene.background.setHex(0xc9c4ba);
-        scene.fog.color.setHex(0xc9c4ba);
-        renderer.toneMappingExposure=1.04;
-        hemi.intensity=.82;
-        key.intensity=3.0;key.color.setHex(0xfff3df);
-        fill.intensity=1.05;
-        warm.intensity=22;
-        underA.intensity=7.5;underB.intensity=7.5;
-        windowFill.intensity=11;
+        scene.background.setHex(0x96928b);
+        scene.fog.color.setHex(0x96928b);
+        renderer.toneMappingExposure=.79;
+        hemi.intensity=.38;
+        key.intensity=1.56;key.color.setHex(0xfff7e8);
+        fill.intensity=.24;
+        warm.intensity=4.2;
+        underA.intensity=1.45;underB.intensity=1.45;
+        windowFill.intensity=3.2;
       }
     }
     function setActive(group,value){
@@ -937,7 +1027,7 @@
 
     document.getElementById("resetView").addEventListener("click",function(){
       orbit.theta=orbitHome.theta;orbit.phi=orbitHome.phi;
-      orbit.radius=stageEl.clientWidth<620?9.7:(stageEl.clientWidth<900?9.05:orbitHome.radius);
+      orbit.radius=stageEl.clientWidth<620?10.05:(stageEl.clientWidth<900?9.45:orbitHome.radius);
       updateCamera();
     });
     document.getElementById("startBtn").addEventListener("click",function(){document.getElementById("studio").scrollIntoView({behavior:"smooth",block:"center"})});
