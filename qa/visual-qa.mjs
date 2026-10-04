@@ -45,19 +45,31 @@ for(const vp of viewports){
   const metrics=await page.evaluate(()=>{
     const stage=document.querySelector('#stage'),canvas=stage?.querySelector('canvas');
     const rect=stage?.getBoundingClientRect(),cr=canvas?.getBoundingClientRect();
-    let webgl=false,glInfo=null;
+    let webgl=false,glInfo=null,pixelLuma=null;
     try{
       const gl=canvas&&(canvas.getContext('webgl2')||canvas.getContext('webgl'));webgl=!!gl;
-      if(gl){const ext=gl.getExtension('WEBGL_debug_renderer_info');glInfo={vendor:ext?gl.getParameter(ext.UNMASKED_VENDOR_WEBGL):gl.getParameter(gl.VENDOR),renderer:ext?gl.getParameter(ext.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER)}}
+      if(gl){
+        const ext=gl.getExtension('WEBGL_debug_renderer_info');
+        glInfo={vendor:ext?gl.getParameter(ext.UNMASKED_VENDOR_WEBGL):gl.getParameter(gl.VENDOR),renderer:ext?gl.getParameter(ext.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER)};
+        const px=new Uint8Array(4);let total=0,count=0;
+        const w=gl.drawingBufferWidth,h=gl.drawingBufferHeight;
+        for(let yy=.2;yy<=.8;yy+=.15){for(let xx=.2;xx<=.8;xx+=.15){
+          gl.readPixels(Math.floor(w*xx),Math.floor(h*yy),1,1,gl.RGBA,gl.UNSIGNED_BYTE,px);
+          total+=px[0]*.2126+px[1]*.7152+px[2]*.0722;count++;
+        }}
+        pixelLuma=count?total/count:null;
+      }
     }catch{}
     return {
       innerWidth,innerHeight,scrollWidth:document.documentElement.scrollWidth,bodyScrollWidth:document.body.scrollWidth,
       stage:rect?{x:rect.x,y:rect.y,width:rect.width,height:rect.height,right:rect.right,bottom:rect.bottom}:null,
       canvas:cr?{x:cr.x,y:cr.y,width:cr.width,height:cr.height}:null,
-      webgl,glInfo,choice:document.querySelector('#currentChoice')?.textContent?.trim()||null,title:document.title,
+      webgl,glInfo,pixelLuma,choice:document.querySelector('#currentChoice')?.textContent?.trim()||null,title:document.title,
       assetReady:window.__HC_V3_ASSET_READY__===true,renderInfo:window.__HC_RENDER_INFO__||null,zoneCounts:window.__HC_V3_ZONE_COUNTS__||null
     };
   });
+  if(!metrics.webgl)throw new Error('WEBGL_GATE_FAIL '+vp.name);
+  if(metrics.pixelLuma===null || metrics.pixelLuma<18)throw new Error('RENDER_PIXEL_GATE_FAIL '+vp.name+' luma='+metrics.pixelLuma);
   await page.screenshot({path:path.join(outDir,`${label}-${vp.name}.png`),fullPage:false});
   if(vp.name==='1440'){
     const stage=page.locator('#stage');
