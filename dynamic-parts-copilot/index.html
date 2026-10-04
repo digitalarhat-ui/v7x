@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet" />
+  <meta name="googlebot" content="noindex,nofollow,noarchive,nosnippet" />
+  <meta name="description" content="Unofficial concept demo: spare-parts WhatsApp sales-desk triage copilot with human verification." />
+  <title>Spare Parts Sales Desk Copilot — Concept Demo</title>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" defer></script>
+  <style>
+    :root{
+      --bg:#0b0d0f;--panel:#111418;--panel2:#161a1f;--line:#2b3138;--soft:#8f99a5;
+      --text:#f5f2ea;--amber:#f4b942;--amber2:#d99b23;--green:#55d68b;--red:#ff7777;--blue:#79aefc;
+      --shadow:0 24px 80px rgba(0,0,0,.34);--r:18px;
+    }
+    *{box-sizing:border-box}
+    html{background:var(--bg);color-scheme:dark}
+    body{margin:0;background:
+      radial-gradient(900px 450px at 85% -10%,rgba(244,185,66,.12),transparent 60%),
+      linear-gradient(180deg,#0b0d0f,#0d1013 65%,#0a0c0e);
+      color:var(--text);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;min-height:100vh}
+    button,input,textarea,select{font:inherit}
+    button{cursor:pointer}
+    a{color:inherit}
+    .wrap{max-width:1440px;margin:auto;padding:18px}
+    .topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(16px);background:rgba(11,13,15,.84);border-bottom:1px solid rgba(255,255,255,.07)}
+    .topbar .inner{max-width:1440px;margin:auto;padding:12px 18px;display:flex;align-items:center;gap:12px}
+    .mark{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:var(--amber);color:#15120b;font-weight:900;letter-spacing:-.04em}
+    .brand{min-width:0}
+    .brand b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .brand small{color:var(--soft);font-size:11px}
+    .top-actions{margin-inline-start:auto;display:flex;gap:8px;align-items:center}
+    .pill,.lang,.ghost,.btn{border:1px solid var(--line);background:#12161a;color:var(--text);border-radius:999px;padding:9px 12px;font-weight:750;font-size:12px}
+    .pill.warn{border-color:rgba(244,185,66,.35);background:rgba(244,185,66,.08);color:#ffd98e}
+    .lang.active{background:var(--amber);color:#19150d;border-color:var(--amber)}
+    .grid{display:grid;grid-template-columns:320px minmax(0,1fr);gap:16px;align-items:start}
+    .card{background:linear-gradient(180deg,rgba(22,26,31,.98),rgba(15,18,22,.98));border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+    .sidebar{position:sticky;top:82px;overflow:hidden}
+    .side-head{padding:18px;border-bottom:1px solid var(--line)}
+    .eyebrow{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);font-weight:900}
+    h1,h2,h3,p{margin-top:0}
+    h1{font-size:clamp(26px,4vw,48px);line-height:1.04;letter-spacing:-.045em;margin-bottom:12px}
+    h2{font-size:20px;letter-spacing:-.02em}
+    .muted{color:var(--soft)}
+    .queue{padding:8px}
+    .qitem{width:100%;text-align:inherit;border:1px solid transparent;background:transparent;color:inherit;border-radius:14px;padding:12px;display:grid;grid-template-columns:40px 1fr auto;gap:10px;align-items:start}
+    .qitem:hover{background:#171b20}
+    .qitem.active{background:#191e24;border-color:#343b44}
+    .avatar{width:40px;height:40px;border-radius:12px;background:#252b32;display:grid;place-items:center;font-weight:900;color:#d6dde5}
+    .qtitle{font-weight:850;font-size:13px;margin-bottom:3px}
+    .qsub{font-size:11px;color:var(--soft);line-height:1.4}
+    .qtime{font-size:10px;color:#717b87;white-space:nowrap}
+    .newcase{padding:12px;border-top:1px solid var(--line)}
+    .main{min-width:0;display:grid;gap:16px}
+    .hero{padding:22px}
+    .hero-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(290px,.75fr);gap:18px;align-items:end}
+    .truthbox{background:#0d1115;border:1px solid #313840;border-radius:16px;padding:16px}
+    .truthrow{display:grid;grid-template-columns:24px 1fr;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:12px}
+    .truthrow:last-child{border-bottom:0}
+    .dot{width:9px;height:9px;border-radius:50%;margin-top:4px;background:var(--green);box-shadow:0 0 0 4px rgba(85,214,139,.08)}
+    .dot.warn{background:var(--amber);box-shadow:0 0 0 4px rgba(244,185,66,.08)}
+    .workspace{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:16px}
+    .section{padding:18px}
+    .section-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
+    .section-head .n{width:30px;height:30px;border-radius:9px;background:#222831;display:grid;place-items:center;color:var(--amber);font-weight:900;font-size:12px}
+    .section-head div:last-child{min-width:0}
+    .section-head h2{margin-bottom:3px}
+    .chat{background:#0c1013;border:1px solid #2c333b;border-radius:16px;padding:16px;min-height:220px;display:flex;flex-direction:column;justify-content:flex-end;gap:10px}
+    .bubble{max-width:88%;padding:11px 13px;border-radius:14px;font-size:13px;line-height:1.6}
+    .bubble.in{background:#1c2229;border-bottom-right-radius:4px;align-self:flex-start}
+    [dir="rtl"] .bubble.in{border-bottom-right-radius:14px;border-bottom-left-radius:4px;align-self:flex-end}
+    .attachment{display:grid;grid-template-columns:54px 1fr;gap:10px;align-items:center;background:#11161b;border:1px solid #323942;padding:9px;border-radius:12px}
+    .photo{width:54px;height:54px;border-radius:10px;background:
+      linear-gradient(135deg,#4e5359,#15191d 45%,#8a7e62 46%,#2b3035 48%,#14181c);border:1px solid #4a5057;position:relative;overflow:hidden}
+    .photo:after{content:"OEM";position:absolute;left:6px;bottom:6px;background:#d9d4c8;color:#171717;padding:2px 4px;font-size:8px;font-weight:900;border-radius:3px}
+    .voice{display:flex;align-items:center;gap:8px;color:#d8dee5;font-size:12px}
+    .wave{height:16px;flex:1;background:repeating-linear-gradient(90deg,#65717d 0 2px,transparent 2px 5px);opacity:.5}
+    .field{display:grid;gap:6px;margin-bottom:11px}
+    label{font-size:11px;color:#aeb7c1;font-weight:800}
+    input,textarea,select{width:100%;border:1px solid #343c45;background:#0f1317;color:var(--text);border-radius:11px;padding:11px 12px;outline:none}
+    textarea{min-height:84px;resize:vertical;line-height:1.55}
+    input:focus,textarea:focus,select:focus{border-color:#796129;box-shadow:0 0 0 3px rgba(244,185,66,.08)}
+    .upload{border:1px dashed #46505a;border-radius:14px;padding:14px;text-align:center;background:#0e1216}
+    .upload input{display:none}
+    .upload strong{display:block;font-size:13px}
+    .upload small{display:block;color:var(--soft);margin-top:5px}
+    .preview{margin-top:10px;display:none;border-radius:12px;max-height:180px;max-width:100%;object-fit:contain;border:1px solid #363e47;background:#080a0c}
+    .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .btn{border-radius:11px;padding:11px 14px}
+    .btn.primary{background:var(--amber);color:#1a160e;border-color:var(--amber)}
+    .btn.success{background:#1a5d3a;color:#eafff2;border-color:#2d8b5b}
+    .btn.danger{color:#ffc3c3;border-color:#6b3636;background:#251416}
+    .btn:disabled{opacity:.45;cursor:not-allowed}
+    .status{display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:900;border:1px solid #3a424b}
+    .status.exact{color:#a9f4c8;background:rgba(85,214,139,.08);border-color:rgba(85,214,139,.28)}
+    .status.verify{color:#ffe0a0;background:rgba(244,185,66,.08);border-color:rgba(244,185,66,.28)}
+    .status.none{color:#ffc1c1;background:rgba(255,119,119,.08);border-color:rgba(255,119,119,.28)}
+    .ocr{background:#0b0f12;border:1px solid #303740;border-radius:13px;padding:12px;margin-top:12px}
+    .ocr pre{margin:8px 0 0;white-space:pre-wrap;word-break:break-word;color:#bac3cd;font-size:11px;line-height:1.55;max-height:140px;overflow:auto}
+    .progress{height:5px;background:#222830;border-radius:999px;overflow:hidden;margin-top:9px;display:none}
+    .progress span{display:block;height:100%;width:0;background:var(--amber);transition:width .2s}
+    .facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .fact{background:#0d1115;border:1px solid #303740;border-radius:13px;padding:11px}
+    .fact small{display:block;color:#7f8995;font-size:9px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:5px}
+    .fact input{padding:7px 0;border:0;border-radius:0;background:transparent;font-weight:800}
+    .matches{display:grid;gap:9px;margin-top:12px}
+    .match{border:1px solid #323a43;background:#0e1216;border-radius:14px;padding:13px}
+    .match.selected{border-color:#8f6e25;background:#15130d}
+    .match-top{display:flex;gap:10px;align-items:start;justify-content:space-between}
+    .oem{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#ffd78b;font-weight:900;font-size:12px}
+    .match p{font-size:11px;color:#9ea8b3;margin:7px 0 0;line-height:1.5}
+    .warning{margin-top:12px;border:1px solid rgba(244,185,66,.28);background:rgba(244,185,66,.06);border-radius:13px;padding:11px;color:#ebd6a9;font-size:11px;line-height:1.6}
+    .review{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .reply{background:#0d1115;border:1px solid #303740;border-radius:14px;padding:13px;min-height:138px;white-space:pre-wrap;font-size:12px;line-height:1.7}
+    .rfq{background:linear-gradient(135deg,#f2e8cd,#d9c89c);color:#1a1813;border-radius:16px;padding:16px;box-shadow:0 14px 40px rgba(0,0,0,.22)}
+    .rfq .row{display:flex;justify-content:space-between;gap:15px;padding:7px 0;border-bottom:1px solid rgba(0,0,0,.1);font-size:11px}
+    .rfq .row:last-child{border-bottom:0}
+    .rfq b{font-weight:900}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+    .tab{border:1px solid #333b44;background:#101419;color:#aab3bd;border-radius:999px;padding:8px 11px;font-size:11px;font-weight:850}
+    .tab.active{background:#222932;color:white}
+    .evidence{display:none;padding:18px}
+    .evidence.show{display:block}
+    .evidence-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .source{border:1px solid #313942;background:#0f1317;border-radius:13px;padding:13px}
+    .source a{font-size:11px;color:#ffd17a;word-break:break-all}
+    .source p{font-size:11px;color:#9ca6b1;line-height:1.5;margin:8px 0}
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .kpi{background:#0e1216;border:1px solid #303740;border-radius:13px;padding:12px}
+    .kpi b{font-size:12px}
+    .kpi small{display:block;color:var(--soft);margin-top:5px;line-height:1.45}
+    .footer{padding:22px 0 8px;color:#6f7983;font-size:10px;line-height:1.6}
+    .hidden{display:none!important}
+    .ltr{direction:ltr;text-align:left}
+    @media(max-width:1050px){
+      .grid{grid-template-columns:1fr}.sidebar{position:static}.queue{display:grid;grid-template-columns:repeat(4,minmax(210px,1fr));overflow:auto}.qitem{min-width:210px}
+      .workspace{grid-template-columns:1fr}.hero-grid{grid-template-columns:1fr}.review{grid-template-columns:1fr}
+    }
+    @media(max-width:640px){
+      .wrap{padding:10px}.topbar .inner{padding:10px}.brand small{display:none}.pill{display:none}
+      .hero,.section{padding:14px}.facts{grid-template-columns:1fr}.evidence-grid,.kpis{grid-template-columns:1fr}
+      h1{font-size:31px}.queue{grid-template-columns:repeat(4,82vw)}.qitem{min-width:82vw}
+      .actions .btn{flex:1 1 auto}.top-actions{gap:5px}.lang{padding:8px 10px}
+    }
+  </style>
+</head>
+<body>
+<header class="topbar">
+  <div class="inner">
+    <div class="mark">DP</div>
+    <div class="brand">
+      <b data-i18n="brand">مساعد مكتب مبيعات قطع الغيار</b>
+      <small data-i18n="subbrand">نموذج مفاهيمي غير رسمي — لا يرتبط بالمخزون أو الأسعار أو واتساب الحي</small>
+    </div>
+    <div class="top-actions">
+      <span class="pill warn" data-i18n="human">مراجعة بشرية إلزامية</span>
+      <button class="lang active" data-lang="ar">ع</button>
+      <button class="lang" data-lang="en">EN</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="grid">
+    <aside class="card sidebar">
+      <div class="side-head">
+        <div class="eyebrow" data-i18n="inboxLabel">صندوق وارد تجريبي</div>
+        <h2 data-i18n="inboxTitle" style="margin:6px 0 4px">طلبات تحتاج تحديد قطعة</h2>
+        <p class="muted" data-i18n="inboxText" style="font-size:11px;margin:0">نحافظ على قناة العميل الحالية. المساعد يعمل خلف الكواليس لموظف المبيعات.</p>
+      </div>
+      <div class="queue" id="queue"></div>
+      <div class="newcase">
+        <button class="btn" id="newLive" style="width:100%" data-i18n="newLive">+ اختبار OCR بصورة حقيقية</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section class="card hero">
+        <div class="hero-grid">
+          <div>
+            <div class="eyebrow" data-i18n="concept">SPARE-PARTS SALES DESK COPILOT</div>
+            <h1 data-i18n="hero">العميل يرسل نفس رسالة واتساب. الموظف يحصل على طلب منظم وجاهز للمراجعة.</h1>
+            <p class="muted" data-i18n="heroBody" style="max-width:760px;line-height:1.75;margin-bottom:0">هذا النموذج لا يستبدل بحث المنتجات أو سلة طلب العرض أو موظف قطع الغيار. يضيف طبقة مساعدة للطلبات غير الواضحة: نص/صورة → استخراج → مرشحات كتالوج → نواقص → رد مقترح → اعتماد بشري.</p>
+          </div>
+          <div class="truthbox">
+            <div class="truthrow"><span class="dot"></span><span data-i18n="truth1">OCR الحقيقي يعمل داخل المتصفح عند رفع صورة.</span></div>
+            <div class="truthrow"><span class="dot warn"></span><span data-i18n="truth2">لا توجد نسب ثقة مصطنعة. الحالات فقط: تطابق رقم / يحتاج تحقق / أدلة غير كافية.</span></div>
+            <div class="truthrow"><span class="dot warn"></span><span data-i18n="truth3">لا يوجد تحقق مخزون أو سعر أو توافق آلي. المختص هو صاحب القرار النهائي.</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <div class="card section">
+          <div class="section-head">
+            <div class="n">01</div>
+            <div><h2 data-i18n="incoming">الطلب الوارد</h2><div class="muted" data-i18n="incomingSub" style="font-size:11px">محاكاة لرسالة واتساب موجودة فعلاً — لا نطلب من العميل فتح موقع جديد.</div></div>
+          </div>
+          <div class="chat" id="chat"></div>
+
+          <div class="field" style="margin-top:14px">
+            <label data-i18n="msgLabel">نص رسالة العميل</label>
+            <textarea id="msg"></textarea>
+          </div>
+          <div class="field">
+            <label data-i18n="voiceLabel">تفريغ الملاحظة الصوتية — اختياري</label>
+            <textarea id="voice" placeholder="الصق التفريغ هنا إذا كان الطلب صوتياً"></textarea>
+          </div>
+          <label class="upload" for="file">
+            <input id="file" type="file" accept="image/*" />
+            <strong data-i18n="uploadStrong">ارفع صورة القطعة / الملصق / رقم OEM</strong>
+            <small data-i18n="uploadSmall">في هذا النموذج، الصورة تبقى داخل متصفحك. OCR يعمل محلياً ولا يوجد رفع إلى Backend.</small>
+            <img id="preview" class="preview" alt="preview" />
+          </label>
+          <div class="actions">
+            <button class="btn primary" id="analyze" data-i18n="analyze">تحليل الطلب</button>
+            <button class="btn" id="sampleExact" data-i18n="sampleExact">عينة موثقة: تطابق رقم</button>
+            <button class="btn" id="clear" data-i18n="clear">إعادة ضبط</button>
+          </div>
+          <div class="progress" id="progress"><span></span></div>
+          <div class="ocr" id="ocrBox">
+            <strong data-i18n="ocrRaw">نص OCR / النص الخام</strong>
+            <pre id="ocrText">—</pre>
+          </div>
+        </div>
+
+        <div class="card section">
+          <div class="section-head">
+            <div class="n">02</div>
+            <div><h2 data-i18n="triage">بطاقة الفرز لموظف المبيعات</h2><div class="muted" data-i18n="triageSub" style="font-size:11px">كل حقل قابل للتعديل قبل البحث أو الرد.</div></div>
+          </div>
+
+          <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px">
+            <span id="status" class="status none" data-i18n="statusNone">أدلة غير كافية</span>
+            <span class="muted" style="font-size:10px" data-i18n="subset">كتالوج تجريبي صغير من مراجع منشورة علناً — لا مخزون ولا أسعار حية</span>
+          </div>
+
+          <div class="facts">
+            <div class="fact"><small data-i18n="manufacturer">الشركة المصنعة</small><input id="manufacturer" value="" /></div>
+            <div class="fact"><small data-i18n="partNumber">رقم القطعة / OEM</small><input id="partNumber" value="" class="ltr" /></div>
+            <div class="fact"><small data-i18n="machine">المركبة / المعدة / الموديل</small><input id="machine" value="" /></div>
+            <div class="fact"><small data-i18n="serial">الشاصي / السيريال</small><input id="serial" value="" class="ltr" /></div>
+            <div class="fact"><small data-i18n="qty">الكمية</small><input id="qty" value="" inputmode="numeric" /></div>
+            <div class="fact"><small data-i18n="preference">الجودة المطلوبة</small>
+              <select id="quality"><option value="">—</option><option>Genuine</option><option>OEM</option><option>Aftermarket</option><option>No preference</option></select>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn" id="rematch" data-i18n="rematch">إعادة مطابقة بعد التعديل</button>
+          </div>
+          <div class="matches" id="matches"></div>
+          <div class="warning" data-i18n="warning">التطابق هنا يساعد الموظف في البحث فقط. لا يعني توافقاً نهائياً أو توفر مخزون. يجب على مختص قطع الغيار تأكيد الرقم والتطبيق قبل أي عرض سعر أو طلب.</div>
+        </div>
+      </section>
+
+      <section class="card section">
+        <div class="section-head">
+          <div class="n">03</div>
+          <div><h2 data-i18n="humanReview">قرار الموظف + الرد المقترح</h2><div class="muted" data-i18n="humanReviewSub" style="font-size:11px">المساعد يقترح، الموظف يقرر. لا توجد رسالة واتساب حية في هذا النموذج.</div></div>
+        </div>
+        <div class="review">
+          <div>
+            <div class="tabs">
+              <button class="tab active" id="confirmBtn" data-i18n="confirm">تأكيد للمراجعة / RFQ</button>
+              <button class="tab" id="askBtn" data-i18n="ask">اطلب معلومات ناقصة</button>
+              <button class="tab" id="rejectBtn" data-i18n="reject">ارفض المرشح</button>
+            </div>
+            <div class="reply" id="reply"></div>
+            <div class="actions">
+              <button class="btn" id="copyReply" data-i18n="copyReply">نسخ الرد</button>
+              <button class="btn" id="copyRfq" data-i18n="copyRfq">نسخ ملخص RFQ</button>
+            </div>
+          </div>
+          <div class="rfq" id="rfq">
+            <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6" data-i18n="reviewReady">REVIEW-READY RFQ</div>
+            <h3 style="margin:5px 0 10px" data-i18n="rfqTitle">ملخص طلب عرض السعر — للاعتماد البشري</h3>
+            <div id="rfqRows"></div>
+            <div style="margin-top:10px;font-size:10px;opacity:.7" data-i18n="rfqFoot">نموذج مفاهيمي فقط. لا يرسل الطلب ولا يتحقق من المخزون أو السعر أو التوافق.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div style="padding:16px 18px;border-bottom:1px solid var(--line);display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <button class="tab active" data-panel="evidence" data-i18n="evidenceTab">ما الذي نحترمه في نظامهم الحالي؟</button>
+          <button class="tab" data-panel="pilot" data-i18n="pilotTab">ما الذي يجب قياسه في Pilot؟</button>
+        </div>
+        <div class="evidence show" id="evidence">
+          <div class="evidence-grid">
+            <div class="source">
+              <b data-i18n="current1">البحث + سلة طلب العرض موجودان بالفعل</b>
+              <p data-i18n="current1b">هذا الـ Copilot لا يستبدلهما. يستهدف الطلبات التي تصل بدون رقم واضح أو تحتاج تفسير صورة/رسالة.</p>
+              <a href="https://dynamic-saudi.com/en/products" target="_blank" rel="noopener noreferrer">dynamic-saudi.com/en/products</a>
+            </div>
+            <div class="source">
+              <b data-i18n="current2">الفورم المنظم والصورة موجودان بالفعل</b>
+              <p data-i18n="current2b">القيمة المقترحة ليست “إنشاء RFQ form”، بل تحويل الطلب غير الواضح إلى بطاقة مراجعة للموظف.</p>
+              <a href="https://dynamic-saudi.com/en/quote" target="_blank" rel="noopener noreferrer">dynamic-saudi.com/en/quote</a>
+            </div>
+            <div class="source">
+              <b data-i18n="current3">العميل يرسل رقم/موديل/صورة</b>
+              <p data-i18n="current3b">هذا يثبت نمط الإدخال. حجم العبء اليومي ما زال يحتاج تأكيداً من الفريق قبل اعتبار العرض مدفوعاً.</p>
+              <a href="https://dynamic-saudi.com/en/faq" target="_blank" rel="noopener noreferrer">dynamic-saudi.com/en/faq</a>
+            </div>
+          </div>
+          <p class="muted" data-i18n="evidenceNote" style="font-size:10px;margin:12px 0 0">يستخدم النموذج مجموعة صغيرة منتقاة يدوياً من مراجع منتجات منشورة علناً. لا توجد وصلة مباشرة بكتالوج Dynamic Parts أو ERP أو المخزون أو الأسعار.</p>
+        </div>
+        <div class="evidence" id="pilot">
+          <div class="kpis">
+            <div class="kpi"><b data-i18n="kpi1">زمن الوصول لرد جاهز للمراجعة</b><small data-i18n="kpi1b">من وصول طلب غير واضح حتى يصبح لدى المختص مرشح + أسئلة ناقصة + مسودة رد.</small></div>
+            <div class="kpi"><b data-i18n="kpi2">نسبة تصحيح المختص</b><small data-i18n="kpi2b">كم مرة يعدل الموظف رقم القطعة أو يرفض المرشح؟ هذا أهم من أي “دقة AI” تسويقية.</small></div>
+            <div class="kpi"><b data-i18n="kpi3">عدد جولات الاستيضاح</b><small data-i18n="kpi3b">هل النظام يساعد في طلب المعلومة الصحيحة من أول مرة؟</small></div>
+            <div class="kpi"><b data-i18n="kpi4">اكتمال RFQ</b><small data-i18n="kpi4b">كم طلباً يصل إلى كمية + تفضيل جودة + موديل/سيريال + رقم/مرشح صالح للمراجعة؟</small></div>
+          </div>
+          <p class="muted" data-i18n="pilotNote" style="font-size:10px;margin:12px 0 0">لا توجد أرقام ROI أو توفير وقت مفترضة. هذه المقاييس يجب قياسها على 10–20 طلباً تاريخياً منزوعة البيانات الحساسة قبل أي وعد تجاري.</p>
+        </div>
+      </section>
+
+      <div class="footer" data-i18n="footer">
+        Concept demo by Digital Arhat. Not an official Dynamic Parts system. No live WhatsApp integration, no live inventory/pricing, no autonomous fitment decision. Human specialist approval is mandatory.
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+const CATALOG = [
+  {brand:'FAW',name:'Air Filter Element',nameAr:'عنصر فلتر هواء',oem:'1109060/70-2000-C00',cross:'PU2652',scope:'FAW Truck'},
+  {brand:'FAW',name:'Oil Filter',nameAr:'فلتر زيت',oem:'1017010B29DM',scope:'FAW Truck'},
+  {brand:'FAW',name:'Oil Filter',nameAr:'فلتر زيت',oem:'1012010-M18-054W',scope:'FAW Truck'},
+  {brand:'FAW',name:'Fuel Filter Element',nameAr:'عنصر فلتر وقود',oem:'1117050-M00-2060A',scope:'FAW Truck'},
+  {brand:'FAW',name:'Diesel Pre-Filter',nameAr:'فلتر ديزل أولي',oem:'1105050-2007',scope:'FAW Truck'},
+  {brand:'FAW',name:'Steering Oil Filter',nameAr:'فلتر زيت المقود',oem:'3408015-716',scope:'FAW Truck'},
+  {brand:'SANY',name:'Fuel Filter',nameAr:'فلتر وقود',oem:'60206773',scope:'SANY Equipment'},
+  {brand:'SANY',name:'Oil Filter',nameAr:'فلتر زيت',oem:'160605010014A',scope:'SANY Equipment'},
+  {brand:'SANY',name:'Fuel Water Separator',nameAr:'فاصل ماء الوقود',oem:'160604020109A',scope:'SANY Equipment'},
+  {brand:'SINOTRUK',name:'PTO',nameAr:'مخرج قدرة PTO',oem:'WG9700290180',scope:'SINOTRUK Truck'},
+  {brand:'SINOTRUK',name:'Brake Drum',nameAr:'طنبور فرامل',oem:'AZ4095450001',scope:'SINOTRUK Truck'},
+  {brand:'SINOTRUK',name:'O Ring',nameAr:'حلقة O',oem:'VG15400040025',scope:'HOWO / A7 / SITRAK'}
+];
+
+const SAMPLES = [
+  {id:'exact',titleAr:'FAW — رقم OEM واضح',titleEn:'FAW — clear OEM',subAr:'رسالة + رقم منشور علناً',subEn:'Message + public OEM reference',time:'18:02',
+   message:'السلام عليكم، أحتاج 2 حبة فلتر هواء FAW. رقم القطعة 1109060/70-2000-C00',voice:'أبيه أصلي إذا متوفر.',machine:'FAW Truck',serial:'',qty:'2',quality:'Genuine',image:true},
+  {id:'partial',titleAr:'FAW — رقم غير مكتمل',titleEn:'FAW — incomplete number',subAr:'آخر خانة غير واضحة',subEn:'Last character unclear',time:'17:41',
+   message:'عندي فلتر هواء FAW والرقم على القطعة 1109060/70-2000-C0؟ والصورة قديمة',voice:'أحتاج نفس القطعة أو البديل المناسب بعد التأكيد.',machine:'FAW Truck',serial:'',qty:'1',quality:'No preference',image:true},
+  {id:'none',titleAr:'مضخة — بدون رقم OEM',titleEn:'Pump — no OEM number',subAr:'موديل فقط؛ يحتاج معلومة إضافية',subEn:'Model only; needs more data',time:'16:55',
+   message:'السلام عليكم، عندي مضخة هيدروليك موديل HP-220X وأحتاج نفس القطعة',voice:'ما عندي رقم القطعة، عندي صورة فقط.',machine:'Hydraulic Pump HP-220X',serial:'P-99-7731',qty:'1',quality:'No preference',image:true}
+];
+
+const I18N = {
+ ar:{
+  brand:'مساعد مكتب مبيعات قطع الغيار',subbrand:'نموذج مفاهيمي غير رسمي — لا يرتبط بالمخزون أو الأسعار أو واتساب الحي',human:'مراجعة بشرية إلزامية',
+  inboxLabel:'صندوق وارد تجريبي',inboxTitle:'طلبات تحتاج تحديد قطعة',inboxText:'نحافظ على قناة العميل الحالية. المساعد يعمل خلف الكواليس لموظف المبيعات.',newLive:'+ اختبار OCR بصورة حقيقية',
+  concept:'SPARE-PARTS SALES DESK COPILOT',hero:'العميل يرسل نفس رسالة واتساب. الموظف يحصل على طلب منظم وجاهز للمراجعة.',heroBody:'هذا النموذج لا يستبدل بحث المنتجات أو سلة طلب العرض أو موظف قطع الغيار. يضيف طبقة مساعدة للطلبات غير الواضحة: نص/صورة → استخراج → مرشحات كتالوج → نواقص → رد مقترح → اعتماد بشري.',
+  truth1:'OCR الحقيقي يعمل داخل المتصفح عند رفع صورة.',truth2:'لا توجد نسب ثقة مصطنعة. الحالات فقط: تطابق رقم / يحتاج تحقق / أدلة غير كافية.',truth3:'لا يوجد تحقق مخزون أو سعر أو توافق آلي. المختص هو صاحب القرار النهائي.',
+  incoming:'الطلب الوارد',incomingSub:'محاكاة لرسالة واتساب موجودة فعلاً — لا نطلب من العميل فتح موقع جديد.',msgLabel:'نص رسالة العميل',voiceLabel:'تفريغ الملاحظة الصوتية — اختياري',
+  uploadStrong:'ارفع صورة القطعة / الملصق / رقم OEM',uploadSmall:'في هذا النموذج، الصورة تبقى داخل متصفحك. OCR يعمل محلياً ولا يوجد رفع إلى Backend.',analyze:'تحليل الطلب',sampleExact:'عينة موثقة: تطابق رقم',clear:'إعادة ضبط',ocrRaw:'نص OCR / النص الخام',
+  triage:'بطاقة الفرز لموظف المبيعات',triageSub:'كل حقل قابل للتعديل قبل البحث أو الرد.',statusExact:'تطابق حرفي لرقم OEM',statusVerify:'مرشح يحتاج تحقق',statusNone:'أدلة غير كافية',subset:'كتالوج تجريبي صغير من مراجع منشورة علناً — لا مخزون ولا أسعار حية',
+  manufacturer:'الشركة المصنعة',partNumber:'رقم القطعة / OEM',machine:'المركبة / المعدة / الموديل',serial:'الشاصي / السيريال',qty:'الكمية',preference:'الجودة المطلوبة',rematch:'إعادة مطابقة بعد التعديل',
+  warning:'التطابق هنا يساعد الموظف في البحث فقط. لا يعني توافقاً نهائياً أو توفر مخزون. يجب على مختص قطع الغيار تأكيد الرقم والتطبيق قبل أي عرض سعر أو طلب.',
+  humanReview:'قرار الموظف + الرد المقترح',humanReviewSub:'المساعد يقترح، الموظف يقرر. لا توجد رسالة واتساب حية في هذا النموذج.',confirm:'تأكيد للمراجعة / RFQ',ask:'اطلب معلومات ناقصة',reject:'ارفض المرشح',copyReply:'نسخ الرد',copyRfq:'نسخ ملخص RFQ',
+  reviewReady:'REVIEW-READY RFQ',rfqTitle:'ملخص طلب عرض السعر — للاعتماد البشري',rfqFoot:'نموذج مفاهيمي فقط. لا يرسل الطلب ولا يتحقق من المخزون أو السعر أو التوافق.',
+  evidenceTab:'ما الذي نحترمه في نظامهم الحالي؟',pilotTab:'ما الذي يجب قياسه في Pilot؟',current1:'البحث + سلة طلب العرض موجودان بالفعل',current1b:'هذا الـ Copilot لا يستبدلهما. يستهدف الطلبات التي تصل بدون رقم واضح أو تحتاج تفسير صورة/رسالة.',
+  current2:'الفورم المنظم والصورة موجودان بالفعل',current2b:'القيمة المقترحة ليست “إنشاء RFQ form”، بل تحويل الطلب غير الواضح إلى بطاقة مراجعة للموظف.',current3:'العميل يرسل رقم/موديل/صورة',current3b:'هذا يثبت نمط الإدخال. حجم العبء اليومي ما زال يحتاج تأكيداً من الفريق قبل اعتبار العرض مدفوعاً.',
+  evidenceNote:'يستخدم النموذج مجموعة صغيرة منتقاة يدوياً من مراجع منتجات منشورة علناً. لا توجد وصلة مباشرة بكتالوج Dynamic Parts أو ERP أو المخزون أو الأسعار.',
+  kpi1:'زمن الوصول لرد جاهز للمراجعة',kpi1b:'من وصول طلب غير واضح حتى يصبح لدى المختص مرشح + أسئلة ناقصة + مسودة رد.',kpi2:'نسبة تصحيح المختص',kpi2b:'كم مرة يعدل الموظف رقم القطعة أو يرفض المرشح؟ هذا أهم من أي “دقة AI” تسويقية.',kpi3:'عدد جولات الاستيضاح',kpi3b:'هل النظام يساعد في طلب المعلومة الصحيحة من أول مرة؟',kpi4:'اكتمال RFQ',kpi4b:'كم طلباً يصل إلى كمية + تفضيل جودة + موديل/سيريال + رقم/مرشح صالح للمراجعة؟',
+  pilotNote:'لا توجد أرقام ROI أو توفير وقت مفترضة. هذه المقاييس يجب قياسها على 10–20 طلباً تاريخياً منزوعة البيانات الحساسة قبل أي وعد تجاري.',
+  footer:'Concept demo by Digital Arhat. Not an official Dynamic Parts system. No live WhatsApp integration, no live inventory/pricing, no autonomous fitment decision. Human specialist approval is mandatory.',
+  photo:'صورة مرفقة',voiceNote:'ملاحظة صوتية',exactReason:'تطابق حرفي لرقم OEM في مجموعة العرض العامة. التوافق والمخزون يحتاجان تأكيد المختص.',partialReason:'الرقم المرئي قريب من مرجع منشور، لكن الأدلة غير كافية للتأكيد. يحتاج مراجعة مختص.',noneReason:'لم نجد رقماً مطابقاً أو قريباً بشكل موثوق في مجموعة العرض الصغيرة.',
+  noMatches:'لا يوجد مرشح موثوق في مجموعة العرض.',scope:'نطاق مرجع عام',cross:'Cross reference',select:'اختيار للمراجعة',ocrWaiting:'لم يتم تشغيل OCR بعد.',ocrRunning:'يتم قراءة الصورة داخل المتصفح…',ocrUnavailable:'تعذر تشغيل محرك OCR. الصق رقم/نص الملصق يدوياً في الرسالة ثم أعد التحليل.',
+  askModel:'يرجى تزويدنا بموديل المعدة/المركبة ورقم الشاصي أو السيريال إن وجد.',askQty:'كم الكمية المطلوبة؟',askQuality:'هل تفضل Genuine / OEM / Aftermarket أم لا يوجد تفضيل؟',askClearPhoto:'يرجى إرسال صورة أوضح يظهر فيها رقم القطعة/الملصق بالكامل.',
+  replyExact:'تم العثور على مرجع برقم مطابق في الكتالوج التجريبي. قبل التسعير، سيؤكد مختص قطع الغيار التطبيق والتوفر.',replyVerify:'وجدنا مرشحاً محتملاً فقط. نحتاج تأكيد المختص ومعلومة إضافية قبل أي تسعير.',replyNone:'لا يوجد تطابق موثوق حالياً. نحتاج معلومات إضافية لتحديد القطعة بشكل آمن.',
+  copied:'تم النسخ'
+ },
+ en:{
+  brand:'Spare Parts Sales Desk Copilot',subbrand:'Unofficial concept — not connected to live stock, pricing or WhatsApp',human:'Human review mandatory',
+  inboxLabel:'DEMO INBOX',inboxTitle:'Requests needing identification',inboxText:'Keep the customer in the current channel. The copilot works behind the sales desk.',newLive:'+ Test real OCR with a photo',
+  concept:'SPARE-PARTS SALES DESK COPILOT',hero:'Customer sends the same WhatsApp message. Sales gets a structured, review-ready case.',heroBody:'This concept does not replace product search, the quote basket, or the spare-parts specialist. It adds an assist layer for unresolved requests: text/photo → extraction → catalogue candidates → missing info → reply draft → human approval.',
+  truth1:'Real OCR runs in the browser when you upload a photo.',truth2:'No fabricated confidence percentages. Only: exact number / needs verification / insufficient evidence.',truth3:'No live stock, pricing or fitment decision. A spare-parts specialist stays accountable.',
+  incoming:'Incoming request',incomingSub:'WhatsApp-style simulation — customer is not asked to open a new site.',msgLabel:'Customer message',voiceLabel:'Voice-note transcript — optional',
+  uploadStrong:'Upload part / label / OEM-number photo',uploadSmall:'In this demo the image stays in your browser. OCR runs client-side; there is no backend upload.',analyze:'Analyze request',sampleExact:'Verified sample: exact number',clear:'Reset',ocrRaw:'OCR / raw text',
+  triage:'Sales triage card',triageSub:'Every field can be edited before search or reply.',statusExact:'Exact OEM string match',statusVerify:'Candidate — verify',statusNone:'Insufficient evidence',subset:'Small demo subset from public product references — no live stock or pricing',
+  manufacturer:'Manufacturer',partNumber:'Part number / OEM',machine:'Vehicle / machine / model',serial:'VIN / serial',qty:'Quantity',preference:'Quality preference',rematch:'Re-match after edits',
+  warning:'A match here only assists catalogue search. It is not a final fitment or availability decision. A spare-parts specialist must confirm the number and application before any quote or order.',
+  humanReview:'Human decision + reply draft',humanReviewSub:'Copilot proposes; salesperson decides. This demo does not send live WhatsApp messages.',confirm:'Confirm for review / RFQ',ask:'Ask for missing info',reject:'Reject candidate',copyReply:'Copy reply',copyRfq:'Copy RFQ summary',
+  reviewReady:'REVIEW-READY RFQ',rfqTitle:'RFQ summary — human approval required',rfqFoot:'Concept only. Does not submit the RFQ or verify stock, price or fitment.',
+  evidenceTab:'What do we respect in the existing workflow?',pilotTab:'What must a pilot measure?',current1:'Search + quote basket already exist',current1b:'The copilot does not replace them. It targets incoming requests with no clear number or a photo/message that needs interpretation.',
+  current2:'Structured quote form + photo already exist',current2b:'The proposed value is not “build an RFQ form”; it is turning an unresolved enquiry into a salesperson review card.',current3:'Customers send number/model/photo',current3b:'This validates the input pattern. Daily workload still needs confirmation before treating the offer as commercially proven.',
+  evidenceNote:'The demo uses a small manually curated subset of publicly listed product references. It is not connected to Dynamic Parts’ live catalogue, ERP, stock or pricing.',
+  kpi1:'Time to review-ready response',kpi1b:'From unresolved enquiry to candidate + missing-info questions + reply draft.',kpi2:'Specialist correction rate',kpi2b:'How often does staff edit the part number or reject a candidate? More meaningful than a marketing “AI accuracy” claim.',kpi3:'Clarification rounds',kpi3b:'Does the tool help ask for the right missing information earlier?',kpi4:'RFQ completeness',kpi4b:'How many cases reach quantity + quality preference + machine/serial + reviewable number/candidate?',
+  pilotNote:'No invented ROI or time-saving numbers. These metrics should be measured on 10–20 redacted historical enquiries before any commercial promise.',
+  footer:'Concept demo by Digital Arhat. Not an official Dynamic Parts system. No live WhatsApp integration, no live inventory/pricing, no autonomous fitment decision. Human specialist approval is mandatory.',
+  photo:'Photo attached',voiceNote:'Voice note',exactReason:'Character-for-character OEM reference found in the demo public subset. Fitment and stock still require specialist confirmation.',partialReason:'Visible code is close to a public reference, but evidence is not strong enough to confirm. Specialist review required.',noneReason:'No reliable exact or close match in the small demo subset.',
+  noMatches:'No reliable candidate in the demo subset.',scope:'Public reference scope',cross:'Cross reference',select:'Select for review',ocrWaiting:'OCR has not run yet.',ocrRunning:'Reading image locally in your browser…',ocrUnavailable:'OCR engine could not start. Paste the visible code/text into the message and analyze again.',
+  askModel:'Please provide the machine/vehicle model and VIN/serial if available.',askQty:'What quantity do you need?',askQuality:'Do you prefer Genuine / OEM / Aftermarket, or no preference?',askClearPhoto:'Please send a clearer photo showing the full label/part number.',
+  replyExact:'An exact OEM reference was found in the demo catalogue. Before pricing, a spare-parts specialist must confirm application and availability.',replyVerify:'We found only a possible candidate. Specialist confirmation and additional information are required before pricing.',replyNone:'No reliable match yet. We need more information to identify the part safely.',
+  copied:'Copied'
+ }
+};
+
+let lang='ar', current=SAMPLES[0], chosen=null, lastState='none', lastResults=[], imageFile=null, ocrText='';
+
+const $=id=>document.getElementById(id);
+const t=k=>I18N[lang][k]||k;
+const norm=s=>(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+
+function levenshtein(a,b){
+  const m=a.length,n=b.length,dp=Array.from({length:m+1},(_,i)=>[i]);
+  for(let j=1;j<=n;j++)dp[0][j]=j;
+  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)dp[i][j]=Math.min(dp[i-1][j]+1,dp[i][j-1]+1,dp[i-1][j-1]+(a[i-1]===b[j-1]?0:1));
+  return dp[m][n];
+}
+function extractNumber(text){
+  const tokens=(text||'').match(/[A-Z0-9][A-Z0-9\/-]{5,}[A-Z0-9?]/gi)||[];
+  const ranked=tokens.filter(x=>/\d/.test(x)).sort((a,b)=>norm(b).length-norm(a).length);
+  return ranked[0]||'';
+}
+function detectBrand(text){
+  const u=(text||'').toUpperCase();
+  if(u.includes('FAW')||u.includes('فاو'))return'FAW';
+  if(u.includes('SANY')||u.includes('ساني'))return'SANY';
+  if(u.includes('SINOTRUK')||u.includes('HOWO')||u.includes('سينوتراك')||u.includes('هوو'))return'SINOTRUK';
+  return'';
+}
+function extractQty(text){
+  const s=text||'';
+  const m=s.match(/(?:qty|quantity|كمية|عدد|أحتاج|احتاج)\s*[:x×-]?\s*(\d{1,3})/i) || s.match(/(\d{1,3})\s*(?:حبة|قطعة|pcs?|pieces?)/i);
+  return m?m[1]:'';
+}
+function publicMatch(pn,brand){
+  const n=norm(pn);
+  if(n){
+    const exact=CATALOG.find(x=>norm(x.oem)===n||norm(x.cross||'')===n);
+    if(exact)return{state:'exact',results:[{item:exact,reason:t('exactReason')}]};
+  }
+  const possibles=CATALOG.map(item=>{
+    const io=norm(item.oem),d=n?levenshtein(n,io):99;
+    let prefix=0;if(n){while(prefix<Math.min(n.length,io.length)&&n[prefix]===io[prefix])prefix++;}
+    const brandBonus=brand&&item.brand===brand;
+    const viable=n&&(d<=2||prefix>=7);
+    return{item,d,prefix,brandBonus,viable};
+  }).filter(x=>x.viable&&(x.brandBonus||!brand)).sort((a,b)=>a.d-b.d||b.prefix-a.prefix).slice(0,3)
+    .map(x=>({item:x.item,reason:t('partialReason')}));
+  return possibles.length?{state:'verify',results:possibles}:{state:'none',results:[]};
+}
+function renderQueue(){
+  $('queue').innerHTML=SAMPLES.map((s,i)=>`<button class="qitem ${current?.id===s.id?'active':''}" data-case="${s.id}">
+    <span class="avatar">${i+1}</span><span><div class="qtitle">${lang==='ar'?s.titleAr:s.titleEn}</div><div class="qsub">${lang==='ar'?s.subAr:s.subEn}</div></span><span class="qtime">${s.time}</span></button>`).join('');
+  document.querySelectorAll('[data-case]').forEach(b=>b.onclick=()=>loadCase(b.dataset.case));
+}
+function renderChat(){
+  const img=current?.image?`<div class="attachment"><div class="photo"></div><div><b style="font-size:11px">${t('photo')}</b><div class="muted" style="font-size:10px;margin-top:3px">IMG_2481.jpg</div></div></div>`:'';
+  const voice=$('voice').value?`<div class="attachment"><div style="width:54px;height:54px;border-radius:10px;background:#1a2026;display:grid;place-items:center">◖</div><div><div class="voice"><span>${t('voiceNote')}</span><span class="wave"></span></div><div class="muted" style="font-size:10px;margin-top:5px">${esc($('voice').value)}</div></div></div>`:'';
+  $('chat').innerHTML=`<div class="bubble in">${esc($('msg').value||'—')}</div>${img}${voice}`;
+}
+function loadCase(id){
+  current=SAMPLES.find(x=>x.id===id);
+  imageFile=null;ocrText='';$('file').value='';$('preview').style.display='none';
+  $('msg').value=current.message;$('voice').value=current.voice;$('machine').value=current.machine;$('serial').value=current.serial;$('qty').value=current.qty;$('quality').value=current.quality;
+  $('manufacturer').value=detectBrand(current.message+' '+current.voice);$('partNumber').value=extractNumber(current.message+' '+current.voice);
+  $('ocrText').textContent=t('ocrWaiting');chosen=null;renderQueue();renderChat();rematch();
+}
+function clearAll(){
+  current={id:'live',image:false};imageFile=null;ocrText='';chosen=null;
+  ['msg','voice','manufacturer','partNumber','machine','serial','qty'].forEach(id=>$(id).value='');$('quality').value='';$('file').value='';$('preview').style.display='none';$('ocrText').textContent=t('ocrWaiting');renderQueue();renderChat();rematch();
+}
+function setStatus(state){
+  lastState=state;const el=$('status');el.className='status '+state;
+  el.textContent=state==='exact'?t('statusExact'):state==='verify'?t('statusVerify'):t('statusNone');
+}
+function renderMatches(results){
+  lastResults=results;chosen=null;
+  if(!results.length){$('matches').innerHTML=`<div class="match"><b>${t('noMatches')}</b><p>${t('noneReason')}</p></div>`;updateReply('ask');return;}
+  $('matches').innerHTML=results.map((r,i)=>`<div class="match" data-mi="${i}">
+    <div class="match-top"><div><div style="font-weight:900">${lang==='ar'?r.item.nameAr:r.item.name}</div><div class="oem">${r.item.oem}</div></div><button class="btn" data-pick="${i}">${t('select')}</button></div>
+    <p>${r.reason}</p><p><b>${t('scope')}:</b> ${r.item.scope}${r.item.cross?` · <b>${t('cross')}:</b> ${r.item.cross}`:''}</p></div>`).join('');
+  document.querySelectorAll('[data-pick]').forEach(b=>b.onclick=()=>{chosen=results[+b.dataset.pick];document.querySelectorAll('.match').forEach(x=>x.classList.remove('selected'));document.querySelector(`[data-mi="${b.dataset.pick}"]`).classList.add('selected');updateRfq();updateReply(lastState==='exact'?'confirm':'ask');});
+  if(results.length===1){chosen=results[0];document.querySelector('[data-mi="0"]')?.classList.add('selected');}
+  updateRfq();updateReply(lastState==='exact'?'confirm':'ask');
+}
+function rematch(){
+  const text=[$('msg').value,$('voice').value,ocrText].join(' ');
+  if(!$('manufacturer').value)$('manufacturer').value=detectBrand(text);
+  if(!$('partNumber').value)$('partNumber').value=extractNumber(text);
+  if(!$('qty').value)$('qty').value=extractQty(text);
+  const out=publicMatch($('partNumber').value,$('manufacturer').value);
+  setStatus(out.state);renderMatches(out.results);
+}
+function missingQuestions(){
+  const q=[];
+  if(!$('machine').value.trim()&&!$('serial').value.trim())q.push(t('askModel'));
+  if(!$('qty').value.trim())q.push(t('askQty'));
+  if(!$('quality').value)q.push(t('askQuality'));
+  if(!$('partNumber').value.trim()&&lastState==='none')q.push(t('askClearPhoto'));
+  return q;
+}
+function updateReply(mode='confirm'){
+  document.querySelectorAll('.tab').forEach(x=>{if(['confirmBtn','askBtn','rejectBtn'].includes(x.id))x.classList.remove('active')});
+  $(mode==='confirm'?'confirmBtn':mode==='ask'?'askBtn':'rejectBtn').classList.add('active');
+  const pn=chosen?.item.oem||$('partNumber').value||'—';
+  const intro=lastState==='exact'?t('replyExact'):lastState==='verify'?t('replyVerify'):t('replyNone');
+  const qs=missingQuestions();
+  let body=intro;
+  if(mode==='ask')body += '\n\n'+(qs.length?qs.map(x=>'• '+x).join('\n'):'• '+t('askModel'));
+  if(mode==='reject')body=(lang==='ar'?'تم استبعاد المرشح الحالي من قبل الموظف. نحتاج رقماً/صورة أوضح قبل المتابعة.':'Current candidate was rejected by the salesperson. A clearer number/photo is required before proceeding.');
+  if(mode==='confirm')body += '\n\n'+(lang==='ar'?'المرجع للمراجعة: ':'Review reference: ')+pn+'\n'+(lang==='ar'?'لن يتم اعتماد التوافق أو التسعير إلا بعد تأكيد المختص.':'Fitment and pricing remain blocked until specialist confirmation.');
+  $('reply').textContent=body;updateRfq();
+}
+function updateRfq(){
+  const rows=[
+    [lang==='ar'?'حالة المطابقة':'Match state',$('status').textContent],
+    [lang==='ar'?'العلامة':'Brand',$('manufacturer').value||'—'],
+    [lang==='ar'?'رقم OEM':'OEM',chosen?.item.oem||$('partNumber').value||'—'],
+    [lang==='ar'?'المعدة/الموديل':'Machine / model',$('machine').value||'—'],
+    [lang==='ar'?'الشاصي/السيريال':'VIN / serial',$('serial').value||'—'],
+    [lang==='ar'?'الكمية':'Quantity',$('qty').value||'—'],
+    [lang==='ar'?'الجودة':'Preference',$('quality').value||'—'],
+    [lang==='ar'?'اعتماد المختص':'Specialist approval',lang==='ar'?'مطلوب قبل التسعير':'Required before pricing']
+  ];
+  $('rfqRows').innerHTML=rows.map(([a,b])=>`<div class="row"><span>${esc(a)}</span><b>${esc(b)}</b></div>`).join('');
+}
+async function runOCR(file){
+  if(!file)return'';
+  $('progress').style.display='block';$('progress').firstElementChild.style.width='8%';$('ocrText').textContent=t('ocrRunning');
+  try{
+    if(!window.Tesseract)throw new Error('Tesseract unavailable');
+    const result=await Tesseract.recognize(file,'eng',{logger:m=>{if(m.status==='recognizing text')$('progress').firstElementChild.style.width=Math.max(12,Math.round((m.progress||0)*100))+'%';}});
+    $('progress').firstElementChild.style.width='100%';
+    setTimeout(()=>$('progress').style.display='none',450);
+    return result?.data?.text||'';
+  }catch(e){
+    $('progress').style.display='none';$('ocrText').textContent=t('ocrUnavailable');return'';
+  }
+}
+async function analyze(){
+  if(imageFile){ocrText=await runOCR(imageFile);if(ocrText)$('ocrText').textContent=ocrText.trim()||'—';}
+  else if(!ocrText)$('ocrText').textContent=t('ocrWaiting');
+  const all=[$('msg').value,$('voice').value,ocrText].join(' ');
+  $('manufacturer').value=detectBrand(all)||$('manufacturer').value;
+  const candidate=extractNumber(all);if(candidate)$('partNumber').value=candidate;
+  const q=extractQty(all);if(q&&!$('qty').value)$('qty').value=q;
+  renderChat();rematch();
+}
+function copy(text,btn){
+  navigator.clipboard?.writeText(text).then(()=>{const old=btn.textContent;btn.textContent=t('copied');setTimeout(()=>btn.textContent=old,1300)}).catch(()=>{});
+}
+function rfqText(){
+  return Array.from($('rfqRows').querySelectorAll('.row')).map(r=>Array.from(r.children).map(x=>x.textContent).join(': ')).join('\n')+'\n'+(lang==='ar'?'مراجعة مختص قطع الغيار إلزامية قبل التسعير/الطلب.':'Spare-parts specialist review required before pricing/order.');
+}
+function switchLang(next){
+  lang=next;document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.dataset.i18n;if(I18N[lang][k])el.textContent=I18N[lang][k]});
+  document.querySelectorAll('.lang').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
+  renderQueue();renderChat();rematch();
+}
+
+$('file').addEventListener('change',e=>{imageFile=e.target.files?.[0]||null;if(imageFile){const url=URL.createObjectURL(imageFile);$('preview').src=url;$('preview').style.display='block';current={id:'live',image:true};renderQueue();renderChat();}});
+$('analyze').onclick=analyze;$('rematch').onclick=rematch;$('clear').onclick=clearAll;$('newLive').onclick=clearAll;$('sampleExact').onclick=()=>loadCase('exact');
+$('msg').oninput=renderChat;$('voice').oninput=renderChat;['manufacturer','partNumber','machine','serial','qty','quality'].forEach(id=>$(id).addEventListener('input',updateRfq));
+$('confirmBtn').onclick=()=>updateReply('confirm');$('askBtn').onclick=()=>updateReply('ask');$('rejectBtn').onclick=()=>updateReply('reject');
+$('copyReply').onclick=e=>copy($('reply').textContent,e.currentTarget);$('copyRfq').onclick=e=>copy(rfqText(),e.currentTarget);
+document.querySelectorAll('.lang').forEach(b=>b.onclick=()=>switchLang(b.dataset.lang));
+document.querySelectorAll('[data-panel]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-panel]').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.evidence').forEach(x=>x.classList.remove('show'));$(b.dataset.panel).classList.add('show');});
+
+$('ocrText').textContent=t('ocrWaiting');
+loadCase('exact');
+</script>
+</body>
+</html>

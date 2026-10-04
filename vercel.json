@@ -14,6 +14,19 @@
           "value": "strict-origin-when-cross-origin"
         }
       ]
+    },
+    {
+      "source": "/dynamic-parts-copilot/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
     }
   ],
   "alias": [
@@ -42,7 +55,8 @@
     "aldar-closets-kitchen.vercel.app",
     "kitchens66-jubail.vercel.app",
     "dyar-kitchen-studio.vercel.app",
-    "rawae-dream-kitchens.vercel.app"
+    "rawae-dream-kitchens.vercel.app",
+    "dynamic-parts-sales-copilot.vercel.app"
   ],
   "redirects": [
     {
@@ -328,6 +342,17 @@
         {
           "type": "host",
           "value": "rawae-dream-kitchens.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/dynamic-parts-copilot",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "dynamic-parts-sales-copilot.vercel.app"
         }
       ]
     }
