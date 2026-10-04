@@ -68,6 +68,11 @@
     .decision-actions .mini-action{border:1px solid var(--line);background:#141414;color:#ddd6cd;border-radius:12px;padding:9px 12px;cursor:pointer;font-size:12px;font-weight:700;transition:.2s ease}
     .decision-actions .mini-action:hover{border-color:rgba(214,181,109,.5);transform:translateY(-1px)}
     .decision-actions .mini-action.primary{background:rgba(214,181,109,.12);border-color:rgba(214,181,109,.34);color:#f2d99f}
+    .curated-looks{grid-column:1/-1;border-top:1px solid var(--line);padding-top:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .curated-looks>span{font-size:11px;color:#807a73;font-weight:700;margin-left:2px}
+    .look-btn{border:1px solid var(--line);background:#121212;color:#b9b2a9;border-radius:999px;padding:8px 11px;cursor:pointer;font-size:11px;font-weight:700;transition:.2s ease}
+    .look-btn:hover{border-color:rgba(214,181,109,.45)}
+    .look-btn.active{background:rgba(214,181,109,.13);border-color:rgba(214,181,109,.40);color:#f0d89e}
     .signature-section{padding:34px 0 26px}
     .signature-card{border:1px solid var(--line);border-radius:30px;background:linear-gradient(145deg,#121212,#0c0c0c);padding:28px}
     .signature-head{display:grid;grid-template-columns:.82fr 1.18fr;gap:32px;align-items:start;margin-bottom:22px}
@@ -405,6 +410,12 @@
               <button class="seg active" data-value="day">نهار معماري</button>
               <button class="seg" data-value="evening">مساء دافئ</button>
               <button class="seg" data-value="neutral">عرض محايد</button>
+            </div>
+            <div class="curated-looks" aria-label="اتجاهات جاهزة من الخامات المرسلة">
+              <span>اتجاهات جاهزة من الخامات المرسلة</span>
+              <button class="look-btn" data-look="balanced" type="button">توازن هادئ</button>
+              <button class="look-btn" data-look="wood" type="button">دفء الخشب</button>
+              <button class="look-btn" data-look="sage" type="button">ساج مميز</button>
             </div>
             <div class="client-material-truth" aria-label="الخامات المرسلة من العميل">
               <div class="client-material-title">الخامات المرسلة منكم</div>
@@ -756,6 +767,7 @@
     const cabinetMeshes=[];
     const baseCabinetMeshes=[];
     const upperCabinetMeshes=[];
+    const tallCabinetMeshes=[];
     const topMeshes=[];
 
     const handleMat=new THREE.MeshStandardMaterial({color:0x8d918e,metalness:.94,roughness:.30,envMapIntensity:1.42});
@@ -866,6 +878,7 @@
 
     const baseCabinetMat=new THREE.MeshPhysicalMaterial({color:0x8b9b8a,metalness:0,roughness:.53,clearcoat:.025,clearcoatRoughness:.78,envMapIntensity:.92});
     const upperCabinetMat=new THREE.MeshPhysicalMaterial({color:0xffffff,map:clientWoodTexture,metalness:0,roughness:.47,clearcoat:.02,clearcoatRoughness:.80,envMapIntensity:.96});
+    const tallCabinetMat=baseCabinetMat.clone();
     const topMat=new THREE.MeshPhysicalMaterial({color:0xc8c5be,map:stoneTexture,metalness:0,roughness:.52,clearcoat:.035,clearcoatRoughness:.74,envMapIntensity:.86});
     const revealMat=new THREE.MeshStandardMaterial({color:0x242624,metalness:0,roughness:.82,envMapIntensity:.45});
     const displayBackMat=new THREE.MeshStandardMaterial({color:0x252a27,metalness:0,roughness:.74,envMapIntensity:.50});
@@ -873,7 +886,9 @@
     function registerCabinet(mesh,zone){
       mesh.userData.zone=zone;
       cabinetMeshes.push(mesh);
-      (zone==="upper"?upperCabinetMeshes:baseCabinetMeshes).push(mesh);
+      if(zone==="upper")upperCabinetMeshes.push(mesh);
+      else if(zone==="tall")tallCabinetMeshes.push(mesh);
+      else baseCabinetMeshes.push(mesh);
     }
 
     function addFrontPanel(x,y,z,w,h,mat,zone,handleSide="right"){
@@ -926,8 +941,8 @@
 
     [-1.62,-.82,-.02,.78,1.58].forEach((x,i)=>addUpperUnit(x,.74,i===0||i===4));
 
-    const tall=box(.88,2.84,.72,2.46,1.42,-1.68,baseCabinetMat,.008); registerCabinet(tall,"base");
-    addFrontPanel(2.46,2.16,-1.305,.79,1.17,baseCabinetMat,"base");
+    const tall=box(.88,2.84,.72,2.46,1.42,-1.68,tallCabinetMat,.008); registerCabinet(tall,"tall");
+    addFrontPanel(2.46,2.16,-1.305,.79,1.17,tallCabinetMat,"tall");
     box(.68,1.20,.024,2.46,.77,-1.304,darkGlassMat,.004);
     box(.57,.52,.034,2.46,.98,-1.275,darkGlassMat,.005);
     addHandle(2.46,.70,-1.215,.50,false);
@@ -983,14 +998,14 @@
       dark:{label:"حجر داكن",color:0x393836,metalness:0,roughness:.41}
     };
 
-    let currentMaterial="metal", currentFinish="matte", currentBaseColor="clientSage", currentAccentColor="clientWood", currentTop="natural", currentLighting="day";
+    let currentMaterial="metal", currentFinish="matte", currentBaseColor="clientSage", currentAccentColor="clientWood", currentTallColor="clientSage", currentTop="natural", currentLighting="day";
 
     function materialRoughness(base){ return currentFinish==="gloss" ? Math.max(.24,base-.18) : Math.min(.72,base+.03); }
 
     function configureZone(zone){
-      const key=zone==="upper"?currentAccentColor:currentBaseColor;
+      const key=zone==="upper"?currentAccentColor:(zone==="tall"?currentTallColor:currentBaseColor);
       const state=colorStates[key];
-      const mat=zone==="upper"?upperCabinetMat:baseCabinetMat;
+      const mat=zone==="upper"?upperCabinetMat:(zone==="tall"?tallCabinetMat:baseCabinetMat);
       mat.color.setHex(state.hex);
       mat.metalness=0;
       mat.bumpMap=null;
@@ -1016,13 +1031,14 @@
 
     function applyMaterial(value){
       currentMaterial=value;
-      configureZone("base");configureZone("upper");
+      configureZone("base");configureZone("upper");configureZone("tall");
     }
     function applyCabinetColor(zone,value){
-      if(zone==="upper")currentAccentColor=value;else currentBaseColor=value;
-      configureZone(zone);
+      if(zone==="upper"){currentAccentColor=value;configureZone("upper");}
+      else{currentBaseColor=value;currentTallColor=value;configureZone("base");configureZone("tall");}
     }
-    function applyFinish(value){currentFinish=value;configureZone("base");configureZone("upper");}
+    function applyTallColor(value){currentTallColor=value;configureZone("tall");}
+    function applyFinish(value){currentFinish=value;configureZone("base");configureZone("upper");configureZone("tall");}
     function applyTop(value){
       currentTop=value;const src=topStates[value];
       topMeshes.forEach(m=>{m.material.color.setHex(src.color);m.material.metalness=src.metalness;m.material.roughness=src.roughness;m.material.map=stoneTexture;m.material.needsUpdate=true;});
@@ -1180,15 +1196,17 @@
     }
 
     function getState(){
-      return {m:currentMaterial,b:currentBaseColor,a:currentAccentColor,f:currentFinish,t:currentTop,l:currentLighting};
+      return {m:currentMaterial,b:currentBaseColor,a:currentAccentColor,x:currentTallColor,f:currentFinish,t:currentTop,l:currentLighting};
     }
 
     function stateSummary(s){
-      return [materialMap[s.m],colorStates[s.b].label+" + "+colorStates[s.a].label,finishMap[s.f],topStates[s.t].label,lightingStates[s.l].label].join(" • ");
+      const zones=colorStates[s.b].label+" + "+colorStates[s.a].label+(s.x&&s.x!==s.b?" + عمود "+colorStates[s.x].label:"");
+      return [materialMap[s.m],zones,finishMap[s.f],topStates[s.t].label,lightingStates[s.l].label].join(" • ");
     }
 
     function updateCurrentChoice(){
-      const value=materialMap[currentMaterial]+" • "+colorStates[currentBaseColor].label+" + "+colorStates[currentAccentColor].label+" • "+finishMap[currentFinish]+" • "+topStates[currentTop].label+" • "+lightingStates[currentLighting].label;
+      const tallPart=currentTallColor!==currentBaseColor?" • عمود "+colorStates[currentTallColor].label:"";
+      const value=materialMap[currentMaterial]+" • "+colorStates[currentBaseColor].label+" + "+colorStates[currentAccentColor].label+tallPart+" • "+finishMap[currentFinish]+" • "+topStates[currentTop].label+" • "+lightingStates[currentLighting].label;
       const el=document.getElementById("currentChoice");
       if(el)el.textContent=value;
       const formEl=document.getElementById("formCurrentChoice");
@@ -1199,15 +1217,15 @@
       updateCurrentChoice();
       const s=getState();
       const u=new URL(location.href);
-      ["m","b","a","f","t","l"].forEach(k=>u.searchParams.set(k,s[k]));
+      ["m","b","a","x","f","t","l"].forEach(k=>u.searchParams.set(k,s[k]));
       history.replaceState(null,"",u);
       return u.toString();
     }
 
     function applySavedState(s){
       if(!s)return;
-      currentMaterial=s.m; currentBaseColor=s.b; currentAccentColor=s.a; currentFinish=s.f; currentTop=s.t; currentLighting=s.l;
-      applyCabinetColor("base",s.b); applyCabinetColor("upper",s.a); applyFinish(s.f); applyMaterial(s.m); applyTop(s.t); applyLighting(s.l);
+      currentMaterial=s.m; currentBaseColor=s.b; currentAccentColor=s.a; currentTallColor=s.x||s.b; currentFinish=s.f; currentTop=s.t; currentLighting=s.l;
+      applyCabinetColor("base",s.b); applyCabinetColor("upper",s.a); applyTallColor(s.x||s.b); applyFinish(s.f); applyMaterial(s.m); applyTop(s.t); applyLighting(s.l);
       materialInput.value=materialMap[s.m]; finishInput.value=finishMap[s.f]; baseColorInput.value=colorStates[s.b].label; accentColorInput.value=colorStates[s.a].label; topInput.value=topStates[s.t].label;
       ["material","baseColor","accentColor","finish","top","lighting"].forEach(kind=>{
         const map={material:s.m,baseColor:s.b,accentColor:s.a,finish:s.f,top:s.t,lighting:s.l};
@@ -1287,12 +1305,25 @@
         m:materialStates[p.get("m")]?p.get("m"):"metal",
         b:colorStates[p.get("b")]?p.get("b"):"clientSage",
         a:colorStates[p.get("a")]?p.get("a"):"clientWood",
+        x:colorStates[p.get("x")]?p.get("x"):"clientSage",
         f:["matte","gloss"].includes(p.get("f"))?p.get("f"):"matte",
         t:topStates[p.get("t")]?p.get("t"):"natural",
         l:lightingStates[p.get("l")]?p.get("l"):"day"
       };
       applySavedState(s);
     }
+
+    const curatedLooks={
+      balanced:{m:"metal",b:"clientSage",a:"clientWood",x:"clientSage",f:"matte",t:"natural",l:"neutral"},
+      wood:{m:"metal",b:"clientWood",a:"clientWood",x:"clientSage",f:"matte",t:"natural",l:"day"},
+      sage:{m:"metal",b:"clientSage",a:"clientSage",x:"clientWood",f:"matte",t:"cast",l:"neutral"}
+    };
+    document.querySelectorAll(".look-btn").forEach(btn=>btn.addEventListener("click",()=>{
+      const s=curatedLooks[btn.dataset.look];
+      applySavedState(s);
+      document.querySelectorAll(".look-btn").forEach(x=>x.classList.toggle("active",x===btn));
+      document.querySelector(".viewer-card").scrollIntoView({behavior:"smooth",block:"center"});
+    }));
 
     const advisorState={hardware:"hydraulic",storage:"mix",lighting:"calm",priority:"storage"};
     let fitoutSelection="", fitoutDraft="";
@@ -1481,7 +1512,8 @@
     }
 
     function updateSummary(){
-      const parts=["طلب مطبخ — هاير كلاس / فرع الطائف","الاختيار البصري: "+materialInput.value+" • "+baseColorInput.value+" + "+accentColorInput.value+" • "+finishInput.value+" • "+topInput.value];
+      const visualTall=currentTallColor!==currentBaseColor?" • العمود الطويل: "+colorStates[currentTallColor].label:"";
+      const parts=["طلب مطبخ — هاير كلاس / فرع الطائف","الاختيار البصري: "+materialInput.value+" • "+baseColorInput.value+" + "+accentColorInput.value+visualTall+" • "+finishInput.value+" • "+topInput.value];
       if(fitoutSelection)parts.push("تفضيلات التجهيز: "+fitoutSelection);
       if(layoutInput.value)parts.push("شكل المساحة: "+layoutInput.value);
       const dims=[];if(lengthInput.value.trim())dims.push("الرئيسي "+lengthInput.value.trim()+"م");if(wallBInput.value.trim())dims.push("ب "+wallBInput.value.trim()+"م");if(wallCInput.value.trim())dims.push("ج "+wallCInput.value.trim()+"م");if(heightInput.value.trim())dims.push("الارتفاع "+heightInput.value.trim()+"م");if(dims.length)parts.push("المقاسات التقريبية: "+dims.join(" • "));
