@@ -1,12 +1,13 @@
 {
   "file": "higher-class-fixed-kitchen-v3.glb",
-  "bytes": 1932680,
-  "parts": 160,
-  "nodes": 160,
+  "bytes": 2082520,
+  "parts": 174,
+  "nodes": 174,
   "zones": {
     "HC_LIGHT": 1,
     "HC_APPLIANCE": 9,
-    "HC_METAL": 8,
+    "HC_DARK": 12,
+    "HC_METAL": 10,
     "HC_HANDLES": 40,
     "HC_CARCASS": 69,
     "HC_TALL_FRONTS": 2,
