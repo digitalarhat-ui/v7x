@@ -1,0 +1,11 @@
+{
+  "name": "urbanfurniva-kitchen-studio",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "start": "serve -s . -l tcp://0.0.0.0:$PORT"
+  },
+  "dependencies": {
+    "serve": "14.2.4"
+  }
+}
