@@ -694,27 +694,27 @@
 
     const stage = document.getElementById("stage");
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xaaa59e);
-    scene.fog = new THREE.Fog(0xaaa59e, 24, 52);
+    scene.background = new THREE.Color(0x8b867f);
+    scene.fog = new THREE.Fog(0x8b867f, 28, 62);
 
-    const camera = new THREE.PerspectiveCamera(34, 1, .1, 100);
-    camera.position.set(4.72,2.48,6.72);
+    const camera = new THREE.PerspectiveCamera(31, 1, .1, 100);
+    camera.position.set(4.18,2.26,5.62);
 
     const renderer = new THREE.WebGLRenderer({antialias:true,alpha:false,preserveDrawingBuffer:true,powerPreference:"high-performance"});
     const mobileQuality=matchMedia("(max-width: 560px)").matches;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, mobileQuality?1.28:1.65));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, mobileQuality?1.20:1.50));
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = .92;
+    renderer.toneMappingExposure = .78;
     stage.appendChild(renderer.domElement);
 
     const pmrem = new THREE.PMREMGenerator(renderer);
     const roomEnvironment = new RoomEnvironment();
     const envRT = pmrem.fromScene(roomEnvironment, .045);
     scene.environment = envRT.texture;
-    scene.environmentIntensity = .92;
+    scene.environmentIntensity = .72;
     roomEnvironment.dispose();
     pmrem.dispose();
 
@@ -722,32 +722,32 @@
     controls.enableDamping = true;
     controls.dampingFactor = .07;
     controls.enablePan = false;
-    controls.minDistance = 5.2;
-    controls.maxDistance = 10.8;
-    controls.minPolarAngle = .92;
-    controls.maxPolarAngle = 1.30;
+    controls.minDistance = 4.25;
+    controls.maxDistance = 9.2;
+    controls.minPolarAngle = .98;
+    controls.maxPolarAngle = 1.34;
     controls.minAzimuthAngle = -.08;
     controls.maxAzimuthAngle = 1.12;
-    controls.target.set(.10,1.35,-1.56);
+    controls.target.set(.14,1.32,-1.58);
 
     RectAreaLightUniformsLib.init();
-    const hemi = new THREE.HemisphereLight(0xffffff,0x5e5a55,.58);
+    const hemi = new THREE.HemisphereLight(0xffffff,0x47443f,.27);
     scene.add(hemi);
-    const key = new THREE.DirectionalLight(0xfffaf2,1.72);
-    key.position.set(4.6,7.8,5.6); key.castShadow=true;
+    const key = new THREE.DirectionalLight(0xfff4e5,2.45);
+    key.position.set(4.25,7.6,4.8); key.castShadow=true;
     key.shadow.mapSize.set(mobileQuality?1024:2048,mobileQuality?1024:2048);
     key.shadow.camera.left=-5.5;key.shadow.camera.right=5.5;key.shadow.camera.top=5.2;key.shadow.camera.bottom=-2.4;
     key.shadow.camera.near=.5;key.shadow.camera.far=18;
-    key.shadow.bias=-.00010;key.shadow.normalBias=.009;
+    key.shadow.bias=-.00006;key.shadow.normalBias=.005;key.shadow.radius=3;
     scene.add(key);
-    const windowFill = new THREE.RectAreaLight(0xfffbf4,1.42,5.8,4.2);
+    const windowFill = new THREE.RectAreaLight(0xfffbf4,.82,5.8,4.2);
     windowFill.position.set(-3.8,4.8,3.8);windowFill.lookAt(-.25,1.45,-1.58);scene.add(windowFill);
-    const roomFill = new THREE.DirectionalLight(0xf7f7f3,.30);
+    const roomFill = new THREE.DirectionalLight(0xf4f4ef,.10);
     roomFill.position.set(-3.3,3.8,2.8);scene.add(roomFill);
-    const stripArea = new THREE.RectAreaLight(0xffe8c6,.66,3.55,.25);
+    const stripArea = new THREE.RectAreaLight(0xffe0ad,.42,3.55,.22);
     stripArea.position.set(-.02,1.72,-1.44);stripArea.lookAt(-.02,1.05,-1.42);scene.add(stripArea);
     [-1.62,1.58].forEach(x=>{
-      const glow=new THREE.RectAreaLight(0xfff1d7,.45,.48,.42);
+      const glow=new THREE.RectAreaLight(0xffefd5,.30,.48,.42);
       glow.position.set(x,2.36,-1.50);glow.lookAt(x,2.14,-1.72);scene.add(glow);
     });
 
@@ -771,24 +771,24 @@
       loadTex("assets/hc-stone-roughness.png")
     ]);
 
-    woodAlbedo.repeat.set(.72,.72);woodNormal.repeat.copy(woodAlbedo.repeat);woodRough.repeat.copy(woodAlbedo.repeat);
-    sageAlbedo.repeat.set(1.05,1.05);sageNormal.repeat.copy(sageAlbedo.repeat);sageRough.repeat.copy(sageAlbedo.repeat);
-    stoneAlbedo.repeat.set(.52,.52);stoneNormal.repeat.copy(stoneAlbedo.repeat);stoneRough.repeat.copy(stoneAlbedo.repeat);
+    woodAlbedo.repeat.set(.58,.82);woodNormal.repeat.copy(woodAlbedo.repeat);woodRough.repeat.copy(woodAlbedo.repeat);
+    sageAlbedo.repeat.set(.88,.88);sageNormal.repeat.copy(sageAlbedo.repeat);sageRough.repeat.copy(sageAlbedo.repeat);
+    stoneAlbedo.repeat.set(.68,.68);stoneNormal.repeat.copy(stoneAlbedo.repeat);stoneRough.repeat.copy(stoneAlbedo.repeat);
 
-    const baseCabinetMat=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:.62,envMapIntensity:.92});
-    const upperCabinetMat=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:.56,envMapIntensity:.95});
-    const tallCabinetMat=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:.62,envMapIntensity:.92});
-    const topMat=new THREE.MeshPhysicalMaterial({color:0xffffff,map:stoneAlbedo,normalMap:stoneNormal,roughnessMap:stoneRough,normalScale:new THREE.Vector2(.13,.13),metalness:0,roughness:.56,clearcoat:.025,clearcoatRoughness:.82,envMapIntensity:.86});
-    const glassMat=new THREE.MeshPhysicalMaterial({color:0xe9f0ed,metalness:0,roughness:.055,transmission:.94,opacity:1,thickness:.010,ior:1.47,clearcoat:.03,clearcoatRoughness:.22,envMapIntensity:1.30,attenuationColor:new THREE.Color(0xd8e3de),attenuationDistance:2.8,side:THREE.DoubleSide});
-    const handleMat=new THREE.MeshStandardMaterial({color:0x8f9694,metalness:.94,roughness:.29,envMapIntensity:1.45});
-    const metalMat=new THREE.MeshStandardMaterial({color:0xaeb6b2,metalness:.95,roughness:.30,envMapIntensity:1.50});
-    const applianceMat=new THREE.MeshPhysicalMaterial({color:0x151817,metalness:.20,roughness:.17,clearcoat:.32,clearcoatRoughness:.16,envMapIntensity:1.18});
-    const carcassMat=new THREE.MeshStandardMaterial({color:0x444641,metalness:0,roughness:.82,envMapIntensity:.42});
+    const baseCabinetMat=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:.60,clearcoat:.012,clearcoatRoughness:.88,envMapIntensity:.82,specularIntensity:.34});
+    const upperCabinetMat=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:.53,clearcoat:.012,clearcoatRoughness:.86,envMapIntensity:.86,specularIntensity:.38});
+    const tallCabinetMat=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:.60,clearcoat:.012,clearcoatRoughness:.88,envMapIntensity:.82,specularIntensity:.34});
+    const topMat=new THREE.MeshPhysicalMaterial({color:0xffffff,map:stoneAlbedo,normalMap:stoneNormal,roughnessMap:stoneRough,normalScale:new THREE.Vector2(.18,.18),metalness:0,roughness:.52,clearcoat:.035,clearcoatRoughness:.76,envMapIntensity:.82,specularIntensity:.42});
+    const glassMat=new THREE.MeshPhysicalMaterial({color:0xe5eeea,metalness:0,roughness:.035,transmission:.96,opacity:1,thickness:.012,ior:1.47,clearcoat:.02,clearcoatRoughness:.18,envMapIntensity:1.55,attenuationColor:new THREE.Color(0xd6e3dd),attenuationDistance:3.2,side:THREE.DoubleSide});
+    const handleMat=new THREE.MeshStandardMaterial({color:0xa4aaa7,metalness:.96,roughness:.22,envMapIntensity:1.62});
+    const metalMat=new THREE.MeshStandardMaterial({color:0xbac1be,metalness:.96,roughness:.24,envMapIntensity:1.65});
+    const applianceMat=new THREE.MeshPhysicalMaterial({color:0x111313,metalness:.28,roughness:.14,clearcoat:.42,clearcoatRoughness:.12,envMapIntensity:1.28});
+    const carcassMat=new THREE.MeshStandardMaterial({color:0x343632,metalness:0,roughness:.86,envMapIntensity:.34});
     const backsplashMat=new THREE.MeshPhysicalMaterial({color:0xbdb8af,metalness:0,roughness:.53,clearcoat:.018,clearcoatRoughness:.86,envMapIntensity:.68});
     const kickMat=new THREE.MeshStandardMaterial({color:0x262826,metalness:0,roughness:.79});
-    const roomFloorMat=new THREE.MeshStandardMaterial({color:0x8d8780,metalness:0,roughness:.90,envMapIntensity:.42});
-    const roomWallMat=new THREE.MeshStandardMaterial({color:0xc6c0b7,metalness:0,roughness:.86,envMapIntensity:.38});
-    const roomCeilingMat=new THREE.MeshStandardMaterial({color:0xd8d3cb,metalness:0,roughness:.90,envMapIntensity:.34});
+    const roomFloorMat=new THREE.MeshStandardMaterial({color:0x6f6a64,metalness:0,roughness:.92,envMapIntensity:.30});
+    const roomWallMat=new THREE.MeshStandardMaterial({color:0xb8b2aa,metalness:0,roughness:.88,envMapIntensity:.30});
+    const roomCeilingMat=new THREE.MeshStandardMaterial({color:0xcac5bd,metalness:0,roughness:.92,envMapIntensity:.26});
     const skirtingMat=new THREE.MeshStandardMaterial({color:0xb0aaa2,metalness:0,roughness:.82});
     const lightMat=new THREE.MeshStandardMaterial({color:0xffe8c6,emissive:0xffd9a6,emissiveIntensity:.42,roughness:.62});
 
@@ -859,15 +859,15 @@
       mat.color.setHex(state.hex);mat.metalness=0;
       mat.map=null;mat.normalMap=null;mat.roughnessMap=null;mat.normalScale.set(.1,.1);
       if(state.reference==="wood"){
-        mat.color.setHex(0xffffff);mat.map=woodAlbedo;mat.normalMap=woodNormal;mat.roughnessMap=woodRough;mat.normalScale.set(.16,.16);mat.roughness=materialRoughness(.56);
+        mat.color.setHex(0xf1e2cf);mat.map=woodAlbedo;mat.normalMap=woodNormal;mat.roughnessMap=woodRough;mat.normalScale.set(.22,.22);mat.roughness=materialRoughness(.52);
       }else if(state.reference==="sage"){
-        mat.color.setHex(0xffffff);mat.map=sageAlbedo;mat.normalMap=sageNormal;mat.roughnessMap=sageRough;mat.normalScale.set(.055,.055);mat.roughness=materialRoughness(.63);
+        mat.color.setHex(0xe4ebe5);mat.map=sageAlbedo;mat.normalMap=sageNormal;mat.roughnessMap=sageRough;mat.normalScale.set(.070,.070);mat.roughness=materialRoughness(.61);
       }else{
         const src=materialStates[currentMaterial];mat.roughness=materialRoughness(src.roughness);
         if(currentMaterial==="wood"){mat.normalMap=woodNormal;mat.roughnessMap=woodRough;mat.normalScale.set(.055,.055);}
         if(currentMaterial==="clad"){mat.normalMap=sageNormal;mat.roughnessMap=sageRough;mat.normalScale.set(.035,.035);}
       }
-      mat.envMapIntensity=.92;mat.needsUpdate=true;
+      mat.envMapIntensity=zone==="upper"?.86:.82;mat.needsUpdate=true;
     }
     function applyMaterial(value){currentMaterial=value;configureZone("base");configureZone("upper");configureZone("tall");}
     function applyCabinetColor(zone,value){if(zone==="upper"){currentAccentColor=value;configureZone("upper");}else{currentBaseColor=value;currentTallColor=value;configureZone("base");configureZone("tall");}}
@@ -876,9 +876,9 @@
     function applyTop(value){currentTop=value;const src=topStates[value];topMat.color.setHex(src.color);topMat.metalness=src.metalness;topMat.roughness=src.roughness;topMat.needsUpdate=true;}
 
     const lightingStates={
-      day:{label:"نهار معماري",bg:0xaaa59e,hemi:0xffffff,ground:0x625e58,hemiI:.58,key:0xfffaf2,keyI:1.72,fill:0xf7f7f3,fillI:.30,area:1.42,strip:.42,exposure:.92},
+      day:{label:"نهار معماري",bg:0x8b867f,hemi:0xffffff,ground:0x47443f,hemiI:.27,key:0xfff4e5,keyI:2.45,fill:0xf4f4ef,fillI:.10,area:.82,strip:.42,exposure:.78},
       evening:{label:"مساء دافئ",bg:0x625a52,hemi:0xffead2,ground:0x4b443e,hemiI:.34,key:0xffd7ad,keyI:1.22,fill:0xffe1bf,fillI:.15,area:.82,strip:.78,exposure:.78},
-      neutral:{label:"عرض محايد",bg:0x9f9e99,hemi:0xffffff,ground:0x60615d,hemiI:.54,key:0xffffff,keyI:1.48,fill:0xffffff,fillI:.26,area:1.18,strip:.34,exposure:.88}
+      neutral:{label:"عرض محايد",bg:0x85827d,hemi:0xffffff,ground:0x4f4d49,hemiI:.24,key:0xffffff,keyI:2.05,fill:0xffffff,fillI:.08,area:.68,strip:.30,exposure:.76}
     };
     function applyLighting(value){
       currentLighting=value;const s=lightingStates[value];scene.background.setHex(s.bg);scene.fog.color.setHex(s.bg);
@@ -953,16 +953,16 @@
     applyLighting("day");
 
     function defaultCameraForWidth(width){
-      if(width<560)return {fov:39,pos:[4.70,2.52,7.35]};
-      if(width<900)return {fov:36,pos:[4.62,2.50,6.88]};
-      return {fov:34,pos:[4.72,2.48,6.72]};
+      if(width<560)return {fov:36,pos:[4.42,2.40,6.45]};
+      if(width<900)return {fov:33,pos:[4.28,2.34,5.96]};
+      return {fov:31,pos:[4.18,2.26,5.62]};
     }
     function resetCameraView(){
       const rect=stage.getBoundingClientRect();
       const preset=defaultCameraForWidth(rect.width);
       camera.fov=preset.fov;
       camera.position.set(...preset.pos);
-      controls.target.set(.10,1.34,-1.56);
+      controls.target.set(.14,1.32,-1.58);
       scene.rotation.y=0;
       camera.updateProjectionMatrix();
       controls.update();
@@ -1069,8 +1069,8 @@
       const oldTarget=controls.target.clone();
       const oldSceneY=scene.rotation.y;
       scene.rotation.y=0;
-      camera.position.set(5.70,2.92,7.30);
-      controls.target.set(.10,1.34,-1.56);
+      camera.position.set(4.58,2.36,5.98);
+      controls.target.set(.14,1.32,-1.58);
       controls.update();
       renderer.render(scene,camera);
       const shot=renderer.domElement.toDataURL("image/jpeg",.84);
