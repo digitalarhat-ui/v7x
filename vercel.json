@@ -236,6 +236,17 @@
   "redirects": [
     {
       "source": "/",
+      "destination": "/modern-sector-decision-twin-v31",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "modern-sector-decision-twin.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
       "destination": "/jawhara",
       "permanent": false,
       "has": [
@@ -587,16 +598,5 @@
       ]
     }
   ],
-  "rewrites": [
-    {
-      "source": "/",
-      "destination": "/modern-sector-decision-twin-v31",
-      "has": [
-        {
-          "type": "host",
-          "value": "modern-sector-decision-twin.vercel.app"
-        }
-      ]
-    }
-  ]
+  "rewrites": []
 }
