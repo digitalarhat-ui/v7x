@@ -144,6 +144,32 @@
           "value": "public, max-age=0, must-revalidate"
         }
       ]
+    },
+    {
+      "source": "/fleet-parts-memory",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "private, no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/fleet-parts-memory/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "private, no-store, max-age=0"
+        }
+      ]
     }
   ],
   "alias": [
@@ -177,7 +203,8 @@
     "dar-aljawdah-kitchens.vercel.app",
     "lamsat-niloufar-kitchens.vercel.app",
     "bayt-alabdae-kitchens.vercel.app",
-    "ebdaa-almona-kitchens.vercel.app"
+    "ebdaa-almona-kitchens.vercel.app",
+    "fleet-parts-memory.vercel.app"
   ],
   "redirects": [
     {
@@ -518,6 +545,17 @@
         {
           "type": "host",
           "value": "ebdaa-almona-kitchens.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/fleet-parts-memory",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "fleet-parts-memory.vercel.app"
         }
       ]
     }
