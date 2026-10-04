@@ -43,7 +43,7 @@ for(const vp of viewports){
     const cr=canvas?.getBoundingClientRect();
     let webgl=false,pixelLuma=null,glInfo=null;
     try{
-      const gl=canvas&&(canvas.getContext('webgl2')||canvas.getContext('webgl'));
+      const r=window.__LN_RENDERER__,s=window.__LN_SCENE__,c=window.__LN_CAMERA__;\n      if(r&&s&&c)r.render(s,c);\n      const gl=r?.getContext?.()||(canvas&&(canvas.getContext('webgl2')||canvas.getContext('webgl')));
       webgl=!!gl;
       if(gl){
         const ext=gl.getExtension('WEBGL_debug_renderer_info');
