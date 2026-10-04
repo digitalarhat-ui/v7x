@@ -92,12 +92,11 @@ check('ab_apply', (await page.locator('#currentChoice').innerText()).includes('�
 
 const stateUrl = page.url();
 check('share_state_url', /[?&]b=clientSage/.test(stateUrl) && /[?&]a=clientWood/.test(stateUrl) && /[?&]x=clientSage/.test(stateUrl), stateUrl);
-const round = await context.newPage();
-await round.goto(stateUrl, { waitUntil: 'networkidle', timeout: 60000 });
-await round.waitForSelector('#currentChoice');
-const roundChoice = await round.locator('#currentChoice').innerText();
+await page.goto(stateUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
+await page.waitForSelector('#currentChoice', { state: 'attached', timeout: 60000 });
+await page.waitForTimeout(900);
+const roundChoice = await page.locator('#currentChoice').innerText();
 check('share_state_roundtrip', roundChoice.includes('ساج مرجعي') && roundChoice.includes('خشب فاتح مرجعي'), roundChoice);
-await round.close();
 
 const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAFElEQVR42mNkYPj/n4GBgYGJAQoAHgQCAeXKkL8AAAAASUVORK5CYII=', 'base64');
 await page.setInputFiles('#roomFile', { name: 'qa-room.png', mimeType: 'image/png', buffer: png });
