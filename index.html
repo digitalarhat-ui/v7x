@@ -998,3 +998,426 @@
     function resetCameraView(){
       const rect=stage.getBoundingClientRect();
       const preset=defaultCameraForWidth(rect.width);
+      camera.fov=preset.fov;
+      camera.position.set(...preset.pos);
+      controls.target.set(.06,1.30,-1.60);
+      scene.rotation.y=0;
+      camera.updateProjectionMatrix();
+      controls.update();
+    }
+    function resize(){
+      const rect=stage.getBoundingClientRect();
+      renderer.setSize(rect.width,rect.height,false);
+      if(composer)composer.setSize(rect.width,rect.height);
+      camera.aspect=rect.width/rect.height;
+      resetCameraView();
+    }
+    window.addEventListener("resize",resize); resize();
+    document.getElementById("resetView").addEventListener("click",resetCameraView);
+
+    let isInteracting=false;
+    renderer.domElement.addEventListener("pointerdown",()=>{isInteracting=true;});
+    window.addEventListener("pointerup",()=>{isInteracting=false;});
+    renderer.domElement.addEventListener("pointerleave",()=>{isInteracting=false;});
+
+    let t=0;
+    function animate(){
+      requestAnimationFrame(animate); t+=.003;
+      
+      controls.update(); renderFrame();
+    }
+    animate();
+    window.__HC_RENDER_INFO__={asset:"higher-class-fixed-kitchen-v3.glb",primitiveCore:false,gtao:false,pipeline:"authored-glb-pbr"};
+
+    const materialInput=document.getElementById("materialInput");
+    const finishInput=document.getElementById("finishInput");
+    const baseColorInput=document.getElementById("baseColorInput");
+    const accentColorInput=document.getElementById("accentColorInput");
+    const topInput=document.getElementById("topInput");
+    const layoutInput=document.getElementById("layoutInput");
+    const lengthInput=document.getElementById("lengthInput");
+    const wallBInput=document.getElementById("wallBInput");
+    const wallCInput=document.getElementById("wallCInput");
+    const heightInput=document.getElementById("heightInput");
+    const noteInput=document.getElementById("noteInput");
+    const summary=document.getElementById("summary");
+
+    const labelToMaterial={"ناعم":"metal","خشبي خفيف":"wood","خشبي أوضح":"clad"};
+    const labelToFinish={"مطفي":"matte","لمعة خفيفة":"gloss"};
+    const labelToColor=Object.fromEntries(Object.entries(colorStates).map(([k,v])=>[v.label,k]));
+    const labelToTop=Object.fromEntries(Object.entries(topStates).map(([k,v])=>[v.label,k]));
+
+    materialInput.addEventListener("change",()=>{applyMaterial(labelToMaterial[materialInput.value]);syncControl("material",labelToMaterial[materialInput.value]);updateSummary();updateShareUrl();});
+    finishInput.addEventListener("change",()=>{applyFinish(labelToFinish[finishInput.value]);syncControl("finish",labelToFinish[finishInput.value]);updateSummary();updateShareUrl();});
+    baseColorInput.addEventListener("change",()=>{applyCabinetColor("base",labelToColor[baseColorInput.value]);syncControl("baseColor",labelToColor[baseColorInput.value]);updateSummary();updateShareUrl();});
+    accentColorInput.addEventListener("change",()=>{applyCabinetColor("upper",labelToColor[accentColorInput.value]);syncControl("accentColor",labelToColor[accentColorInput.value]);updateSummary();updateShareUrl();});
+    topInput.addEventListener("change",()=>{applyTop(labelToTop[topInput.value]);syncControl("top",labelToTop[topInput.value]);updateSummary();updateShareUrl();});
+
+    function syncControl(kind,value){
+      const group=document.querySelector('.control-group[data-kind="'+kind+'"]');
+      if(!group)return;
+      const all=group.querySelectorAll(".seg,.swatch");
+      all.forEach(el=>el.classList.toggle("active",el.dataset.value===value));
+      if(kind==="baseColor")document.getElementById("baseColorName").textContent=colorStates[value].label;
+      if(kind==="accentColor")document.getElementById("accentColorName").textContent=colorStates[value].label;
+    }
+
+    function getState(){
+      return {m:currentMaterial,b:currentBaseColor,a:currentAccentColor,x:currentTallColor,f:currentFinish,t:currentTop,l:currentLighting};
+    }
+
+    function stateSummary(s){
+      const zones=colorStates[s.b].label+" + "+colorStates[s.a].label+(s.x&&s.x!==s.b?" + عمود "+colorStates[s.x].label:"");
+      return [materialMap[s.m],zones,finishMap[s.f],topStates[s.t].label,lightingStates[s.l].label].join(" • ");
+    }
+
+    function updateCurrentChoice(){
+      const tallPart=currentTallColor!==currentBaseColor?" • عمود "+colorStates[currentTallColor].label:"";
+      const value=materialMap[currentMaterial]+" • "+colorStates[currentBaseColor].label+" + "+colorStates[currentAccentColor].label+tallPart+" • "+finishMap[currentFinish]+" • "+topStates[currentTop].label+" • "+lightingStates[currentLighting].label;
+      const el=document.getElementById("currentChoice");
+      if(el)el.textContent=value;
+      const formEl=document.getElementById("formCurrentChoice");
+      if(formEl)formEl.textContent=value;
+    }
+
+    function updateShareUrl(){
+      updateCurrentChoice();
+      const s=getState();
+      const u=new URL(location.href);
+      ["m","b","a","x","f","t","l"].forEach(k=>u.searchParams.set(k,s[k]));
+      history.replaceState(null,"",u);
+      return u.toString();
+    }
+
+    function applySavedState(s){
+      if(!s)return;
+      currentMaterial=s.m; currentBaseColor=s.b; currentAccentColor=s.a; currentTallColor=s.x||s.b; currentFinish=s.f; currentTop=s.t; currentLighting=s.l;
+      applyCabinetColor("base",s.b); applyCabinetColor("upper",s.a); applyTallColor(s.x||s.b); applyFinish(s.f); applyMaterial(s.m); applyTop(s.t); applyLighting(s.l);
+      materialInput.value=materialMap[s.m]; finishInput.value=finishMap[s.f]; baseColorInput.value=colorStates[s.b].label; accentColorInput.value=colorStates[s.a].label; topInput.value=topStates[s.t].label;
+      ["material","baseColor","accentColor","finish","top","lighting"].forEach(kind=>{
+        const map={material:s.m,baseColor:s.b,accentColor:s.a,finish:s.f,top:s.t,lighting:s.l};
+        syncControl(kind,map[kind]);
+      });
+      updateSummary(); updateShareUrl();
+    }
+
+    let savedA=null,savedB=null;
+    function captureComparisonShot(){
+      const oldPos=camera.position.clone();
+      const oldQuat=camera.quaternion.clone();
+      const oldTarget=controls.target.clone();
+      const oldSceneY=scene.rotation.y;
+      scene.rotation.y=0;
+      camera.position.set(4.58,2.36,5.98);
+      controls.target.set(.06,1.30,-1.60);
+      controls.update();
+      renderFrame();
+      const shot=renderer.domElement.toDataURL("image/jpeg",.88);
+      camera.position.copy(oldPos);
+      camera.quaternion.copy(oldQuat);
+      controls.target.copy(oldTarget);
+      scene.rotation.y=oldSceneY;
+      controls.update();
+      renderFrame();
+      return shot;
+    }
+
+    function captureVariant(slot){
+      const shot=captureComparisonShot();
+      const state={...getState(),shot};
+      if(slot==="A")savedA=state;else savedB=state;
+      const media=document.getElementById("variant"+slot+"Media");
+      const summaryEl=document.getElementById("variant"+slot+"Summary");
+      media.innerHTML='<img src="'+shot+'" alt="معاينة الخيار '+slot+'">';
+      media.closest(".variant-card").classList.add("has-snapshot");
+      summaryEl.textContent=stateSummary(state);
+      document.getElementById("apply"+slot).disabled=false;
+      document.getElementById("save"+slot).textContent="تحديث";
+      updateCompareResult();
+    }
+
+    function updateCompareResult(){
+      const el=document.getElementById("compareResult");
+      if(!savedA||!savedB){el.textContent="احفظ خيارين ليظهر الفرق بينهما هنا.";return;}
+      const diffs=[];
+      if(savedA.m!==savedB.m)diffs.push("الخامة");
+      if(savedA.b!==savedB.b)diffs.push("لون الخزائن الأساسية");
+      if(savedA.a!==savedB.a)diffs.push("لون الخزائن العلوية");
+      if(savedA.f!==savedB.f)diffs.push("التشطيب");
+      if(savedA.t!==savedB.t)diffs.push("سطح العمل");
+      if(savedA.l!==savedB.l)diffs.push("الإضاءة");
+      el.textContent=diffs.length ? "الفرق بين الخيارين: "+diffs.join("، ")+". يمكنك تطبيق أي خيار والعودة للتعديل مباشرة." : "الخياران متطابقان حالياً — غيّر لوناً أو خامة أو إضاءة ثم احفظ الخيار الثاني.";
+    }
+
+    document.getElementById("saveA").addEventListener("click",()=>captureVariant("A"));
+    document.getElementById("saveB").addEventListener("click",()=>captureVariant("B"));
+    function applyVariant(slot,state){
+      applySavedState(state);
+      document.querySelectorAll(".variant-card").forEach(x=>x.classList.remove("applied"));
+      document.getElementById("variant"+slot).classList.add("applied");
+      document.querySelector(".viewer-card").scrollIntoView({behavior:"smooth",block:"center"});
+    }
+    document.getElementById("applyA").addEventListener("click",()=>applyVariant("A",savedA));
+    document.getElementById("applyB").addEventListener("click",()=>applyVariant("B",savedB));
+    document.getElementById("shareDesign").addEventListener("click",async()=>{
+      const url=updateShareUrl();
+      const btn=document.getElementById("shareDesign");
+      try{await navigator.clipboard.writeText(url);const old=btn.textContent;btn.textContent="تم نسخ رابط الاختيار ✓";setTimeout(()=>btn.textContent=old,1800);}
+      catch(e){prompt("انسخ رابط الاختيار",url);}
+    });
+
+    function loadStateFromUrl(){
+      const p=new URLSearchParams(location.search);
+      const s={
+        m:materialStates[p.get("m")]?p.get("m"):"metal",
+        b:colorStates[p.get("b")]?p.get("b"):"clientSage",
+        a:colorStates[p.get("a")]?p.get("a"):"clientWood",
+        x:colorStates[p.get("x")]?p.get("x"):"clientSage",
+        f:["matte","gloss"].includes(p.get("f"))?p.get("f"):"matte",
+        t:topStates[p.get("t")]?p.get("t"):"natural",
+        l:lightingStates[p.get("l")]?p.get("l"):"day"
+      };
+      applySavedState(s);
+    }
+
+    const curatedLooks={
+      balanced:{m:"metal",b:"clientSage",a:"clientWood",x:"clientSage",f:"matte",t:"natural",l:"neutral"},
+      wood:{m:"metal",b:"clientWood",a:"clientWood",x:"clientSage",f:"matte",t:"natural",l:"day"},
+      sage:{m:"metal",b:"clientSage",a:"clientSage",x:"clientWood",f:"matte",t:"cast",l:"neutral"}
+    };
+    document.querySelectorAll(".look-btn").forEach(btn=>btn.addEventListener("click",()=>{
+      const s=curatedLooks[btn.dataset.look];
+      applySavedState(s);
+      document.querySelectorAll(".look-btn").forEach(x=>x.classList.toggle("active",x===btn));
+      document.querySelector(".viewer-card").scrollIntoView({behavior:"smooth",block:"center"});
+    }));
+
+    const advisorState={hardware:"hydraulic",storage:"mix",lighting:"calm",priority:"storage"};
+    let fitoutSelection="", fitoutDraft="";
+    const hardwareLabels={hydraulic:"Blum هيدروليكي",electric:"Blum كهربائي",designer:"يُحسم مع المصمم"};
+    const storageLabels={inside:"تنظيم داخلي",outside:"إضافات خارجية",mix:"مزيج داخلي وخارجي"};
+    const fitoutLightingLabels={calm:"هادئة ومندمجة",later:"تُحسم مع المصمم"};
+    const priorityLabels={ease:"سهولة الاستخدام",storage:"التخزين",look:"التفاصيل الجمالية"};
+    function buildAdvisorRecommendation(){
+      document.getElementById("advisorTitle").textContent="تفضيلاتك جاهزة للملخص";
+      document.getElementById("advisorWhy").textContent="هذه نقطة تنظيم للمحادثة مع المصمم؛ الاختيار الفني النهائي يبقى مع هاير كلاس.";
+      document.getElementById("advisorMaterial").textContent=hardwareLabels[advisorState.hardware];
+      document.getElementById("advisorBase").textContent=storageLabels[advisorState.storage];
+      document.getElementById("advisorAccent").textContent=fitoutLightingLabels[advisorState.lighting];
+      document.getElementById("advisorFinish").textContent=priorityLabels[advisorState.priority];
+      fitoutDraft=["Blum: "+hardwareLabels[advisorState.hardware],"الإضافات: "+storageLabels[advisorState.storage],"الإضاءة: "+fitoutLightingLabels[advisorState.lighting],"الأولوية: "+priorityLabels[advisorState.priority]].join(" • ");
+    }
+    const advisorCards=[...document.querySelectorAll("[data-advisor]")];
+    let advisorStep=0;
+    function renderAdvisorStep(){advisorCards.forEach((card,i)=>card.classList.toggle("active-step",i===advisorStep));document.getElementById("advisorStepLabel").textContent="السؤال "+["١","٢","٣","٤"][advisorStep]+" من ٤";document.querySelectorAll(".advisor-dot").forEach((dot,i)=>dot.classList.toggle("active",i<=advisorStep));document.getElementById("advisorPrev").disabled=advisorStep===0;document.getElementById("advisorNext").textContent=advisorStep===advisorCards.length-1?"عرض الملخص":"التالي";}
+    document.getElementById("advisorPrev").addEventListener("click",()=>{advisorStep=Math.max(0,advisorStep-1);renderAdvisorStep();});
+    document.getElementById("advisorNext").addEventListener("click",()=>{if(advisorStep<advisorCards.length-1){advisorStep++;renderAdvisorStep();}else{buildAdvisorRecommendation();document.getElementById("advisorGrid").classList.add("result-ready");document.querySelector(".advisor-result").scrollIntoView({behavior:"smooth",block:"center"});}});
+    document.getElementById("advisorRestart").addEventListener("click",()=>{advisorStep=0;document.getElementById("advisorGrid").classList.remove("result-ready");renderAdvisorStep();document.querySelector("#fitout .advisor-progress").scrollIntoView({behavior:"smooth",block:"center"});});
+    document.querySelectorAll("[data-advisor]").forEach(card=>{card.addEventListener("click",e=>{const btn=e.target.closest(".choice");if(!btn)return;card.querySelectorAll(".choice").forEach(x=>x.classList.remove("active"));btn.classList.add("active");advisorState[card.dataset.advisor]=btn.dataset.value;buildAdvisorRecommendation();});});
+    document.getElementById("applyAdvisor").addEventListener("click",()=>{buildAdvisorRecommendation();fitoutSelection=fitoutDraft;updateSummary();document.querySelector("#request").scrollIntoView({behavior:"smooth",block:"start"});});
+    buildAdvisorRecommendation();renderAdvisorStep();
+
+    let roomImage=null;
+    let roomRecommendation=null;
+
+    function quantizedPalette(img){
+      const c=document.createElement("canvas");
+      const max=140, scale=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight));
+      c.width=Math.max(1,Math.round(img.naturalWidth*scale));
+      c.height=Math.max(1,Math.round(img.naturalHeight*scale));
+      const x=c.getContext("2d",{willReadFrequently:true});
+      x.drawImage(img,0,0,c.width,c.height);
+      const data=x.getImageData(0,0,c.width,c.height).data;
+      const buckets=new Map();
+      let totalR=0,totalG=0,totalB=0,count=0;
+      for(let i=0;i<data.length;i+=16){
+        const r=data[i],g=data[i+1],b=data[i+2],a=data[i+3];
+        if(a<200)continue;
+        const lum=(r+g+b)/3;
+        if(lum<18||lum>245)continue;
+        const qr=Math.round(r/40)*40,qg=Math.round(g/40)*40,qb=Math.round(b/40)*40;
+        const key=[Math.min(240,qr),Math.min(240,qg),Math.min(240,qb)].join(",");
+        buckets.set(key,(buckets.get(key)||0)+1);
+        totalR+=r;totalG+=g;totalB+=b;count++;
+      }
+      const top=[...buckets.entries()].sort((a,b)=>b[1]-a[1]).slice(0,4).map(([k])=>k.split(",").map(Number));
+      return {top,avg:count?[totalR/count,totalG/count,totalB/count]:[150,150,150]};
+    }
+
+    function recommendFromRoom(avg){
+      const [r,g,b]=avg;
+      const brightness=(r+g+b)/3;
+      const warm=r-b>12;
+      let base="ivory",accent="oak";
+      if(brightness>185){base=warm?"charcoal":"mocha";accent="oak";}
+      else if(brightness<105){base="ivory";accent=warm?"oak":"lightgray";}
+      else if(warm){base="beige";accent="walnut";}
+      else{base="ivory";accent="charcoal";}
+      return {base,accent,brightness,warm};
+    }
+
+    function handleRoomFile(file){
+      if(!file||!file.type.startsWith("image/"))return;
+      if(file.size>18*1024*1024){
+        document.getElementById("roomAnalysis").textContent="حجم الصورة كبير جداً. اختر صورة أقل من 18MB لتجربة أسرع على الجوال.";
+        return;
+      }
+      const reader=new FileReader();
+      reader.onload=()=>{
+        const img=document.getElementById("roomPreview");
+        img.onload=()=>{
+          roomImage=img;
+          const analysis=quantizedPalette(img);
+          const rec=recommendFromRoom(analysis.avg);
+          roomRecommendation=rec;
+          const palette=document.getElementById("detectedPalette");
+          palette.innerHTML="";
+          analysis.top.forEach(rgb=>{
+            const sw=document.createElement("span");sw.className="detected-color";sw.style.setProperty("--c","rgb("+rgb.join(",")+")");palette.appendChild(sw);
+          });
+          document.getElementById("roomBase").textContent=colorStates[rec.base].label;
+          document.getElementById("roomAccent").textContent=colorStates[rec.accent].label;
+          const tone=rec.warm?"دافئة":"محايدة/باردة";
+          const light=rec.brightness>180?"مضيئة":rec.brightness<110?"داكنة":"متوسطة السطوع";
+          document.getElementById("roomAnalysis").textContent="الصورة تبدو "+light+" وبنغمة "+tone+". لذلك نقترح هذه التركيبة كنقطة بداية للمقارنة داخل 3D، لا كحكم لوني نهائي.";
+          const status=document.getElementById("roomStatus");
+          status.innerHTML='<span>'+light+'</span><span>'+tone+'</span><span>تحليل محلي على جهازك</span>';
+          document.getElementById("roomSide").classList.add("ready");
+          document.getElementById("applyRoomPalette").disabled=false;
+          document.getElementById("saveDecisionCard").disabled=false;
+          document.getElementById("roomUpload").classList.add("has-image");
+          document.getElementById("uploadEmpty").hidden=true;
+          img.hidden=false;
+          document.getElementById("changeRoomPhoto").style.display="inline-flex";
+        };
+        img.src=reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+    document.getElementById("roomFile").addEventListener("change",e=>handleRoomFile(e.target.files&&e.target.files[0]));
+    document.getElementById("roomFileChange").addEventListener("change",e=>handleRoomFile(e.target.files&&e.target.files[0]));
+
+    document.getElementById("applyRoomPalette").addEventListener("click",()=>{
+      if(!roomRecommendation)return;
+      const s=getState();
+      s.b=roomRecommendation.base;s.a=roomRecommendation.accent;
+      applySavedState(s);
+      document.querySelector(".viewer-card").scrollIntoView({behavior:"smooth",block:"center"});
+    });
+
+    document.getElementById("saveDecisionCard").addEventListener("click",async()=>{
+      if(!roomImage)return;
+      await document.fonts.ready;
+      const canonicalShot=captureComparisonShot();
+      const out=document.createElement("canvas");out.width=1600;out.height=900;
+      const x=out.getContext("2d");
+      x.fillStyle="#0b0b0b";x.fillRect(0,0,out.width,out.height);
+      x.direction="rtl";
+      x.fillStyle="#f6f2e9";x.font="700 42px Tajawal, sans-serif";x.fillText("بطاقة قرار المطبخ",1510,64);
+      x.fillStyle="#d6b56d";x.font="600 22px Tajawal, sans-serif";x.fillText("هاير كلاس — تصور أولي",1510,104);
+
+      function cover(img,dx,dy,dw,dh){
+        const iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height;
+        const scale=Math.max(dw/iw,dh/ih),sw=dw/scale,sh=dh/scale,sx=(iw-sw)/2,sy=(ih-sh)/2;
+        x.drawImage(img,sx,sy,sw,sh,dx,dy,dw,dh);
+      }
+      cover(roomImage,820,150,700,520);
+      const shot=new Image();
+      shot.onload=()=>{
+        cover(shot,80,150,700,520);
+        x.fillStyle="#161616";x.fillRect(80,700,1440,140);
+        x.fillStyle="#f0e7d8";x.font="700 26px Tajawal, sans-serif";
+        x.fillText("الخامة: "+materialMap[currentMaterial]+"   •   التشطيب: "+finishMap[currentFinish],1490,742);
+        x.font="600 22px Tajawal, sans-serif";x.fillStyle="#bbb3a8";
+        x.fillText("الأساسية: "+colorStates[currentBaseColor].label+"   •   العلوية: "+colorStates[currentAccentColor].label+"   •   السطح: "+topStates[currentTop].label,1490,782);
+        x.fillStyle="#77716b";x.font="500 17px Tajawal, sans-serif";
+        x.fillText("تصور بصري أولي — يعتمد الاختيار النهائي مع المنفذ بعد القياس والعينات.",1490,817);
+        const a=document.createElement("a");a.download="kitchen-decision-card.jpg";a.href=out.toDataURL("image/jpeg",.9);a.click();
+      };
+      shot.src=canonicalShot;
+    });
+
+    function selectedAppliances(){
+      return [...document.querySelectorAll('input[name="appliance"]:checked')].map(x=>x.value);
+    }
+
+    function setReady(id,done,label){
+      const el=document.getElementById(id);
+      el.classList.toggle("done",done);
+      el.textContent=(done?"✓ ":"")+label;
+    }
+
+    function updateReadiness(){
+      const hasLayout=Boolean(layoutInput.value);
+      const hasLength=Boolean(lengthInput.value.trim());
+      const hasAppliances=selectedAppliances().length>0;
+      const hasExtra=Boolean(wallBInput.value.trim()||wallCInput.value.trim()||heightInput.value.trim()||noteInput.value.trim());
+
+      let score=45;
+      if(hasLayout)score+=15;
+      if(hasLength)score+=20;
+      if(hasAppliances)score+=10;
+      if(hasExtra)score+=10;
+      score=Math.min(100,score);
+
+      const missing=[];
+      if(!hasLayout)missing.push("شكل المساحة");
+      if(!hasLength)missing.push("الطول الرئيسي");
+      if(!hasAppliances)missing.push("الأجهزة");
+
+      document.getElementById("readinessScore").textContent=score+"%";
+      document.getElementById("readinessFill").style.width=score+"%";
+      document.getElementById("readinessMissing").textContent=missing.length
+        ? "التفاصيل الأساسية المتبقية: "+missing.join("، ")+"."
+        : (hasExtra?"الطلب منظم وجاهز للنسخ قبل التواصل.":"الأساسيات جاهزة؛ يمكنك إضافة ملاحظة أو مقاس إضافي إن وجد.");
+
+      setReady("readyVisual",true,"الاختيار البصري");
+      setReady("readyLayout",hasLayout,"شكل المساحة");
+      setReady("readyLength",hasLength,"المقاس الرئيسي");
+      setReady("readyAppliances",hasAppliances,"الأجهزة");
+      setReady("readyExtra",hasExtra,"تفصيل إضافي");
+    }
+
+    function updateSummary(){
+      const visualTall=currentTallColor!==currentBaseColor?" • العمود الطويل: "+colorStates[currentTallColor].label:"";
+      const parts=["طلب مطبخ — هاير كلاس / فرع الطائف","الاختيار البصري: "+materialInput.value+" • "+baseColorInput.value+" + "+accentColorInput.value+visualTall+" • "+finishInput.value+" • "+topInput.value];
+      if(fitoutSelection)parts.push("تفضيلات التجهيز: "+fitoutSelection);
+      if(layoutInput.value)parts.push("شكل المساحة: "+layoutInput.value);
+      const dims=[];if(lengthInput.value.trim())dims.push("الرئيسي "+lengthInput.value.trim()+"م");if(wallBInput.value.trim())dims.push("ب "+wallBInput.value.trim()+"م");if(wallCInput.value.trim())dims.push("ج "+wallCInput.value.trim()+"م");if(heightInput.value.trim())dims.push("الارتفاع "+heightInput.value.trim()+"م");if(dims.length)parts.push("المقاسات التقريبية: "+dims.join(" • "));
+      const appliances=selectedAppliances();if(appliances.length)parts.push("أماكن الأجهزة: "+appliances.join("، "));if(noteInput.value.trim())parts.push("ملاحظة: "+noteInput.value.trim());
+      parts.push("المعاينة والمقاسات أولية؛ الاعتماد النهائي للتصميم والخامات والتسعير مع هاير كلاس.");
+      summary.textContent=parts.join("\n");updateReadiness();
+    }
+    [materialInput,finishInput,baseColorInput,accentColorInput,topInput,layoutInput,lengthInput,wallBInput,wallCInput,heightInput,noteInput].forEach(el=>el.addEventListener("input",updateSummary));
+    document.querySelectorAll('input[name="appliance"]').forEach(el=>el.addEventListener("change",updateSummary));
+    updateSummary();
+    loadStateFromUrl();
+    updateCurrentChoice();
+
+    async function copyRequest(button){
+      try{
+        await navigator.clipboard.writeText(summary.textContent);
+        const old=button.textContent;button.textContent="تم النسخ ✓";setTimeout(()=>button.textContent=old,1700);
+        return true;
+      }catch(e){
+        const range=document.createRange();range.selectNode(summary);
+        const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);
+        return false;
+      }
+    }
+
+    document.getElementById("copyBtn").addEventListener("click",async e=>{
+      await copyRequest(e.currentTarget);
+    });
+
+    document.getElementById("handoffBtn").addEventListener("click",e=>{
+      const button=e.currentTarget;
+      window.open("https://higher-class.sa/taif","_blank","noopener,noreferrer");
+      copyRequest(button).then(copied=>{if(copied){const old=button.dataset.original||"نسخ الملخص وفتح حجز الطائف";button.dataset.original=old;button.textContent="تم النسخ — ضعه في الملاحظات ✓";setTimeout(()=>button.textContent=old,2200);}});
+    });
+
+    const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("show")}),{threshold:.12});
+    document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+  </script>
+</body>
+</html>
