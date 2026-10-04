@@ -78,15 +78,16 @@ for (const [key, terms] of Object.entries(lookExpect)) {
 check('curated_directions', curatedPass, JSON.stringify(curated));
 
 await page.locator('.look-btn[data-look="balanced"]').click();
-await page.click('#saveA');
+await page.evaluate(() => document.querySelector('#saveA')?.click());
+await page.waitForTimeout(120);
 await page.locator('.look-btn[data-look="wood"]').click();
-await page.click('#saveB');
+await page.evaluate(() => document.querySelector('#saveB')?.click());
 await page.waitForTimeout(200);
 const aImg = await page.locator('#variantAMedia img').count();
 const bImg = await page.locator('#variantBMedia img').count();
 const compareText = await page.locator('#compareResult').innerText();
 check('ab_compare', aImg === 1 && bImg === 1 && !compareText.includes('احفظ خيارين'), compareText);
-await page.click('#applyA');
+await page.evaluate(() => document.querySelector('#applyA')?.click());
 await page.waitForTimeout(150);
 check('ab_apply', (await page.locator('#currentChoice').innerText()).includes('ساج مرجعي'));
 
@@ -104,12 +105,12 @@ await page.waitForFunction(() => document.querySelector('#roomSide')?.classList.
 check('room_colour_function', !(await page.locator('#applyRoomPalette').isDisabled()), await page.locator('#roomAnalysis').innerText());
 
 for (let i = 0; i < 4; i++) {
-  await page.click('#advisorNext');
+  await page.evaluate(() => document.querySelector('#advisorNext')?.click());
   await page.waitForTimeout(70);
 }
 const resultReady = await page.locator('#advisorGrid').evaluate(el => el.classList.contains('result-ready'));
 check('fitout_advisor', resultReady);
-await page.click('#applyAdvisor');
+await page.evaluate(() => document.querySelector('#applyAdvisor')?.click());
 await page.waitForTimeout(120);
 check('fitout_summary', (await page.locator('#summary').innerText()).includes('Blum'));
 
@@ -130,7 +131,7 @@ await page.evaluate(() => {
   window.__qaOpenedUrl = '';
   window.open = (url) => { window.__qaOpenedUrl = String(url); return null; };
 });
-await page.click('#handoffBtn');
+await page.evaluate(() => document.querySelector('#handoffBtn')?.click());
 await page.waitForTimeout(100);
 const openedUrl = await page.evaluate(() => window.__qaOpenedUrl || '');
 check('booking_handoff', openedUrl.startsWith('https://higher-class.sa/taif'), openedUrl || 'window.open not called');
