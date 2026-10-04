@@ -775,11 +775,11 @@
       mesh.castShadow=true; mesh.receiveShadow=true; scene.add(mesh);
       return mesh;
     }
-    function roundedGeometry(w,h,d,r=.014,segments=3){
+    function roundedGeometry(w,h,d,r=.006,segments=3){
       const rr=Math.max(.002,Math.min(r,w*.12,h*.12,d*.22));
       return new RoundedBoxGeometry(w,h,d,segments,rr);
     }
-    function box(w,h,d,x,y,z,mat,r=.014){
+    function box(w,h,d,x,y,z,mat,r=.006){
       const mesh=new THREE.Mesh(roundedGeometry(w,h,d,r,3),mat);
       mesh.position.set(x,y,z);
       mesh.castShadow=true; mesh.receiveShadow=true; scene.add(mesh);
@@ -877,30 +877,30 @@
     }
 
     function addFrontPanel(x,y,z,w,h,mat,zone,handleSide="right"){
-      const reveal=box(w+.038,h+.038,.014,x,y,z-.037,revealMat,.003); reveal.castShadow=false;
-      const door=box(w,h,.05,x,y,z,mat,.010); registerCabinet(door,zone);
+      const reveal=box(w+.026,h+.026,.010,x,y,z-.018,revealMat,.002); reveal.castShadow=false;
+      const door=box(w,h,.022,x,y,z,mat,.004); registerCabinet(door,zone);
       const hx=handleSide==="right"?x+w/2-.105:x-w/2+.105;
-      addHandle(hx,y,z+.054,Math.min(.43,h*.50),true);
+      addHandle(hx,y,z+.026,Math.min(.43,h*.50),true);
       return door;
     }
 
     function addBaseUnit(x,w=.82,drawers=false){
-      const carcass=box(w,1.02,.67,x,.51,-1.68,baseCabinetMat,.018); registerCabinet(carcass,"base");
+      const carcass=box(w,1.02,.67,x,.51,-1.68,baseCabinetMat,.007); registerCabinet(carcass,"base");
       if(drawers){
-        const reveal=box(w-.045,.91,.014,x,.51,-1.355,revealMat,.004); reveal.castShadow=false;
+        const reveal=box(w-.055,.91,.010,x,.51,-1.349,revealMat,.002); reveal.castShadow=false;
         [0.19,.51,.83].forEach(y=>{
-          const panel=box(w-.095,.245,.05,x,y,-1.318,baseCabinetMat,.009);registerCabinet(panel,"base");
-          addHandle(x,y+.052,-1.260,.29,false);
+          const panel=box(w-.105,.238,.022,x,y,-1.330,baseCabinetMat,.004);registerCabinet(panel,"base");
+          addHandle(x,y+.050,-1.299,.29,false);
         });
       }else{
-        addFrontPanel(x,.51,-1.318,w-.095,.89,baseCabinetMat,"base");
+        addFrontPanel(x,.51,-1.330,w-.105,.89,baseCabinetMat,"base");
       }
     }
 
     function addUpperUnit(x,w=.82,glass=false){
-      const carcass=box(w,.86,.47,x,2.18,-1.76,upperCabinetMat,.016); registerCabinet(carcass,"upper");
+      const carcass=box(w,.86,.47,x,2.18,-1.76,upperCabinetMat,.006); registerCabinet(carcass,"upper");
       if(glass){
-        const fw=.052, fh=.055, frontZ=-1.505;
+        const fw=.046, fh=.048, frontZ=-1.512;
         const topFrame=box(w-.08,fh,.05,x,2.18+.355,frontZ,upperCabinetMat,.008);registerCabinet(topFrame,"upper");
         const bottomFrame=box(w-.08,fh,.05,x,2.18-.355,frontZ,upperCabinetMat,.008);registerCabinet(bottomFrame,"upper");
         const leftFrame=box(fw,.655,.05,x-w/2+.06,2.18,frontZ,upperCabinetMat,.008);registerCabinet(leftFrame,"upper");
@@ -908,33 +908,34 @@
         box(w-.19,.63,.018,x,2.18,-1.705,displayBackMat,.004).castShadow=false;
         box(w-.20,.014,.34,x,2.03,-1.63,upperCabinetMat,.003);
         box(w-.20,.014,.34,x,2.33,-1.63,upperCabinetMat,.003);
-        const glass=box(w-.18,.64,.018,x,2.18,-1.474,glassMat,.004);
+        const glass=box(w-.18,.64,.010,x,2.18,-1.498,glassMat,.002);
         glass.castShadow=false;
-        addHandle(x+w/2-.16,2.18,-1.439,.18,true);
+        addHandle(x+w/2-.16,2.18,-1.475,.18,true);
       }else{
-        addFrontPanel(x,2.18,-1.505,w-.085,.765,upperCabinetMat,"upper");
+        addFrontPanel(x,2.18,-1.512,w-.105,.765,upperCabinetMat,"upper");
       }
     }
 
     // Fixed Single-Wall composition. Layout/zoning intentionally unchanged; only execution realism is refined.
-    box(4.08,.18,.42,-.05,.09,-1.80,new THREE.MeshStandardMaterial({color:0x171817,roughness:.72}),.010);
+    box(4.00,.17,.39,-.05,.085,-1.84,new THREE.MeshStandardMaterial({color:0x141514,roughness:.78}),.004);
     [-1.62,-.82,-.02,.78,1.58].forEach((x,i)=>addBaseUnit(x,.74,i===1||i===3));
 
-    const counterBack=box(4.18,.072,.84,-.05,1.055,-1.65,topMat,.015);topMeshes.push(counterBack);
+    const counterBack=box(4.18,.055,.72,-.05,1.047,-1.67,topMat,.006);topMeshes.push(counterBack);
+    box(4.08,.018,.69,-.05,1.012,-1.67,new THREE.MeshStandardMaterial({color:0x3a3b38,roughness:.66,metalness:0}),.002);
     box(4.12,1.02,.045,-.05,1.57,-2.105,backsplashMat,.008);
 
     [-1.62,-.82,-.02,.78,1.58].forEach((x,i)=>addUpperUnit(x,.74,i===0||i===4));
 
-    const tall=box(.88,2.84,.72,2.46,1.42,-1.68,baseCabinetMat,.020); registerCabinet(tall,"base");
+    const tall=box(.88,2.84,.72,2.46,1.42,-1.68,baseCabinetMat,.008); registerCabinet(tall,"base");
     addFrontPanel(2.46,2.16,-1.305,.79,1.17,baseCabinetMat,"base");
-    box(.68,1.20,.05,2.46,.77,-1.296,darkGlassMat,.014);
-    box(.57,.52,.065,2.46,.98,-1.257,darkGlassMat,.018);
+    box(.68,1.20,.024,2.46,.77,-1.304,darkGlassMat,.004);
+    box(.57,.52,.034,2.46,.98,-1.275,darkGlassMat,.005);
     addHandle(2.46,.70,-1.215,.50,false);
 
     // Believable sink: metallic rim + inset basin rather than a single black slab.
-    box(.76,.025,.52,-1.30,1.087,-1.59,steelMat,.022);
-    box(.61,.035,.37,-1.30,1.095,-1.585,new THREE.MeshStandardMaterial({color:0x707573,metalness:.88,roughness:.40,envMapIntensity:1.1}),.040);
-    box(.51,.018,.28,-1.30,1.108,-1.575,new THREE.MeshStandardMaterial({color:0x303533,metalness:.42,roughness:.48}),.045);
+    box(.76,.018,.52,-1.30,1.084,-1.59,steelMat,.004);
+    box(.62,.028,.38,-1.30,1.078,-1.585,new THREE.MeshStandardMaterial({color:0x777d79,metalness:.90,roughness:.36,envMapIntensity:1.18}),.006);
+    box(.52,.018,.29,-1.30,1.070,-1.575,new THREE.MeshStandardMaterial({color:0x2d3230,metalness:.48,roughness:.44}),.004);
 
     // Faucet with cylindrical stem and curved spout.
     cylinder(.024,.43,-1.30,1.32,-1.91,steelMat,"y",24);
@@ -948,9 +949,9 @@
     faucet.castShadow=true;scene.add(faucet);
 
     // Cooktop / dark appliance glass.
-    box(.64,.022,.48,.82,1.088,-1.61,darkGlassMat,.018);
+    box(.64,.014,.48,.82,1.082,-1.61,darkGlassMat,.004);
 
-    const strip=box(3.88,.018,.035,-.05,1.72,-1.485,warmLightMat,.006);
+    const strip=box(3.88,.010,.022,-.05,1.72,-1.495,warmLightMat,.002);
     const stripArea=new THREE.RectAreaLight(0xffe8c6,.85,3.55,.32);
     stripArea.position.set(-.05,1.69,-1.42);stripArea.lookAt(-.05,1.05,-1.40);scene.add(stripArea);
 
