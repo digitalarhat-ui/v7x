@@ -3,7 +3,7 @@ name: Higher Class Fast Regression
 on:
   push:
     branches:
-      - higher-class-photorealism-rescue-v2
+      - higher-class-photorealism-v3
   workflow_dispatch:
 
 jobs:
@@ -15,6 +15,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - name: Build authored V3 kitchen asset
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python build_model.py
+          test -s assets/higher-class-fixed-kitchen-v3.glb
       - name: Install Playwright
         run: |
           npm init -y >/dev/null 2>&1
@@ -30,7 +40,7 @@ jobs:
         if: always()
         run: |
           mkdir -p qa-artifacts
-          zip -r qa-artifacts/HIGHER-CLASS-PHOTOREALISM-RESCUE-V2-FINAL.zip index.html assets vercel.json qa .github/workflows
+          zip -r qa-artifacts/HIGHER-CLASS-PHOTOREALISM-V3-FINAL.zip index.html assets build_model.py requirements.txt vercel.json qa .github/workflows
       - name: Upload regression evidence
         if: always()
         uses: actions/upload-artifact@v4
