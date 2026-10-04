@@ -334,7 +334,7 @@ panel(3.88,.010,.018,-.02,1.735,-1.515,'HC_LIGHT__UNDERCABINET','HC_LIGHT',0.001
 
 # ---------- export ----------
 out=ASSETS/'higher-class-fixed-kitchen-v3.glb'
-scene.export(out,file_type='glb')
+scene.export(out,file_type='glb',include_normals=True)
 
 # validation summary
 loaded=trimesh.load(out,force='scene')
