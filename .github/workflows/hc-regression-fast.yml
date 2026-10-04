@@ -1,0 +1,40 @@
+name: Higher Class Fast Regression
+
+on:
+  push:
+    branches:
+      - higher-class-photorealism-rescue-v2
+  workflow_dispatch:
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0
+          npx playwright install chromium
+      - name: Serve app
+        run: |
+          python3 -m http.server 4173 > /tmp/hc-server.log 2>&1 &
+          sleep 2
+      - name: Run regression QA
+        run: node qa/regression-qa.mjs
+      - name: Package final source
+        if: always()
+        run: |
+          mkdir -p qa-artifacts
+          zip -r qa-artifacts/HIGHER-CLASS-PHOTOREALISM-RESCUE-V2-FINAL.zip index.html assets vercel.json qa .github/workflows
+      - name: Upload regression evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hc-regression-${{ github.run_id }}
+          path: qa-artifacts/
+          retention-days: 7
