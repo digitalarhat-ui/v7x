@@ -47,8 +47,8 @@ a{color:inherit}
 .machine-visual{position:absolute;right:22px;bottom:18px;text-align:right;opacity:.52}
 .mv-brand{font-size:11px;font-weight:900;letter-spacing:.12em}.mv-model{font-size:28px;font-weight:950;letter-spacing:-.04em}.mv-serial{font-family:ui-monospace,monospace;font-size:10px;color:#82909b}
 .hero-qr{width:116px;height:116px;border:10px solid #fff;background:repeating-conic-gradient(#111 0 25%,#fff 0 50%) 0/14px 14px;border-radius:9px;box-shadow:0 12px 35px rgba(0,0,0,.35)}
-.scan-result{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin-top:12px;position:relative;z-index:2;opacity:.48;transition:.35s}
-.hero-demo.scanned .scan-result{opacity:1}
+.scan-result{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin-top:12px;position:relative;z-index:2;opacity:.10;filter:blur(2px);pointer-events:none;transition:.35s}
+.hero-demo.scanned .scan-result{opacity:1;filter:none;pointer-events:auto}
 .result-machine{display:flex;gap:9px;align-items:center}.result-icon{width:34px;height:34px;border-radius:9px;background:#222b31;display:grid;place-items:center;font-weight:900;color:#f2d381}.result-machine b{display:block;font-size:12px}.result-machine small{display:block;color:#7f8b95;font-size:9px;margin-top:2px}
 .result-memory{text-align:center;border-inline-start:1px solid #303941;padding-inline-start:12px}.result-memory b{display:block;font-size:22px;color:#aaf1c6}.result-memory span{display:block;color:#7f8a94;font-size:8px;max-width:90px;line-height:1.35}
 .scan-result .btn{grid-column:1/-1}
@@ -414,14 +414,15 @@ $('createReorder').onclick=()=>{
 $('closeReorder').onclick=()=>$('reorderModal').classList.remove('on');
 $('closeRequest').onclick=()=>$('requestModal').classList.remove('on');
 function simulateScan(){
+  const sample=FLEET[0];
   const demo=$('heroDemo');
   demo.classList.remove('scanned');demo.classList.add('scanning');
   $('heroDemoState').textContent=lang==='ar'?'جارٍ قراءة جواز المعدة…':'Reading machine passport…';
   setTimeout(()=>{
     demo.classList.remove('scanning');demo.classList.add('scanned');
     $('heroDemoState').textContent=lang==='ar'?'تم التعرف على المعدة':'Machine recognised';
-    $('scanMemoryCount').textContent=current.memory.length;
-    $('scanSerial').textContent=current.serial+' · '+current.site;
+    $('scanMemoryCount').textContent=sample.memory.length;
+    $('scanSerial').textContent=sample.serial+' · '+sample.site;
   },1350);
 }
 $('heroScan').onclick=simulateScan;
