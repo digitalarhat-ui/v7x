@@ -41,7 +41,8 @@
     "mahad-aldar-kitchen-studio.vercel.app",
     "aldar-closets-kitchen.vercel.app",
     "kitchens66-jubail.vercel.app",
-    "dyar-kitchen-studio.vercel.app"
+    "dyar-kitchen-studio.vercel.app",
+    "rawae-dream-kitchens.vercel.app"
   ],
   "redirects": [
     {
@@ -316,6 +317,17 @@
         {
           "type": "host",
           "value": "dyar-kitchen-studio.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/rawae-dream-kitchen-studio-v20",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "rawae-dream-kitchens.vercel.app"
         }
       ]
     }
