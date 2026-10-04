@@ -41,7 +41,10 @@ for (const vp of viewports) {
   const start = Date.now();
   await page.goto('http://127.0.0.1:4173', { waitUntil: 'networkidle', timeout: 60000 });
   await page.waitForSelector('#stage canvas', { state: 'visible', timeout: 30000 });
-  await page.waitForTimeout(2500);
+  await page.waitForFunction(() => window.__HC_GLTF_READY === true || Boolean(window.__HC_GLTF_ERROR), null, { timeout: 60000 });
+  const gltfError = await page.evaluate(() => window.__HC_GLTF_ERROR || null);
+  if (gltfError) throw new Error('Authored V3 glTF failed: ' + gltfError);
+  await page.waitForTimeout(1800);
 
   const metrics = await page.evaluate(() => {
     const stage = document.querySelector('#stage');
@@ -73,7 +76,10 @@ for (const vp of viewports) {
       webgl,
       glInfo,
       choice: document.querySelector('#currentChoice')?.textContent?.trim() || null,
-      title: document.title
+      title: document.title,
+      authoredModel: document.querySelector('#stage')?.dataset?.model || null,
+      gltfReady: window.__HC_GLTF_READY === true,
+      gltfError: window.__HC_GLTF_ERROR || null
     };
   });
 
