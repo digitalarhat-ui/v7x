@@ -24,7 +24,11 @@ function check(name, pass, detail = '') { checks[name] = { pass: Boolean(pass), 
 
 await page.goto('http://127.0.0.1:4173', { waitUntil: 'networkidle', timeout: 60000 });
 await page.waitForSelector('#stage canvas', { state: 'visible', timeout: 30000 });
-await page.waitForTimeout(1800);
+await page.waitForFunction(() => window.__HC_GLTF_READY === true || Boolean(window.__HC_GLTF_ERROR), null, { timeout: 60000 });
+const initialGltfError = await page.evaluate(() => window.__HC_GLTF_ERROR || null);
+check('authored_gltf_v3', !initialGltfError && await page.locator('#stage').getAttribute('data-model') === 'authored-gltf-v3', initialGltfError || await page.locator('#stage').getAttribute('data-model') || 'missing');
+if (initialGltfError) throw new Error('Authored V3 glTF failed: ' + initialGltfError);
+await page.waitForTimeout(1200);
 
 const webgl = await page.evaluate(() => {
   const c = document.querySelector('#stage canvas');
@@ -95,7 +99,10 @@ const stateUrl = page.url();
 check('share_state_url', /[?&]b=clientSage/.test(stateUrl) && /[?&]a=clientWood/.test(stateUrl) && /[?&]x=clientSage/.test(stateUrl), stateUrl);
 await page.goto(stateUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
 await page.waitForSelector('#currentChoice', { state: 'attached', timeout: 60000 });
-await page.waitForTimeout(900);
+await page.waitForFunction(() => window.__HC_GLTF_READY === true || Boolean(window.__HC_GLTF_ERROR), null, { timeout: 60000 });
+const roundGltfError = await page.evaluate(() => window.__HC_GLTF_ERROR || null);
+if (roundGltfError) throw new Error('Authored V3 glTF round-trip failed: ' + roundGltfError);
+await page.waitForTimeout(700);
 const roundChoice = await page.locator('#currentChoice').innerText();
 check('share_state_roundtrip', roundChoice.includes('ساج مرجعي') && roundChoice.includes('خشب فاتح مرجعي'), roundChoice);
 
