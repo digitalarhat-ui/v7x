@@ -492,8 +492,8 @@
     scene.environment=studioEnvironment();
 
     var camera=new THREE.PerspectiveCamera(31,1,.1,80);
-    var orbit={theta:.46,phi:1.45,radius:8.55,target:new THREE.Vector3(-.10,1.34,-.78)};
-    var orbitHome={theta:.46,phi:1.45,radius:8.55};
+    var orbit={theta:.43,phi:1.43,radius:8.15,target:new THREE.Vector3(-.05,1.22,-.88)};
+    var orbitHome={theta:.43,phi:1.43,radius:8.15};
 
     function updateCamera(){
       var sinPhi=Math.sin(orbit.phi);
@@ -705,16 +705,49 @@
       color:0xd2d4d1,roughness:.09,metalness:1,bumpMap:brushedMicro,bumpScale:.003,envMapIntensity:1.45
     });
 
+    var interiorMat=new THREE.MeshPhysicalMaterial({
+      color:0xe1ddd5,roughness:.52,metalness:0,bumpMap:cabinetMicro,bumpScale:.002,envMapIntensity:.42
+    });
+    var shadowMat=new THREE.MeshBasicMaterial({
+      color:0x090a08,transparent:true,opacity:.14,depthWrite:false
+    });
+    var windowGlassMat=new THREE.MeshPhysicalMaterial({
+      color:0xddeaf1,roughness:.055,metalness:0,transparent:true,opacity:.42,
+      transmission:.48,thickness:.05,clearcoat:1,clearcoatRoughness:.035,envMapIntensity:1.35
+    });
+    var skyMat=new THREE.MeshBasicMaterial({color:0xcfe5f1});
+
     var room=new THREE.Group();scene.add(room);
     var kitchen=new THREE.Group();room.add(kitchen);
     var decor=new THREE.Group();room.add(decor);
 
+    var softGeoCache={};
+    function softBoxGeometry(w,h,d){
+      var minD=Math.min(w,h,d);
+      var r=Math.max(.002,Math.min(.018,minD*.16));
+      var key=[w,h,d,r].map(function(v){return v.toFixed(4)}).join("|");
+      if(softGeoCache[key])return softGeoCache[key];
+      var iw=Math.max(.004,w-2*r),ih=Math.max(.004,h-2*r),depth=Math.max(.004,d-2*r);
+      var shape=new THREE.Shape();
+      shape.moveTo(-iw/2,-ih/2);shape.lineTo(iw/2,-ih/2);shape.lineTo(iw/2,ih/2);shape.lineTo(-iw/2,ih/2);shape.closePath();
+      var geo=new THREE.ExtrudeGeometry(shape,{
+        depth:depth,steps:1,bevelEnabled:true,bevelSegments:3,
+        bevelSize:r,bevelThickness:r,curveSegments:1
+      });
+      geo.translate(0,0,-depth/2);
+      geo.computeVertexNormals();
+      softGeoCache[key]=geo;
+      return geo;
+    }
     function addBox(w,h,d,mat,x,y,z,parent,cast){
-      var m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
+      var p=parent||kitchen;
+      var structural=(p===room||cast===false||Math.min(w,h,d)<.012);
+      var geo=structural?new THREE.BoxGeometry(w,h,d):softBoxGeometry(w,h,d);
+      var m=new THREE.Mesh(geo,mat);
       m.position.set(x,y,z);
       m.castShadow=cast!==false;
       m.receiveShadow=true;
-      (parent||kitchen).add(m);
+      p.add(m);
       return m;
     }
     function addCyl(rTop,rBottom,h,segments,mat,x,y,z,parent){
@@ -754,20 +787,30 @@
       addBox(.016,.36,.018,blackMetal,x+.038,.50,-1.947,kitchen);
     }
     function baseCarcass(x,w,type){
-      addBox(w,.79,.64,cabinetSideMat,x,.515,-2.31,kitchen);
-      addBox(w,.105,.60,gapMat,x,.105,.01,kitchen);
+      var side=.022,depth=.61,backZ=-2.605;
+      addBox(side,.77,depth,cabinetSideMat,x-w/2+side/2,.535,-2.31,kitchen);
+      addBox(side,.77,depth,cabinetSideMat,x+w/2-side/2,.535,-2.31,kitchen);
+      addBox(w-.05,.022,depth,interiorMat,x,.158,-2.31,kitchen);
+      addBox(w-.05,.022,depth,interiorMat,x,.905,-2.31,kitchen);
+      addBox(w-.05,.72,.018,interiorMat,x,.535,backZ,kitchen);
+      addBox(w-.10,.10,.46,gapMat,x,.105,-2.34,kitchen);
       if(type==="drawers") drawerStack(x,w,3); else doorPair(x,w);
     }
     function upperCarcass(x,w,glass){
-      addBox(w,.89,.39,cabinetSideMat,x,2.18,-2.39,kitchen);
+      var side=.020,depth=.37,backZ=-2.565;
+      addBox(side,.87,depth,cabinetSideMat,x-w/2+side/2,2.18,-2.39,kitchen);
+      addBox(side,.87,depth,cabinetSideMat,x+w/2-side/2,2.18,-2.39,kitchen);
+      addBox(w-.05,.020,depth,interiorMat,x,1.755,-2.39,kitchen);
+      addBox(w-.05,.020,depth,interiorMat,x,2.605,-2.39,kitchen);
+      addBox(w-.05,.83,.016,interiorMat,x,2.18,backZ,kitchen);
       if(glass){
         var dw=(w-.08)/2;
         frontPanel(dw,.80,x-dw/2-.012,2.18,-2.178,glassMat);
         frontPanel(dw,.80,x+dw/2+.012,2.18,-2.178,glassMat);
         addBox(.012,.34,.018,blackMetal,x-.033,2.18,-2.149,kitchen);
         addBox(.012,.34,.018,blackMetal,x+.033,2.18,-2.149,kitchen);
-        addBox(w-.12,.03,.18,darkWoodMat,x,2.02,-2.28,kitchen);
-        addBox(w-.12,.03,.18,darkWoodMat,x,2.35,-2.28,kitchen);
+        addBox(w-.12,.026,.23,darkWoodMat,x,2.01,-2.36,kitchen);
+        addBox(w-.12,.026,.23,darkWoodMat,x,2.36,-2.36,kitchen);
       }else{
         var dw2=(w-.08)/2;
         frontPanel(dw2,.80,x-dw2/2-.012,2.18,-2.178,cabinetMat);
@@ -777,30 +820,52 @@
       }
     }
 
-    // Architectural room shell
+    // Architectural room shell — closed enough to read as a real interior, open only on camera side.
     var floor=new THREE.Mesh(new THREE.PlaneGeometry(18,18),floorMat);
     floor.rotation.x=-Math.PI/2;floor.position.y=.045;floor.receiveShadow=true;room.add(floor);
     addBox(9.2,3.35,.12,wallMat,0,1.7,-2.72,room,false);
     addBox(.12,3.35,7.2,wallSideMat,4.54,1.7,.80,room,false);
-    // Open-ceiling architectural cutaway: prevents camera occlusion and keeps the kitchen readable.
+    var ceiling=new THREE.Mesh(new THREE.PlaneGeometry(9.2,7.2),wallMat);
+    ceiling.rotation.x=Math.PI/2;ceiling.position.set(0,3.35,.80);ceiling.receiveShadow=true;room.add(ceiling);
+    addBox(9.0,.10,.08,new THREE.MeshStandardMaterial({color:0xd7d0c5,roughness:.8}),0,.10,-2.61,room,false);
+    addBox(.08,.10,6.8,new THREE.MeshStandardMaterial({color:0xd0c8bc,roughness:.82}),4.43,.10,.78,room,false);
+
+    // Recessed architectural window on the right wall.
+    addBox(.018,1.56,2.15,gapMat,4.465,1.90,.86,room,false);
+    addBox(.014,1.42,2.00,skyMat,4.454,1.90,.86,room,false);
+    addBox(.012,1.38,1.96,windowGlassMat,4.438,1.90,.86,room,false);
+    addBox(.055,1.54,.045,blackMetal,4.405,1.90,-.145,decor);
+    addBox(.055,1.54,.045,blackMetal,4.405,1.90,1.865,decor);
+    addBox(.055,.045,2.06,blackMetal,4.405,1.145,.86,decor);
+    addBox(.055,.045,2.06,blackMetal,4.405,2.655,.86,decor);
+    addBox(.055,1.48,.028,blackMetal,4.39,1.90,.86,decor);
+    addBox(.055,.028,2.00,blackMetal,4.39,1.90,.86,decor);
 
     // Full-height stone backsplash band
     addBox(6.55,.96,.055,backsplashMat,-.10,1.44,-2.625,room,false);
     // Fine shelf above splash
     addBox(6.65,.055,.25,worktopMat,-.10,1.93,-2.48,kitchen);
 
-    // Tall appliance / pantry wall
-    addBox(1.16,2.74,.70,cabinetSideMat,-3.53,1.42,-2.29,kitchen);
-    frontPanel(.49,2.58,-3.82,1.42,-1.925,cabinetMat);
-    frontPanel(.49,2.58,-3.25,1.42,-1.925,cabinetMat);
-    addBox(.022,1.02,.025,blackMetal,-3.55,1.42,-1.895,kitchen);
+    // Tall pantry: real side panels, top/bottom rails and independent doors.
+    addBox(.024,2.70,.68,cabinetSideMat,-4.095,1.43,-2.29,kitchen);
+    addBox(.024,2.70,.68,cabinetSideMat,-2.965,1.43,-2.29,kitchen);
+    addBox(1.10,.024,.68,interiorMat,-3.53,.092,-2.29,kitchen);
+    addBox(1.10,.024,.68,interiorMat,-3.53,2.768,-2.29,kitchen);
+    addBox(1.10,2.64,.018,interiorMat,-3.53,1.43,-2.62,kitchen);
+    frontPanel(.515,2.58,-3.80,1.42,-1.925,cabinetMat);
+    frontPanel(.515,2.58,-3.26,1.42,-1.925,cabinetMat);
+    addBox(.018,.88,.022,blackMetal,-3.56,1.42,-1.895,kitchen);
 
-    // Integrated fridge block
-    addBox(1.04,2.74,.70,cabinetSideMat,-2.38,1.42,-2.29,kitchen);
-    frontPanel(.96,1.82,-2.38,1.80,-1.925,cabinetMat);
-    frontPanel(.96,.67,-2.38,.50,-1.925,cabinetMat);
-    addBox(.020,.72,.025,blackMetal,-2.02,1.76,-1.895,kitchen);
-    addBox(.020,.28,.025,blackMetal,-2.02,.51,-1.895,kitchen);
+    // Integrated fridge with separate upper/lower doors and recessed shadow gaps.
+    addBox(.024,2.70,.68,cabinetSideMat,-2.89,1.43,-2.29,kitchen);
+    addBox(.024,2.70,.68,cabinetSideMat,-1.87,1.43,-2.29,kitchen);
+    addBox(.98,.024,.68,interiorMat,-2.38,.092,-2.29,kitchen);
+    addBox(.98,.024,.68,interiorMat,-2.38,2.768,-2.29,kitchen);
+    addBox(.98,2.64,.018,interiorMat,-2.38,1.43,-2.62,kitchen);
+    frontPanel(.94,1.77,-2.38,1.84,-1.925,cabinetMat);
+    frontPanel(.94,.70,-2.38,.535,-1.925,cabinetMat);
+    addBox(.016,.68,.020,blackMetal,-2.02,1.82,-1.895,kitchen);
+    addBox(.016,.28,.020,blackMetal,-2.02,.54,-1.895,kitchen);
 
     // Main run: sink + drawers + hob
     var xs=[-1.40,-.55,.30,1.15,2.00,2.85];
@@ -842,15 +907,24 @@
     // Under-cabinet emissive rail
     addBox(5.05,.022,.035,warmGlowMat,.78,1.71,-2.14,kitchen,false);
 
-    // Island carcass and waterfall worktop
-    addBox(2.42,.84,.82,cabinetSideMat,.15,.49,.20,kitchen);
+    // Island carcass with real panel thickness and recessed plinth.
+    addBox(.026,.78,.78,cabinetSideMat,-1.02,.50,.20,kitchen);
+    addBox(.026,.78,.78,cabinetSideMat,1.32,.50,.20,kitchen);
+    addBox(2.31,.026,.78,interiorMat,.15,.135,.20,kitchen);
+    addBox(2.31,.026,.78,interiorMat,.15,.875,.20,kitchen);
+    addBox(2.31,.70,.018,interiorMat,.15,.50,-.18,kitchen);
     frontPanel(.72,.68,-.63,.50,.625,cabinetMat);
     frontPanel(.72,.68,.15,.50,.625,cabinetMat);
     frontPanel(.72,.68,.93,.50,.625,cabinetMat);
     addBox(2.58,.085,.98,worktopMat,.15,.955,.20,kitchen);
     addBox(.085,.98,.98,worktopMat,-1.10,.49,.20,kitchen);
-    // Island shadow line / plinth
-    addBox(2.18,.10,.70,gapMat,.15,.105,.20,kitchen);
+    addBox(2.10,.09,.58,gapMat,.15,.095,.20,kitchen);
+
+    // Soft contact shadows — subtle grounding, not fake black blobs.
+    var islandShadow=new THREE.Mesh(new THREE.PlaneGeometry(2.65,1.08),shadowMat);
+    islandShadow.rotation.x=-Math.PI/2;islandShadow.position.set(.15,.052,.24);decor.add(islandShadow);
+    var runShadow=new THREE.Mesh(new THREE.PlaneGeometry(5.85,.82),shadowMat);
+    runShadow.rotation.x=-Math.PI/2;runShadow.position.set(.70,.052,-2.22);decor.add(runShadow);
 
     // Minimal accessories on island
     addCyl(.12,.10,.22,24,new THREE.MeshStandardMaterial({color:0x6f775f,roughness:.72}),.70,1.10,.10,decor);
@@ -877,11 +951,18 @@
       pendantGlow.push(bulb);
     });
 
-    // Framed niche + shelf on side wall
-    addBox(.055,1.42,1.62,gapMat,4.42,1.78,.55,decor,false);
-    addBox(.055,1.30,1.50,new THREE.MeshStandardMaterial({color:0xb6aa98,roughness:.84}),4.385,1.78,.55,decor,false);
-    addBox(.34,.045,1.26,darkWoodMat,4.18,1.50,.55,decor);
-    addBox(.34,.045,1.26,darkWoodMat,4.18,2.03,.55,decor);
+    // Slim timber ledge beneath the window for architectural depth.
+    addBox(.30,.045,2.02,darkWoodMat,4.25,1.08,.86,decor);
+    addCyl(.055,.045,.22,20,new THREE.MeshPhysicalMaterial({color:0xd5c7b5,roughness:.58}),4.08,1.22,.45,decor);
+    addCyl(.045,.038,.34,18,new THREE.MeshPhysicalMaterial({color:0x73816f,roughness:.7}),4.08,1.48,.45,decor);
+
+    // Ceiling downlight fixtures — visible geometry plus restrained light pools.
+    var downlightMat=new THREE.MeshPhysicalMaterial({color:0xf2efe8,roughness:.3,metalness:.18,envMapIntensity:.8});
+    [[-2.8,-1.1],[-.8,-1.1],[1.2,-1.1],[3.0,-1.1],[-1.7,1.2],[.8,1.2],[2.8,1.2]].forEach(function(p){
+      var ring=new THREE.Mesh(new THREE.CylinderGeometry(.095,.095,.025,32),downlightMat);
+      ring.rotation.x=Math.PI/2;ring.position.set(p[0],3.325,p[1]);decor.add(ring);
+      var lamp=new THREE.PointLight(0xffedcf,1.45,3.8,2);lamp.position.set(p[0],3.18,p[1]);scene.add(lamp);
+    });
 
     // Soft architectural lighting
     var hemi=new THREE.HemisphereLight(0xf7f3ea,0x5b554d,.54);scene.add(hemi);
@@ -928,7 +1009,7 @@
       camera.aspect=w/h;
       camera.fov=w<620?36:(w<900?33:31);
       camera.updateProjectionMatrix();
-      orbit.radius=w<620?9.7:(w<900?9.05:8.55);
+      orbit.radius=w<620?9.15:(w<900?8.65:8.15);
       updateCamera();
     }
     window.addEventListener("resize",resize);
