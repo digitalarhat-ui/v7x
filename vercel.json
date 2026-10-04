@@ -92,6 +92,32 @@
           "value": "private, no-store, max-age=0"
         }
       ]
+    },
+    {
+      "source": "/bayt-alabdae-kitchen-studio-v20",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/bayt-alabdae-kitchen-studio-v20/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
     }
   ],
   "alias": [
@@ -123,7 +149,8 @@
     "rawae-dream-kitchens.vercel.app",
     "dynamic-parts-sales-copilot.vercel.app",
     "dar-aljawdah-kitchens.vercel.app",
-    "lamsat-niloufar-kitchens.vercel.app"
+    "lamsat-niloufar-kitchens.vercel.app",
+    "bayt-alabdae-kitchens.vercel.app"
   ],
   "redirects": [
     {
@@ -442,6 +469,17 @@
         {
           "type": "host",
           "value": "lamsat-niloufar-kitchens.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/bayt-alabdae-kitchen-studio-v20",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "bayt-alabdae-kitchens.vercel.app"
         }
       ]
     }
