@@ -747,7 +747,7 @@
     const stripArea = new THREE.RectAreaLight(0xffe0ad,.42,3.55,.22);
     stripArea.position.set(-.02,1.72,-1.44);stripArea.lookAt(-.02,1.05,-1.42);scene.add(stripArea);
     [-1.62,1.58].forEach(x=>{
-      const glow=new THREE.RectAreaLight(0xffefd5,.30,.48,.42);
+      const glow=new THREE.RectAreaLight(0xffefd5,.52,.48,.42);
       glow.position.set(x,2.36,-1.50);glow.lookAt(x,2.14,-1.72);scene.add(glow);
     });
 
@@ -783,7 +783,8 @@
     const handleMat=new THREE.MeshStandardMaterial({color:0xa4aaa7,metalness:.96,roughness:.22,envMapIntensity:1.62});
     const metalMat=new THREE.MeshStandardMaterial({color:0xbac1be,metalness:.96,roughness:.24,envMapIntensity:1.65});
     const applianceMat=new THREE.MeshPhysicalMaterial({color:0x111313,metalness:.28,roughness:.14,clearcoat:.42,clearcoatRoughness:.12,envMapIntensity:1.28});
-    const carcassMat=new THREE.MeshStandardMaterial({color:0x343632,metalness:0,roughness:.86,envMapIntensity:.34});
+    const carcassMat=new THREE.MeshStandardMaterial({color:0x50524d,metalness:0,roughness:.88,envMapIntensity:.30});
+    const jointMat=new THREE.MeshStandardMaterial({color:0x77736c,metalness:0,roughness:.88,envMapIntensity:.22});
     const backsplashMat=new THREE.MeshPhysicalMaterial({color:0xbdb8af,metalness:0,roughness:.53,clearcoat:.018,clearcoatRoughness:.86,envMapIntensity:.68});
     const kickMat=new THREE.MeshStandardMaterial({color:0x262826,metalness:0,roughness:.79});
     const roomFloorMat=new THREE.MeshStandardMaterial({color:0x6f6a64,metalness:0,roughness:.92,envMapIntensity:.30});
@@ -810,11 +811,19 @@
       else if(n.startsWith("HC_HANDLES")){obj.material=handleMat;zoneMeshes.handles.push(obj);}
       else if(n.startsWith("HC_METAL")){obj.material=metalMat;zoneMeshes.metal.push(obj);}
       else if(n.startsWith("HC_APPLIANCE")){obj.material=applianceMat;zoneMeshes.appliance.push(obj);}
+      else if(n.startsWith("HC_CARCASS__B")&&!n.includes("_BACK")){obj.material=baseCabinetMat;zoneMeshes.carcass.push(obj);}
+      else if((n.includes("HC_CARCASS__BASE_END"))){obj.material=baseCabinetMat;zoneMeshes.carcass.push(obj);}
+      else if(n.startsWith("HC_CARCASS__U")&&!n.includes("_BACK")){obj.material=upperCabinetMat;zoneMeshes.carcass.push(obj);}
+      else if(n.includes("HC_CARCASS__UPPER_END")||n.includes("HC_CARCASS__UPPER_CROWN")){obj.material=upperCabinetMat;zoneMeshes.carcass.push(obj);}
+      else if(n.startsWith("HC_CARCASS__TALL")&&!n.includes("_BACK")){obj.material=tallCabinetMat;zoneMeshes.carcass.push(obj);}
+      else if(n.includes("HC_CARCASS__COUNTER_BACK_JOINT")){obj.material=jointMat;zoneMeshes.carcass.push(obj);}
       else if(n.startsWith("HC_CARCASS")){obj.material=carcassMat;zoneMeshes.carcass.push(obj);}
       else if(n.startsWith("HC_BACKSPLASH")){obj.material=backsplashMat;zoneMeshes.back.push(obj);}
       else if(n.startsWith("HC_KICK")){obj.material=kickMat;zoneMeshes.kick.push(obj);}
       else if(n.startsWith("HC_LIGHT")){obj.material=lightMat;zoneMeshes.light.push(obj);}
       else if(n.startsWith("HC_ROOM")){
+        obj.castShadow=false;
+        obj.receiveShadow=true;
         if(n.includes("FLOOR"))obj.material=roomFloorMat;
         else if(n.includes("CEILING"))obj.material=roomCeilingMat;
         else if(n.includes("SKIRTING"))obj.material=skirtingMat;
