@@ -1,1 +1,1 @@
-Trigger one-off 390/430/1440 Playwright visual QA for Lamsat Niloufar Kitchens. Rerun after WebGL and QA module syntax repair.
+Trigger one-off 390/430/1440 Playwright visual QA for Lamsat Niloufar Kitchens. Rerun after premium 3D scene rebuild.
