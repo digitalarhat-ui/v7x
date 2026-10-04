@@ -258,7 +258,8 @@
     "ebdaa-almona-kitchens.vercel.app",
     "fleet-parts-memory.vercel.app",
     "modern-sector-decision-twin.vercel.app",
-    "wasaam-alsarya-kitchens.vercel.app"
+    "wasaam-alsarya-kitchens.vercel.app",
+    "urbanfurniva-kitchen-studio.vercel.app"
   ],
   "redirects": [
     {
@@ -632,6 +633,17 @@
         {
           "type": "host",
           "value": "fleet-parts-memory.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/urbanfurniva-kitchen-studio-v20",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "urbanfurniva-kitchen-studio.vercel.app"
         }
       ]
     }
