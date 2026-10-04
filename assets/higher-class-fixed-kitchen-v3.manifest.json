@@ -1,0 +1,22 @@
+{
+  "file": "higher-class-fixed-kitchen-v3.glb",
+  "bytes": 1666036,
+  "parts": 160,
+  "nodes": 160,
+  "zones": {
+    "HC_LIGHT": 1,
+    "HC_APPLIANCE": 9,
+    "HC_METAL": 8,
+    "HC_HANDLES": 40,
+    "HC_CARCASS": 69,
+    "HC_TALL_FRONTS": 2,
+    "HC_GLASS": 2,
+    "HC_UPPER_FRONTS": 11,
+    "HC_BACKSPLASH": 1,
+    "HC_COUNTERTOP": 1,
+    "HC_KICK": 1,
+    "HC_BASE_FRONTS": 9,
+    "HC_ROOM": 6
+  },
+  "source": "CadQuery B-rep solids tessellated to glTF; client images used only for derived PBR maps."
+}
