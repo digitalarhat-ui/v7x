@@ -86,9 +86,13 @@ for(const vp of viewports){
     ];
     for(const [name,pos,target] of shots){
       await setShot(page,pos,target);
-      const box=await stage.boundingBox();
-      if(!box)throw new Error('QA stage box missing for '+name);
-      await page.screenshot({path:path.join(outDir,`${label}-${name}.png`),clip:{x:Math.max(0,box.x),y:Math.max(0,box.y),width:Math.min(box.width,vp.width-Math.max(0,box.x)),height:Math.min(box.height,vp.height-Math.max(0,box.y))}});
+      const dataUrl=await page.evaluate(()=>{
+        const canvas=window.__HC_RENDERER__?.domElement;
+        if(!canvas)throw new Error('QA renderer canvas missing');
+        return canvas.toDataURL('image/png');
+      });
+      const b64=dataUrl.split(',')[1];
+      fs.writeFileSync(path.join(outDir,`${label}-${name}.png`),Buffer.from(b64,'base64'));
     }
     await page.click('#resetView');await page.waitForTimeout(250);
   }
