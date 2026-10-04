@@ -196,6 +196,32 @@
           "value": "public, max-age=0, must-revalidate"
         }
       ]
+    },
+    {
+      "source": "/wasaam-kitchen-studio-v20",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/wasaam-kitchen-studio-v20/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
     }
   ],
   "alias": [
@@ -231,9 +257,21 @@
     "bayt-alabdae-kitchens.vercel.app",
     "ebdaa-almona-kitchens.vercel.app",
     "fleet-parts-memory.vercel.app",
-    "modern-sector-decision-twin.vercel.app"
+    "modern-sector-decision-twin.vercel.app",
+    "wasaam-alsarya-kitchens.vercel.app"
   ],
   "redirects": [
+    {
+      "source": "/",
+      "destination": "/wasaam-kitchen-studio-v20",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "wasaam-alsarya-kitchens.vercel.app"
+        }
+      ]
+    },
     {
       "source": "/",
       "destination": "/modern-sector-decision-twin-v31",
