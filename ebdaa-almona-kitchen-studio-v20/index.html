@@ -448,7 +448,7 @@
     var cabinetColors={ivory:0xd8d0c2,sand:0xb89f7b,sage:0x7f8c75,taupe:0x8f8275,clay:0xa56f5c,navy:0x344451,charcoal:0x3e403d,black:0x20211f};
     var worktopColors={softwhite:0xdedbd2,calacatta:0xece8df,warmstone:0x9b8d78,sandveil:0xc5b292,graphite:0x4a4945};
     var accentColors={warmwood:0x9d7852,lightoak:0xc2a47b,darkwood:0x5d4635,none:0x9d7852};
-    var storageKey="lamsat-niloufar-kitchen-demo-v20";
+    var storageKey="ebdaa-almona-kitchen-studio-v20";
 
     function byId(id){return document.getElementById(id)}
     function toast(msg){var t=byId("toast");t.textContent=msg||"تم";t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove("show")},1600)}
@@ -792,7 +792,7 @@
         else{scene.background.setHex(0xe7e1d7);scene.fog.color.setHex(0xe7e1d7);hemi.color.setHex(0xfff7e8);hemi.groundColor.setHex(0x716d63);hemi.intensity=.8;sun.color.setHex(0xfff2d8);sun.intensity=2.15;warm.intensity=.45;renderer.toneMappingExposure=1.05}
       }
       window.demo3d={setCabinet:setCabinet,setAccent:setAccent,setWorktop:setWorktop,setLight:setLight};
-      window.__LN_RENDERER__=renderer;window.__LN_SCENE__=scene;window.__LN_CAMERA__=camera;
+      window.__EA_RENDERER__=renderer;window.__EA_SCENE__=scene;window.__EA_CAMERA__=camera;
       setCabinet(state.cabinet);setAccent(state.accent);setWorktop(state.worktop);setLight(state.light);
       (function loop(){requestAnimationFrame(loop);renderer.render(scene,camera)})();
     }catch(err){
