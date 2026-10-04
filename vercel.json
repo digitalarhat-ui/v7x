@@ -37,7 +37,8 @@
     "rukn-sabahiyah-auto.vercel.app",
     "luxurycar-decision-twin.vercel.app",
     "sdn-taiba-kitchen-studio.vercel.app",
-    "dakhakhni-kitchen-studio.vercel.app"
+    "dakhakhni-kitchen-studio.vercel.app",
+    "mahad-aldar-kitchen-studio.vercel.app"
   ],
   "redirects": [
     {
@@ -268,6 +269,17 @@
         {
           "type": "host",
           "value": "dakhakhni-kitchen-studio.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/mahad-al-dar-kitchen-studio-v20",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "mahad-aldar-kitchen-studio.vercel.app"
         }
       ]
     }
