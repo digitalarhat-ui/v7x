@@ -100,7 +100,8 @@ const stateUrl = page.url();
 check('share_state_url', /[?&]b=clientSage/.test(stateUrl) && /[?&]a=clientWood/.test(stateUrl) && /[?&]x=clientSage/.test(stateUrl), stateUrl);
 await page.goto(stateUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
 await page.waitForSelector('#currentChoice', { state: 'attached', timeout: 60000 });
-await page.waitForTimeout(900);
+await page.waitForFunction(() => window.__HC_V3_ASSET_READY__ === true, null, { timeout: 90000 });
+await page.waitForTimeout(500);
 const roundChoice = await page.locator('#currentChoice').innerText();
 check('share_state_roundtrip', roundChoice.includes('ساج مرجعي') && roundChoice.includes('خشب فاتح مرجعي'), roundChoice);
 
