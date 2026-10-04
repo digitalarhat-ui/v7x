@@ -39,7 +39,8 @@
     "sdn-taiba-kitchen-studio.vercel.app",
     "dakhakhni-kitchen-studio.vercel.app",
     "mahad-aldar-kitchen-studio.vercel.app",
-    "aldar-closets-kitchen.vercel.app"
+    "aldar-closets-kitchen.vercel.app",
+    "kitchens66-jubail.vercel.app"
   ],
   "redirects": [
     {
@@ -292,6 +293,17 @@
         {
           "type": "host",
           "value": "aldar-closets-kitchen.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/kitchens66-jubail",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "kitchens66-jubail.vercel.app"
         }
       ]
     }
