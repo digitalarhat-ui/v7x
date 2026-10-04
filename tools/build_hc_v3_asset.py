@@ -13,8 +13,15 @@ ASSETS.mkdir(parents=True,exist_ok=True)
 import base64, io
 B64=ROOT/'source-assets'/'b64'
 def read_b64_parts(prefix):
-    txt=''.join(x.read_text().strip() for x in sorted(B64.glob(prefix+'-*.txt')))
-    return base64.b64decode(txt)
+    parts=sorted(B64.glob(prefix+'-*.txt'))
+    if parts:
+        txt=''.join(x.read_text().strip() for x in parts)
+        return base64.b64decode(txt)
+    # Packaged release fallback: originals are intentionally retained in /assets.
+    fallback=ASSETS/('client-light-wood-original.jpg' if prefix=='wood' else 'client-sage-original.jpg')
+    if fallback.exists():
+        return fallback.read_bytes()
+    raise FileNotFoundError(f'Missing client source for {prefix}: neither source-assets/b64 nor {fallback}')
 wood_bytes=read_b64_parts('wood')
 sage_bytes=read_b64_parts('sage')
 wood_src=Image.open(io.BytesIO(wood_bytes)).convert('RGB')
@@ -109,6 +116,7 @@ zone_colors={
     'HC_ROOM':(0.65,0.63,0.60,1),
     'HC_KICK':(0.06,0.065,0.06,1),
     'HC_LIGHT':(0.95,0.80,0.55,1),
+    'HC_DARK':(0.025,0.028,0.027,1),
 }
 
 def material_for(zone):
@@ -238,10 +246,11 @@ for i,x in enumerate(centers,1):
         cylinder(.008,.045,hx,.71,front_z+.012,'z',f'HC_HANDLES__B{i}_DOOR_MOUNT_2','HC_HANDLES',16)
 
 # toe kick recessed
-panel(4.02,.155,.37,-.02,.095,-1.80,'HC_KICK__BASE_PLINTH','HC_KICK',0.002,'front')
+panel(4.00,.135,.28,-.02,.085,-1.835,'HC_KICK__BASE_PLINTH','HC_KICK',0.002,'front')
 
 # countertop + backsplash
 panel(4.23,.040,.82,-.02,1.025,-1.69,'HC_COUNTERTOP__MAIN_SLAB','HC_COUNTERTOP',0.004,'top',(3.0,1.5))
+panel(4.06,.014,.030,-.02,.998,-1.326,'HC_DARK__COUNTER_UNDERCUT','HC_DARK',0.001,'front')
 panel(4.12,1.00,.034,-.02,1.54,-2.105,'HC_BACKSPLASH__MAIN','HC_BACKSPLASH',0.002,'front',(3.2,2.2))
 # subtle silicone shadow joint as actual geometry
 panel(4.08,.010,.030,-.02,1.052,-2.075,'HC_CARCASS__COUNTER_BACK_JOINT','HC_CARCASS',0.0008,'front')
@@ -263,6 +272,7 @@ for i,x in enumerate(centers,1):
         panel(stile,fh-2*rail,.025,x-fw/2+stile/2,upper_y,upper_front_z,f'HC_UPPER_FRONTS__U{i}_GLASS_LEFT','HC_UPPER_FRONTS',0.0015,'front',(1.7,2.7),(i*.1,0))
         panel(stile,fh-2*rail,.025,x+fw/2-stile/2,upper_y,upper_front_z,f'HC_UPPER_FRONTS__U{i}_GLASS_RIGHT','HC_UPPER_FRONTS',0.0015,'front',(1.7,2.7),(i*.1,0))
         panel(fw-.078,fh-.078,.008,x,upper_y,upper_front_z+.006,f'HC_GLASS__U{i}_PANE','HC_GLASS',0.0005,'front')
+        panel(fw-.11,fh-.11,.010,x,upper_y,-1.952,f'HC_DARK__U{i}_GLASS_BACK','HC_DARK',0.001,'front')
         # interior shelves / depth
         for sy in (2.02,2.30):
             panel(W-.09,.012,.31,x,sy,-1.76,f'HC_CARCASS__U{i}_SHELF_{int(sy*100)}','HC_CARCASS',0.0008,'top')
@@ -301,14 +311,23 @@ panel(.70,.84,.035,tx,.92,-1.295,'HC_APPLIANCE__OVEN_GLASS','HC_APPLIANCE',0.002
 panel(.64,.095,.020,tx,1.28,-1.270,'HC_APPLIANCE__OVEN_CONTROL','HC_APPLIANCE',0.002,'front')
 cylinder(.026,.030,tx-.15,1.28,-1.245,'z','HC_APPLIANCE__OVEN_KNOB_L','HC_APPLIANCE',24)
 cylinder(.026,.030,tx+.15,1.28,-1.245,'z','HC_APPLIANCE__OVEN_KNOB_R','HC_APPLIANCE',24)
+# appliance detailing: real handle, control display and ventilation slots
+cylinder(.012,.49,tx,1.145,-1.238,'x','HC_METAL__OVEN_HANDLE','HC_METAL',24)
+panel(.17,.036,.010,tx,1.28,-1.238,'HC_DARK__OVEN_DISPLAY','HC_DARK',0.001,'front')
+for j in range(5):
+    panel(.46,.006,.008,tx,1.365+j*.010,-1.240,f'HC_DARK__OVEN_VENT_{j+1}','HC_DARK',0.0005,'front')
+# dark recess behind the appliance prevents a pasted-on black rectangle read
+panel(.74,.89,.012,tx,.92,-1.333,'HC_DARK__OVEN_RECESS','HC_DARK',0.001,'front')
 cylinder(.010,.36,tx,2.12,-1.287,'y','HC_HANDLES__TALL_DOOR_BAR','HC_HANDLES',20)
 cylinder(.010,.30,tx,.205,-1.287,'x','HC_HANDLES__TALL_DRAWER_BAR','HC_HANDLES',20)
 
 # ---------- sink: actual open bowl + rim ----------
-outer=cq.Workplane('XY').box(.66,.18,.40,centered=(True,True,True)).edges().fillet(.018)
-inner=cq.Workplane('XY').box(.58,.19,.32,centered=(True,True,True)).edges().fillet(.014).translate((0,.045,0))
-sink=outer.cut(inner).translate((-1.30,.94,-1.59)).val()
-solid_to_mesh(sink,'HC_METAL__SINK_BOWL','HC_METAL','top',(1.3,1.0),(0,0),0.0045,0.28)
+outer=cq.Workplane('XY').box(.66,.30,.40,centered=(True,True,True)).edges().fillet(.022)
+inner=cq.Workplane('XY').box(.57,.31,.31,centered=(True,True,True)).edges().fillet(.018).translate((0,.060,0))
+sink=outer.cut(inner).translate((-1.30,.88,-1.59)).val()
+solid_to_mesh(sink,'HC_METAL__SINK_BOWL','HC_METAL','top',(1.3,1.0),(0,0),0.0040,0.25)
+panel(.50,.012,.25,-1.30,.735,-1.59,'HC_DARK__SINK_BASE_SHADOW','HC_DARK',0.010,'top')
+cylinder(.018,.010,-1.30,.746,-1.59,'y','HC_METAL__SINK_DRAIN','HC_METAL',28)
 # rim as four bars slightly above slab
 panel(.70,.008,.024,-1.30,1.050,-1.388,'HC_METAL__SINK_RIM_FRONT','HC_METAL',0.001,'top')
 panel(.70,.008,.024,-1.30,1.050,-1.792,'HC_METAL__SINK_RIM_BACK','HC_METAL',0.001,'top')
@@ -324,6 +343,7 @@ tube_path(pts,.020,'HC_METAL__FAUCET_SPOUT','HC_METAL',16)
 cylinder(.008,.12,-1.255,1.35,-1.91,'x','HC_METAL__FAUCET_LEVER','HC_METAL',18)
 
 # cooktop with inset glass and burner zones
+panel(.68,.009,.52,.82,1.048,-1.61,'HC_DARK__COOKTOP_RECESS','HC_DARK',0.002,'top')
 panel(.64,.010,.48,.82,1.052,-1.61,'HC_APPLIANCE__COOKTOP_GLASS','HC_APPLIANCE',0.003,'top')
 for j,(dx,dz,r) in enumerate([(-.16,-.11,.09),(.14,-.10,.075),(-.14,.13,.07),(.16,.13,.09)],1):
     # thin burner disks (cylinder along Y)
