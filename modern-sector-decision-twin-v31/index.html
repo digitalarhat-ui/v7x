@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow">
-  <meta name="theme-color" content="#11110f">
+  <meta name="theme-color" content="#07172f">
   <title>القطاع الحديث | ملف قرار المطبخ قبل المعاينة</title>
   <meta name="description" content="نموذج قرار تفاعلي تجريبي للقطاع الحديث يحفظ الاختيارات وسياق المشروع قبل المعاينة ويربطها بالفرع المناسب.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -826,6 +826,7 @@
       if(state.appliances)p.set("ap",state.appliances);
       if(state.photos)p.set("ph",state.photos);
       if(state.timeline)p.set("t",state.timeline);
+      if(state.note)p.set("n",state.note);
       history.replaceState(null,"",location.pathname+"?"+p.toString());
       try{localStorage.setItem("modern-sector-decision-twin-state",JSON.stringify(state))}catch(e){}
     }
@@ -875,7 +876,7 @@
       document.getElementById("whatsappLink").href="https://wa.me/"+phone+"?text="+encodeURIComponent(lines.join("\n"));
     }
     function sync(){
-      applyVisual();updateText();updateUrl();
+      applyVisual();updateUrl();updateText();
     }
 
     document.querySelectorAll("#cabinetSwatches .swatch").forEach(function(b){
@@ -931,6 +932,7 @@
     if(q.get("ap"))state.appliances=q.get("ap");
     if(q.get("ph"))state.photos=q.get("ph");
     if(q.get("t"))state.timeline=q.get("t");
+    if(q.get("n"))state.note=q.get("n").slice(0,140);
 
     document.getElementById("branch").value=state.branch;
     document.getElementById("stageSelect").value=state.projectStage;
