@@ -774,9 +774,9 @@
     const steelMat=new THREE.MeshStandardMaterial({color:0xb8bfbc,metalness:.96,roughness:.27,envMapIntensity:1.58});
     const darkGlassMat=new THREE.MeshPhysicalMaterial({color:0x101313,metalness:.08,roughness:.16,clearcoat:.35,clearcoatRoughness:.12,envMapIntensity:1.1});
     const glassMat=new THREE.MeshPhysicalMaterial({
-      color:0xf4fbf8,metalness:0,roughness:.035,transmission:.98,opacity:1,
-      thickness:.014,ior:1.48,clearcoat:.06,clearcoatRoughness:.18,
-      envMapIntensity:1.62,attenuationColor:new THREE.Color(0xe3eee9),attenuationDistance:3.2,side:THREE.DoubleSide
+      color:0xeaf1ee,metalness:0,roughness:.055,transmission:.92,opacity:1,
+      thickness:.018,ior:1.47,clearcoat:.035,clearcoatRoughness:.22,
+      envMapIntensity:1.30,attenuationColor:new THREE.Color(0xd7e2dd),attenuationDistance:2.4,side:THREE.DoubleSide
     });
     const backsplashMat=new THREE.MeshPhysicalMaterial({color:0xbcb7ae,roughness:.48,metalness:0,clearcoat:.025,clearcoatRoughness:.78,envMapIntensity:.72});
     const warmLightMat=new THREE.MeshStandardMaterial({color:0xffe8c8,emissive:0xffd8a6,emissiveIntensity:.48,roughness:.64});
@@ -895,7 +895,7 @@
     const tallCabinetMat=baseCabinetMat.clone();
     const topMat=new THREE.MeshPhysicalMaterial({color:0xd7d2c9,map:stoneTexture,metalness:0,roughness:.56,clearcoat:.025,clearcoatRoughness:.80,envMapIntensity:.86});
     const revealMat=new THREE.MeshStandardMaterial({color:0x454640,metalness:0,roughness:.90,envMapIntensity:.32});
-    const displayBackMat=new THREE.MeshStandardMaterial({color:0x5c615c,metalness:0,roughness:.78,envMapIntensity:.44});
+    const displayBackMat=new THREE.MeshStandardMaterial({color:0x414843,metalness:0,roughness:.76,envMapIntensity:.46});
 
     function registerCabinet(mesh,zone){
       mesh.userData.zone=zone;
@@ -1003,9 +1003,6 @@
     const stripArea=new THREE.RectAreaLight(0xffe8c6,1.05,3.55,.28);
     stripArea.position.set(-.05,1.69,-1.42);stripArea.lookAt(-.05,1.05,-1.40);scene.add(stripArea);
 
-    box(.96,.035,.27,-2.18,2.48,-1.83,new THREE.MeshStandardMaterial({color:0x7b684f,roughness:.64}),.006);
-    [2.64,2.93].forEach(y=>box(.22,.22,.20,-2.28,y,-1.72,new THREE.MeshStandardMaterial({color:0xa38a6e,roughness:.70}),.008));
-
     // Subtle architectural contact shadow bands: depth cues only, not decorative geometry.
     box(4.02,.020,.028,-.05,.185,-1.438,new THREE.MeshBasicMaterial({color:0x343630,transparent:true,opacity:.34}),.002).castShadow=false;
     box(4.04,.018,.025,-.05,1.675,-1.520,new THREE.MeshBasicMaterial({color:0x454641,transparent:true,opacity:.22}),.002).castShadow=false;
@@ -1016,8 +1013,7 @@
       glow.position.set(x,2.37,-1.53); glow.lookAt(x,2.14,-1.70); scene.add(glow);
     });
 
-    const rug=new THREE.Mesh(new THREE.PlaneGeometry(3.65,1.25),new THREE.MeshStandardMaterial({color:0xb1a18e,roughness:.98}));
-    rug.rotation.x=-Math.PI/2; rug.position.set(.08,.013,.25); rug.receiveShadow=true;scene.add(rug);
+    // Keep the foreground architectural and uncluttered; no decorative rug in the management proof.
 
     const materialStates = {
       metal:{metalness:0,roughness:.54,texture:null},
@@ -1026,7 +1022,7 @@
     };
     const colorStates = {
       clientSage:{label:"ساج مرجعي",hex:0x8b9b8a,reference:"sage"},
-      clientWood:{label:"خشب فاتح مرجعي",hex:0xffffff,reference:"wood"},
+      clientWood:{label:"خشب فاتح مرجعي",hex:0xe5d7c8,reference:"wood"},
       ivory:{label:"عاجي",hex:0xf1eee6}, white:{label:"أبيض دافئ",hex:0xfbfaf6},
       lightgray:{label:"رمادي فاتح",hex:0xc9c9c5}, stone:{label:"رمادي حجري",hex:0x9c9992},
       charcoal:{label:"فحمي",hex:0x4a4c4e}, black:{label:"أسود دافئ",hex:0x242322},
@@ -1056,8 +1052,8 @@
       if(state.reference==="wood"){
         mat.map=clientWoodTexture;
         mat.bumpMap=woodMicroTexture;
-        mat.bumpScale=.0024;
-        mat.roughness=materialRoughness(.52);
+        mat.bumpScale=.0032;
+        mat.roughness=materialRoughness(.54);
       }else if(state.reference==="sage"){
         mat.map=null;
         mat.bumpMap=sageMicroTexture;
@@ -1068,7 +1064,7 @@
         mat.map=src.texture==="wood"?woodTexture:(src.texture==="grain"?cladTexture:null);
         mat.roughness=materialRoughness(src.roughness);
       }
-      mat.envMapIntensity=.76;
+      mat.envMapIntensity=.68;
       mat.needsUpdate=true;
     }
 
@@ -1088,9 +1084,9 @@
     }
 
     const lightingStates={
-      day:{label:"نهار معماري",bg:0x8f8a82,hemi:0xfffdf9,ground:0x514e49,hemiI:.40,key:0xfff8ec,keyI:1.58,fill:0xf7f7f2,fillI:.16,area:1.05,strip:.32,exposure:.76},
+      day:{label:"نهار معماري",bg:0x8f8a82,hemi:0xfffdf9,ground:0x514e49,hemiI:.36,key:0xfff8ec,keyI:1.52,fill:0xf7f7f2,fillI:.13,area:.92,strip:.28,exposure:.69},
       evening:{label:"مساء دافئ",bg:0x57514b,hemi:0xffead2,ground:0x46413d,hemiI:.30,key:0xffd7ad,keyI:1.18,fill:0xffe2c1,fillI:.12,area:.72,strip:.72,exposure:.70},
-      neutral:{label:"عرض محايد",bg:0x858580,hemi:0xffffff,ground:0x535552,hemiI:.34,key:0xffffff,keyI:1.42,fill:0xffffff,fillI:.14,area:.88,strip:.28,exposure:.74}
+      neutral:{label:"عرض محايد",bg:0x858580,hemi:0xffffff,ground:0x535552,hemiI:.30,key:0xffffff,keyI:1.34,fill:0xffffff,fillI:.11,area:.78,strip:.24,exposure:.70}
     };
     function applyLighting(value){
       currentLighting=value;const s=lightingStates[value];
