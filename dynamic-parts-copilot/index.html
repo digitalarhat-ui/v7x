@@ -26,7 +26,7 @@
     .wrap{max-width:1440px;margin:auto;padding:18px}
     .topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(16px);background:rgba(11,13,15,.84);border-bottom:1px solid rgba(255,255,255,.07)}
     .topbar .inner{max-width:1440px;margin:auto;padding:12px 18px;display:flex;align-items:center;gap:12px}
-    .mark{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:var(--amber);color:#15120b;font-weight:900;letter-spacing:-.04em}
+    .mark{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:transparent;border:1px solid rgba(244,185,66,.55);color:#ffd98e;font-weight:900;letter-spacing:-.04em;font-size:11px}
     .brand{min-width:0}
     .brand b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .brand small{color:var(--soft);font-size:11px}
@@ -134,27 +134,27 @@
     .hidden{display:none!important}
     .ltr{direction:ltr;text-align:left}
     @media(max-width:1050px){
-      .grid{grid-template-columns:1fr}.sidebar{position:static}.queue{display:grid;grid-template-columns:repeat(4,minmax(210px,1fr));overflow:auto}.qitem{min-width:210px}
+      .grid{grid-template-columns:1fr}.main{order:1}.sidebar{order:2;position:static}.queue{display:grid;grid-template-columns:repeat(3,minmax(210px,1fr));overflow:auto}.qitem{min-width:210px}
       .workspace{grid-template-columns:1fr}.hero-grid{grid-template-columns:1fr}.review{grid-template-columns:1fr}
     }
     @media(max-width:640px){
       .wrap{padding:10px}.topbar .inner{padding:10px}.brand small{display:none}.pill{display:none}
       .hero,.section{padding:14px}.facts{grid-template-columns:1fr}.evidence-grid,.kpis{grid-template-columns:1fr}
-      h1{font-size:31px}.queue{grid-template-columns:repeat(4,82vw)}.qitem{min-width:82vw}
-      .actions .btn{flex:1 1 auto}.top-actions{gap:5px}.lang{padding:8px 10px}
+      h1{font-size:30px;line-height:1.12}.sidebar{display:none}.actions .btn{flex:1 1 calc(50% - 8px)}.top-actions{gap:5px}.lang{padding:8px 10px}
+      .hero-grid{gap:12px}.truthbox{padding:12px}.chat{min-height:180px}
     }
   </style>
 </head>
 <body>
 <header class="topbar">
   <div class="inner">
-    <div class="mark">DP</div>
+    <div class="mark">DA</div>
     <div class="brand">
-      <b data-i18n="brand">مساعد مكتب مبيعات قطع الغيار</b>
-      <small data-i18n="subbrand">نموذج مفاهيمي غير رسمي — لا يرتبط بالمخزون أو الأسعار أو واتساب الحي</small>
+      <b data-i18n="brand">طلب قطعة ذكي — نموذج مفاهيمي</b>
+      <small data-i18n="subbrand">تصور أعدّه Digital Arhat لـ Dynamic Parts — ليس نظامًا رسميًا</small>
     </div>
     <div class="top-actions">
-      <span class="pill warn" data-i18n="human">مراجعة بشرية إلزامية</span>
+      <span class="pill warn" data-i18n="human">مراجعة مختص قبل التأكيد</span>
       <button class="lang active" data-lang="ar">ع</button>
       <button class="lang" data-lang="en">EN</button>
     </div>
@@ -179,14 +179,14 @@
       <section class="card hero">
         <div class="hero-grid">
           <div>
-            <div class="eyebrow" data-i18n="concept">SPARE-PARTS SALES DESK COPILOT</div>
-            <h1 data-i18n="hero">العميل يرسل نفس رسالة واتساب. الموظف يحصل على طلب منظم وجاهز للمراجعة.</h1>
-            <p class="muted" data-i18n="heroBody" style="max-width:760px;line-height:1.75;margin-bottom:0">هذا النموذج لا يستبدل بحث المنتجات أو سلة طلب العرض أو موظف قطع الغيار. يضيف طبقة مساعدة للطلبات غير الواضحة: نص/صورة → استخراج → مرشحات كتالوج → نواقص → رد مقترح → اعتماد بشري.</p>
+            <div class="eyebrow" data-i18n="concept">SMART PART REQUEST — CONCEPT</div>
+            <h1 data-i18n="hero">أرسل رقم القطعة أو موديل المعدة أو صورة واضحة. نجهّز طلبك ليصل إلى المختص بشكل منظم.</h1>
+            <p class="muted" data-i18n="heroBody" style="max-width:760px;line-height:1.75;margin-bottom:0">ابدأ برقم القطعة إن توفر. إذا لم يتوفر، أضف موديل/سيريال المعدة وصورة واضحة. لن يتم اعتماد التوافق أو المخزون أو السعر إلا بعد مراجعة مختص قطع الغيار.</p>
           </div>
           <div class="truthbox">
-            <div class="truthrow"><span class="dot"></span><span data-i18n="truth1">OCR الحقيقي يعمل داخل المتصفح عند رفع صورة.</span></div>
-            <div class="truthrow"><span class="dot warn"></span><span data-i18n="truth2">لا توجد نسب ثقة مصطنعة. الحالات فقط: تطابق رقم / يحتاج تحقق / أدلة غير كافية.</span></div>
-            <div class="truthrow"><span class="dot warn"></span><span data-i18n="truth3">لا يوجد تحقق مخزون أو سعر أو توافق آلي. المختص هو صاحب القرار النهائي.</span></div>
+            <div class="truthrow"><span class="dot"></span><span data-i18n="truth1">1) رقم القطعة هو الدليل الأقوى إن كان متوفرًا.</span></div>
+            <div class="truthrow"><span class="dot warn"></span><span data-i18n="truth2">2) إذا الرقم غير واضح، نستخدم الموديل/السيريال والصورة لتجهيز الطلب.</span></div>
+            <div class="truthrow"><span class="dot warn"></span><span data-i18n="truth3">3) المختص يؤكد المطابقة والتوفر والسعر قبل أي طلب.</span></div>
           </div>
         </div>
       </section>
@@ -195,27 +195,29 @@
         <div class="card section">
           <div class="section-head">
             <div class="n">01</div>
-            <div><h2 data-i18n="incoming">الطلب الوارد</h2><div class="muted" data-i18n="incomingSub" style="font-size:11px">محاكاة لرسالة واتساب موجودة فعلاً — لا نطلب من العميل فتح موقع جديد.</div></div>
+            <div><h2 data-i18n="incoming">أرسل تفاصيل القطعة</h2><div class="muted" data-i18n="incomingSub" style="font-size:11px">اكتب ما تعرفه فقط. رقم القطعة أفضل، والموديل/السيريال والصورة تساعد إذا كان الرقم غير متوفر.</div></div>
           </div>
           <div class="chat" id="chat"></div>
 
           <div class="field" style="margin-top:14px">
-            <label data-i18n="msgLabel">نص رسالة العميل</label>
+            <label data-i18n="msgLabel">ماذا تحتاج؟</label>
             <textarea id="msg"></textarea>
           </div>
           <div class="field">
-            <label data-i18n="voiceLabel">تفريغ الملاحظة الصوتية — اختياري</label>
+            <label data-i18n="voiceLabel">نص إضافي / تفريغ رسالة صوتية تجريبية — اختياري</label>
             <textarea id="voice" placeholder="الصق التفريغ هنا إذا كان الطلب صوتياً"></textarea>
           </div>
           <label class="upload" for="file">
             <input id="file" type="file" accept="image/*" />
-            <strong data-i18n="uploadStrong">ارفع صورة القطعة / الملصق / رقم OEM</strong>
-            <small data-i18n="uploadSmall">في هذا النموذج، الصورة تبقى داخل متصفحك. OCR يعمل محلياً ولا يوجد رفع إلى Backend.</small>
+            <strong data-i18n="uploadStrong">أضف صورة واضحة للقطعة أو الملصق — اختياري</strong>
+            <small data-i18n="uploadSmall">الصورة تساعد في قراءة رقم ظاهر، لكنها لا تستبدل تأكيد المختص. في هذا النموذج تبقى الصورة داخل المتصفح.</small>
             <img id="preview" class="preview" alt="preview" />
           </label>
           <div class="actions">
-            <button class="btn primary" id="analyze" data-i18n="analyze">تحليل الطلب</button>
-            <button class="btn" id="sampleExact" data-i18n="sampleExact">عينة موثقة: تطابق رقم</button>
+            <button class="btn primary" id="analyze" data-i18n="analyze">تجهيز الطلب للمراجعة</button>
+            <button class="btn" id="samplePartial" data-i18n="samplePartial">جرّب طلبًا ناقص الرقم</button>
+            <button class="btn" id="sampleExact" data-i18n="sampleExact">جرّب رقمًا واضحًا</button>
+            <button class="btn" id="sampleNone" data-i18n="sampleNone">جرّب بدون رقم</button>
             <button class="btn" id="clear" data-i18n="clear">إعادة ضبط</button>
           </div>
           <div class="progress" id="progress"><span></span></div>
@@ -228,7 +230,7 @@
         <div class="card section">
           <div class="section-head">
             <div class="n">02</div>
-            <div><h2 data-i18n="triage">بطاقة الفرز لموظف المبيعات</h2><div class="muted" data-i18n="triageSub" style="font-size:11px">كل حقل قابل للتعديل قبل البحث أو الرد.</div></div>
+            <div><h2 data-i18n="triage">ما يصل إلى فريق المبيعات خلف الكواليس</h2><div class="muted" data-i18n="triageSub" style="font-size:11px">النظام ينظّم الأدلة في بطاقة قابلة للتعديل؛ المختص يبقى صاحب القرار.</div></div>
           </div>
 
           <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px">
@@ -244,6 +246,9 @@
             <div class="fact"><small data-i18n="qty">الكمية</small><input id="qty" value="" inputmode="numeric" /></div>
             <div class="fact"><small data-i18n="preference">الجودة المطلوبة</small>
               <select id="quality"><option value="">—</option><option>Genuine</option><option>OEM</option><option>Aftermarket</option><option>No preference</option></select>
+            </div>
+            <div class="fact"><small data-i18n="urgency">الاستعجال</small>
+              <select id="urgency"><option value="">—</option><option>Today</option><option>1–3 days</option><option>This week</option><option>Flexible</option></select>
             </div>
           </div>
           <div class="actions">
@@ -273,10 +278,10 @@
             </div>
           </div>
           <div class="rfq" id="rfq">
-            <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6" data-i18n="reviewReady">REVIEW-READY RFQ</div>
-            <h3 style="margin:5px 0 10px" data-i18n="rfqTitle">ملخص طلب عرض السعر — للاعتماد البشري</h3>
+            <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6" data-i18n="reviewReady">SALES REVIEW PACKET</div>
+            <h3 style="margin:5px 0 10px" data-i18n="rfqTitle">ملخص جاهز لمراجعة المبيعات</h3>
             <div id="rfqRows"></div>
-            <div style="margin-top:10px;font-size:10px;opacity:.7" data-i18n="rfqFoot">نموذج مفاهيمي فقط. لا يرسل الطلب ولا يتحقق من المخزون أو السعر أو التوافق.</div>
+            <div style="margin-top:10px;font-size:10px;opacity:.7" data-i18n="rfqFoot">ملخص داخلي للمراجعة فقط. لا يرسل طلبًا ولا يتحقق من المخزون أو السعر أو التوافق.</div>
           </div>
         </div>
       </section>
@@ -318,7 +323,7 @@
       </section>
 
       <div class="footer" data-i18n="footer">
-        Concept demo by Digital Arhat. Not an official Dynamic Parts system. No live WhatsApp integration, no live inventory/pricing, no autonomous fitment decision. Human specialist approval is mandatory.
+        Concept prepared by Digital Arhat for Dynamic Parts. Not an official Dynamic Parts system. No live WhatsApp integration, no live inventory/pricing, no autonomous fitment decision. Human specialist approval is mandatory.
       </div>
     </main>
   </div>
@@ -342,57 +347,57 @@ const CATALOG = [
 
 const SAMPLES = [
   {id:'exact',titleAr:'FAW — رقم OEM واضح',titleEn:'FAW — clear OEM',subAr:'رسالة + رقم منشور علناً',subEn:'Message + public OEM reference',time:'18:02',
-   message:'السلام عليكم، أحتاج 2 حبة فلتر هواء FAW. رقم القطعة 1109060/70-2000-C00',voice:'أبيه أصلي إذا متوفر.',machine:'FAW Truck',serial:'',qty:'2',quality:'Genuine',image:true},
+   message:'السلام عليكم، أحتاج 2 حبة فلتر هواء FAW. رقم القطعة 1109060/70-2000-C00',voice:'أبيه أصلي إذا متوفر.',machine:'FAW Truck',serial:'',qty:'2',quality:'Genuine',urgency:'This week',image:true},
   {id:'partial',titleAr:'FAW — رقم غير مكتمل',titleEn:'FAW — incomplete number',subAr:'آخر خانة غير واضحة',subEn:'Last character unclear',time:'17:41',
-   message:'عندي فلتر هواء FAW والرقم على القطعة 1109060/70-2000-C0؟ والصورة قديمة',voice:'أحتاج نفس القطعة أو البديل المناسب بعد التأكيد.',machine:'FAW Truck',serial:'',qty:'1',quality:'No preference',image:true},
+   message:'عندي فلتر هواء FAW والرقم على القطعة 1109060/70-2000-C0؟ والصورة قديمة',voice:'أحتاج نفس القطعة أو البديل المناسب بعد التأكيد.',machine:'FAW Truck',serial:'',qty:'1',quality:'No preference',urgency:'1–3 days',image:true},
   {id:'none',titleAr:'مضخة — بدون رقم OEM',titleEn:'Pump — no OEM number',subAr:'موديل فقط؛ يحتاج معلومة إضافية',subEn:'Model only; needs more data',time:'16:55',
-   message:'السلام عليكم، عندي مضخة هيدروليك موديل HP-220X وأحتاج نفس القطعة',voice:'ما عندي رقم القطعة، عندي صورة فقط.',machine:'Hydraulic Pump HP-220X',serial:'P-99-7731',qty:'1',quality:'No preference',image:true}
+   message:'السلام عليكم، عندي مضخة هيدروليك موديل HP-220X وأحتاج نفس القطعة',voice:'ما عندي رقم القطعة، عندي صورة فقط.',machine:'Hydraulic Pump HP-220X',serial:'P-99-7731',qty:'1',quality:'No preference',urgency:'Flexible',image:true}
 ];
 
 const I18N = {
  ar:{
-  brand:'مساعد مكتب مبيعات قطع الغيار',subbrand:'نموذج مفاهيمي غير رسمي — لا يرتبط بالمخزون أو الأسعار أو واتساب الحي',human:'مراجعة بشرية إلزامية',
+  brand:'طلب قطعة ذكي — نموذج مفاهيمي',subbrand:'تصور أعدّه Digital Arhat لـ Dynamic Parts — ليس نظامًا رسميًا',human:'مراجعة بشرية إلزامية',
   inboxLabel:'صندوق وارد تجريبي',inboxTitle:'طلبات تحتاج تحديد قطعة',inboxText:'نحافظ على قناة العميل الحالية. المساعد يعمل خلف الكواليس لموظف المبيعات.',newLive:'+ اختبار OCR بصورة حقيقية',
-  concept:'SPARE-PARTS SALES DESK COPILOT',hero:'العميل يرسل نفس رسالة واتساب. الموظف يحصل على طلب منظم وجاهز للمراجعة.',heroBody:'هذا النموذج لا يستبدل بحث المنتجات أو سلة طلب العرض أو موظف قطع الغيار. يضيف طبقة مساعدة للطلبات غير الواضحة: نص/صورة → استخراج → مرشحات كتالوج → نواقص → رد مقترح → اعتماد بشري.',
-  truth1:'OCR الحقيقي يعمل داخل المتصفح عند رفع صورة.',truth2:'لا توجد نسب ثقة مصطنعة. الحالات فقط: تطابق رقم / يحتاج تحقق / أدلة غير كافية.',truth3:'لا يوجد تحقق مخزون أو سعر أو توافق آلي. المختص هو صاحب القرار النهائي.',
-  incoming:'الطلب الوارد',incomingSub:'محاكاة لرسالة واتساب موجودة فعلاً — لا نطلب من العميل فتح موقع جديد.',msgLabel:'نص رسالة العميل',voiceLabel:'تفريغ الملاحظة الصوتية — اختياري',
-  uploadStrong:'ارفع صورة القطعة / الملصق / رقم OEM',uploadSmall:'في هذا النموذج، الصورة تبقى داخل متصفحك. OCR يعمل محلياً ولا يوجد رفع إلى Backend.',analyze:'تحليل الطلب',sampleExact:'عينة موثقة: تطابق رقم',clear:'إعادة ضبط',ocrRaw:'نص OCR / النص الخام',
-  triage:'بطاقة الفرز لموظف المبيعات',triageSub:'كل حقل قابل للتعديل قبل البحث أو الرد.',statusExact:'تطابق حرفي لرقم OEM',statusVerify:'مرشح يحتاج تحقق',statusNone:'أدلة غير كافية',subset:'كتالوج تجريبي صغير من مراجع منشورة علناً — لا مخزون ولا أسعار حية',
-  manufacturer:'الشركة المصنعة',partNumber:'رقم القطعة / OEM',machine:'المركبة / المعدة / الموديل',serial:'الشاصي / السيريال',qty:'الكمية',preference:'الجودة المطلوبة',rematch:'إعادة مطابقة بعد التعديل',
+  concept:'SMART PART REQUEST — CONCEPT',hero:'أرسل رقم القطعة أو موديل المعدة أو صورة واضحة. نجهّز طلبك ليصل إلى المختص بشكل منظم.',heroBody:'ابدأ برقم القطعة إن توفر. إذا لم يتوفر، أضف موديل/سيريال المعدة وصورة واضحة. لن يتم اعتماد التوافق أو المخزون أو السعر إلا بعد مراجعة مختص قطع الغيار.',
+  truth1:'1) رقم القطعة هو الدليل الأقوى إن كان متوفرًا.',truth2:'2) إذا الرقم غير واضح، نستخدم الموديل/السيريال والصورة لتجهيز الطلب.',truth3:'3) المختص يؤكد المطابقة والتوفر والسعر قبل أي طلب.',
+  incoming:'أرسل تفاصيل القطعة',incomingSub:'اكتب ما تعرفه فقط. رقم القطعة أفضل، والموديل/السيريال والصورة تساعد إذا كان الرقم غير متوفر.',msgLabel:'ماذا تحتاج؟',voiceLabel:'نص إضافي / تفريغ رسالة صوتية تجريبية — اختياري',
+  uploadStrong:'أضف صورة واضحة للقطعة أو الملصق — اختياري',uploadSmall:'الصورة تساعد في قراءة رقم ظاهر، لكنها لا تستبدل تأكيد المختص. في هذا النموذج تبقى الصورة داخل المتصفح.',analyze:'تجهيز الطلب للمراجعة',samplePartial:'جرّب طلبًا ناقص الرقم',sampleExact:'جرّب رقمًا واضحًا',sampleNone:'جرّب بدون رقم',clear:'إعادة ضبط',ocrRaw:'نص OCR / النص الخام',
+  triage:'ما يصل إلى فريق المبيعات خلف الكواليس',triageSub:'النظام ينظّم الأدلة في بطاقة قابلة للتعديل؛ المختص يبقى صاحب القرار.',statusExact:'تطابق حرفي لرقم OEM',statusVerify:'مرشح يحتاج تحقق',statusNone:'أدلة غير كافية',subset:'كتالوج تجريبي صغير من مراجع منشورة علناً — لا مخزون ولا أسعار حية',
+  manufacturer:'الشركة المصنعة',partNumber:'رقم القطعة / OEM',machine:'المركبة / المعدة / الموديل',serial:'الشاصي / السيريال',qty:'الكمية',preference:'الجودة المطلوبة',urgency:'الاستعجال',rematch:'إعادة مطابقة بعد التعديل',
   warning:'التطابق هنا يساعد الموظف في البحث فقط. لا يعني توافقاً نهائياً أو توفر مخزون. يجب على مختص قطع الغيار تأكيد الرقم والتطبيق قبل أي عرض سعر أو طلب.',
   humanReview:'قرار الموظف + الرد المقترح',humanReviewSub:'المساعد يقترح، الموظف يقرر. لا توجد رسالة واتساب حية في هذا النموذج.',confirm:'تأكيد للمراجعة / RFQ',ask:'اطلب معلومات ناقصة',reject:'ارفض المرشح',copyReply:'نسخ الرد',copyRfq:'نسخ ملخص RFQ',
-  reviewReady:'REVIEW-READY RFQ',rfqTitle:'ملخص طلب عرض السعر — للاعتماد البشري',rfqFoot:'نموذج مفاهيمي فقط. لا يرسل الطلب ولا يتحقق من المخزون أو السعر أو التوافق.',
+  reviewReady:'SALES REVIEW PACKET',rfqTitle:'ملخص جاهز لمراجعة المبيعات',rfqFoot:'ملخص داخلي للمراجعة فقط. لا يرسل طلبًا ولا يتحقق من المخزون أو السعر أو التوافق.',
   evidenceTab:'ما الذي نحترمه في نظامهم الحالي؟',pilotTab:'ما الذي يجب قياسه في Pilot؟',current1:'البحث + سلة طلب العرض موجودان بالفعل',current1b:'هذا الـ Copilot لا يستبدلهما. يستهدف الطلبات التي تصل بدون رقم واضح أو تحتاج تفسير صورة/رسالة.',
   current2:'الفورم المنظم والصورة موجودان بالفعل',current2b:'القيمة المقترحة ليست “إنشاء RFQ form”، بل تحويل الطلب غير الواضح إلى بطاقة مراجعة للموظف.',current3:'العميل يرسل رقم/موديل/صورة',current3b:'هذا يثبت نمط الإدخال. حجم العبء اليومي ما زال يحتاج تأكيداً من الفريق قبل اعتبار العرض مدفوعاً.',
   evidenceNote:'يستخدم النموذج مجموعة صغيرة منتقاة يدوياً من مراجع منتجات منشورة علناً. لا توجد وصلة مباشرة بكتالوج Dynamic Parts أو ERP أو المخزون أو الأسعار.',
   kpi1:'زمن الوصول لرد جاهز للمراجعة',kpi1b:'من وصول طلب غير واضح حتى يصبح لدى المختص مرشح + أسئلة ناقصة + مسودة رد.',kpi2:'نسبة تصحيح المختص',kpi2b:'كم مرة يعدل الموظف رقم القطعة أو يرفض المرشح؟ هذا أهم من أي “دقة AI” تسويقية.',kpi3:'عدد جولات الاستيضاح',kpi3b:'هل النظام يساعد في طلب المعلومة الصحيحة من أول مرة؟',kpi4:'اكتمال RFQ',kpi4b:'كم طلباً يصل إلى كمية + تفضيل جودة + موديل/سيريال + رقم/مرشح صالح للمراجعة؟',
   pilotNote:'لا توجد أرقام ROI أو توفير وقت مفترضة. هذه المقاييس يجب قياسها على 10–20 طلباً تاريخياً منزوعة البيانات الحساسة قبل أي وعد تجاري.',
   footer:'Concept demo by Digital Arhat. Not an official Dynamic Parts system. No live WhatsApp integration, no live inventory/pricing, no autonomous fitment decision. Human specialist approval is mandatory.',
-  photo:'صورة مرفقة',voiceNote:'ملاحظة صوتية',exactReason:'تطابق حرفي لرقم OEM في مجموعة العرض العامة. التوافق والمخزون يحتاجان تأكيد المختص.',partialReason:'الرقم المرئي قريب من مرجع منشور، لكن الأدلة غير كافية للتأكيد. يحتاج مراجعة مختص.',noneReason:'لم نجد رقماً مطابقاً أو قريباً بشكل موثوق في مجموعة العرض الصغيرة.',
+  photo:'صورة مرفقة',voiceNote:'تفريغ صوتي تجريبي',exactReason:'تطابق حرفي لرقم OEM في مجموعة العرض العامة. التوافق والمخزون يحتاجان تأكيد المختص.',partialReason:'الرقم المرئي قريب من مرجع منشور، لكن الأدلة غير كافية للتأكيد. يحتاج مراجعة مختص.',noneReason:'لم نجد رقماً مطابقاً أو قريباً بشكل موثوق في مجموعة العرض الصغيرة.',
   noMatches:'لا يوجد مرشح موثوق في مجموعة العرض.',scope:'نطاق مرجع عام',cross:'Cross reference',select:'اختيار للمراجعة',ocrWaiting:'لم يتم تشغيل OCR بعد.',ocrRunning:'يتم قراءة الصورة داخل المتصفح…',ocrUnavailable:'تعذر تشغيل محرك OCR. الصق رقم/نص الملصق يدوياً في الرسالة ثم أعد التحليل.',
   askModel:'يرجى تزويدنا بموديل المعدة/المركبة ورقم الشاصي أو السيريال إن وجد.',askQty:'كم الكمية المطلوبة؟',askQuality:'هل تفضل Genuine / OEM / Aftermarket أم لا يوجد تفضيل؟',askClearPhoto:'يرجى إرسال صورة أوضح يظهر فيها رقم القطعة/الملصق بالكامل.',
   replyExact:'تم العثور على مرجع برقم مطابق في الكتالوج التجريبي. قبل التسعير، سيؤكد مختص قطع الغيار التطبيق والتوفر.',replyVerify:'وجدنا مرشحاً محتملاً فقط. نحتاج تأكيد المختص ومعلومة إضافية قبل أي تسعير.',replyNone:'لا يوجد تطابق موثوق حالياً. نحتاج معلومات إضافية لتحديد القطعة بشكل آمن.',
   copied:'تم النسخ'
  },
  en:{
-  brand:'Spare Parts Sales Desk Copilot',subbrand:'Unofficial concept — not connected to live stock, pricing or WhatsApp',human:'Human review mandatory',
+  brand:'Smart Part Request — Concept',subbrand:'Concept prepared by Digital Arhat for Dynamic Parts — not an official system',human:'Human review mandatory',
   inboxLabel:'DEMO INBOX',inboxTitle:'Requests needing identification',inboxText:'Keep the customer in the current channel. The copilot works behind the sales desk.',newLive:'+ Test real OCR with a photo',
-  concept:'SPARE-PARTS SALES DESK COPILOT',hero:'Customer sends the same WhatsApp message. Sales gets a structured, review-ready case.',heroBody:'This concept does not replace product search, the quote basket, or the spare-parts specialist. It adds an assist layer for unresolved requests: text/photo → extraction → catalogue candidates → missing info → reply draft → human approval.',
-  truth1:'Real OCR runs in the browser when you upload a photo.',truth2:'No fabricated confidence percentages. Only: exact number / needs verification / insufficient evidence.',truth3:'No live stock, pricing or fitment decision. A spare-parts specialist stays accountable.',
-  incoming:'Incoming request',incomingSub:'WhatsApp-style simulation — customer is not asked to open a new site.',msgLabel:'Customer message',voiceLabel:'Voice-note transcript — optional',
-  uploadStrong:'Upload part / label / OEM-number photo',uploadSmall:'In this demo the image stays in your browser. OCR runs client-side; there is no backend upload.',analyze:'Analyze request',sampleExact:'Verified sample: exact number',clear:'Reset',ocrRaw:'OCR / raw text',
-  triage:'Sales triage card',triageSub:'Every field can be edited before search or reply.',statusExact:'Exact OEM string match',statusVerify:'Candidate — verify',statusNone:'Insufficient evidence',subset:'Small demo subset from public product references — no live stock or pricing',
-  manufacturer:'Manufacturer',partNumber:'Part number / OEM',machine:'Vehicle / machine / model',serial:'VIN / serial',qty:'Quantity',preference:'Quality preference',rematch:'Re-match after edits',
+  concept:'SMART PART REQUEST — CONCEPT',hero:'Send the part number, machine model or a clear photo. We prepare a structured request for specialist review.',heroBody:'Start with the part number when available. If not, add the machine model/serial and a clear photo. Compatibility, stock and price remain subject to specialist review.',
+  truth1:'1) Part number is the strongest evidence when available.',truth2:'2) If the number is unclear, model/serial and a photo help structure the request.',truth3:'3) A specialist confirms fitment, availability and price before any order.',
+  incoming:'Send part details',incomingSub:'Share only what you know. Part number is best; model/serial and a photo help when it is missing.',msgLabel:'What do you need?',voiceLabel:'Additional text / sample voice-note transcript — optional',
+  uploadStrong:'Add a clear part or label photo — optional',uploadSmall:'A photo can help read a visible code but does not replace specialist confirmation. In this demo it stays in your browser.',analyze:'Prepare for specialist review',samplePartial:'Try an incomplete number',sampleExact:'Try a clear number',sampleNone:'Try no number',clear:'Reset',ocrRaw:'OCR / raw text',
+  triage:'What the sales team receives behind the scenes',triageSub:'The system structures the evidence into an editable packet; the specialist remains accountable.',statusExact:'Exact OEM string match',statusVerify:'Candidate — verify',statusNone:'Insufficient evidence',subset:'Small demo subset from public product references — no live stock or pricing',
+  manufacturer:'Manufacturer',partNumber:'Part number / OEM',machine:'Vehicle / machine / model',serial:'VIN / serial',qty:'Quantity',preference:'Quality preference',urgency:'Urgency',rematch:'Re-match after edits',
   warning:'A match here only assists catalogue search. It is not a final fitment or availability decision. A spare-parts specialist must confirm the number and application before any quote or order.',
   humanReview:'Human decision + reply draft',humanReviewSub:'Copilot proposes; salesperson decides. This demo does not send live WhatsApp messages.',confirm:'Confirm for review / RFQ',ask:'Ask for missing info',reject:'Reject candidate',copyReply:'Copy reply',copyRfq:'Copy RFQ summary',
-  reviewReady:'REVIEW-READY RFQ',rfqTitle:'RFQ summary — human approval required',rfqFoot:'Concept only. Does not submit the RFQ or verify stock, price or fitment.',
+  reviewReady:'SALES REVIEW PACKET',rfqTitle:'Sales review packet',rfqFoot:'Internal review summary only. It does not submit an order or verify stock, price or fitment.',
   evidenceTab:'What do we respect in the existing workflow?',pilotTab:'What must a pilot measure?',current1:'Search + quote basket already exist',current1b:'The copilot does not replace them. It targets incoming requests with no clear number or a photo/message that needs interpretation.',
   current2:'Structured quote form + photo already exist',current2b:'The proposed value is not “build an RFQ form”; it is turning an unresolved enquiry into a salesperson review card.',current3:'Customers send number/model/photo',current3b:'This validates the input pattern. Daily workload still needs confirmation before treating the offer as commercially proven.',
   evidenceNote:'The demo uses a small manually curated subset of publicly listed product references. It is not connected to Dynamic Parts’ live catalogue, ERP, stock or pricing.',
   kpi1:'Time to review-ready response',kpi1b:'From unresolved enquiry to candidate + missing-info questions + reply draft.',kpi2:'Specialist correction rate',kpi2b:'How often does staff edit the part number or reject a candidate? More meaningful than a marketing “AI accuracy” claim.',kpi3:'Clarification rounds',kpi3b:'Does the tool help ask for the right missing information earlier?',kpi4:'RFQ completeness',kpi4b:'How many cases reach quantity + quality preference + machine/serial + reviewable number/candidate?',
   pilotNote:'No invented ROI or time-saving numbers. These metrics should be measured on 10–20 redacted historical enquiries before any commercial promise.',
   footer:'Concept demo by Digital Arhat. Not an official Dynamic Parts system. No live WhatsApp integration, no live inventory/pricing, no autonomous fitment decision. Human specialist approval is mandatory.',
-  photo:'Photo attached',voiceNote:'Voice note',exactReason:'Character-for-character OEM reference found in the demo public subset. Fitment and stock still require specialist confirmation.',partialReason:'Visible code is close to a public reference, but evidence is not strong enough to confirm. Specialist review required.',noneReason:'No reliable exact or close match in the small demo subset.',
+  photo:'Photo attached',voiceNote:'Sample voice transcript',exactReason:'Character-for-character OEM reference found in the demo public subset. Fitment and stock still require specialist confirmation.',partialReason:'Visible code is close to a public reference, but evidence is not strong enough to confirm. Specialist review required.',noneReason:'No reliable exact or close match in the small demo subset.',
   noMatches:'No reliable candidate in the demo subset.',scope:'Public reference scope',cross:'Cross reference',select:'Select for review',ocrWaiting:'OCR has not run yet.',ocrRunning:'Reading image locally in your browser…',ocrUnavailable:'OCR engine could not start. Paste the visible code/text into the message and analyze again.',
   askModel:'Please provide the machine/vehicle model and VIN/serial if available.',askQty:'What quantity do you need?',askQuality:'Do you prefer Genuine / OEM / Aftermarket, or no preference?',askClearPhoto:'Please send a clearer photo showing the full label/part number.',
   replyExact:'An exact OEM reference was found in the demo catalogue. Before pricing, a spare-parts specialist must confirm application and availability.',replyVerify:'We found only a possible candidate. Specialist confirmation and additional information are required before pricing.',replyNone:'No reliable match yet. We need more information to identify the part safely.',
@@ -414,9 +419,23 @@ function levenshtein(a,b){
   return dp[m][n];
 }
 function extractNumber(text){
-  const tokens=(text||'').match(/[A-Z0-9][A-Z0-9\/-]{5,}[A-Z0-9?]/gi)||[];
-  const ranked=tokens.filter(x=>/\d/.test(x)).sort((a,b)=>norm(b).length-norm(a).length);
-  return ranked[0]||'';
+  const s=text||'';
+  const patterns=[
+    /(?:رقم\s*القطعة|رقم\s*قطعة|الرقم\s*على\s*القطعة|part\s*(?:no\.?|number|#)|p\/?n|oem)\s*[:#-]?\s*([A-Z0-9][A-Z0-9\/-]{4,}[A-Z0-9?])/i,
+    /(?:P\/?N|OEM)\s*[:#-]?\s*([A-Z0-9][A-Z0-9\/-]{4,}[A-Z0-9?])/i
+  ];
+  for(const p of patterns){const m=s.match(p);if(m&&m[1]&&/\d/.test(m[1]))return m[1];}
+  return'';
+}
+function extractModel(text){
+  const s=text||'';
+  const m=s.match(/(?:موديل|model)\s*[:#-]?\s*([A-Z0-9][A-Z0-9\/-]{2,})/i);
+  return m?m[1]:'';
+}
+function extractSerial(text){
+  const s=text||'';
+  const m=s.match(/(?:رقم\s*الشاصي|شاصي|الرقم\s*التسلسلي|سيريال|serial|s\/?n|vin|chassis)\s*[:#-]?\s*([A-Z0-9][A-Z0-9\/-]{3,})/i);
+  return m?m[1]:'';
 }
 function detectBrand(text){
   const u=(text||'').toUpperCase();
@@ -459,13 +478,13 @@ function renderChat(){
 function loadCase(id){
   current=SAMPLES.find(x=>x.id===id);
   imageFile=null;ocrText='';$('file').value='';$('preview').style.display='none';
-  $('msg').value=current.message;$('voice').value=current.voice;$('machine').value=current.machine;$('serial').value=current.serial;$('qty').value=current.qty;$('quality').value=current.quality;
+  $('msg').value=current.message;$('voice').value=current.voice;$('machine').value=current.machine;$('serial').value=current.serial;$('qty').value=current.qty;$('quality').value=current.quality;$('urgency').value=current.urgency||'';
   $('manufacturer').value=detectBrand(current.message+' '+current.voice);$('partNumber').value=extractNumber(current.message+' '+current.voice);
   $('ocrText').textContent=t('ocrWaiting');chosen=null;renderQueue();renderChat();rematch();
 }
 function clearAll(){
   current={id:'live',image:false};imageFile=null;ocrText='';chosen=null;
-  ['msg','voice','manufacturer','partNumber','machine','serial','qty'].forEach(id=>$(id).value='');$('quality').value='';$('file').value='';$('preview').style.display='none';$('ocrText').textContent=t('ocrWaiting');renderQueue();renderChat();rematch();
+  ['msg','voice','manufacturer','partNumber','machine','serial','qty'].forEach(id=>$(id).value='');$('quality').value='';$('urgency').value='';$('file').value='';$('preview').style.display='none';$('ocrText').textContent=t('ocrWaiting');renderQueue();renderChat();rematch();
 }
 function setStatus(state){
   lastState=state;const el=$('status');el.className='status '+state;
@@ -485,6 +504,8 @@ function rematch(){
   const text=[$('msg').value,$('voice').value,ocrText].join(' ');
   if(!$('manufacturer').value)$('manufacturer').value=detectBrand(text);
   if(!$('partNumber').value)$('partNumber').value=extractNumber(text);
+  if(!$('machine').value)$('machine').value=extractModel(text);
+  if(!$('serial').value)$('serial').value=extractSerial(text);
   if(!$('qty').value)$('qty').value=extractQty(text);
   const out=publicMatch($('partNumber').value,$('manufacturer').value);
   setStatus(out.state);renderMatches(out.results);
@@ -494,6 +515,7 @@ function missingQuestions(){
   if(!$('machine').value.trim()&&!$('serial').value.trim())q.push(t('askModel'));
   if(!$('qty').value.trim())q.push(t('askQty'));
   if(!$('quality').value)q.push(t('askQuality'));
+  if(!$('urgency').value)q.push(lang==='ar'?'متى تحتاج القطعة؟ اليوم / 1–3 أيام / هذا الأسبوع / مرن.':'When do you need the part? Today / 1–3 days / this week / flexible.');
   if(!$('partNumber').value.trim()&&lastState==='none')q.push(t('askClearPhoto'));
   return q;
 }
@@ -518,6 +540,7 @@ function updateRfq(){
     [lang==='ar'?'الشاصي/السيريال':'VIN / serial',$('serial').value||'—'],
     [lang==='ar'?'الكمية':'Quantity',$('qty').value||'—'],
     [lang==='ar'?'الجودة':'Preference',$('quality').value||'—'],
+    [lang==='ar'?'الاستعجال':'Urgency',$('urgency').value||'—'],
     [lang==='ar'?'اعتماد المختص':'Specialist approval',lang==='ar'?'مطلوب قبل التسعير':'Required before pricing']
   ];
   $('rfqRows').innerHTML=rows.map(([a,b])=>`<div class="row"><span>${esc(a)}</span><b>${esc(b)}</b></div>`).join('');
@@ -540,7 +563,9 @@ async function analyze(){
   else if(!ocrText)$('ocrText').textContent=t('ocrWaiting');
   const all=[$('msg').value,$('voice').value,ocrText].join(' ');
   $('manufacturer').value=detectBrand(all)||$('manufacturer').value;
-  const candidate=extractNumber(all);if(candidate)$('partNumber').value=candidate;
+  const candidate=extractNumber(all);if(candidate&&!$('partNumber').value)$('partNumber').value=candidate;
+  const model=extractModel(all);if(model&&!$('machine').value)$('machine').value=model;
+  const serial=extractSerial(all);if(serial&&!$('serial').value)$('serial').value=serial;
   const q=extractQty(all);if(q&&!$('qty').value)$('qty').value=q;
   renderChat();rematch();
 }
@@ -558,8 +583,8 @@ function switchLang(next){
 }
 
 $('file').addEventListener('change',e=>{imageFile=e.target.files?.[0]||null;if(imageFile){const url=URL.createObjectURL(imageFile);$('preview').src=url;$('preview').style.display='block';current={id:'live',image:true};renderQueue();renderChat();}});
-$('analyze').onclick=analyze;$('rematch').onclick=rematch;$('clear').onclick=clearAll;$('newLive').onclick=clearAll;$('sampleExact').onclick=()=>loadCase('exact');
-$('msg').oninput=renderChat;$('voice').oninput=renderChat;['manufacturer','partNumber','machine','serial','qty','quality'].forEach(id=>$(id).addEventListener('input',updateRfq));
+$('analyze').onclick=analyze;$('rematch').onclick=rematch;$('clear').onclick=clearAll;$('newLive').onclick=clearAll;$('samplePartial').onclick=()=>loadCase('partial');$('sampleExact').onclick=()=>loadCase('partial');$('sampleNone').onclick=()=>loadCase('none');
+$('msg').oninput=renderChat;$('voice').oninput=renderChat;['manufacturer','partNumber','machine','serial','qty','quality','urgency'].forEach(id=>$(id).addEventListener('input',updateRfq));
 $('confirmBtn').onclick=()=>updateReply('confirm');$('askBtn').onclick=()=>updateReply('ask');$('rejectBtn').onclick=()=>updateReply('reject');
 $('copyReply').onclick=e=>copy($('reply').textContent,e.currentTarget);$('copyRfq').onclick=e=>copy(rfqText(),e.currentTarget);
 document.querySelectorAll('.lang').forEach(b=>b.onclick=()=>switchLang(b.dataset.lang));
