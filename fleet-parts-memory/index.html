@@ -250,7 +250,7 @@ details{overflow:hidden}summary{list-style:none;padding:16px 18px;cursor:pointer
   </div>
 </details>
 
-<div class="footer" id="footer">Concept by Digital Arhat. Not an official Dynamic Parts system. All fleet, serial and verified-fitment records shown here are illustrative demo data. No live stock, pricing, ERP, WhatsApp or autonomous fitment decision.</div>
+<div class="footer" id="footer">تصور مفاهيمي من Digital Arhat، وليس نظامًا رسميًا لـ Dynamic Parts. جميع بيانات الأسطول والسيريال وذاكرة القطع المعروضة توضيحية فقط. لا يوجد مخزون أو سعر حي أو ERP أو WhatsApp أو قرار توافق آلي في هذا النموذج.</div>
 </main>
 
 <div class="modal" id="reorderModal"><div class="sheet">
@@ -301,7 +301,7 @@ const I18N={
   brand:'Fleet Parts Memory',subbrand:'Concept by Digital Arhat for a multi-brand heavy-duty parts workflow',conceptPill:'Concept demo — illustrative data',
   eyebrow:'MACHINE PASSPORT + VERIFIED PARTS MEMORY',hero:'Register the machine once. Next time you need a part… do not start from zero.',heroBody:'Each machine gets a persistent profile. Each specialist-approved part can become part of that machine’s memory, making repeat requests clearer without repeating the same identification work.',
   openFleet:'Open demo fleet',heroScan:'Simulate machine-passport scan',showLoop:'See the “verify once → remember forever” loop',microproof:'No fitment guessing • no live stock or pricing • specialist approval required',
-  heroDemoEye:'SCAN → REMEMBER → REORDER',heroDemoState:'Ready to scan',scanMemoryLabel:'verified parts remembered for this machine',heroQuickReorder:'Reorder hydraulic filter',heroDemoCaption:'This simulates a future QR experience; this demo does not scan a real QR code.',
+  heroDemoEye:'SCAN → REMEMBER → REORDER',heroDemoState:'Ready to scan',scanMemoryLabel:'verified parts remembered for this machine',heroQuickReorder:'Reorder hydraulic filter',heroDemoCaption:'This simulates a future QR experience; this demo does not scan a real QR code.',qrTap:'Simulate scan',mobileScan:'Scan demo machine',mobileFleet:'My fleet',
   p1:'Machine identity is remembered',p1s:'Brand, model, serial and site stay attached to one profile instead of being re-sent every time.',
   p2:'Verified parts memory',p2s:'A part becomes “verified” only after specialist approval. There is no autonomous final fitment decision.',
   p3:'Reorder from memory',p3s:'Customers can request the same previously approved item for that machine without restarting the search.',
@@ -323,7 +323,7 @@ const I18N={
   reorderEye:'REORDER FROM VERIFIED MEMORY',reorderTitle:'Reorder a previously approved part',reQtyL:'Quantity',reUrgL:'Urgency',reNoteL:'Note — optional',createReorder:'Create reorder request',
   reorderWarn:'The “verified” record here is demo data only. In production, changes in serial/application must be checked before pricing or order.',
   requestEye:'MACHINE-BOUND REQUEST',requestTitle:'New request ready for specialist review',verifyAndSave:'Demo: specialist verifies & saves to machine memory',copyRequest:'Copy summary',
-  requestWarn:'“Verify & save” simulates a human action only. There is no real fitment, ERP or stock lookup in this demo.',saveSuccessTitle:'Part added to machine memory',saveSuccessSub:'Next time it will appear as a reusable record for this machine.'
+  requestWarn:'“Verify & save” simulates a human action only. There is no real fitment, ERP or stock lookup in this demo.',saveSuccessTitle:'Part added to machine memory',saveSuccessSub:'Next time it will appear as a reusable record for this machine.',footer:'Concept by Digital Arhat. Not an official Dynamic Parts system. All fleet, serial and verified-fitment records shown here are illustrative demo data. No live stock, pricing, ERP, WhatsApp or autonomous fitment decision.'
  }
 };
 function t(id){return I18N[lang]?.[id]||null}
@@ -430,7 +430,6 @@ $('mobileScan').onclick=simulateScan;
 $('heroQuickReorder').onclick=()=>{current=FLEET[0];renderFleet();renderMachine();openReorder('p1')};
 $('mobileFleet').onclick=()=>document.getElementById('fleetSection').scrollIntoView({behavior:'smooth'});
 $('openFleet').onclick=()=>document.getElementById('fleetSection').scrollIntoView({behavior:'smooth'});
-$('showLoop') && ($('showLoop').onclick=()=>document.getElementById('ownerDetails').scrollIntoView({behavior:'smooth'}));
 document.querySelectorAll('.lang').forEach(b=>b.onclick=()=>setLang(b.dataset.lang));
 document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('on')}));
 renderFleet();renderMachine();
