@@ -694,8 +694,8 @@
 
     const stage = document.getElementById("stage");
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xa7a097);
-    scene.fog = new THREE.Fog(0xa7a097, 28, 56);
+    scene.background = new THREE.Color(0x8f8a82);
+    scene.fog = new THREE.Fog(0x8f8a82, 30, 62);
 
     const camera = new THREE.PerspectiveCamera(34, 1, .1, 100);
     camera.position.set(5.0, 3.15, 6.7);
@@ -707,7 +707,7 @@
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = .82;
+    renderer.toneMappingExposure = .76;
     stage.appendChild(renderer.domElement);
 
     const pmrem = new THREE.PMREMGenerator(renderer);
@@ -715,7 +715,7 @@
     const roomEnvironment = new RoomEnvironment();
     const envRT = pmrem.fromScene(roomEnvironment, .04);
     scene.environment = envRT.texture;
-    scene.environmentIntensity = .82;
+    scene.environmentIntensity = .64;
     roomEnvironment.dispose();
     pmrem.dispose();
 
@@ -732,9 +732,9 @@
     controls.target.set(.10,1.34,-1.56);
 
     RectAreaLightUniformsLib.init();
-    const hemi = new THREE.HemisphereLight(0xffffff,0x5e5a55,.62);
+    const hemi = new THREE.HemisphereLight(0xfffdf9,0x514e49,.40);
     scene.add(hemi);
-    const key = new THREE.DirectionalLight(0xfff8ec,1.82);
+    const key = new THREE.DirectionalLight(0xfff8ec,1.58);
     key.position.set(4.2,7.8,5.2); key.castShadow = true;
     key.shadow.mapSize.set(mobileQuality?1024:1536,mobileQuality?1024:1536);
     key.shadow.camera.left=-5.8; key.shadow.camera.right=5.8;
@@ -744,12 +744,12 @@
     key.shadow.normalBias=.010;
     scene.add(key);
 
-    const windowFill = new THREE.RectAreaLight(0xfff9ef,1.55,5.8,4.2);
+    const windowFill = new THREE.RectAreaLight(0xfff9ef,1.05,5.8,4.2);
     windowFill.position.set(-3.7,4.6,3.8);
     windowFill.lookAt(-.3,1.45,-1.55);
     scene.add(windowFill);
 
-    const roomFill = new THREE.DirectionalLight(0xf7f7f2,.28);
+    const roomFill = new THREE.DirectionalLight(0xf7f7f2,.16);
     roomFill.position.set(-3.2,3.8,2.5);
     scene.add(roomFill);
 
@@ -759,10 +759,10 @@
     );
     floor.rotation.x=-Math.PI/2; floor.receiveShadow=true; scene.add(floor);
 
-    const wallMat=new THREE.MeshStandardMaterial({color:0xc8c1b8,roughness:.82,metalness:0});
+    const wallMat=new THREE.MeshStandardMaterial({color:0xb6b0a7,roughness:.86,metalness:0});
     const backWall=boxRaw(8.7,3.65,.18,0,1.825,-2.24,wallMat);
-    const sideWall=boxRaw(.14,3.65,5.4,-4.28,1.825,.35,new THREE.MeshStandardMaterial({color:0xb3ada5,roughness:.86,metalness:0}));
-    boxRaw(8.7,.16,1.02,0,3.48,-1.78,new THREE.MeshStandardMaterial({color:0xd2ccc3,roughness:.88,metalness:0}));
+    const sideWall=boxRaw(.14,3.65,5.4,-4.28,1.825,.35,new THREE.MeshStandardMaterial({color:0xa19b93,roughness:.89,metalness:0}));
+    boxRaw(8.7,.16,1.02,0,3.48,-1.78,new THREE.MeshStandardMaterial({color:0xc5bfb6,roughness:.90,metalness:0}));
 
     const cabinetMeshes=[];
     const baseCabinetMeshes=[];
@@ -869,7 +869,7 @@
     const clientSageTexture=textureLoader.load("assets/client-sage-reference.webp");
     clientWoodTexture.colorSpace=THREE.SRGBColorSpace;
     clientWoodTexture.wrapS=clientWoodTexture.wrapT=THREE.RepeatWrapping;
-    clientWoodTexture.repeat.set(.38,.62);
+    clientWoodTexture.repeat.set(.25,.50);
     clientWoodTexture.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());
     clientSageTexture.colorSpace=THREE.SRGBColorSpace;
     clientSageTexture.wrapS=clientSageTexture.wrapT=THREE.RepeatWrapping;
@@ -1023,7 +1023,7 @@
     };
     const colorStates = {
       clientSage:{label:"ساج مرجعي",hex:0x8b9b8a,reference:"sage"},
-      clientWood:{label:"خشب فاتح مرجعي",hex:0xe5d7c8,reference:"wood"},
+      clientWood:{label:"خشب فاتح مرجعي",hex:0xffffff,reference:"wood"},
       ivory:{label:"عاجي",hex:0xf1eee6}, white:{label:"أبيض دافئ",hex:0xfbfaf6},
       lightgray:{label:"رمادي فاتح",hex:0xc9c9c5}, stone:{label:"رمادي حجري",hex:0x9c9992},
       charcoal:{label:"فحمي",hex:0x4a4c4e}, black:{label:"أسود دافئ",hex:0x242322},
@@ -1065,7 +1065,7 @@
         mat.map=src.texture==="wood"?woodTexture:(src.texture==="grain"?cladTexture:null);
         mat.roughness=materialRoughness(src.roughness);
       }
-      mat.envMapIntensity=1.0;
+      mat.envMapIntensity=.76;
       mat.needsUpdate=true;
     }
 
