@@ -118,6 +118,32 @@
           "value": "public, max-age=0, must-revalidate"
         }
       ]
+    },
+    {
+      "source": "/ebdaa-almona-kitchen-studio-v20",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/ebdaa-almona-kitchen-studio-v20/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
     }
   ],
   "alias": [
@@ -150,7 +176,8 @@
     "dynamic-parts-sales-copilot.vercel.app",
     "dar-aljawdah-kitchens.vercel.app",
     "lamsat-niloufar-kitchens.vercel.app",
-    "bayt-alabdae-kitchens.vercel.app"
+    "bayt-alabdae-kitchens.vercel.app",
+    "ebdaa-almona-kitchens.vercel.app"
   ],
   "redirects": [
     {
@@ -480,6 +507,17 @@
         {
           "type": "host",
           "value": "bayt-alabdae-kitchens.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/ebdaa-almona-kitchen-studio-v20",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "ebdaa-almona-kitchens.vercel.app"
         }
       ]
     }
