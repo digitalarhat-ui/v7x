@@ -126,15 +126,14 @@ check('summary', summary.includes('مستقيم') && summary.includes('5م') && 
 const phoneHref = await page.locator('a[href^="tel:"]').last().getAttribute('href');
 check('phone_handoff', phoneHref === 'tel:+966531699579', phoneHref || '');
 
-let popupUrl = '';
-const popupPromise = page.waitForEvent('popup', { timeout: 5000 }).catch(() => null);
+await page.evaluate(() => {
+  window.__qaOpenedUrl = '';
+  window.open = (url) => { window.__qaOpenedUrl = String(url); return null; };
+});
 await page.click('#handoffBtn');
-const pop = await popupPromise;
-if (pop) {
-  popupUrl = pop.url();
-  await pop.close().catch(() => {});
-}
-check('booking_handoff', popupUrl.startsWith('https://higher-class.sa/taif'), popupUrl || 'no popup');
+await page.waitForTimeout(100);
+const openedUrl = await page.evaluate(() => window.__qaOpenedUrl || '');
+check('booking_handoff', openedUrl.startsWith('https://higher-class.sa/taif'), openedUrl || 'window.open not called');
 
 check('console_runtime', consoleErrors.length === 0, JSON.stringify(consoleErrors));
 check('page_runtime', pageErrors.length === 0, JSON.stringify(pageErrors));
