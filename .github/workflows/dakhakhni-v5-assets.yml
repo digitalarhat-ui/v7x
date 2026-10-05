@@ -15,8 +15,10 @@ jobs:
           mkdir -p kitchen-engine-v5/assets
           curl -L --fail --retry 3 -o kitchen-engine-v5/assets/sink_01.glb "https://cdn.jsdelivr.net/gh/Papyszoo/CC0-Public-Domain-Models@77343cac874f06b73d16ad0063339df7c9ca254c/packs/the-base-mesh/models/sink_01/sink_01.glb"
           curl -L --fail --retry 3 -o kitchen-engine-v5/assets/kitchen_tap.glb "https://cdn.jsdelivr.net/gh/Papyszoo/CC0-Public-Domain-Models@77343cac874f06b73d16ad0063339df7c9ca254c/packs/the-base-mesh/models/kitchen_tap/kitchen_tap.glb"
+          curl -L --fail --retry 3 -o kitchen-engine-v5/assets/kiara_interior_1k.hdr "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/kiara_interior_1k.hdr"
           test -s kitchen-engine-v5/assets/sink_01.glb
           test -s kitchen-engine-v5/assets/kitchen_tap.glb
+          test -s kitchen-engine-v5/assets/kiara_interior_1k.hdr
           cat > kitchen-engine-v5/assets/ASSET-SOURCES.md <<'EOF'
           # Dakhakhni V5 3D support assets
           Source repository: Papyszoo/CC0-Public-Domain-Models
@@ -25,6 +27,8 @@ jobs:
           Files:
           - packs/the-base-mesh/models/sink_01/sink_01.glb
           - packs/the-base-mesh/models/kitchen_tap/kitchen_tap.glb
+          - Poly Haven kiara_interior 1K HDR: https://polyhaven.com/a/kiara_interior
+          Poly Haven assets are CC0.
           These generic CC0 assets are interface/demo support assets and are not represented as Dakhakhni project work.
           EOF
       - name: Commit assets
