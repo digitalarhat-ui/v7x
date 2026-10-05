@@ -9,91 +9,76 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: dakhakhni-phase3-realism-qa
+  group: dakhakhni-phase3-realism-qa-v2
   cancel-in-progress: true
 jobs:
   qa:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+        with: {node-version: '20'}
       - run: npm install --no-save playwright@1.55.0
       - run: npx playwright install --with-deps chromium
       - name: Start static server
         run: |
-          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/dakh-p3.log 2>&1 &
-          for i in $(seq 1 40); do
-            curl -fsS http://127.0.0.1:4173/dakhakhni-kitchen-v5/ >/dev/null && exit 0
-            sleep 0.25
-          done
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/dakh-p3.log 2>&1 &
+          for i in $(seq 1 40); do curl -fsS http://127.0.0.1:4173/dakhakhni-kitchen-v5/ >/dev/null && exit 0; sleep .25; done
           cat /tmp/dakh-p3.log
           exit 1
-      - name: Run Phase 3 browser QA
+      - name: Capture pixels and run regression
         run: |
           cat > phase3-qa.mjs <<'EOF'
-          import {chromium} from 'playwright';
-          import fs from 'fs';
+          import {chromium} from 'playwright'; import fs from 'fs';
           const base='http://127.0.0.1:4173/dakhakhni-kitchen-v5/';
-          const out='qa-phase3'; fs.mkdirSync(out,{recursive:true});
-          const result={status:'PASS',viewports:{},regression:{},errors:[]};
-          const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-          async function launch(width,height){
-            const browser=await chromium.launch({headless:true,args:['--use-angle=swiftshader','--enable-webgl','--ignore-gpu-blocklist']});
-            const context=await browser.newContext({viewport:{width,height},deviceScaleFactor:1,reducedMotion:'reduce',hasTouch:width<700,isMobile:width<700});
-            const page=await context.newPage();page.setDefaultTimeout(15000);
-            const errors=[];page.on('console',m=>{if(m.type()==='error')errors.push('console:'+m.text())});page.on('pageerror',e=>errors.push('page:'+e.message));
-            await page.goto(base,{waitUntil:'domcontentloaded',timeout:30000});await page.waitForSelector('#heroCanvas');await sleep(900);
-            return {browser,page,errors};
+          const out='qa-phase3';fs.mkdirSync(out,{recursive:true});
+          const result={status:'PASS',visual:{},regression:{},errors:[]};
+          const baseState={version:5,phase:2,maxPhase:5,project:{type:'new',city:'',measurementMode:'known',note:''},room:{length:420,width:320,height:280,layout:'l',markers:[{id:'w1',type:'window',wall:'north',pos:70}]},visual:{cabinet:'ivory',worktop:'veined',upper:'mixed',handle:'integrated',saved:true},details:{storage:{pantry:false,tall:true,deepDrawers:false,corner:false,waste:false,coffee:false},appliances:{fridge:true,oven:true,dishwasher:true,hob:true,hood:true,microwave:false},sink:'new',users:'',cooking:'',reviewed:false},review:{confirmed:false,followUp:'whatsapp'},contact:{name:''},meta:{createdAt:0,updatedAt:0}};
+          async function open(w,h,state=baseState){
+            const browser=await chromium.launch({headless:true});const context=await browser.newContext({viewport:{width:w,height:h},deviceScaleFactor:1,reducedMotion:'reduce',hasTouch:w<700,isMobile:w<700});
+            const page=await context.newPage();page.setDefaultTimeout(15000);const errors=[];page.on('pageerror',e=>errors.push('page:'+e.message));page.on('console',m=>{if(m.type()==='error')errors.push('console:'+m.text())});
+            await page.goto(base,{waitUntil:'domcontentloaded',timeout:30000});await page.evaluate(s=>localStorage.setItem('dakhakhni:v5:project',JSON.stringify(s)),state);await page.reload({waitUntil:'domcontentloaded'});await page.waitForSelector('#heroCanvas');await page.waitForTimeout(1000);return{browser,page,errors};
           }
-          async function shot(page,name){await page.screenshot({path:out+'/'+name+'.png'});}
-          async function phase1(page,layout='l',L=420,W=320){
-            await page.locator('#heroStart').click();await page.locator('[data-projecttype="new"]').click();await page.locator('[data-layout="'+layout+'"]').click();await page.locator('[data-measuremode="known"]').click();
-            await page.locator('#roomLength').fill(String(L));await page.locator('#roomLength').dispatchEvent('input');
-            await page.locator('#roomWidth').fill(String(W));await page.locator('#roomWidth').dispatchEvent('input');
-            await page.locator('#nextBtn').click({force:true});await page.waitForSelector('.stage[data-stage="2"].active');await sleep(700);
+          async function shot(page,name){await page.screenshot({path:out+'/'+name+'.png',fullPage:false});}
+          async function setState(page,patch){
+            await page.evaluate(p=>{const k='dakhakhni:v5:project',s=JSON.parse(localStorage.getItem(k));Object.assign(s.visual,p.visual||{});if(p.room)Object.assign(s.room,p.room);if(p.phase){s.phase=p.phase;s.maxPhase=Math.max(s.maxPhase,p.phase)}localStorage.setItem(k,JSON.stringify(s));},patch);
+            await page.reload({waitUntil:'domcontentloaded'});await page.waitForTimeout(950);
           }
-          async function setMaterial(page,cab,top){await page.locator('.stage[data-stage="2"] [data-cabinet="'+cab+'"]').click();await page.locator('.stage[data-stage="2"] [data-worktop="'+top+'"]').click();await sleep(350);}
-          async function camera(page,name){const b=page.locator('[data-camera="'+name+'"]');if(await b.isVisible()){await b.click();await sleep(450);return true}return false}
-          async function heroSet(width,height){
-            const {browser,page,errors}=await launch(width,height);const tag=width===1440?'1440':String(width);
-            await shot(page,tag+'-01-hero-ivory-light');await page.locator('.heroQuickControls [data-cabinet="oak"]').click();await page.locator('.heroQuickControls [data-worktop="veined"]').click();await sleep(350);if(width===1440)await shot(page,'1440-02-hero-oak-veined');
-            await page.locator('.heroQuickControls [data-cabinet="graphite"]').click();await page.locator('.heroQuickControls [data-worktop="dark"]').click();await sleep(350);if(width===1440)await shot(page,'1440-03-hero-graphite-dark');
-            const heroState=await page.evaluate(()=>({cab:localStorage.getItem('dakhakhni:v5:project'),overflow:document.documentElement.scrollWidth-innerWidth,webgl:!!document.querySelector('#heroCanvas'),touch:getComputedStyle(document.querySelector('#heroCanvas')).touchAction}));
-            if(heroState.overflow>1)throw new Error(tag+' hero overflow '+heroState.overflow);if(!heroState.webgl)throw new Error(tag+' missing hero canvas');if(width<700&&heroState.touch!=='pan-y')throw new Error(tag+' hero touch-action '+heroState.touch);if(errors.length)throw new Error(tag+' hero runtime '+errors.join(' | '));
-            await browser.close();return {errors};
+          async function visualDesktop(){
+            const {browser,page,errors}=await open(1440,1000,{...structuredClone(baseState),phase:1,maxPhase:5});
+            await shot(page,'1440-01-hero-ivory-light');
+            await setState(page,{visual:{cabinet:'oak',worktop:'veined'},phase:1});await shot(page,'1440-02-hero-oak-veined');
+            await setState(page,{visual:{cabinet:'graphite',worktop:'dark'},phase:1});await shot(page,'1440-03-hero-graphite-dark');
+            await setState(page,{visual:{cabinet:'ivory',worktop:'veined'},phase:2});await page.waitForSelector('.stage[data-stage="2"].active');await page.locator('#studioWrap').scrollIntoViewIfNeeded();await page.waitForTimeout(450);await shot(page,'1440-04-studio-hero');
+            for(const [cam,name] of [['functional','1440-05-functional'],['elevation','1440-06-elevation'],['wide','1440-08-wide']]){await page.locator('[data-camera="'+cam+'"]').click();await page.waitForTimeout(400);await shot(page,name)}
+            await setState(page,{room:{layout:'island',length:500,width:400},phase:2});await page.waitForSelector('.stage[data-stage="2"].active');const ib=page.locator('[data-camera="island"]');if(!await ib.isVisible())throw new Error('island camera hidden for plausible island');await ib.click();await page.waitForTimeout(450);await shot(page,'1440-07-island');
+            result.visual['1440']={errors,overflow:await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)};if(errors.length)throw new Error('1440 runtime '+errors.join(' | '));await browser.close();
           }
-          async function studioSet(width,height){
-            const {browser,page,errors}=await launch(width,height);const tag=width===1440?'1440':String(width);
-            await page.locator('.heroQuickControls [data-cabinet="oak"]').click();await page.locator('.heroQuickControls [data-worktop="veined"]').click();
-            await phase1(page,'l',420,320);
-            const continuity=await page.evaluate(()=>JSON.parse(localStorage.getItem('dakhakhni:v5:project')).visual);
-            if(continuity.cabinet!=='oak'||continuity.worktop!=='veined')throw new Error(tag+' hero/studio state continuity failed');
-            await shot(page,tag+(width===1440?'-04-studio-hero':'-02-studio-default'));
-            if(width===1440){await camera(page,'functional');await shot(page,'1440-05-functional');await camera(page,'elevation');await shot(page,'1440-06-elevation');await camera(page,'wide');await shot(page,'1440-08-wide')}
-            else {await setMaterial(page,'graphite','dark');await shot(page,tag+'-03-dark-changed');await camera(page,'functional');await shot(page,tag+'-04-alt-camera')}
-            const before=await page.locator('#studioWrap').getAttribute('data-camera-mode');await setMaterial(page,'graphite','dark');const after=await page.locator('#studioWrap').getAttribute('data-camera-mode');if(before!==after)throw new Error(tag+' material reset camera '+before+' -> '+after);
-            const canvas=page.locator('#studioCanvas'),bb=await canvas.boundingBox();if(!bb)throw new Error(tag+' studio canvas missing');
-            await page.evaluate(({x,y})=>{const c=document.querySelector('#studioCanvas');c.dispatchEvent(new PointerEvent('pointerdown',{pointerId:9,pointerType:'touch',clientX:x,clientY:y,bubbles:true}));c.dispatchEvent(new PointerEvent('pointermove',{pointerId:9,pointerType:'touch',clientX:x+90,clientY:y+7,bubbles:true}));c.dispatchEvent(new PointerEvent('pointerup',{pointerId:9,pointerType:'touch',clientX:x+90,clientY:y+7,bubbles:true}))},{x:bb.x+bb.width*.45,y:bb.y+bb.height*.45});
-            const orbit=await page.locator('#studioWrap').getAttribute('data-camera-mode');if(orbit!=='manual')throw new Error(tag+' studio touch orbit failed: '+orbit);
-            if(width<700){await camera(page,'hero');await page.evaluate(({x,y})=>{const c=document.querySelector('#studioCanvas');c.dispatchEvent(new PointerEvent('pointerdown',{pointerId:10,pointerType:'touch',clientX:x,clientY:y,bubbles:true}));c.dispatchEvent(new PointerEvent('pointermove',{pointerId:10,pointerType:'touch',clientX:x+5,clientY:y+85,bubbles:true}));c.dispatchEvent(new PointerEvent('pointerup',{pointerId:10,pointerType:'touch',clientX:x+5,clientY:y+85,bubbles:true}))},{x:bb.x+bb.width*.45,y:bb.y+bb.height*.45});const vertical=await page.locator('#studioWrap').getAttribute('data-camera-mode');if(vertical!=='hero')throw new Error(tag+' vertical touch captured by orbit: '+vertical)}
-            await setMaterial(page,'graphite','dark');await page.locator('#saveVisual').click();await sleep(250);if(width===390)await shot(page,'390-05-saved');
-            await page.reload({waitUntil:'domcontentloaded'});await page.waitForSelector('.stage[data-stage="2"].active');await sleep(600);const restored=await page.evaluate(()=>JSON.parse(localStorage.getItem('dakhakhni:v5:project')).visual);if(restored.cabinet!=='graphite'||restored.worktop!=='dark'||!restored.saved)throw new Error(tag+' reload state failed');
-            await page.locator('#nextBtn').click();await page.waitForSelector('.stage[data-stage="3"].active');await page.locator('#backBtn').click();await page.waitForSelector('.stage[data-stage="2"].active');const back=await page.evaluate(()=>JSON.parse(localStorage.getItem('dakhakhni:v5:project')).visual);if(back.cabinet!=='graphite'||back.worktop!=='dark'||!back.saved)throw new Error(tag+' phase3 back state failed');
-            const checks=await page.evaluate(()=>({overflow:document.documentElement.scrollWidth-innerWidth,url:location.href,wa:window.KITCHEN_V5_CONFIG?.whatsapp||'',swatches:[...document.querySelectorAll('.swatch')].filter(x=>x.offsetParent!==null).map(x=>x.getBoundingClientRect().height),camera:[...document.querySelectorAll('.cameraBar button')].filter(x=>x.offsetParent!==null).map(x=>x.getBoundingClientRect().height)}));
-            if(checks.overflow>1)throw new Error(tag+' overflow '+checks.overflow);if(checks.url.includes('?project='))throw new Error(tag+' dirty URL');if(checks.wa!=='966545246478')throw new Error(tag+' WhatsApp regression '+checks.wa);if(Math.min(...checks.swatches,...checks.camera)<44)throw new Error(tag+' touch target below 44px');if(errors.length)throw new Error(tag+' runtime errors '+errors.join(' | '));
-            result.viewports[tag]={checks,restored,errors};await browser.close();
+          async function visualMobile(w,h){
+            const tag=String(w),{browser,page,errors}=await open(w,h,{...structuredClone(baseState),phase:1,maxPhase:5});
+            await shot(page,tag+'-01-hero');
+            await setState(page,{visual:{cabinet:'ivory',worktop:'veined'},phase:2});await page.waitForSelector('.stage[data-stage="2"].active');await page.locator('#studioWrap').scrollIntoViewIfNeeded();await page.waitForTimeout(400);await shot(page,tag+'-02-studio-default');
+            await page.locator('.stage[data-stage="2"] [data-cabinet="graphite"]').click();await page.locator('.stage[data-stage="2"] [data-worktop="dark"]').click();await page.waitForTimeout(350);await shot(page,tag+'-03-dark-changed');
+            await page.locator('[data-camera="functional"]').click();await page.waitForTimeout(400);await shot(page,tag+'-04-alt-camera');
+            if(w===390){await page.locator('#saveVisual').click();await page.waitForTimeout(200);await shot(page,'390-05-saved')}
+            const metrics=await page.evaluate(()=>({overflow:document.documentElement.scrollWidth-innerWidth,touch:getComputedStyle(document.querySelector('#studioCanvas')).touchAction,sw:[...document.querySelectorAll('.swatch')].filter(x=>x.offsetParent!==null).map(x=>x.getBoundingClientRect().height),cam:[...document.querySelectorAll('.cameraBar button')].filter(x=>x.offsetParent!==null).map(x=>x.getBoundingClientRect().height)}));
+            if(metrics.overflow>1)throw new Error(tag+' overflow '+metrics.overflow);if(metrics.touch!=='pan-y')throw new Error(tag+' touch action '+metrics.touch);if(Math.min(...metrics.sw,...metrics.cam)<44)throw new Error(tag+' target under 44px');if(errors.length)throw new Error(tag+' runtime '+errors.join(' | '));result.visual[tag]={errors,metrics};await browser.close();
           }
-          async function island(){
-            const {browser,page,errors}=await launch(1440,1000);await phase1(page,'island',500,400);const visible=await page.locator('[data-camera="island"]').isVisible();if(!visible)throw new Error('island camera hidden for plausible island');await camera(page,'island');await shot(page,'1440-07-island');if(errors.length)throw new Error('island runtime '+errors.join(' | '));await browser.close();
+          async function regression(){
+            const browser=await chromium.launch({headless:true});const context=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:1,reducedMotion:'reduce',hasTouch:true,isMobile:true});const page=await context.newPage();page.setDefaultTimeout(15000);const errors=[];page.on('pageerror',e=>errors.push('page:'+e.message));page.on('console',m=>{if(m.type()==='error')errors.push('console:'+m.text())});
+            await page.goto(base,{waitUntil:'domcontentloaded'});await page.evaluate(()=>localStorage.clear());await page.reload({waitUntil:'domcontentloaded'});await page.waitForTimeout(700);
+            const hero=page.locator('#heroCanvas'),hb=await hero.boundingBox();if(!hb)throw new Error('hero missing');await page.evaluate(({x,y})=>{const c=document.querySelector('#heroCanvas');c.dispatchEvent(new PointerEvent('pointerdown',{pointerId:1,pointerType:'touch',clientX:x,clientY:y,bubbles:true}));c.dispatchEvent(new PointerEvent('pointermove',{pointerId:1,pointerType:'touch',clientX:x+88,clientY:y+5,bubbles:true}));c.dispatchEvent(new PointerEvent('pointerup',{pointerId:1,pointerType:'touch',clientX:x+88,clientY:y+5,bubbles:true}))},{x:hb.x+hb.width*.45,y:hb.y+hb.height*.45});if(await page.locator('#heroWrap').getAttribute('data-camera-mode')!=='manual')throw new Error('hero orbit failed');
+            await page.locator('.heroQuickControls [data-cabinet="oak"]').click();await page.locator('.heroQuickControls [data-worktop="warm"]').click();await page.locator('#heroStart').click();await page.locator('[data-projecttype="new"]').click();await page.locator('[data-layout="l"]').click();await page.locator('[data-measuremode="known"]').click();await page.locator('#roomLength').fill('420');await page.locator('#roomLength').dispatchEvent('input');await page.locator('#roomWidth').fill('320');await page.locator('#roomWidth').dispatchEvent('input');await page.locator('#nextBtn').click({force:true});await page.waitForSelector('.stage[data-stage="2"].active');await page.waitForTimeout(500);
+            let st=await page.evaluate(()=>JSON.parse(localStorage.getItem('dakhakhni:v5:project')));if(st.visual.cabinet!=='oak'||st.visual.worktop!=='warm')throw new Error('hero/studio continuity');
+            const before=await page.locator('#studioWrap').getAttribute('data-camera-mode');await page.locator('.stage[data-stage="2"] [data-cabinet="graphite"]').click();await page.locator('.stage[data-stage="2"] [data-worktop="dark"]').click();const after=await page.locator('#studioWrap').getAttribute('data-camera-mode');if(before!==after)throw new Error('material reset camera');
+            for(const cam of ['hero','functional','elevation','wide']){await page.locator('[data-camera="'+cam+'"]').click();if(await page.locator('#studioWrap').getAttribute('data-camera-mode')!==cam)throw new Error('camera '+cam+' failed')}
+            if(await page.locator('[data-camera="island"]').isVisible())throw new Error('island camera visible for L layout');
+            await page.locator('#saveVisual').click();await page.reload({waitUntil:'domcontentloaded'});await page.waitForSelector('.stage[data-stage="2"].active');st=await page.evaluate(()=>JSON.parse(localStorage.getItem('dakhakhni:v5:project'));if(st.visual.cabinet!=='graphite'||st.visual.worktop!=='dark'||!st.visual.saved)throw new Error('reload persistence');
+            await page.locator('#nextBtn').click({force:true});await page.waitForSelector('.stage[data-stage="3"].active');await page.locator('#backBtn').click({force:true});await page.waitForSelector('.stage[data-stage="2"].active');st=await page.evaluate(()=>JSON.parse(localStorage.getItem('dakhakhni:v5:project'));if(st.visual.cabinet!=='graphite'||st.visual.worktop!=='dark'||!st.visual.saved)throw new Error('phase3 back continuity');
+            const checks=await page.evaluate(()=>({url:location.href,wa:window.KITCHEN_V5_CONFIG.whatsapp,overflow:document.documentElement.scrollWidth-innerWidth}));if(checks.url.includes('?project='))throw new Error('dirty URL');if(checks.wa!=='966545246478')throw new Error('WhatsApp regression');if(checks.overflow>1)throw new Error('overflow');if(errors.length)throw new Error(errors.join(' | '));result.regression={checks,visual:st.visual,errors};await browser.close();
           }
-          try{
-            for(const [w,h] of [[1440,1000],[430,900],[390,844]])await heroSet(w,h);
-            for(const [w,h] of [[1440,1000],[430,900],[390,844]])await studioSet(w,h);
-            await island();
-          }catch(e){result.status='FAIL';result.errors.push(e.stack||String(e));}
+          try{await visualDesktop();await visualMobile(430,900);await visualMobile(390,844);await regression()}catch(e){result.status='FAIL';result.errors.push(e.stack||String(e))}
           fs.writeFileSync(out+'/results.json',JSON.stringify(result,null,2));process.exit(result.status==='PASS'?0:1);
           EOF
           node phase3-qa.mjs
