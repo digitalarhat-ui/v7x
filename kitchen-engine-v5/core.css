@@ -96,3 +96,68 @@ body.planner-nav-ready .bottomNav{visibility:visible}
   .studioSave{grid-template-columns:1fr;padding:12px 13px calc(13px + env(safe-area-inset-bottom,0px))}.studioSave>small{text-align:center}.studioSave .saveVisual{min-height:48px}
 }
 @media(max-width:430px){.viewer{min-height:340px;height:50svh}.heroQuickControls{margin-top:-1px}.studioHead small{font-size:7px}.studioState{font-size:7px}.advancedVisual .choice{font-size:7.5px}}
+
+
+/* DAKHAKHNI V5 — Phase 4 bounded kitchen configurator */
+.configuratorStudio{overflow:hidden}
+.configuratorGrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,360px);direction:ltr;border-top:1px solid rgba(255,255,255,.08)}
+.configViewerColumn,.configuratorControls{min-width:0;direction:rtl}
+.configViewerColumn{background:#111c18}
+.configuratorControls{background:#f7f3eb;color:var(--forest);border-inline-start:1px solid var(--line);display:flex;flex-direction:column}
+.configToolbar{padding:12px 13px;border-bottom:1px solid var(--line);display:grid;gap:9px}
+.configToolbar>span{font-size:7.5px;color:var(--muted);line-height:1.6}
+.configToolbar>div{display:flex;gap:6px;flex-wrap:wrap}
+.configToolbar button{min-height:44px;border:1px solid var(--line);background:#fff;color:var(--forest);padding:0 10px;font-size:8px;font-weight:900}
+.configTabs{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line);background:#fff}
+.configTabs::-webkit-scrollbar,.slotStrip::-webkit-scrollbar{display:none}
+.configTabs button{flex:0 0 auto;min-height:46px;border:0;border-bottom:2px solid transparent;background:#fff;color:#69746f;padding:0 12px;font-size:8px;font-weight:900;white-space:nowrap}
+.configTabs button.active{color:var(--forest);border-bottom-color:var(--brass);background:#fbf8f2}
+.configPanel{padding:15px 14px 17px;display:grid;gap:14px;align-content:start}
+.configPanelHead{display:grid;gap:4px}.configPanelHead>b{font-size:13px}.configPanelHead>span{font-size:8px;color:var(--muted);line-height:1.6}
+.configChoices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.configOption{min-height:46px;border:1px solid rgba(20,60,50,.14);background:#fff;color:#405049;padding:8px 9px;font-size:8px;font-weight:850;line-height:1.4}
+.configOption.active{border-color:var(--brass);background:#fffdf8;box-shadow:inset 0 0 0 1px var(--brass);color:var(--forest)}
+.configOption:disabled{opacity:.38;cursor:not-allowed}
+.configNote{margin:0;background:#eee9df;padding:9px 10px;color:#6e756f;font-size:7.5px;line-height:1.65}
+.configMaterialGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.materialTile{min-height:52px;border:1px solid rgba(20,60,50,.13);background:#fff;color:var(--forest);display:flex;align-items:center;gap:8px;padding:7px 9px;text-align:right;font-size:8px;font-weight:850}
+.materialTile i{width:25px;height:25px;border-radius:50%;background:var(--sw);border:1px solid rgba(20,60,50,.16);flex:0 0 auto}
+.materialTile.active{border-color:var(--brass);box-shadow:inset 0 0 0 1px var(--brass);background:#fffdf8}
+.slotSection{display:grid;gap:7px}.slotSection>small,.detailGroup>small{font-size:7.5px;font-weight:900;color:#8b7657}
+.slotStrip{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.slot{flex:0 0 96px;min-height:58px;border:1px solid rgba(20,60,50,.13);background:#fff;color:var(--forest);padding:7px;display:grid;grid-template-columns:20px 1fr;align-items:center;gap:5px;text-align:right}
+.slot>b{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:#eee9df;font:800 7px Arial,sans-serif}.slot>span{font-size:7.8px;font-weight:850;line-height:1.4}
+.slot.active{border-color:var(--brass);box-shadow:inset 0 0 0 1px var(--brass);background:#fffdf8}.slot.active>b{background:var(--brass);color:#fff}
+.replaceBox,.detailGroup{display:grid;gap:9px;padding-top:11px;border-top:1px solid var(--line)}
+.replaceBox>span{font-size:8px;color:var(--muted)}.replaceBox>span b{color:var(--forest)}
+.inspectBtn{min-height:46px;border:1px solid var(--forest);background:transparent;color:var(--forest);font-size:8.5px;font-weight:900}.inspectBtn.active{background:var(--forest);color:#fff}
+.configuratorGrid .viewer{height:min(66svh,680px);min-height:510px}
+.configuratorGrid .cameraBar{background:#13221c}
+.configuratorStudio .studioSave{border-top:1px solid var(--line)}
+.configuratorControls button:focus-visible,.configuratorStudio button:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+
+@media(max-width:1000px){
+ .configuratorGrid{grid-template-columns:minmax(0,1fr) minmax(280px,330px)}
+}
+@media(max-width:700px){
+ .configuratorGrid{grid-template-columns:1fr}
+ .configViewerColumn{order:1}.configuratorControls{order:2;border-inline-start:0;border-top:1px solid var(--line)}
+ .configuratorGrid .viewer{height:50svh;min-height:342px}
+ .configToolbar{padding:9px 10px;grid-template-columns:1fr auto;align-items:center}
+ .configToolbar>span{font-size:7px}.configToolbar>div{justify-content:flex-end}
+ .configToolbar button{min-height:44px;padding:0 8px;font-size:7.4px}
+ .configTabs{padding:0 3px}.configTabs button{min-height:46px;padding:0 11px;font-size:7.6px}
+ .configPanel{padding:12px 10px 14px;gap:11px}
+ .configPanelHead>b{font-size:11.5px}.configPanelHead>span{font-size:7.5px}
+ .configChoices,.configMaterialGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+ .configOption{min-height:46px;padding:7px;font-size:7.7px}
+ .materialTile{min-height:48px;padding:6px 7px;font-size:7.5px}.materialTile i{width:22px;height:22px}
+ .slot{flex-basis:92px;min-height:56px}.slot>span{font-size:7.4px}
+ .replaceBox,.detailGroup{padding-top:9px}.inspectBtn{min-height:46px}
+}
+@media(max-width:430px){
+ .configuratorGrid .viewer{height:48svh;min-height:330px}
+ .configToolbar{grid-template-columns:1fr}.configToolbar>div{justify-content:stretch}.configToolbar button{flex:1}
+ .configTabs button{padding:0 10px}
+ .configPanel{padding-inline:9px}
+}
