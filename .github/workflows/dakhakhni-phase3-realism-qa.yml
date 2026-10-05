@@ -55,7 +55,7 @@ jobs:
             await page.locator('#roomWidth').fill(String(W));await page.locator('#roomWidth').dispatchEvent('input');
             await page.locator('#nextBtn').click({force:true});await page.waitForSelector('.stage[data-stage="2"].active');await sleep(700);
           }
-          async function setMaterial(page,cab,top){await page.locator('[data-cabinet="'+cab+'"]').first().click();await page.locator('[data-worktop="'+top+'"]').first().click();await sleep(350);}
+          async function setMaterial(page,cab,top){await page.locator('.stage[data-stage="2"] [data-cabinet="'+cab+'"]').click();await page.locator('.stage[data-stage="2"] [data-worktop="'+top+'"]').click();await sleep(350);}
           async function camera(page,name){const b=page.locator('[data-camera="'+name+'"]');if(await b.isVisible()){await b.click();await sleep(450);return true}return false}
           async function heroSet(width,height){
             const {browser,page,errors}=await launch(width,height);const tag=width===1440?'1440':String(width);
