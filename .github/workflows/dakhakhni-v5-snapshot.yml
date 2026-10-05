@@ -1,0 +1,61 @@
+name: Dakhakhni V5 Snapshots
+on:
+  push:
+    branches: [dakhakhni-v5-final]
+    paths:
+      - 'dakhakhni-kitchen-v5/**'
+      - 'kitchen-engine-v5/**'
+      - 'vendor/GLTFLoader-r128.js'
+      - 'vendor/RGBELoader-r128.js'
+      - '.github/workflows/dakhakhni-v5-snapshot.yml'
+permissions:
+  contents: write
+jobs:
+  snapshots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with: {node-version: '20'}
+      - run: npm install --no-save playwright@1.55.0
+      - run: npx playwright install --with-deps chromium
+      - run: |
+          python3 -m http.server 4174 --bind 127.0.0.1 >/tmp/v5snap-server.log 2>&1 &
+          for i in $(seq 1 40); do curl -fsS http://127.0.0.1:4174/dakhakhni-kitchen-v5/ >/dev/null && break; sleep .25; done
+          cat > snap.mjs <<'EOF'
+          import {chromium} from 'playwright'; import fs from 'fs';
+          fs.mkdirSync('snap-v5',{recursive:true});
+          const base='http://127.0.0.1:4174/dakhakhni-kitchen-v5/';
+          const state={version:5,phase:2,maxPhase:5,project:{type:'new',city:'ينبع - حي تجريبي',measurementMode:'known',note:''},room:{length:420,width:320,height:280,layout:'l',markers:[{id:'w1',type:'window',wall:'north',pos:68},{id:'u1',type:'water',wall:'north',pos:40}]},visual:{cabinet:'oak',worktop:'veined',upper:'mixed',handle:'integrated',saved:true},details:{storage:{pantry:true,tall:true,deepDrawers:true,corner:true,waste:true,coffee:false},appliances:{fridge:true,oven:true,dishwasher:true,hob:true,hood:true,microwave:false},sink:'new',users:'3-4',cooking:'daily',reviewed:true},review:{confirmed:true,followUp:'whatsapp'},contact:{name:''},meta:{createdAt:0,updatedAt:0}};
+          async function cap(name,w,h){
+            const b=await chromium.launch({headless:true});const c=await b.newContext({viewport:{width:w,height:h},deviceScaleFactor:1});const p=await c.newPage();p.setDefaultTimeout(15000);
+            const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>{if(m.type()==='error')errs.push(m.text())});
+            await p.goto(base,{waitUntil:'domcontentloaded',timeout:30000});await p.evaluate(s=>localStorage.setItem('dakhakhni:v5:project',JSON.stringify(s)),state);await p.reload({waitUntil:'domcontentloaded'});await p.waitForSelector('#heroCanvas');await p.waitForTimeout(1300);
+            await p.screenshot({path:'snap-v5/'+name+'-hero.png',fullPage:false});
+            await p.evaluate(()=>{history.replaceState(null,'',location.pathname+'#phase-2');location.reload()});await p.waitForSelector('.stage[data-stage="2"].active');await p.waitForTimeout(1300);await p.screenshot({path:'snap-v5/'+name+'-phase2.png',fullPage:false});
+            const metrics=await p.evaluate(()=>({sw:document.documentElement.scrollWidth,iw:innerWidth,hero:document.querySelector('.hero')?.getBoundingClientRect().toJSON(),viewer:document.querySelector('.viewer')?.getBoundingClientRect().toJSON(),title:document.title}));
+            fs.writeFileSync('snap-v5/'+name+'.json',JSON.stringify({metrics,errs},null,2));await b.close();
+          }
+          await cap('desktop-1440',1440,1000);await cap('mobile-390',390,844);await cap('mobile-430',430,900);
+          EOF
+          node snap.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dakhakhni-v5-snapshots
+          path: snap-v5
+          if-no-files-found: error
+          retention-days: 2
+      - name: Store base64 captures
+        run: |
+          rm -rf snap-v5-output
+          mkdir -p snap-v5-output
+          for f in snap-v5/*.png; do b="$(basename "$f" .png)"; base64 -w 0 "$f" > "snap-v5-output/$b.b64"; done
+          cp snap-v5/*.json snap-v5-output/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add snap-v5-output
+          git commit -m "Store Dakhakhni V5 snapshot captures" || true
+          git fetch origin dakhakhni-v5-final
+          git rebase origin/dakhakhni-v5-final
+          git push origin HEAD:dakhakhni-v5-final

@@ -1,0 +1,150 @@
+name: Dakhakhni V5 Final QA
+on:
+  push:
+    branches: [dakhakhni-v5-final]
+    paths:
+      - 'dakhakhni-kitchen-v5/**'
+      - 'kitchen-engine-v5/**'
+      - '.github/workflows/dakhakhni-v5-final-qa.yml'
+permissions:
+  contents: write
+concurrency:
+  group: dakhakhni-v5-final-qa
+  cancel-in-progress: true
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install --no-save playwright@1.55.0
+      - run: npx playwright install --with-deps chromium
+      - name: Start static server
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/dakhakhni-v5-server.log 2>&1 &
+          echo $! > /tmp/dakhakhni-v5-server.pid
+          for i in $(seq 1 40); do
+            curl -fsS http://127.0.0.1:4173/dakhakhni-kitchen-v5/ >/dev/null && exit 0
+            sleep 0.25
+          done
+          cat /tmp/dakhakhni-v5-server.log
+          exit 1
+      - name: Run browser QA
+        run: |
+          cat > v5-audit.mjs <<'EOF'
+          import { chromium } from 'playwright';
+          import fs from 'fs';
+          const base='http://127.0.0.1:4173/dakhakhni-kitchen-v5/';
+          const out='qa-v5'; fs.mkdirSync(out,{recursive:true});
+          const result={status:'PASS',viewports:{},flow:{},errors:[]};
+          async function shot(page,name,full=false){await page.screenshot({path:out+'/'+name+'.png',fullPage:full});}
+          async function setValue(page,sel,value){
+            await page.locator(sel).fill(String(value));
+            await page.locator(sel).dispatchEvent('input');
+          }
+          async function complete(view){
+            const browser=await chromium.launch({headless:true});
+            const context=await browser.newContext({viewport:{width:view.width,height:view.height},deviceScaleFactor:1,permissions:['clipboard-read','clipboard-write'],reducedMotion:'reduce'});
+            const page=await context.newPage();page.setDefaultTimeout(15000);
+            const errs=[];page.on('console',m=>{if(m.type()==='error')errs.push('console:'+m.text())});page.on('pageerror',e=>errs.push('page:'+e.message));
+            await page.goto(base,{waitUntil:'domcontentloaded',timeout:30000});
+            await page.waitForSelector('#heroCanvas');
+            await page.waitForTimeout(1000);
+            const initialUrl=page.url();
+            const hero=await page.evaluate(()=>({
+              title:document.title,
+              width:innerWidth,
+              scrollWidth:document.documentElement.scrollWidth,
+              heroH:document.querySelector('.hero')?.getBoundingClientRect().height||0,
+              canvas:document.querySelector('#heroCanvas')?.getBoundingClientRect().toJSON(),
+              heroText:document.querySelector('.hero')?.innerText||''
+            }));
+            await shot(page,view.name+'-hero');
+            await page.locator('#heroStart').click();
+            await page.locator('[data-projecttype="new"]').click();
+            await setValue(page,'#city','ينبع - حي تجريبي');
+            await page.locator('[data-layout="l"]').click();
+            await page.locator('[data-measuremode="known"]').click();
+            await setValue(page,'#roomLength',420);await setValue(page,'#roomWidth',320);await setValue(page,'#roomHeight',280);
+            await page.locator('[data-addmarker="window"]').click();
+            await page.locator('#nextBtn').click();
+            await page.waitForSelector('.stage[data-stage="2"].active');
+            await page.waitForTimeout(650);
+            await shot(page,view.name+'-phase2');
+            await page.locator('[data-cabinet="oak"]').click();
+            await page.locator('[data-worktop="quartz"]').click();
+            await page.locator('#saveVisual').click();
+            await page.locator('#nextBtn').click();
+            await page.waitForSelector('.stage[data-stage="3"].active');
+            await page.locator('[data-storage="pantry"]').click({force:true});
+            await page.locator('[data-storage="deepDrawers"]').click({force:true});
+            await page.locator('[data-appliance="fridge"]').click({force:true});
+            await page.locator('[data-appliance="oven"]').click({force:true});
+            await page.locator('[data-appliance="dishwasher"]').click({force:true});
+            await page.selectOption('#users','3-4');
+            await page.selectOption('#cooking','daily');
+            await page.locator('#detailsReviewed').click({force:true});
+            await shot(page,view.name+'-phase3');
+            await page.locator('#nextBtn').click();
+            await page.waitForSelector('.stage[data-stage="4"].active');
+            await shot(page,view.name+'-phase4');
+            await page.locator('#reviewConfirmed').click({force:true});
+            await page.locator('#nextBtn').click();
+            await page.waitForSelector('.stage[data-stage="5"].active');
+            await setValue(page,'#customerName','عميل تجريبي');
+            await setValue(page,'#projectNote','أولوية للتخزين ومساحة التحضير.');
+            await shot(page,view.name+'-phase5');
+            const final=await page.evaluate(()=>({
+              url:location.href,
+              scrollWidth:document.documentElement.scrollWidth,
+              innerWidth,
+              wa:document.querySelector('#waButton')?.getAttribute('href')||'',
+              summary:document.querySelector('#waPreview')?.innerText||'',
+              stages:[...document.querySelectorAll('.phaseProgress li')].map(x=>({active:x.dataset.active,complete:x.dataset.complete})),
+              canvasSize:document.querySelector('#studioCanvas')?.getBoundingClientRect().toJSON(),
+              minMajorButton:Math.min(...[...document.querySelectorAll('.topCta,.btnPrimary,.btnSecondary,.choice,.toggle,.saveVisual,.backBtn,.nextBtn,.waButton,.shareButton')].filter(x=>x.offsetParent!==null).map(x=>x.getBoundingClientRect().height))
+            }));
+            result.viewports[view.name]={hero,final,errors:errs};
+            if(hero.scrollWidth>view.width+1||final.scrollWidth>view.width+1)throw new Error(view.name+' horizontal overflow');
+            if(!final.wa.startsWith('https://wa.me/966545246478?text='))throw new Error(view.name+' WhatsApp route mismatch');
+            if(!final.summary.includes('420 × 320 × 280 سم'))throw new Error(view.name+' summary lost measurements');
+            if(final.url.includes('?project='))throw new Error(view.name+' long project query appeared without explicit share');
+            if(final.minMajorButton<44)throw new Error(view.name+' major touch target below 44px: '+final.minMajorButton);
+            if(errs.length)throw new Error(view.name+' runtime errors: '+errs.join(' | '));
+            await browser.close();
+          }
+          try{
+            for(const v of [{name:'desktop-1440',width:1440,height:1000},{name:'mobile-430',width:430,height:900},{name:'mobile-390',width:390,height:844}])await complete(v);
+          }catch(e){result.status='FAIL';result.errors.push(e.stack||String(e));}
+          fs.writeFileSync(out+'/results.json',JSON.stringify(result,null,2));
+          if(result.status!=='PASS')process.exitCode=1;
+          EOF
+          node v5-audit.mjs
+      - name: Preserve screenshots for inspection
+        if: always()
+        run: |
+          rm -rf audit-v5-output
+          mkdir -p audit-v5-output
+          if [ -d qa-v5 ]; then
+            for f in qa-v5/*.png; do
+              [ -e "$f" ] || continue
+              b="$(basename "$f" .png)"
+              base64 -w 0 "$f" > "audit-v5-output/$b.b64"
+            done
+            cp qa-v5/results.json audit-v5-output/results.json || true
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit-v5-output
+          git commit -m "Store Dakhakhni V5 QA captures" || true
+          git push origin HEAD:dakhakhni-v5-final
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dakhakhni-v5-qa
+          path: qa-v5
+          if-no-files-found: warn
+          retention-days: 2

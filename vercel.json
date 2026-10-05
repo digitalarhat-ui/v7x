@@ -224,6 +224,32 @@
       ]
     },
     {
+      "source": "/dakhakhni-kitchen-v5",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/dakhakhni-kitchen-v5/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
       "source": "/dakhakhni-kitchen-v4",
       "headers": [
         {
@@ -532,7 +558,7 @@
     },
     {
       "source": "/",
-      "destination": "/dakhakhni-kitchen-v4",
+      "destination": "/dakhakhni-kitchen-v5",
       "permanent": false,
       "has": [
         {
