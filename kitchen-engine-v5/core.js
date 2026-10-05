@@ -253,7 +253,7 @@ function materials(){
  var wood=canvasTexture("wood"),stone=canvasTexture("stone"),floor=canvasTexture("floor");wood.repeat.set(2.4,1);stone.repeat.set(2.2,.75);floor.repeat.set(4,4);
  var woodMapped=state.visual.cabinet==="oak"||state.visual.cabinet==="walnut",cc=woodMapped?0xffffff:{ivory:0xd9d1c4,sage:0x788678,graphite:0x3a3e3a,white:0xf0eee9}[state.visual.cabinet]||0xd9d1c4;
  var darkStone=state.visual.worktop==="dark";
- return{cab:new THREE.MeshPhysicalMaterial({color:cc,roughness:state.visual.cabinet==="white"?.28:.36,metalness:0,clearcoat:.22,clearcoatRoughness:.30,map:(state.visual.cabinet==="oak"||state.visual.cabinet==="walnut")?wood:null,envMapIntensity:.75}),inside:new THREE.MeshStandardMaterial({color:0xcfcac1,roughness:.58}),stone:new THREE.MeshPhysicalMaterial({color:darkStone?0x55524e:0xffffff,map:stone,roughness:.24,clearcoat:.28,clearcoatRoughness:.23,envMapIntensity:.9}),chrome:new THREE.MeshStandardMaterial({color:0xaeb3b1,roughness:.17,metalness:.95,envMapIntensity:1.3}),black:new THREE.MeshPhysicalMaterial({color:0x101210,roughness:.18,metalness:.30,clearcoat:.75,clearcoatRoughness:.09}),glass:new THREE.MeshPhysicalMaterial({color:0xcdd9d8,roughness:.06,metalness:0,transparent:true,opacity:.24,clearcoat:1,envMapIntensity:1.1}),wall:new THREE.MeshStandardMaterial({color:0xe8e2d9,roughness:.92}),floor:new THREE.MeshPhysicalMaterial({color:0xffffff,map:floor,roughness:.68,envMapIntensity:.25}),plinth:new THREE.MeshStandardMaterial({color:0x1b1e1b,roughness:.42,metalness:.25}),wood:new THREE.MeshPhysicalMaterial({color:0xffffff,map:wood,roughness:.38,clearcoat:.08}),led:new THREE.MeshStandardMaterial({color:0xffe2ae,emissive:0xffc76a,emissiveIntensity:.85}),shadow:new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.13,depthWrite:false})}
+ return{cab:new THREE.MeshPhysicalMaterial({color:woodMapped?(state.visual.cabinet==="walnut"?0x62483b:0xa9825f):cc,roughness:state.visual.cabinet==="white"?.25:(woodMapped?.42:.36),metalness:0,clearcoat:state.visual.cabinet==="white"?.30:.10,clearcoatRoughness:.34,envMapIntensity:.68}),inside:new THREE.MeshStandardMaterial({color:0xcfcac1,roughness:.58}),stone:new THREE.MeshPhysicalMaterial({color:darkStone?0x55524e:0xffffff,map:stone,roughness:.24,clearcoat:.28,clearcoatRoughness:.23,envMapIntensity:.9}),chrome:new THREE.MeshStandardMaterial({color:0xaeb3b1,roughness:.17,metalness:.95,envMapIntensity:1.3}),black:new THREE.MeshPhysicalMaterial({color:0x101210,roughness:.18,metalness:.30,clearcoat:.75,clearcoatRoughness:.09}),glass:new THREE.MeshPhysicalMaterial({color:0xcdd9d8,roughness:.06,metalness:0,transparent:true,opacity:.24,clearcoat:1,envMapIntensity:1.1}),wall:new THREE.MeshStandardMaterial({color:0xe8e2d9,roughness:.92}),floor:new THREE.MeshPhysicalMaterial({color:0xffffff,map:floor,roughness:.68,envMapIntensity:.25}),plinth:new THREE.MeshStandardMaterial({color:0x1b1e1b,roughness:.42,metalness:.25}),wood:new THREE.MeshPhysicalMaterial({color:0xffffff,map:wood,roughness:.38,clearcoat:.08}),led:new THREE.MeshStandardMaterial({color:0xffe2ae,emissive:0xffc76a,emissiveIntensity:.85}),shadow:new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.13,depthWrite:false})}
 }
 function box(w,h,d,mat,bevel){
  var geo;if(bevel!==false&&Math.min(w,h,d)>.02&&w<2.8&&h<2.8&&d<2.8){var r=Math.max(.002,Math.min(.009,Math.min(w,h,d)*.15)),iw=Math.max(.004,w-2*r),ih=Math.max(.004,h-2*r),dep=Math.max(.004,d-2*r),sh=new THREE.Shape();sh.moveTo(-iw/2,-ih/2);sh.lineTo(iw/2,-ih/2);sh.lineTo(iw/2,ih/2);sh.lineTo(-iw/2,ih/2);sh.closePath();geo=new THREE.ExtrudeGeometry(sh,{depth:dep,steps:1,bevelEnabled:true,bevelSegments:2,bevelSize:r,bevelThickness:r,curveSegments:1});geo.translate(0,0,-dep/2);geo.computeVertexNormals()}else geo=new THREE.BoxGeometry(w,h,d);var m=new THREE.Mesh(geo,mat);m.castShadow=true;m.receiveShadow=true;return m
@@ -298,7 +298,13 @@ function tallUnit(m,type){
 }
 function hoodUnit(m){var g=new THREE.Group();put(g,box(.64,.055,.36,m.chrome),0,0,0);put(g,box(.28,.46,.19,m.chrome),0,.25,-.035);put(g,box(.45,.012,.16,m.black),0,-.035,.05);return g}
 function hobUnit(m){var g=new THREE.Group();put(g,box(.56,.014,.42,m.black),0,0,0);for(var i=0;i<4;i++){var ring=new THREE.Mesh(new THREE.TorusGeometry(.065,.005,12,30),m.chrome);ring.rotation.x=Math.PI/2;ring.position.set((i%2?1:-1)*.14,.014,(i>1?1:-1)*.105);g.add(ring)}return g}
-function simpleSink(m){var g=new THREE.Group();put(g,box(.50,.045,.36,m.chrome),0,0,0);put(g,box(.42,.018,.29,m.black),0,.026,0);var curve=new THREE.CatmullRomCurve3([new THREE.Vector3(-.17,.01,0),new THREE.Vector3(-.17,.30,0),new THREE.Vector3(-.02,.46,0),new THREE.Vector3(.15,.35,0)]),tap=new THREE.Mesh(new THREE.TubeGeometry(curve,28,.014,10,false),m.chrome);tap.castShadow=true;g.add(tap);return g}
+function simpleSink(m){
+ var g=new THREE.Group();
+ put(g,box(.52,.014,.38,m.chrome),0,0,0);
+ put(g,box(.44,.060,.30,m.black),0,-.036,0);
+ put(g,box(.36,.010,.22,m.black),0,-.070,0);
+ return g
+}
 function clearWorld(instance){if(!instance)return;instance.generation=(instance.generation||0)+1;while(instance.world.children.length){var o=instance.world.children[0];instance.world.remove(o);dispose(o)}}
 function dispose(o){if(o&&o.userData&&o.userData.skipDispose)return;o.traverse&&o.traverse(function(n){if(n.geometry&&n.geometry.dispose)n.geometry.dispose();if(n.material){var a=Array.isArray(n.material)?n.material:[n.material];a.forEach(function(mm){if(mm.map&&mm.map.dispose)mm.map.dispose();if(mm.dispose)mm.dispose()})}})}
 function addRun(world,m,length,z,rotation,xpos){
@@ -338,8 +344,13 @@ function getAsset(url,cb){
 }
 function addCC0Details(instance,sinkPos){
  if(!instance||!sinkPos||!window.THREE||!THREE.GLTFLoader)return;var gen=instance.generation;
- getAsset(cfg.cc0Assets.sink,function(model){if(instance.generation!==gen)return;model.userData.skipDispose=true;fitModel(model,.48);model.position.set(sinkPos.x,.905,sinkPos.z);instance.world.add(model)});
- getAsset(cfg.cc0Assets.tap,function(model){if(instance.generation!==gen)return;model.userData.skipDispose=true;fitModel(model,.38);model.position.set(sinkPos.x-.16,.955,sinkPos.z-.08);model.rotation.y=Math.PI;instance.world.add(model)})
+ getAsset(cfg.cc0Assets.tap,function(model){
+  if(instance.generation!==gen)return;
+  model.userData.skipDispose=true;fitModel(model,.31);
+  model.position.set(sinkPos.x-.15,.955,sinkPos.z-.085);
+  model.rotation.y=Math.PI;
+  instance.world.add(model)
+ })
 }
 function rebuildScene(instance){
  if(!instance||!window.THREE)return;clearWorld(instance);
