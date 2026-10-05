@@ -59,7 +59,8 @@ function knownMeasurements(){return state.project.measurementMode==="known"}
 function roomText(){return knownMeasurements()?state.room.length+" × "+state.room.width+" × "+state.room.height+" سم":"القياسات غير متوفرة حالياً"}
 function effectiveLayout(){return state.config&&state.config.layout?state.config.layout:(state.room.layout&&state.room.layout!=="unsure"?state.room.layout:"l")}
 function effectiveRoom(){return{length:knownMeasurements()?state.room.length:420,width:knownMeasurements()?state.room.width:320,height:knownMeasurements()?state.room.height:280}}
-function hasPlausibleIsland(){var r=effectiveRoom();return effectiveLayout()==="island"&&r.length>=340&&r.width>=300}
+function roomCanSupportIsland(){var r=effectiveRoom();return r.length>=340&&r.width>=300}
+function hasPlausibleIsland(){return effectiveLayout()==="island"&&roomCanSupportIsland()}
 function effectiveLabel(){return state.room.layout?layoutLabels[state.room.layout]:"لم يتم الاختيار بعد"}
 function defaultTallSlots(){
  var L=Math.max(2.6,effectiveRoom().length/100),slots=[];
@@ -79,16 +80,15 @@ function defaultBaseSlots(tallSlots){
  return slots.slice(0,count)
 }
 function ensureConfigurator(force){
- if(!state.config||typeof state.config!=="object")state.config=clone(defaults.config);var seededNow=false;
+ if(!state.config||typeof state.config!=="object")state.config=clone(defaults.config);
  if(force||!state.config.seeded||!Array.isArray(state.config.baseSlots)||!state.config.baseSlots.length){
-  var tall=defaultTallSlots();state.config.tallSlots=tall;state.config.baseSlots=defaultBaseSlots(tall);state.config.seeded=true;state.config.inspect=false;state.config.selected="base:0";seededNow=true
+  var tall=defaultTallSlots();state.config.tallSlots=tall;state.config.baseSlots=defaultBaseSlots(tall);state.config.seeded=true;state.config.inspect=false;state.config.selected="base:0"
  }
  if(!Array.isArray(state.config.tallSlots))state.config.tallSlots=defaultTallSlots();
  if(!state.config.activeTab||!configTabLabels[state.config.activeTab])state.config.activeTab="configuration";
  if(!state.config.pantryInterior||!interiorLabels[state.config.pantryInterior])state.config.pantryInterior="shelves";
  if(state.config.layout==="island"&&!hasPlausibleIsland())state.config.layout="";
- if(!state.config.selected)state.config.selected="base:0";
- if(seededNow)syncConfigDetails()
+ if(!state.config.selected)state.config.selected="base:0"
 }
 function syncConfigDetails(){
  if(!state.config)return;var b=state.config.baseSlots||[],t=state.config.tallSlots||[];
@@ -102,9 +102,9 @@ function syncConfigDetails(){
  state.details.storage.pantry=t.indexOf("pantry")>=0
 }
 function resetConfiguratorForRoom(){if(!state.config)return;state.config.seeded=false;state.config.layout="";state.config.inspect=false;state.config.selected="base:0"}
-function configSnapshot(){return{config:clone(state.config),visual:clone(state.visual),storage:clone(state.details.storage),appliances:clone(state.details.appliances)}}
+function configSnapshot(){return{config:clone(state.config),visual:clone(state.visual)}}
 function pushConfigUndo(){runtime.configUndo.push(configSnapshot());if(runtime.configUndo.length>12)runtime.configUndo.shift()}
-function restoreConfigSnapshot(v){if(!v)return;state.config=clone(v.config);state.visual=clone(v.visual);state.details.storage=clone(v.storage);state.details.appliances=clone(v.appliances);state.review.confirmed=false}
+function restoreConfigSnapshot(v){if(!v)return;state.config=clone(v.config);state.visual=clone(v.visual);state.review.confirmed=false}
 function configLayoutLabel(){if(state.config&&state.config.layout)return layoutLabels[state.config.layout];return state.room.layout==="unsure"?"حرف L — توضيحي":layoutLabels[effectiveLayout()]}
 function configurationSummary(){
  ensureConfigurator();var b=(state.config.baseSlots||[]).map(function(k){return baseModuleLabels[k]||k}),t=(state.config.tallSlots||[]).map(function(k){return tallModuleLabels[k]||k});
@@ -119,7 +119,7 @@ function configOption(label,key,active,attr,disabled){return'<button type="butto
 function configPanel(){
  ensureConfigurator();var tab=state.config.activeTab,sel=selectedConfig(),html="";
  if(tab==="configuration"){
-  var layouts=["straight","l","u","parallel","island"];html='<div class="configPanelHead"><b>تكوين مبدئي</b><span>ابدأ بالاتجاه الحالي ثم عدّل ما يفيد جلسة التصميم.</span></div><div class="configChoices">'+layouts.map(function(k){var blocked=k==="island"&&!hasPlausibleIsland();return configOption(layoutLabels[k],k,effectiveLayout()===k,"configlayout",blocked)}).join("")+'</div>';
+  var layouts=["straight","l","u","parallel","island"];html='<div class="configPanelHead"><b>تكوين مبدئي</b><span>ابدأ بالاتجاه الحالي ثم عدّل ما يفيد جلسة التصميم.</span></div><div class="configChoices">'+layouts.map(function(k){var blocked=k==="island"&&!roomCanSupportIsland();return configOption(layoutLabels[k],k,effectiveLayout()===k,"configlayout",blocked)}).join("")+'</div>';
   if(state.room.layout==="unsure"&&!state.config.layout)html+='<p class="configNote">تم عرض حرف L كتكوين توضيحي فقط لأن الشكل النهائي غير محدد.</p>'
  }else if(tab==="cabinet"){
   html='<div class="configPanelHead"><b>واجهات الخزائن</b><span>اتجاهات بصرية تمهيدية وليست كتالوج دخاخني الرسمي.</span></div><div class="configMaterialGrid">'+Object.keys(cabinetLabels).map(function(k){return'<button type="button" class="materialTile '+(state.visual.cabinet===k?"active":"")+'" data-cabinet="'+k+'"><i style="--sw:'+({ivory:"#d9d1c4",oak:"#a47d56",walnut:"#594033",sage:"#858881",graphite:"#3b3f3b",white:"#efeee8"}[k])+'"></i><span>'+safe(cabinetLabels[k])+'</span></button>'}).join("")+'</div>'
@@ -292,7 +292,7 @@ function bind(){
   if(t.dataset.addmarker){state.room.markers.push({id:"m"+Date.now().toString(36),type:t.dataset.addmarker,wall:"north",pos:50});invalidateVisual();renderDynamic();return}
   if(t.dataset.delmarker){state.room.markers=state.room.markers.filter(function(m){return m.id!==t.dataset.delmarker});invalidateVisual();renderDynamic();return}
   if(t.dataset.configtab){state.config.activeTab=t.dataset.configtab;save();renderDynamic();return}
-  if(t.dataset.configlayout){if(t.disabled)return;pushConfigUndo();state.config.layout=t.dataset.configlayout;if(state.config.layout==="island"&&!hasPlausibleIsland())state.config.layout="";state.config.seeded=false;ensureConfigurator(true);state.config.layout=t.dataset.configlayout;invalidateVisual();renderDynamic();return}
+  if(t.dataset.configlayout){if(t.disabled)return;pushConfigUndo();var requested=t.dataset.configlayout;if(requested==="island"&&!roomCanSupportIsland())return;state.config.layout=requested;state.config.seeded=false;ensureConfigurator(true);state.config.layout=requested;invalidateVisual();renderDynamic();return}
   if(t.dataset.configslot){state.config.selected=t.dataset.configslot;state.config.inspect=false;renderDynamic();return}
   if(t.dataset.configreplace){
     ensureConfigurator();var sel=selectedConfig();pushConfigUndo();
@@ -304,7 +304,7 @@ function bind(){
       if(other>=0&&other!==sel.index){var old=state.config.tallSlots[sel.index];state.config.tallSlots[other]=old}
       state.config.tallSlots[sel.index]=next;state.config.inspect=false
     }
-    syncConfigDetails();invalidateVisual();renderDynamic();return
+    invalidateVisual();renderDynamic();return
   }
   if(t.dataset.interior){pushConfigUndo();state.config.pantryInterior=t.dataset.interior;invalidateVisual();renderDynamic();return}
   if(t.id==="inspectUnit"){
