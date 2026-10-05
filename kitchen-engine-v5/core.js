@@ -183,18 +183,6 @@ function handleFile(file){
 }
 function invalidateVisual(){state.visual.saved=false;state.review.confirmed=false;runtime.maxPhase=Math.min(runtime.maxPhase,runtime.phase<=1?1:2);state.maxPhase=runtime.maxPhase}
 function invalidateDetails(){state.details.reviewed=false;state.review.confirmed=false;runtime.maxPhase=Math.min(runtime.maxPhase,3);state.maxPhase=runtime.maxPhase}
-function initPlannerNav(){
- var nav=document.querySelector(".bottomNav"),planner=document.getElementById("planner");
- if(!nav||!planner)return;
- function setVisible(v){nav.classList.toggle("visible",!!v)}
- if("IntersectionObserver" in window){
-  var io=new IntersectionObserver(function(entries){entries.forEach(function(e){setVisible(e.isIntersecting)})},{root:null,threshold:0,rootMargin:"-72px 0px -24px 0px"});
-  io.observe(planner);runtime.plannerObserver=io
- }else{
-  function check(){var r=planner.getBoundingClientRect();setVisible(r.top<innerHeight-40&&r.bottom>90)}
-  addEventListener("scroll",check,{passive:true});check()
- }
-}
 function bind(){
  root.addEventListener("click",function(ev){var t=ev.target.closest("button,a");if(!t)return;
   if(t.id==="headerStart"||t.id==="heroStart"){runtime.maxPhase=Math.max(runtime.maxPhase,1);goPhase(1);return}
@@ -478,11 +466,16 @@ function cameraPreset(instance,name){
 function initHero(){if(runtime.hero)return;runtime.hero=create3D(document.getElementById("heroCanvas"),document.getElementById("heroWrap"),true);if(runtime.hero)rebuildScene(runtime.hero)}
 function initStudio(){if(runtime.studio)return;runtime.studio=create3D(document.getElementById("studioCanvas"),document.getElementById("studioWrap"),false);if(runtime.studio)rebuildScene(runtime.studio)}
 function rebuildAll3D(){if(runtime.hero)rebuildScene(runtime.hero);if(runtime.studio)rebuildScene(runtime.studio)}
-root.innerHTML=page();bind();renderDynamic();initPlannerNav();initHero();
+root.innerHTML=page();bind();renderDynamic();initHero();
 (function(){
  var planner=document.getElementById("planner");
- if(!planner||!("IntersectionObserver" in window)){document.body.classList.add("planner-nav-ready");return}
- var io=new IntersectionObserver(function(entries){entries.forEach(function(e){document.body.classList.toggle("planner-nav-ready",e.isIntersecting||e.boundingClientRect.top<innerHeight*.35)})},{rootMargin:"-12% 0px -35% 0px",threshold:.01});
+ if(!planner)return;
+ function fallback(){
+  var r=planner.getBoundingClientRect();
+  document.body.classList.toggle("planner-nav-ready",r.top<innerHeight-80&&r.bottom>100)
+ }
+ if(!("IntersectionObserver" in window)){addEventListener("scroll",fallback,{passive:true});fallback();return}
+ var io=new IntersectionObserver(function(entries){entries.forEach(function(e){document.body.classList.toggle("planner-nav-ready",e.isIntersecting)})},{rootMargin:"-72px 0px -70px 0px",threshold:.001});
  io.observe(planner)
 })();
 if(location.hash){var hm=location.hash.match(/^#phase-(\d)$/);if(hm){runtime.suspendHistory=true;goPhase(Math.min(runtime.maxPhase,Number(hm[1])),"replace")}}
