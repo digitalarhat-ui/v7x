@@ -183,6 +183,18 @@ function handleFile(file){
 }
 function invalidateVisual(){state.visual.saved=false;state.review.confirmed=false;runtime.maxPhase=Math.min(runtime.maxPhase,runtime.phase<=1?1:2);state.maxPhase=runtime.maxPhase}
 function invalidateDetails(){state.details.reviewed=false;state.review.confirmed=false;runtime.maxPhase=Math.min(runtime.maxPhase,3);state.maxPhase=runtime.maxPhase}
+function initPlannerNav(){
+ var nav=document.querySelector(".bottomNav"),planner=document.getElementById("planner");
+ if(!nav||!planner)return;
+ function setVisible(v){nav.classList.toggle("visible",!!v)}
+ if("IntersectionObserver" in window){
+  var io=new IntersectionObserver(function(entries){entries.forEach(function(e){setVisible(e.isIntersecting)})},{root:null,threshold:0,rootMargin:"-72px 0px -24px 0px"});
+  io.observe(planner);runtime.plannerObserver=io
+ }else{
+  function check(){var r=planner.getBoundingClientRect();setVisible(r.top<innerHeight-40&&r.bottom>90)}
+  addEventListener("scroll",check,{passive:true});check()
+ }
+}
 function bind(){
  root.addEventListener("click",function(ev){var t=ev.target.closest("button,a");if(!t)return;
   if(t.id==="headerStart"||t.id==="heroStart"){runtime.maxPhase=Math.max(runtime.maxPhase,1);goPhase(1);return}
@@ -305,6 +317,14 @@ function tallUnit(m,type){
  return g
 }
 function hobUnit(m){var g=new THREE.Group();put(g,box(.56,.014,.42,m.black),0,0,0);for(var i=0;i<4;i++){var ring=new THREE.Mesh(new THREE.TorusGeometry(.065,.005,12,30),m.chrome);ring.rotation.x=Math.PI/2;ring.position.set((i%2?1:-1)*.14,.014,(i>1?1:-1)*.105);g.add(ring)}return g}
+function hoodUnit(m){
+ var g=new THREE.Group();
+ put(g,box(.64,.052,.34,m.chrome),0,0,0);
+ put(g,box(.26,.50,.20,m.chrome),0,.275,-.025);
+ put(g,box(.50,.014,.18,m.black),0,-.035,.055);
+ put(g,box(.34,.010,.12,m.led),0,-.045,.01);
+ return g
+}
 function simpleSink(m){
  var g=new THREE.Group();
  put(g,box(.52,.014,.38,m.chrome),0,0,0);
@@ -423,10 +443,10 @@ function create3D(canvas,wrap,isHero){
  if(!window.THREE||!canvas||!wrap)return null;var renderer;
  try{renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,powerPreference:"high-performance"})}catch(e){wrap.innerHTML='<div class="heroFallback">المعاينة ثلاثية الأبعاد غير متاحة على هذا الجهاز، لكن يمكنك متابعة بقية المراحل.</div>';return null}
  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,isHero?1.25:(window.innerWidth<700?1.15:1.55)));
- renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;renderer.physicallyCorrectLights=true;
+ renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.04;renderer.physicallyCorrectLights=true;
  var scene=new THREE.Scene();scene.background=new THREE.Color(0xc9c8c2);scene.environment=environment();
  var camera=new THREE.PerspectiveCamera(isHero?(window.innerWidth<700?39:34):35,1,.1,70),world=new THREE.Group();scene.add(world);
- scene.add(new THREE.HemisphereLight(0xf8f4ea,0x5b5a54,.72));
+ scene.add(new THREE.HemisphereLight(0xf8f4ea,0x5b5a54,.54));
  var sun=new THREE.DirectionalLight(0xffefd6,1.48);sun.position.set(4.5,7.0,4.8);sun.castShadow=true;sun.shadow.mapSize.set(window.innerWidth<700?1024:2048,window.innerWidth<700?1024:2048);sun.shadow.camera.left=-7;sun.shadow.camera.right=7;sun.shadow.camera.top=7;sun.shadow.camera.bottom=-7;sun.shadow.bias=-.0002;sun.shadow.normalBias=.025;scene.add(sun);
  var fill=new THREE.DirectionalLight(0xd8e8ee,.52);fill.position.set(-4,3.6,5);scene.add(fill);
  var warm=new THREE.PointLight(0xffd9a0,.14,4.5,2);warm.position.set(-1.2,2.2,1.4);scene.add(warm);
@@ -443,22 +463,22 @@ function cameraPreset(instance,name){
  if(!instance)return;instance.cameraMode=name;
  var r=effectiveRoom(),L=Math.max(2.6,r.length/100),W=Math.max(2.35,r.width/100),c=instance.camGoal,t=instance.target;
  if(name==="hero"){
-  c.set(L*.58,window.innerWidth<700?1.62:1.70,W*.72);
-  t.set(-.08,1.05,-W*.30)
+  c.set(-L*.34,window.innerWidth<700?1.60:1.68,W*.80);
+  t.set(.08,1.02,-W*.34)
  }else if(name==="functional"){
-  c.set(L*.18,1.54,W*.68);t.set(.08,.98,-W*.36)
+  c.set(L*.06,1.52,W*.72);t.set(.10,.97,-W*.37)
  }else if(name==="elevation"){
-  c.set(0,1.47,W*.72);t.set(0,1.18,-W*.47)
+  c.set(.04,1.46,W*.75);t.set(.04,1.16,-W*.48)
  }else if(name==="island"){
-  c.set(-L*.42,1.67,W*.58);t.set(.12,.97,-.02)
+  c.set(-L*.44,1.66,W*.60);t.set(.10,.95,-.02)
  }else if(name==="wide"){
-  c.set(L*.70,1.88,W*.86);t.set(0,1.02,-W*.22)
+  c.set(-L*.52,1.92,W*.92);t.set(.04,1.00,-W*.20)
  }
 }
 function initHero(){if(runtime.hero)return;runtime.hero=create3D(document.getElementById("heroCanvas"),document.getElementById("heroWrap"),true);if(runtime.hero)rebuildScene(runtime.hero)}
 function initStudio(){if(runtime.studio)return;runtime.studio=create3D(document.getElementById("studioCanvas"),document.getElementById("studioWrap"),false);if(runtime.studio)rebuildScene(runtime.studio)}
 function rebuildAll3D(){if(runtime.hero)rebuildScene(runtime.hero);if(runtime.studio)rebuildScene(runtime.studio)}
-root.innerHTML=page();bind();renderDynamic();initHero();
+root.innerHTML=page();bind();renderDynamic();initPlannerNav();initHero();
 (function(){
  var planner=document.getElementById("planner");
  if(!planner||!("IntersectionObserver" in window)){document.body.classList.add("planner-nav-ready");return}
