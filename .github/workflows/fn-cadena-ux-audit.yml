@@ -17,7 +17,7 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Capture filled 5-phase flow
         run: |
-          cat > /tmp/audit.mjs <<'EOF'
+          cat > audit.mjs <<'EOF'
           import { chromium } from 'playwright';
           import fs from 'fs';
           const out='fn-audit'; fs.mkdirSync(out,{recursive:true});
@@ -62,7 +62,7 @@ jobs:
           await run('desktop',{width:1440,height:1000});
           await run('mobile',{width:390,height:844});
           EOF
-          node /tmp/audit.mjs
+          node audit.mjs
       - name: Commit base64 screenshots for inspection
         run: |
           rm -rf audit-output
