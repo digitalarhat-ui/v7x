@@ -25,7 +25,7 @@ var defaults={
  project:{type:"",city:"",measurementMode:"",note:""},
  room:{length:420,width:320,height:280,layout:"",markers:[]},
  visual:{cabinet:"ivory",worktop:"veined",upper:"mixed",handle:"integrated",saved:false},
- details:{storage:{pantry:false,tall:false,deepDrawers:false,corner:false,waste:false,coffee:false},appliances:{fridge:false,oven:false,dishwasher:false,hob:false,hood:false,microwave:false},sink:"unsure",users:"",cooking:"",storageTouched:false,applianceTouched:false,reviewed:false},
+ details:{storage:{pantry:false,tall:false,deepDrawers:false,corner:false,waste:false,coffee:false},appliances:{fridge:false,oven:false,dishwasher:false,hob:false,hood:false,microwave:false},sink:"unsure",users:"",cooking:"",storageTouched:false,applianceTouched:false,configSynced:false,reviewed:false},
  review:{confirmed:false,followUp:"whatsapp"},
  contact:{name:""},
  config:{seeded:false,layout:"",baseSlots:[],tallSlots:[],selected:"base:0",pantryInterior:"shelves",inspect:false,activeTab:"configuration"},
@@ -56,7 +56,10 @@ function assetUrl(url){
  if(base&&url&&url.charAt(0)==="/")return base.replace(/\/$/,"")+url;
  return url
 }
-function projectCode(){var raw=JSON.stringify([state.project,state.room,state.visual,state.config,state.details]),h=2166136261;for(var i=0;i<raw.length;i++){h^=raw.charCodeAt(i);h+=(h<<1)+(h<<4)+(h<<7)+(h<<8)+(h<<24)}return"DK-"+((h>>>0).toString(36).toUpperCase()+"000000").slice(0,6)}
+function projectCode(){
+ var d={storage:state.details.storage,appliances:state.details.appliances,sink:state.details.sink,users:state.details.users,cooking:state.details.cooking},c={layout:state.config.layout,baseSlots:state.config.baseSlots,tallSlots:state.config.tallSlots,pantryInterior:state.config.pantryInterior},raw=JSON.stringify([state.project,state.room,state.visual,c,d]),h=2166136261;
+ for(var i=0;i<raw.length;i++){h^=raw.charCodeAt(i);h+=(h<<1)+(h<<4)+(h<<7)+(h<<8)+(h<<24)}return"DK-"+((h>>>0).toString(36).toUpperCase()+"000000").slice(0,6)
+}
 function knownMeasurements(){return state.project.measurementMode==="known"}
 function roomText(){return knownMeasurements()?state.room.length+" × "+state.room.width+" × "+state.room.height+" سم":"القياسات غير متوفرة حالياً"}
 function effectiveLayout(){return state.config&&state.config.layout?state.config.layout:(state.room.layout&&state.room.layout!=="unsure"?state.room.layout:"l")}
@@ -113,7 +116,7 @@ function configurationSummary(){
  return{layout:configLayoutLabel(),base:b.join(" + "),tall:t.length?t.join(" + "):"بدون وحدة طويلة",interior:t.indexOf("pantry")>=0?interiorLabels[state.config.pantryInterior]:"—"}
 }
 function syncRequirementsFromConfig(){
- ensureConfigurator();var b=state.config.baseSlots||[],t=state.config.tallSlots||[];
+ if(state.details.configSynced)return;ensureConfigurator();var b=state.config.baseSlots||[],t=state.config.tallSlots||[];
  if(!state.details.applianceTouched){
   state.details.appliances.fridge=t.indexOf("fridge")>=0;
   state.details.appliances.oven=t.indexOf("oven")>=0;
@@ -125,6 +128,7 @@ function syncRequirementsFromConfig(){
   state.details.storage.pantry=t.indexOf("pantry")>=0;
   state.details.storage.tall=t.length>0
  }
+ state.details.configSynced=true
 }
 function selectedLabels(obj,labels){return activeKeys(obj).map(function(k){return labels[k]}).filter(Boolean)}
 function requirementSummary(kind){
@@ -231,7 +235,6 @@ function stage2(){
  '<div class="phase2Hint"><span>كل تغيير يظهر مباشرة في المعاينة.</span><b id="phase2SavedState">'+(state.visual.saved?"الاتجاه محفوظ":"")+'</b></div><div class="error phase2Error" id="errVisual"></div></div></section>'
 }
 function stage3(){
- syncRequirementsFromConfig();
  return'<section class="stage" data-stage="3"><div class="stageHead"><div><div class="stageEyebrow">03 — الخزائن والتفاصيل</div><h2>أخبر المصمم بما يهمك في الاستخدام.</h2></div><p>كل ما هنا اختياري؛ افتح المجموعة التي تريد تعديلها فقط.</p></div><div class="paper requirementsPaper">'+
  '<details class="requirementGroup" data-reqgroup="usage" open><summary><span><b>استخدام المطبخ</b><small>'+safe(requirementSummary("usage"))+'</small></span><i>تعديل</i></summary><div class="requirementBody"><div class="reqSub"><b>نمط الطبخ <small class="optionalTag">اختياري</small></b><div class="reqChoices">'+Object.keys(cookingLabels).map(function(k){return choiceCard(cookingLabels[k],k,state.details.cooking===k,"cookingchoice")}).join("")+'</div></div><div class="reqSub"><b>عدد المستخدمين <small class="optionalTag">اختياري</small></b><div class="reqChoices">'+Object.keys(userLabels).map(function(k){return choiceCard(userLabels[k],k,state.details.users===k,"userchoice")}).join("")+'</div></div></div></details>'+
  '<details class="requirementGroup" data-reqgroup="storage"><summary><span><b>احتياجات التخزين</b><small>'+safe(requirementSummary("storage"))+'</small></span><i>تعديل</i></summary><div class="requirementBody"><p class="inheritNote">بدأنا بما ظهر في تكوينك؛ عدّل فقط إذا احتجت.</p><div class="toggleGrid">'+Object.keys(storageLabels).map(function(k){return toggle(storageLabels[k],k,state.details.storage[k],"storage")}).join("")+'</div></div></details>'+
@@ -301,6 +304,15 @@ function markerRows(){
 function summaryGroups(){renderGroupCards("summaryGroups")}
 function viewerStateLabel(){if(!state.room.layout||state.room.layout==="unsure")return"نموذج توضيحي — شكل المساحة يحتاج تأكيد المصمم";if(!knownMeasurements())return"نموذج توضيحي — القياسات غير متوفرة";return roomText()}
 function syncVisualControls(){document.querySelectorAll("[data-cabinet]").forEach(function(x){x.classList.toggle("active",x.dataset.cabinet===state.visual.cabinet)});document.querySelectorAll("[data-worktop]").forEach(function(x){x.classList.toggle("active",x.dataset.worktop===state.visual.worktop)});document.querySelectorAll("[data-upper]").forEach(function(x){x.classList.toggle("active",x.dataset.upper===state.visual.upper)});document.querySelectorAll("[data-handle]").forEach(function(x){x.classList.toggle("active",x.dataset.handle===state.visual.handle)})}
+function syncRequirementControls(){
+ document.querySelectorAll("[data-cookingchoice]").forEach(function(x){x.classList.toggle("active",x.dataset.cookingchoice===state.details.cooking)});
+ document.querySelectorAll("[data-userchoice]").forEach(function(x){x.classList.toggle("active",x.dataset.userchoice===state.details.users)});
+ document.querySelectorAll("[data-sinkchoice]").forEach(function(x){x.classList.toggle("active",x.dataset.sinkchoice===state.details.sink)});
+ document.querySelectorAll("[data-storage]").forEach(function(x){x.classList.toggle("active",!!state.details.storage[x.dataset.storage])});
+ document.querySelectorAll("[data-appliance]").forEach(function(x){x.classList.toggle("active",!!state.details.appliances[x.dataset.appliance])});
+ document.querySelectorAll(".requirementGroup").forEach(function(g){var sm=g.querySelector("summary small");if(sm)sm.textContent=g.dataset.reqgroup==="extra"?"الحوض أو صورة للمساحة — اختياري":requirementSummary(g.dataset.reqgroup)})
+}
+
 function updateCameraControls(){var hasIsland=hasPlausibleIsland();document.querySelectorAll("[data-camera]").forEach(function(x){var island=x.dataset.camera==="island";x.hidden=island&&!hasIsland;x.disabled=island&&!hasIsland;x.classList.toggle("active",!!runtime.studio&&runtime.studio.cameraMode===x.dataset.camera)})}function renderDynamic(){
  ensureConfigurator();save();
  document.body.dataset.phase=String(runtime.phase);
@@ -317,7 +329,7 @@ function updateCameraControls(){var hasIsland=hasPlausibleIsland();document.quer
  renderGroupCards("reviewGroups");summaryGroups();var wp=document.getElementById("waPreview"),wb=document.getElementById("waButton");if(wp)wp.textContent=whatsappSummary();if(wb)wb.href=whatsappUrl();
  var rs=document.getElementById("reviewStatusText");if(rs)rs.textContent=reviewStatusText();
  var hl=document.getElementById("heroLayout"),hd=document.getElementById("heroDims"),hf=document.getElementById("heroFinish");if(hl)hl.textContent=configLayoutLabel();if(hd)hd.textContent=knownMeasurements()?state.room.length+" × "+state.room.width+" سم":"أدخل المقاسات أو تابع بدونها";if(hf)hf.textContent=cabinetLabels[state.visual.cabinet];
- syncVisualControls();updateCameraControls();syncAll3D()
+ syncVisualControls();syncRequirementControls();updateCameraControls();syncAll3D()
 }
 function handleFile(file){
  runtime.refFile=null;runtime.refData="";var box=document.getElementById("filePreview");if(!file){if(box)box.innerHTML="";return}
