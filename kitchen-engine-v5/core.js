@@ -138,7 +138,7 @@ function configPanel(){
   var pantryIndex=(state.config.tallSlots||[]).indexOf("pantry"),pantrySelected=sel.kind==="tall"&&sel.type==="pantry";
   html='<div class="configPanelHead"><b>التفاصيل</b><span>اختر فقط ما يظهر بوضوح في المعاينة.</span></div><div class="detailGroup"><small>اتجاه المقابض</small><div class="configChoices">'+Object.keys(handleLabels).map(function(k){return configOption(handleLabels[k],k,state.visual.handle===k,"handle",false)}).join("")+'</div></div>';
   if(pantryIndex>=0){
-   html+='<div class="detailGroup"><small>تقسيم التخزين الطويل</small><div class="configChoices">'+Object.keys(interiorLabels).map(function(k){return configOption(interiorLabels[k],k,state.config.pantryInterior===k,"interior",false)}).join("")+'</div><button type="button" id="inspectUnit" class="inspectBtn '+(state.config.inspect?"active":"")+'" data-configslot="tall:'+pantryIndex+'">'+(state.config.inspect?"إغلاق عرض التقسيم":"شاهد التقسيم الداخلي")+'</button></div>'
+   html+='<div class="detailGroup"><small>تقسيم التخزين الطويل</small><div class="configChoices">'+Object.keys(interiorLabels).map(function(k){return configOption(interiorLabels[k],k,state.config.pantryInterior===k,"interior",false)}).join("")+'</div><button type="button" id="inspectUnit" class="inspectBtn '+(state.config.inspect?"active":"")+'">'+(state.config.inspect?"إغلاق عرض التقسيم":"شاهد التقسيم الداخلي")+'</button></div>'
   }else html+='<p class="configNote">اختر «تخزين طويل» من تبويب الوحدات لتجربة عرض داخلي مبسط.</p>'
  }
  return html
