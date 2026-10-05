@@ -41,7 +41,8 @@ jobs:
               heroCanvas:document.querySelector('#heroCanvas')?.getBoundingClientRect().toJSON(),
               mount:!!document.querySelector('#dakhakhniV5'),
               bottomVisible:getComputedStyle(document.querySelector('.bottomNav')).visibility,
-              three:!!window.THREE
+              three:!!window.THREE,
+              lovable:[...document.querySelectorAll('body *')].filter(el=>((el.textContent||'').trim()==='Edit with Lovable')||((el.getAttribute&&el.getAttribute('href'))||'').includes('lovable')).slice(0,10).map(el=>({tag:el.tagName,id:el.id,class:el.className,href:el.getAttribute&&el.getAttribute('href'),outer:el.outerHTML.slice(0,1000)}))
             }));
             await page.screenshot({path:'live-host-qa/'+name+'-hero.png',fullPage:false});
             if(data.title!=='دخاخني | ابدأ مشروع مطبخك')throw new Error(name+' title mismatch');
