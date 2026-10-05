@@ -74,6 +74,8 @@ jobs:
             await phase1(page);
             let st=await state(page);if(st.visual.cabinet!=='oak'||st.visual.worktop!=='veined')throw new Error(tag+' material continuity');
             await shot(page,tag+'-02-preliminary','#studioWrap');
+            await page.locator('[data-configtab="configuration"]').click();
+            if(await page.locator('[data-configlayout="island"]').isDisabled())throw new Error(tag+' plausible island refinement incorrectly disabled');
             if(!Array.isArray(st.config?.baseSlots)||st.config.baseSlots.length<4)throw new Error(tag+' preliminary slots missing');
             if(st.config.baseSlots.indexOf('sink')<0||st.config.baseSlots.indexOf('hob')<0)throw new Error(tag+' safe functional slots missing');
 
@@ -81,6 +83,8 @@ jobs:
             await page.locator('[data-configslot="base:4"]').click();
             await shot(page,tag+'-03-unit-selected','.configuratorGrid');
             await page.locator('[data-configreplace="drawers"]').click();st=await state(page);if(st.config.baseSlots[4]!=='drawers')throw new Error(tag+' base drawer replacement');
+            await page.locator('#undoConfig').click();st=await state(page);if(st.config.baseSlots[4]==='drawers')throw new Error(tag+' configurator undo failed');
+            await page.locator('[data-configslot="base:4"]').click();await page.locator('[data-configreplace="drawers"]').click();
             await page.locator('[data-configslot="base:2"]').click();await page.locator('[data-configreplace="doors"]').click();st=await state(page);if(st.config.baseSlots[2]!=='doors')throw new Error(tag+' second compatible replacement');
             await shot(page,tag+'-04-cabinet-config','.configuratorGrid');
 
@@ -89,6 +93,10 @@ jobs:
             await page.locator('[data-configtab="details"]').click();await page.locator('[data-handle="linear"]').click();await page.locator('[data-interior="internalDrawers"]').click();await page.locator('#inspectUnit').click();await sleep(280);
             st=await state(page);if(st.config.tallSlots[0]!=='pantry'||st.config.pantryInterior!=='internalDrawers'||!st.config.inspect)throw new Error(tag+' pantry inspection state');
             await shot(page,tag+'-06-inspection','.configuratorGrid');
+            page.once('dialog',dialog=>dialog.accept());await page.locator('#resetConfig').click();await sleep(120);let resetState=await state(page);
+            if(resetState.config.tallSlots[0]==='pantry'&&resetState.config.baseSlots[4]==='drawers')throw new Error(tag+' scoped configurator reset failed');
+            await page.locator('#undoConfig').click();st=await state(page);
+            if(st.config.tallSlots[0]!=='pantry'||st.config.baseSlots[4]!=='drawers'||st.config.pantryInterior!=='internalDrawers')throw new Error(tag+' undo after reset failed');
 
             const or=await orbit(page,'#studioCanvas');if(or.mode!=='manual')throw new Error(tag+' orbit mode '+or.mode);
             for(const cam of ['hero','functional','elevation','wide']){await page.locator('[data-camera="'+cam+'"]').click();await sleep(180);if(!(await page.locator('[data-camera="'+cam+'"]').evaluate(e=>e.classList.contains('active'))))throw new Error(tag+' camera '+cam)}
