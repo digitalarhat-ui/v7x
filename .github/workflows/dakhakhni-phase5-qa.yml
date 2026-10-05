@@ -54,11 +54,12 @@ jobs:
           async function state(page){return page.evaluate(()=>JSON.parse(localStorage.getItem('dakhakhni:v5:project')||'null'))}
           async function shot(page,name){await page.screenshot({path:out+'/'+name+'.png',animations:'disabled'});result.screenshots.push(name+'.png')}
           async function tap(page,sel){await page.locator(sel).click({force:true});await sleep(120)}
-          async function p1(page){
+          async function p1(page,shotName){
             await tap(page,'#heroStart');await tap(page,'[data-projecttype="new"]');await tap(page,'[data-layout="l"]');await tap(page,'[data-measuremode="known"]');
             await page.locator('#roomLength').fill('421');await page.locator('#roomLength').dispatchEvent('input');await sleep(80);await page.locator('#roomLength').fill('420');await page.locator('#roomLength').dispatchEvent('input');
             await page.locator('#roomWidth').fill('321');await page.locator('#roomWidth').dispatchEvent('input');await sleep(80);await page.locator('#roomWidth').fill('320');await page.locator('#roomWidth').dispatchEvent('input');
             await sleep(150);if(await page.locator('#roomLength').getAttribute('inputmode')!=='numeric')throw new Error('numeric keyboard hint missing');
+            if(shotName){await page.locator('.stage[data-stage="1"]').scrollIntoViewIfNeeded();await shot(page,shotName)}
             await tap(page,'#nextBtn');await page.waitForSelector('.stage[data-stage="2"].active')
           }
           async function orbit(page,sel){
@@ -77,8 +78,7 @@ jobs:
             const tag=String(width),x=await launch(width,height),{page,browser,mobile,errors}=x;
             const heroOrbit=await orbit(page,'#heroCanvas');if(!heroOrbit)throw new Error(tag+' hero orbit');
             const vertical=mobile?await mobileVertical(page):true;if(!vertical)throw new Error(tag+' mobile vertical scroll');
-            await p1(page);if(width<700){await page.locator('.stage[data-stage="1"]').scrollIntoViewIfNeeded();await shot(page,tag+'-01-phase1')}
-            else {await page.locator('.stage[data-stage="1"]').scrollIntoViewIfNeeded();await shot(page,'1440-01-phase1')}
+            await p1(page,width<700?tag+'-01-phase1':'1440-01-phase1');
             await page.locator('[data-configtab="cabinet"]').click();await page.locator('[data-cabinet="oak"]').click();
             await page.locator('[data-configtab="worktop"]').click();await page.locator('[data-worktop="veined"]').click();
             await page.locator('[data-configtab="modules"]').click();await page.locator('[data-configslot="base:4"]').click();await page.locator('[data-configreplace="drawers"]').click();
