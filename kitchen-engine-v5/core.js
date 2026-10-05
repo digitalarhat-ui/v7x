@@ -250,7 +250,7 @@ function canvasTexture(kind,variant){
   for(var q=0;q<560;q++){var a=.01+seededRand(q+500)*.025;x.fillStyle="rgba(76,69,61,"+a+")";var fx=seededRand(q+600)*512,fy=seededRand(q+700)*512;x.fillRect(fx,fy,1,1)}
   x.strokeStyle="rgba(88,80,72,.15)";x.lineWidth=2;[0,256,512].forEach(function(n){x.beginPath();x.moveTo(n,0);x.lineTo(n,512);x.stroke();x.beginPath();x.moveTo(0,n);x.lineTo(512,n);x.stroke()})
  }
- var t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.encoding=THREE.sRGBEncoding;t.userData.dakhCached=true;return t
+ var t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.encoding=THREE.sRGBEncoding;t.userData=t.userData||{};t.userData.dakhCached=true;return t
 }
 function cachedTexture(kind,variant){
  var key=kind+":"+(variant||"default");if(runtime.textureCache[key])return runtime.textureCache[key];
