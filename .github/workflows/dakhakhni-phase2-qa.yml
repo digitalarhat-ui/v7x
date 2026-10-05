@@ -9,7 +9,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: dakhakhni-phase2-qa-v2
+  group: dakhakhni-phase2-qa-v3
   cancel-in-progress: true
 jobs:
   qa:
