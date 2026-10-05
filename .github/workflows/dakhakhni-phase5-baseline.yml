@@ -1,0 +1,77 @@
+name: Dakhakhni Phase 5 Baseline Audit
+on:
+  push:
+    branches: [dakhakhni-phase5-flow]
+    paths:
+      - '.github/workflows/dakhakhni-phase5-baseline.yml'
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: npm install --no-save playwright@1.55.0
+      - run: npx playwright install --with-deps chromium
+      - name: Start server
+        run: |
+          python3 -m http.server 4177 --bind 127.0.0.1 >/tmp/p5-base.log 2>&1 &
+          for i in $(seq 1 50); do
+            curl -fsS http://127.0.0.1:4177/dakhakhni-kitchen-v5/ >/dev/null && exit 0
+            sleep .2
+          done
+          exit 1
+      - name: Journey friction audit
+        run: |
+          cat > phase5-baseline.mjs <<'EOF'
+          import {chromium} from 'playwright';
+          import fs from 'fs';
+          const base='http://127.0.0.1:4177/dakhakhni-kitchen-v5/';
+          const out='qa-phase5-baseline';fs.mkdirSync(out,{recursive:true});
+          const result={};
+          async function one(width,height){
+            const browser=await chromium.launch({headless:true,args:['--use-angle=swiftshader','--enable-webgl','--ignore-gpu-blocklist']});
+            const context=await browser.newContext({viewport:{width,height},deviceScaleFactor:1,reducedMotion:'reduce',hasTouch:width<700,isMobile:width<700});
+            const page=await context.newPage();await page.addInitScript(()=>localStorage.clear());await page.goto(base,{waitUntil:'domcontentloaded'});await page.waitForSelector('#heroCanvas');await page.waitForTimeout(600);
+            let taps=0;
+            const tap=async sel=>{await page.locator(sel).click({force:true});taps++};
+            const phaseMetrics=async n=>page.evaluate(n=>{
+              const s=document.querySelector('.stage[data-stage="'+n+'"]');
+              return{height:s?.scrollHeight||0,screens:s?+(s.scrollHeight/innerHeight).toFixed(2):0,copy:(s?.innerText||'').replace(/\s+/g,' ').trim().length,buttons:s?[...s.querySelectorAll('button')].filter(b=>b.offsetParent!==null).length:0,inputs:s?[...s.querySelectorAll('input,select,textarea')].filter(e=>e.offsetParent!==null).length:0};
+            },n);
+            const heroMetrics=await page.evaluate(()=>({height:document.querySelector('.hero')?.scrollHeight||0,screens:+((document.querySelector('.hero')?.scrollHeight||0)/innerHeight).toFixed(2)}));
+            await tap('#heroStart');
+            const p1Before=await phaseMetrics(1);
+            await tap('[data-projecttype="new"]');await tap('[data-layout="l"]');await tap('[data-measuremode="known"]');
+            await page.locator('#roomLength').fill('420');await page.locator('#roomLength').dispatchEvent('input');
+            await page.locator('#roomWidth').fill('320');await page.locator('#roomWidth').dispatchEvent('input');
+            await tap('#nextBtn');await page.waitForSelector('.stage[data-stage="2"].active');
+            const p2=await phaseMetrics(2);
+            await tap('#saveVisual');await tap('#nextBtn');await page.waitForSelector('.stage[data-stage="3"].active');
+            const p3=await phaseMetrics(3);
+            await tap('#detailsReviewed');await tap('#nextBtn');await page.waitForSelector('.stage[data-stage="4"].active');
+            const p4=await phaseMetrics(4);
+            await tap('#reviewConfirmed');await tap('#nextBtn');await page.waitForSelector('.stage[data-stage="5"].active');
+            const p5=await phaseMetrics(5);
+            const duplicates=await page.evaluate(()=>{
+              const st=JSON.parse(localStorage.getItem('dakhakhni:v5:project')||'{}'),base=st.config?.baseSlots||[],tall=st.config?.tallSlots||[];
+              const d=[];if(base.includes('dishwasher'))d.push('dishwasher');if(base.includes('hob'))d.push('hob');if(tall.includes('fridge'))d.push('fridge');if(tall.includes('oven'))d.push('oven');if(base.includes('drawers'))d.push('deepDrawers');if(tall.includes('pantry'))d.push('pantry');return d
+            });
+            const ceremonial=await page.evaluate(()=>['detailsReviewed','reviewConfirmed'].filter(id=>!!document.getElementById(id)).length);
+            const instructionalCopy=p1Before.copy+p2.copy+p3.copy+p4.copy+p5.copy;
+            result[String(width)]={taps,minimalRequiredTextFields:2,selectInputsPhase3:3,heroScreens:heroMetrics.screens,pre3DScreens:+(p1Before.screens).toFixed(2),duplicateQuestions:duplicates,duplicateQuestionCount:duplicates.length,ceremonialButtons:ceremonial,instructionalCopyChars:instructionalCopy,phases:{p1:p1Before,p2,p3,p4,p5}};
+            await page.screenshot({path:out+'/'+width+'-phase5-current.png',fullPage:true});await browser.close()
+          }
+          for(const [w,h] of [[390,844],[430,900],[1440,1000]])await one(w,h);
+          fs.writeFileSync(out+'/results.json',JSON.stringify(result,null,2));
+          console.log(JSON.stringify(result,null,2));
+          EOF
+          node phase5-baseline.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dakhakhni-phase5-baseline
+          path: qa-phase5-baseline
+          retention-days: 3
