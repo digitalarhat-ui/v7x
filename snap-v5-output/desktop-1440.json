@@ -4,29 +4,25 @@
     "iw": 1440,
     "hero": {
       "x": 0,
-      "y": 72,
+      "y": -1881,
       "width": 1440,
       "height": 783.640625,
-      "top": 72,
+      "top": -1881,
       "right": 1440,
-      "bottom": 855.640625,
+      "bottom": -1097.359375,
       "left": 0
     },
     "viewer": {
       "x": 100,
-      "y": 2482.359375,
+      "y": 529.359375,
       "width": 1240,
       "height": 650,
-      "top": 2482.359375,
+      "top": 529.359375,
       "right": 1340,
-      "bottom": 3132.359375,
+      "bottom": 1179.359375,
       "left": 100
     },
     "title": "دخاخني | ابدأ مشروع مطبخك"
   },
-  "errs": [
-    "environment is not defined",
-    "environment is not defined",
-    "environment is not defined"
-  ]
+  "errs": []
 }
