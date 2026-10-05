@@ -79,14 +79,14 @@ jobs:
             const heroOrbit=await orbit(page,'#heroCanvas');if(!heroOrbit)throw new Error(tag+' hero orbit');
             const vertical=mobile?await mobileVertical(page):true;if(!vertical)throw new Error(tag+' mobile vertical scroll');
             await p1(page,width<700?tag+'-01-phase1':'1440-01-phase1');
-            await page.locator('[data-configtab="cabinet"]').click();await page.locator('[data-cabinet="oak"]').click();
-            await page.locator('[data-configtab="worktop"]').click();await page.locator('[data-worktop="veined"]').click();
+            await page.locator('[data-configtab="cabinet"]').click();await page.locator('.configPanel [data-cabinet="oak"]').click();
+            await page.locator('[data-configtab="worktop"]').click();await page.locator('.configPanel [data-worktop="veined"]').click();
             await page.locator('[data-configtab="modules"]').click();await page.locator('[data-configslot="base:4"]').click();await page.locator('[data-configreplace="drawers"]').click();
             await page.locator('[data-configslot="tall:0"]').click();await page.locator('[data-configreplace="pantry"]').click();
             await page.locator('[data-configtab="details"]').click();if(!(await page.locator('#inspectUnit').isVisible()))throw new Error(tag+' pantry inspection missing');await page.locator('#inspectUnit').click();let st=await state(page);if(!st.config.inspect)throw new Error(tag+' inspection state');
             await page.locator('[data-configtab="modules"]').click();await page.locator('[data-configslot="tall:0"]').click();await page.locator('[data-configreplace="oven"]').click();
-            await page.locator('[data-configtab="upper"]').click();await page.locator('[data-upper="glass"]').click();await page.locator('[data-upper="mixed"]').click();
-            await page.locator('[data-configtab="details"]').click();await page.locator('[data-handle="linear"]').click();await page.locator('[data-handle="integrated"]').click();
+            await page.locator('[data-configtab="upper"]').click();await page.locator('.configPanel [data-upper="glass"]').click();await page.locator('.configPanel [data-upper="mixed"]').click();
+            await page.locator('[data-configtab="details"]').click();await page.locator('.configPanel [data-handle="linear"]').click();await page.locator('.configPanel [data-handle="integrated"]').click();
             await page.locator('[data-configtab="modules"]').click();
             page.once('dialog',d=>d.accept());await page.locator('#resetConfig').click();await sleep(100);await page.locator('#undoConfig').click();st=await state(page);
             if(st.config.baseSlots[4]!=='drawers'||st.config.tallSlots[0]!=='oven')throw new Error(tag+' Phase4 reset/undo regression');
