@@ -1,0 +1,137 @@
+name: Dakhakhni Phase 4 QA
+on:
+  push:
+    branches: [dakhakhni-phase4-configurator]
+    paths:
+      - 'kitchen-engine-v5/**'
+      - 'dakhakhni-kitchen-v5/**'
+      - '.github/workflows/dakhakhni-phase4-qa.yml'
+permissions:
+  contents: read
+concurrency:
+  group: dakhakhni-phase4-qa
+  cancel-in-progress: true
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Syntax check
+        run: node --check kitchen-engine-v5/core.js
+      - run: npm install --no-save playwright@1.55.0
+      - run: npx playwright install --with-deps chromium
+      - name: Start static server
+        run: |
+          python3 -m http.server 4176 --bind 127.0.0.1 >/tmp/dakh-p4.log 2>&1 &
+          for i in $(seq 1 50); do
+            curl -fsS http://127.0.0.1:4176/dakhakhni-kitchen-v5/ >/dev/null && exit 0
+            sleep .2
+          done
+          cat /tmp/dakh-p4.log
+          exit 1
+      - name: Run Phase 4 acceptance QA
+        run: |
+          cat > phase4-qa.mjs <<'EOF'
+          import {chromium} from 'playwright';
+          import fs from 'fs';
+          import crypto from 'crypto';
+          const base='http://127.0.0.1:4176/dakhakhni-kitchen-v5/';
+          const out='qa-phase4'; fs.mkdirSync(out,{recursive:true});
+          const result={status:'PASS',viewports:{},errors:[],screenshots:[]};
+          const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+          const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
+          async function canvasHash(page,sel){return hash(await page.locator(sel).screenshot({animations:'disabled'}))}
+          async function launch(width,height){
+            const mobile=width<700,browser=await chromium.launch({headless:true,args:['--use-angle=swiftshader','--enable-webgl','--ignore-gpu-blocklist']});
+            const context=await browser.newContext({viewport:{width,height},deviceScaleFactor:1,reducedMotion:'reduce',hasTouch:mobile,isMobile:mobile,permissions:['clipboard-read','clipboard-write']});
+            const page=await context.newPage();page.setDefaultTimeout(18000);const errors=[];
+            page.on('console',m=>{if(m.type()==='error')errors.push('console:'+m.text())});page.on('pageerror',e=>errors.push('page:'+e.message));
+            await page.addInitScript(()=>localStorage.clear());
+            await page.goto(base,{waitUntil:'domcontentloaded',timeout:30000});await page.waitForSelector('#heroCanvas');await sleep(800);
+            return{browser,context,page,mobile,errors}
+          }
+          async function shot(page,name,sel){await page.locator(sel).screenshot({path:out+'/'+name+'.png',animations:'disabled'});result.screenshots.push(name+'.png')}
+          async function state(page){return page.evaluate(()=>JSON.parse(localStorage.getItem('dakhakhni:v5:project')||'null'))}
+          async function phase1(page){
+            await page.locator('#heroStart').click();await page.locator('[data-projecttype="new"]').click();await page.locator('[data-layout="l"]').click();await page.locator('[data-measuremode="known"]').click();
+            await page.locator('#roomLength').fill('420');await page.locator('#roomLength').dispatchEvent('input');
+            await page.locator('#roomWidth').fill('320');await page.locator('#roomWidth').dispatchEvent('input');
+            await page.locator('#nextBtn').click({force:true});await page.waitForSelector('.stage[data-stage="2"].active');await sleep(650)
+          }
+          async function orbit(page,sel){
+            const box=await page.locator(sel).boundingBox();if(!box)throw new Error('missing '+sel);const before=await canvasHash(page,sel),x=box.x+box.width*.47,y=box.y+box.height*.48;
+            await page.evaluate(({x,y})=>{const c=document.querySelector('#studioCanvas');c.dispatchEvent(new PointerEvent('pointerdown',{pointerId:91,pointerType:'touch',clientX:x,clientY:y,bubbles:true}));c.dispatchEvent(new PointerEvent('pointermove',{pointerId:91,pointerType:'touch',clientX:x+95,clientY:y+6,bubbles:true}));c.dispatchEvent(new PointerEvent('pointerup',{pointerId:91,pointerType:'touch',clientX:x+95,clientY:y+6,bubbles:true}))},{x,y});await sleep(280);
+            return {changed:before!==await canvasHash(page,sel),mode:await page.locator('#studioWrap').getAttribute('data-camera-mode')}
+          }
+          async function configure(width,height){
+            const tag=String(width),x=await launch(width,height),{page,browser,mobile,errors}=x;
+            const initialHero=await canvasHash(page,'#heroCanvas');
+            await page.locator('.heroQuickControls [data-cabinet="oak"]').click();await page.locator('.heroQuickControls [data-worktop="veined"]').click();await sleep(250);
+            await shot(page,tag+'-01-hero-oak-light','#heroWrap');
+            await phase1(page);
+            let st=await state(page);if(st.visual.cabinet!=='oak'||st.visual.worktop!=='veined')throw new Error(tag+' material continuity');
+            await shot(page,tag+'-02-preliminary','#studioWrap');
+            if(!Array.isArray(st.config?.baseSlots)||st.config.baseSlots.length<4)throw new Error(tag+' preliminary slots missing');
+            if(st.config.baseSlots.indexOf('sink')<0||st.config.baseSlots.indexOf('hob')<0)throw new Error(tag+' safe functional slots missing');
+
+            await page.locator('[data-configtab="modules"]').click();
+            await page.locator('[data-configslot="base:4"]').click();
+            await shot(page,tag+'-03-unit-selected','.configuratorGrid');
+            await page.locator('[data-configreplace="drawers"]').click();st=await state(page);if(st.config.baseSlots[4]!=='drawers')throw new Error(tag+' base drawer replacement');
+            await page.locator('[data-configslot="base:2"]').click();await page.locator('[data-configreplace="doors"]').click();st=await state(page);if(st.config.baseSlots[2]!=='doors')throw new Error(tag+' second compatible replacement');
+            await shot(page,tag+'-04-cabinet-config','.configuratorGrid');
+
+            await page.locator('[data-configslot="tall:0"]').click();await page.locator('[data-configreplace="pantry"]').click();
+            await page.locator('[data-configtab="upper"]').click();await page.locator('[data-upper="glass"]').click();await sleep(250);await shot(page,tag+'-05-upper-glass','.configuratorGrid');
+            await page.locator('[data-configtab="details"]').click();await page.locator('[data-handle="linear"]').click();await page.locator('[data-interior="internalDrawers"]').click();await page.locator('#inspectUnit').click();await sleep(280);
+            st=await state(page);if(st.config.tallSlots[0]!=='pantry'||st.config.pantryInterior!=='internalDrawers'||!st.config.inspect)throw new Error(tag+' pantry inspection state');
+            await shot(page,tag+'-06-inspection','.configuratorGrid');
+
+            const or=await orbit(page,'#studioCanvas');if(or.mode!=='manual')throw new Error(tag+' orbit mode '+or.mode);
+            for(const cam of ['hero','functional','elevation','wide']){await page.locator('[data-camera="'+cam+'"]').click();await sleep(180);if(!(await page.locator('[data-camera="'+cam+'"]').evaluate(e=>e.classList.contains('active'))))throw new Error(tag+' camera '+cam)}
+            await page.locator('[data-configtab="cabinet"]').click();await page.locator('[data-cabinet="graphite"]').click();await page.locator('[data-configtab="worktop"]').click();await page.locator('[data-worktop="dark"]').click();await sleep(250);await shot(page,tag+'-08-dark','.configuratorGrid');
+            const modeBefore=await page.locator('#studioWrap').getAttribute('data-camera-mode');if(modeBefore!=='wide')throw new Error(tag+' material reset camera');
+
+            await page.locator('#saveVisual').click();await sleep(180);await shot(page,tag+'-07-saved','.configuratorStudio');
+            st=await state(page);if(!st.visual.saved)throw new Error(tag+' save failed');
+            const beforeReload=JSON.stringify({config:st.config,visual:st.visual});
+            if(page.url().includes('?project='))throw new Error(tag+' dirty normal URL');
+            await page.reload({waitUntil:'domcontentloaded'});await page.waitForSelector('.stage[data-stage="2"].active');await sleep(650);
+            st=await state(page);const afterReload=JSON.stringify({config:st.config,visual:st.visual});if(beforeReload!==afterReload)throw new Error(tag+' config restore mismatch');
+
+            await page.locator('#nextBtn').click();await page.waitForSelector('.stage[data-stage="3"].active');await page.locator('#backBtn').click();await page.waitForSelector('.stage[data-stage="2"].active');st=await state(page);
+            if(st.config.baseSlots[4]!=='drawers'||st.config.tallSlots[0]!=='pantry'||st.visual.cabinet!=='graphite'||st.visual.worktop!=='dark')throw new Error(tag+' Phase3 return state');
+            const studioGeo=await page.locator('#studioWrap').getAttribute('data-geometry-state');
+            await page.evaluate(()=>scrollTo(0,0));await sleep(450);const heroGeo=await page.locator('#heroWrap').getAttribute('data-geometry-state'),heroAfter=await canvasHash(page,'#heroCanvas');
+            if(heroGeo!==studioGeo)throw new Error(tag+' hero/studio geometry diverged');if(initialHero===heroAfter)throw new Error(tag+' hero did not reflect configuration');
+
+            await page.locator('#nextBtn').click();await page.waitForSelector('.stage[data-stage="3"].active');await page.locator('#detailsReviewed').click();await page.locator('#nextBtn').click();await page.waitForSelector('.stage[data-stage="4"].active');
+            await page.locator('#reviewConfirmed').click();await page.locator('#nextBtn').click();await page.waitForSelector('.stage[data-stage="5"].active');
+            const summary=await page.locator('#summaryGroups').innerText(),wa=await page.locator('#waButton').getAttribute('href');
+            if(!/وحدة أدراج|تخزين طويل|برج فرن|ثلاجة|وحدة حوض/.test(summary))throw new Error(tag+' Phase5 config summary missing');
+            if(!wa?.startsWith('https://wa.me/966545246478?text='))throw new Error(tag+' WhatsApp route');
+
+            const metrics=await page.evaluate(()=>({sw:document.documentElement.scrollWidth,iw:innerWidth,contamination:/FN\s*Cadena|Makan\s*Cars/i.test(document.body.innerText),targets:[...document.querySelectorAll('.configTabs button,.configOption,.materialTile,.slot,.inspectBtn,.cameraBar button,#saveVisual')].filter(e=>e.offsetParent!==null).map(e=>e.getBoundingClientRect().height)}));
+            if(metrics.sw>metrics.iw+1)throw new Error(tag+' horizontal overflow');if(metrics.contamination)throw new Error(tag+' contamination');if(mobile&&Math.min(...metrics.targets)<44)throw new Error(tag+' touch target '+Math.min(...metrics.targets));if(errors.length)throw new Error(tag+' runtime '+errors.join(' | '));
+            if(mobile){await page.locator('[data-editphase="2"]').click();await page.waitForSelector('.stage[data-stage="2"].active');await page.locator('[data-configtab="modules"]').click();await shot(page,tag+'-09-mobile-controls','.configuratorGrid')}
+            else {await page.locator('[data-editphase="2"]').click();await page.waitForSelector('.stage[data-stage="2"].active');await shot(page,'1440-10-desktop-studio','.configuratorGrid')}
+            result.viewports[tag]={baseSlots:st.config.baseSlots,tallSlots:st.config.tallSlots,upper:st.visual.upper,handle:st.visual.handle,interior:st.config.pantryInterior,orbit:or,scrollWidth:metrics.sw,minTouch:Math.min(...metrics.targets),summaryOK:true,whatsappOK:true,errors};
+            await browser.close()
+          }
+          try{await configure(390,844);await configure(430,900);await configure(1440,1000)}
+          catch(e){result.status='FAIL';result.errors.push(e.stack||String(e))}
+          fs.writeFileSync(out+'/results.json',JSON.stringify(result,null,2));
+          if(result.status!=='PASS'){console.error(JSON.stringify(result,null,2));process.exit(1)}
+          EOF
+          node phase4-qa.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dakhakhni-phase4-qa
+          path: qa-phase4
+          if-no-files-found: error
+          retention-days: 3
