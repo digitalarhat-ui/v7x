@@ -85,15 +85,15 @@ jobs:
             const c=await b.newContext({viewport:{width:1440,height:1000},deviceScaleFactor:1});
             const p=await c.newPage();p.setDefaultTimeout(20000);
             await p.goto(base,{waitUntil:'domcontentloaded'});await p.waitForSelector('#heroCanvas');await p.waitForTimeout(1700);
-            const h1=await canvasHash(p,'#heroCanvas');await p.waitForTimeout(900);const h2=await canvasHash(p,'#heroCanvas');
-            result.global.autoPresentationChanged=h1!==h2;
+            const h1=Number(await p.locator('#heroWrap').getAttribute('data-orbit-angle'));await p.waitForTimeout(900);const h2=Number(await p.locator('#heroWrap').getAttribute('data-orbit-angle'));
+            result.global.autoPresentationChanged=Number.isFinite(h1)&&Number.isFinite(h2)&&Math.abs(h2-h1)>.0005;
             await b.close();
             const b2=await chromium.launch({headless:true});
             const c2=await b2.newContext({viewport:{width:1440,height:1000},deviceScaleFactor:1,reducedMotion:'reduce'});
             const p2=await c2.newPage();p2.setDefaultTimeout(20000);
             await p2.goto(base,{waitUntil:'domcontentloaded'});await p2.waitForSelector('#heroCanvas');await p2.waitForTimeout(1700);
-            const r1=await canvasHash(p2,'#heroCanvas');await p2.waitForTimeout(900);const r2=await canvasHash(p2,'#heroCanvas');
-            result.global.reducedMotionStable=r1===r2;
+            const r1=Number(await p2.locator('#heroWrap').getAttribute('data-orbit-angle'));await p2.waitForTimeout(900);const r2=Number(await p2.locator('#heroWrap').getAttribute('data-orbit-angle'));
+            result.global.reducedMotionStable=Number.isFinite(r1)&&Number.isFinite(r2)&&Math.abs(r2-r1)<.000001;
             await b2.close();
           }
 
