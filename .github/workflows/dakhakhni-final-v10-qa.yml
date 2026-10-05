@@ -1,0 +1,82 @@
+name: Dakhakhni Final V10 QA
+on:
+  push:
+    branches: [dakhakhni-final-qa]
+    paths:
+      - '.github/workflows/dakhakhni-final-v10-qa.yml'
+permissions:
+  contents: write
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: dakhakhni-final-qa
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install --no-save playwright@1.55.0
+      - run: npx playwright install --with-deps chromium
+      - name: Serve repo
+        run: |
+          python3 -m http.server 4173 >/tmp/dakh-server.log 2>&1 &
+          echo $! > /tmp/dakh-server.pid
+          sleep 2
+      - name: Run visual and flow QA
+        run: |
+          cat > audit.mjs <<'EOF'
+          import { chromium } from 'playwright';
+          import fs from 'fs';
+          fs.mkdirSync('qa-final-v10',{recursive:true});
+          const url='http://127.0.0.1:4173/dakhakhni-final-v10/';
+          async function snap(name,width,height){
+            const browser=await chromium.launch({headless:true,args:['--use-gl=swiftshader','--enable-webgl']});
+            const page=await browser.newPage({viewport:{width,height},deviceScaleFactor:1});
+            page.on('console',m=>{if(m.type()==='error') console.log('PAGE_ERROR',m.text())});
+            await page.goto(url,{waitUntil:'networkidle'});
+            await page.waitForTimeout(1800);
+            await page.screenshot({path:`qa-final-v10/${name}-hero.png`,fullPage:false});
+            await page.getByText('مطبخ جديد',{exact:true}).click();
+            await page.locator('#city').fill('ينبع');
+            await page.getByText('حرف L',{exact:true}).click();
+            await page.locator('#roomL').fill('420');
+            await page.locator('#roomW').fill('320');
+            await page.locator('#roomH').fill('280');
+            await page.locator('#nextBtn').click();
+            await page.waitForTimeout(1800);
+            await page.screenshot({path:`qa-final-v10/${name}-phase2.png`,fullPage:false});
+            await page.locator('#saveVisualBottom').click();
+            await page.locator('#nextBtn').click();
+            await page.waitForTimeout(200);
+            await page.locator('#nextBtn').click();
+            await page.waitForTimeout(200);
+            await page.locator('#nextBtn').click();
+            await page.locator('#name').fill('عميل تجريبي');
+            await page.locator('#mobile').fill('0555555555');
+            await page.locator('#location').fill('ينبع');
+            await page.locator('#planStatus').selectOption({label:'قياسات مبدئية متوفرة'});
+            await page.locator('#note').fill('أولوية للتخزين ومساحة التحضير.');
+            await page.waitForTimeout(200);
+            const wa=await page.locator('#waLink').getAttribute('href');
+            const preview=await page.locator('#waPreview').innerText();
+            const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth);
+            const heroBox=await page.locator('#heroWrap').boundingBox();
+            const phase2Box=await page.locator('#studioWrap').boundingBox();
+            const touch=await page.locator('button').evaluateAll(btns=>btns.map(b=>{const r=b.getBoundingClientRect();return {t:(b.textContent||'').trim().slice(0,30),h:r.height,w:r.width}}).filter(x=>x.h<44&&x.w<44).slice(0,15));
+            fs.writeFileSync(`qa-final-v10/${name}-report.json`,JSON.stringify({width,height,overflow,heroBox,phase2Box,waOk:!!wa&&wa.includes('wa.me/966545246478'),previewHasProject:preview.includes('رقم المشروع'),previewHas3D:preview.includes('الاتجاه البصري'),smallTouchTargets:touch},null,2));
+            await page.screenshot({path:`qa-final-v10/${name}-phase5.png`,fullPage:false});
+            await browser.close();
+          }
+          await snap('desktop-1440',1440,1000);
+          await snap('mobile-430',430,932);
+          await snap('mobile-390',390,844);
+          EOF
+          node audit.mjs
+      - name: Commit QA captures
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add qa-final-v10
+          git commit -m "Store Dakhakhni final V10 QA captures" || true
+          git push origin HEAD:dakhakhni-final-qa
