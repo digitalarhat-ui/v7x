@@ -250,7 +250,7 @@ jobs:
           }catch(e){result.status='FAIL';result.errors.push(e.stack||String(e));}
 
           fs.writeFileSync(out+'/results.json',JSON.stringify(result,null,2));
-          if(result.status!=='PASS')process.exitCode=1;
+          if(result.status!=='PASS'){console.error(JSON.stringify(result,null,2));process.exit(1)}
           EOF
           node phase2-qa.mjs
       - name: Preserve Phase 2 screenshots and results
