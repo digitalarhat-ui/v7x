@@ -37,7 +37,7 @@ jobs:
             const context=await browser.newContext({viewport:{width,height},deviceScaleFactor:1,reducedMotion:'reduce',hasTouch:width<700,isMobile:width<700});
             const page=await context.newPage();await page.addInitScript(()=>localStorage.clear());await page.goto(base,{waitUntil:'domcontentloaded'});await page.waitForSelector('#heroCanvas');await page.waitForTimeout(600);
             let taps=0;
-            const tap=async sel=>{await page.locator(sel).click({force:true});taps++};
+            const tap=async sel=>{await page.locator(sel).click({force:true});taps++;await page.waitForTimeout(120)};
             const phaseMetrics=async n=>page.evaluate(n=>{
               const s=document.querySelector('.stage[data-stage="'+n+'"]');
               return{height:s?.scrollHeight||0,screens:s?+(s.scrollHeight/innerHeight).toFixed(2):0,copy:(s?.innerText||'').replace(/\s+/g,' ').trim().length,buttons:s?[...s.querySelectorAll('button')].filter(b=>b.offsetParent!==null).length:0,inputs:s?[...s.querySelectorAll('input,select,textarea')].filter(e=>e.offsetParent!==null).length:0};
@@ -46,9 +46,13 @@ jobs:
             await tap('#heroStart');
             const p1Before=await phaseMetrics(1);
             await tap('[data-projecttype="new"]');await tap('[data-layout="l"]');await tap('[data-measuremode="known"]');
-            await page.locator('#roomLength').fill('420');await page.locator('#roomLength').dispatchEvent('input');
-            await page.locator('#roomWidth').fill('320');await page.locator('#roomWidth').dispatchEvent('input');
-            await tap('#nextBtn');await page.waitForSelector('.stage[data-stage="2"].active');
+            await page.locator('#roomLength').fill('421');await page.locator('#roomLength').dispatchEvent('input');await page.waitForTimeout(120);
+            await page.locator('#roomLength').fill('420');await page.locator('#roomLength').dispatchEvent('input');await page.waitForTimeout(120);
+            await page.locator('#roomWidth').fill('321');await page.locator('#roomWidth').dispatchEvent('input');await page.waitForTimeout(120);
+            await page.locator('#roomWidth').fill('320');await page.locator('#roomWidth').dispatchEvent('input');await page.waitForTimeout(120);
+            const p1State=await page.evaluate(()=>JSON.parse(localStorage.getItem('dakhakhni:v5:project')||'{}'));
+            if(p1State.project?.type!=='new'||p1State.room?.layout!=='l'||p1State.project?.measurementMode!=='known'||p1State.room?.length!==420||p1State.room?.width!==320)throw new Error('Phase1 state failed '+JSON.stringify(p1State));
+            await tap('#nextBtn');await page.waitForSelector('.stage[data-stage="2"].active',{state:'visible'});
             const p2=await phaseMetrics(2);
             await tap('#saveVisual');await tap('#nextBtn');await page.waitForSelector('.stage[data-stage="3"].active');
             const p3=await phaseMetrics(3);
