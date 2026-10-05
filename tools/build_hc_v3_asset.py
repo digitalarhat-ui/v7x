@@ -213,16 +213,16 @@ def tube_path(points,radius,name,zone,radial=14):
 
 # ---------- room context ----------
 rounded_box(10.0,0.05,7.5,0,-0.03,0,0.003,'HC_ROOM__FLOOR','HC_ROOM','top',(3.0,3.0))
-rounded_box(8.7,3.65,0.12,0,1.825,-2.24,0.002,'HC_ROOM__BACK_WALL','HC_ROOM','front',(4,3))
+rounded_box(8.7,3.65,0.12,0,1.825,-2.08,0.002,'HC_ROOM__BACK_WALL','HC_ROOM','front',(4,3))
 rounded_box(0.12,3.65,5.4,-4.29,1.825,0.35,0.002,'HC_ROOM__SIDE_WALL','HC_ROOM','side',(3,3))
 rounded_box(8.7,0.10,5.4,0,3.58,0.35,0.002,'HC_ROOM__CEILING','HC_ROOM','top',(4,3))
-rounded_box(8.45,0.075,0.035,0,0.037,-2.155,0.001,'HC_ROOM__SKIRTING_BACK','HC_ROOM')
+rounded_box(8.45,0.075,0.035,0,0.037,-1.985,0.001,'HC_ROOM__SKIRTING_BACK','HC_ROOM')
 rounded_box(0.035,0.075,5.1,-4.20,0.037,0.32,0.001,'HC_ROOM__SKIRTING_SIDE','HC_ROOM','side')
 
 # ---------- base cabinets ----------
 centers=[-1.62,-.82,-.02,.78,1.58]
 W=.799
-cab_y0=.18; cab_h=.82; side_t=.018; base_depth=.62; front_z=-1.325; back_z=-1.66
+cab_y0=.18; cab_h=.82; side_t=.018; base_depth=.68; front_z=-1.325; back_z=-1.675
 for i,x in enumerate(centers,1):
     # carcass panels, physically separated
     panel(side_t,cab_h,base_depth,x-W/2+side_t/2,.59,back_z,f'HC_CARCASS__B{i}_LEFT','HC_CARCASS',0.0012,'side')
@@ -246,28 +246,28 @@ for i,x in enumerate(centers,1):
         cylinder(.008,.045,hx,.71,front_z+.012,'z',f'HC_HANDLES__B{i}_DOOR_MOUNT_2','HC_HANDLES',16)
 
 # toe kick recessed
-panel(4.00,.135,.28,-.02,.085,-1.835,'HC_KICK__BASE_PLINTH','HC_KICK',0.002,'front')
+panel(4.00,.135,.45,-.02,.085,-1.600,'HC_KICK__BASE_PLINTH','HC_KICK',0.002,'front')
 
 # countertop + backsplash
-counter=cq.Workplane('XY').box(4.23,.040,.82,centered=(True,True,True)).edges().fillet(.004).translate((-.02,1.025,-1.69))
+counter=cq.Workplane('XY').box(4.23,.040,.76,centered=(True,True,True)).edges().fillet(.004).translate((-.02,1.025,-1.64))
 sink_open=cq.Workplane('XY').box(.61,.090,.35,centered=(True,True,True)).edges().fillet(.020).translate((-1.30,1.025,-1.59))
 cook_open=cq.Workplane('XY').box(.63,.090,.47,centered=(True,True,True)).edges().fillet(.010).translate((.82,1.025,-1.61))
 counter=counter.cut(sink_open).cut(cook_open)
 solid_to_mesh(counter.val(),'HC_COUNTERTOP__MAIN_SLAB','HC_COUNTERTOP','top',(3.0,1.5),(0,0),0.0040,0.25)
-panel(4.06,.014,.030,-.02,.998,-1.326,'HC_DARK__COUNTER_UNDERCUT','HC_DARK',0.001,'front')
-panel(4.12,1.00,.034,-.02,1.54,-2.105,'HC_BACKSPLASH__MAIN','HC_BACKSPLASH',0.002,'front',(3.2,2.2))
+panel(4.06,.014,.030,-.02,.998,-1.272,'HC_DARK__COUNTER_UNDERCUT','HC_DARK',0.001,'front')
+panel(4.12,1.00,.028,-.02,1.54,-1.995,'HC_BACKSPLASH__MAIN','HC_BACKSPLASH',0.002,'front',(3.2,2.2))
 # subtle silicone shadow joint as actual geometry
-panel(4.08,.010,.030,-.02,1.052,-2.075,'HC_CARCASS__COUNTER_BACK_JOINT','HC_CARCASS',0.0008,'front')
+panel(4.08,.010,.022,-.02,1.052,-1.976,'HC_CARCASS__COUNTER_BACK_JOINT','HC_CARCASS',0.0008,'front')
 
 # ---------- upper cabinets ----------
-upper_y=2.18; upper_h=.86; upper_depth=.41; upper_z=-1.76; upper_front_z=-1.545
+upper_y=2.18; upper_h=.86; upper_depth=.46; upper_z=-1.775; upper_front_z=-1.535
 for i,x in enumerate(centers,1):
     # carcass panels
     panel(side_t,upper_h,upper_depth,x-W/2+side_t/2,upper_y,upper_z,f'HC_CARCASS__U{i}_LEFT','HC_CARCASS',0.0011,'side')
     panel(side_t,upper_h,upper_depth,x+W/2-side_t/2,upper_y,upper_z,f'HC_CARCASS__U{i}_RIGHT','HC_CARCASS',0.0011,'side')
     panel(W-2*side_t,side_t,upper_depth,x,upper_y-upper_h/2+side_t/2,upper_z,f'HC_CARCASS__U{i}_BOTTOM','HC_CARCASS',0.0011,'top')
     panel(W-2*side_t,side_t,upper_depth,x,upper_y+upper_h/2-side_t/2,upper_z,f'HC_CARCASS__U{i}_TOP','HC_CARCASS',0.0011,'top')
-    panel(W-2*side_t,upper_h-.04,.012,x,upper_y,-1.963,f'HC_CARCASS__U{i}_BACK','HC_CARCASS',0.0008,'front')
+    panel(W-2*side_t,upper_h-.04,.012,x,upper_y,-1.997,f'HC_CARCASS__U{i}_BACK','HC_CARCASS',0.0008,'front')
     if i in (1,5):
         # slim framed glass door, actual inset pane and interior shelves
         stile=.034; rail=.034; fw=W-.004; fh=.846
@@ -276,7 +276,7 @@ for i,x in enumerate(centers,1):
         panel(stile,fh-2*rail,.025,x-fw/2+stile/2,upper_y,upper_front_z,f'HC_UPPER_FRONTS__U{i}_GLASS_LEFT','HC_UPPER_FRONTS',0.0015,'front',(1.7,2.7),(i*.1,0))
         panel(stile,fh-2*rail,.025,x+fw/2-stile/2,upper_y,upper_front_z,f'HC_UPPER_FRONTS__U{i}_GLASS_RIGHT','HC_UPPER_FRONTS',0.0015,'front',(1.7,2.7),(i*.1,0))
         panel(fw-.078,fh-.078,.008,x,upper_y,upper_front_z+.006,f'HC_GLASS__U{i}_PANE','HC_GLASS',0.0005,'front')
-        panel(fw-.11,fh-.11,.010,x,upper_y,-1.952,f'HC_DARK__U{i}_GLASS_BACK','HC_DARK',0.001,'front')
+        panel(fw-.11,fh-.11,.010,x,upper_y,-1.985,f'HC_DARK__U{i}_GLASS_BACK','HC_DARK',0.001,'front')
         # interior shelves / depth
         for sy in (2.02,2.30):
             panel(W-.09,.012,.31,x,sy,-1.76,f'HC_CARCASS__U{i}_SHELF_{int(sy*100)}','HC_CARCASS',0.0008,'top')
