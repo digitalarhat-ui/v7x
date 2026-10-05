@@ -538,41 +538,73 @@
     }catch(e){
       stageEl.classList.add("fallback-active");
       document.getElementById("webglFallback").hidden=false;
+
+      function fbKeys(obj){return Object.keys(obj).filter(function(k){return !!obj[k]})}
+      function fbDims(){return (state.wallLength||"—")+" × "+(state.roomWidth||"—")+" × "+(state.ceilingHeight||"—")+" م"}
+      function fbCode(){
+        var raw=JSON.stringify([state.layout,state.wallLength,state.roomWidth,state.ceilingHeight,state.modules,state.interiors,state.cabinet,state.worktop,state.branch,state.plan,state.note]),h=2166136261;
+        for(var i=0;i<raw.length;i++){h^=raw.charCodeAt(i);h+=(h<<1)+(h<<4)+(h<<7)+(h<<8)+(h<<24)}
+        return "DK-"+((h>>>0).toString(36).toUpperCase()+"000000").slice(0,6);
+      }
+      function fbPlan(){
+        var room=document.getElementById("planRoom");if(!room)return;
+        var wl=Math.max(2,parseFloat(state.wallLength)||4.2),rw=Math.max(2,parseFloat(state.roomWidth)||3.2);
+        room.style.aspectRatio=String(Math.max(.8,Math.min(1.9,wl/rw)));
+        var arr=[];if(state.modules.tall)arr.push("مؤن");if(state.modules.fridge)arr.push("ثلاجة");if(state.modules.sink)arr.push("حوض");if(state.modules.oven)arr.push("فرن");if(state.modules.base&&arr.length<4)arr.push("تخزين");if(!arr.length)arr=["مساحة"];
+        function units(a){return a.map(function(x){return '<span class="plan-unit">'+x+'</span>'}).join("")}
+        var html='<div class="plan-run primary">'+units(arr)+'</div>';
+        if(state.layout==="l"||state.layout==="u")html+='<div class="plan-run side-r">'+units(["تخزين","سطح","تخزين"])+'</div>';
+        if(state.layout==="u")html+='<div class="plan-run side-l">'+units(["تخزين","سطح","تخزين"])+'</div>';
+        if(state.layout==="island"||state.modules.island)html+='<div class="plan-run island">'+units(["جزيرة","تخزين"])+'</div>';
+        html+='<div class="plan-dim w">'+state.wallLength+' م</div><div class="plan-dim d">'+state.roomWidth+' م</div>';
+        room.innerHTML=html;document.getElementById("planLayoutLabel").textContent=labels.layout[state.layout];
+      }
       function fallbackSync(){
-        document.getElementById("stateCabinet").textContent=labels.cabinet[state.cabinet];
-        document.getElementById("stateWorktop").textContent=labels.worktop[state.worktop];
-        document.getElementById("stateLight").textContent=labels.light[state.light];
-        document.getElementById("sumCabinet").textContent=labels.cabinet[state.cabinet];
-        document.getElementById("sumWorktop").textContent=labels.worktop[state.worktop];
-        document.getElementById("sumBranch").textContent=state.branch||"غير محدد";
-        document.getElementById("sumStage").textContent=state.projectStage||"غير محددة";
-        document.getElementById("sumShape").textContent=state.shape||"غير محدد";
-        document.getElementById("sumSize").textContent=state.size||"غير مضاف";document.getElementById("sumPlan").textContent=state.plan||"غير محدد";
-        document.getElementById("sumNote").textContent=state.note||"لا توجد ملاحظة إضافية";
-        var done=["branch","projectStage","shape","size","plan","note"].filter(function(k){return String(state[k]||"").trim()}).length;
-        var score=40+done*10;
-        document.getElementById("readinessScore").textContent=score+"%";
-        document.getElementById("readinessFill").style.width=score+"%";
-        document.getElementById("readinessHint").textContent=done===6?"الملخص جاهز للإرسال إلى فريق دخاخني.":"أضف ما تعرفه فقط؛ المتبقي يمكن مناقشته مع فريق دخاخني.";
-        var p=new URLSearchParams();
-        p.set("c",state.cabinet);p.set("w",state.worktop);p.set("l",state.light);
-        if(state.branch)p.set("b",state.branch);if(state.projectStage)p.set("s",state.projectStage);if(state.shape)p.set("sh",state.shape);if(state.size)p.set("z",state.size);if(state.plan)p.set("p",state.plan);if(state.note)p.set("n",state.note);
-        history.replaceState(null,"",location.pathname+"?"+p.toString());
-        try{localStorage.setItem("dakhakhni-demo-state",JSON.stringify(state))}catch(_){}
-        var lines=["السلام عليكم، هذا ملخص أولي قبل خدمة التصميم مع دخاخني:","اتجاه لون الخزائن: "+labels.cabinet[state.cabinet],"اتجاه سطح العمل: "+labels.worktop[state.worktop],"الإضاءة في النموذج: "+labels.light[state.light],"موقع المشروع: "+(state.branch||"غير محدد"),"مرحلة المشروع: "+(state.projectStage||"غير محددة"),"شكل المساحة: "+(state.shape||"غير محدد"),"مقاس تقريبي: "+(state.size||"غير مضاف"),"المخطط / القياس: "+(state.plan||"غير محدد")];
-        if(state.note)lines.push("ملاحظة للمهندس: "+state.note);
-        lines.push("الاتجاهات البصرية تجريبية وليست كتالوج دخاخني الرسمي؛ الاعتماد النهائي مع فريق التصميم والقياس.");
+        state.shape=labels.layout[state.layout];state.size=fbDims();
+        var mods=fbKeys(state.modules),ins=fbKeys(state.interiors),code=fbCode();
+        var modText=mods.length?mods.map(function(k){return labels.module[k]}).join("، "):"لم يتم اختيار وحدات";
+        var intText=ins.length?ins.map(function(k){return labels.interior[k]}).join("، "):"لا توجد تفاصيل إضافية";
+        document.getElementById("projectCode").textContent=code;document.getElementById("sumCode").textContent=code;
+        document.getElementById("stateLayout").textContent=labels.layout[state.layout];document.getElementById("stateDimensions").textContent=fbDims();
+        document.getElementById("stateModules").textContent=mods.length+" اختيارات";document.getElementById("stateInteriors").textContent=ins.length+" اختيارات";
+        document.getElementById("stateCabinet").textContent=labels.cabinet[state.cabinet];document.getElementById("stateWorktop").textContent=labels.worktop[state.worktop];document.getElementById("stateLight").textContent=labels.light[state.light];
+        document.getElementById("sumCabinet").textContent=labels.cabinet[state.cabinet];document.getElementById("sumWorktop").textContent=labels.worktop[state.worktop];
+        document.getElementById("sumBranch").textContent=state.branch||"غير محدد";document.getElementById("sumStage").textContent=state.projectStage||"غير محددة";document.getElementById("sumShape").textContent=labels.layout[state.layout];document.getElementById("sumSize").textContent=fbDims();
+        document.getElementById("sumModules").textContent=modText;document.getElementById("sumInteriors").textContent=intText;document.getElementById("sumPlan").textContent=state.plan||"غير محدد";document.getElementById("sumNote").textContent=state.note||"لا توجد ملاحظة إضافية";
+        var score=55+Math.round([state.wallLength,state.roomWidth,state.ceilingHeight,state.layout,mods.length,ins.length,state.branch,state.plan].filter(Boolean).length/8*45);
+        document.getElementById("readinessScore").textContent=score+"%";document.getElementById("readinessFill").style.width=score+"%";
+        document.getElementById("readinessHint").textContent=(state.branch&&state.plan)?"المشروع جاهز كملخص أولي للإرسال إلى فريق دخاخني.":"يمكن حفظ المشروع الآن؛ أضف الموقع وحالة القياس إذا كانت معروفة.";
+        fbPlan();
+        var p=new URLSearchParams();p.set("c",state.cabinet);p.set("w",state.worktop);p.set("l",state.light);p.set("ly",state.layout);p.set("wl",state.wallLength);p.set("rw",state.roomWidth);p.set("ch",state.ceilingHeight);p.set("m",mods.join(","));p.set("i",ins.join(","));
+        if(state.branch)p.set("b",state.branch);if(state.projectStage)p.set("s",state.projectStage);if(state.plan)p.set("p",state.plan);if(state.note)p.set("n",state.note);
+        history.replaceState(null,"",location.pathname+"?"+p.toString());try{localStorage.setItem("dakhakhni-demo-state-v3",JSON.stringify(state))}catch(_){}
+        var lines=["السلام عليكم، هذا مشروع أولي من مخطط دخاخني:","رقم المشروع: "+code,"شكل المطبخ: "+labels.layout[state.layout],"الأبعاد التقريبية: "+fbDims(),"الوحدات: "+modText,"التفاصيل الداخلية: "+intText,"لون الخزائن التجريبي: "+labels.cabinet[state.cabinet],"سطح العمل التجريبي: "+labels.worktop[state.worktop],"موقع المشروع: "+(state.branch||"غير محدد"),"مرحلة المشروع: "+(state.projectStage||"غير محددة"),"المخطط / القياس: "+(state.plan||"غير محدد")];
+        if(state.note)lines.push("ملاحظة للمصمم: "+state.note);lines.push("هذا تكوين أولي تجريبي وليس مخطط تصنيع أو عرض سعر؛ الاعتماد النهائي مع فريق التصميم والقياس في دخاخني.");
         document.getElementById("whatsappLink").href="https://wa.me/966545246478?text="+encodeURIComponent(lines.join("\n"));
       }
-      try{var saved=JSON.parse(localStorage.getItem("dakhakhni-demo-state")||"null");if(saved&&typeof saved==="object")Object.keys(state).forEach(function(k){if(saved[k]!==undefined)state[k]=saved[k]});}catch(_){}
+
+      try{
+        var saved=JSON.parse(localStorage.getItem("dakhakhni-demo-state-v3")||localStorage.getItem("dakhakhni-demo-state")||"null");
+        if(saved&&typeof saved==="object")Object.keys(state).forEach(function(k){if(saved[k]!==undefined){if((k==="modules"||k==="interiors")&&saved[k]&&typeof saved[k]==="object")state[k]=Object.assign({},state[k],saved[k]);else state[k]=saved[k]}});
+      }catch(_){}
       var fq=new URLSearchParams(location.search);
-      if(fq.get("c")&&labels.cabinet[fq.get("c")])state.cabinet=fq.get("c");if(fq.get("w")&&labels.worktop[fq.get("w")])state.worktop=fq.get("w");if(fq.get("l"))state.light=fq.get("l");if(fq.get("b"))state.branch=fq.get("b");if(fq.get("s"))state.projectStage=fq.get("s");if(fq.get("sh"))state.shape=fq.get("sh");if(fq.get("z"))state.size=fq.get("z");if(fq.get("p"))state.plan=fq.get("p");if(fq.get("n"))state.note=fq.get("n");
-      document.getElementById("branch").value=state.branch;document.getElementById("stageSelect").value=state.projectStage;document.getElementById("shape").value=state.shape;document.getElementById("size").value=state.size;document.getElementById("plan").value=state.plan;document.getElementById("note").value=state.note;
+      if(fq.get("c")&&labels.cabinet[fq.get("c")])state.cabinet=fq.get("c");if(fq.get("w")&&labels.worktop[fq.get("w")])state.worktop=fq.get("w");if(fq.get("l"))state.light=fq.get("l");
+      if(fq.get("ly")&&labels.layout[fq.get("ly")])state.layout=fq.get("ly");if(fq.get("wl"))state.wallLength=fq.get("wl");if(fq.get("rw"))state.roomWidth=fq.get("rw");if(fq.get("ch"))state.ceilingHeight=fq.get("ch");
+      if(fq.has("m")){Object.keys(state.modules).forEach(function(k){state.modules[k]=false});fq.get("m").split(",").filter(Boolean).forEach(function(k){if(k in state.modules)state.modules[k]=true})}
+      if(fq.has("i")){Object.keys(state.interiors).forEach(function(k){state.interiors[k]=false});fq.get("i").split(",").filter(Boolean).forEach(function(k){if(k in state.interiors)state.interiors[k]=true})}
+      if(fq.get("b"))state.branch=fq.get("b");if(fq.get("s"))state.projectStage=fq.get("s");if(fq.get("p"))state.plan=fq.get("p");if(fq.get("n"))state.note=fq.get("n");
+
+      document.getElementById("wallLength").value=state.wallLength;document.getElementById("roomWidth").value=state.roomWidth;document.getElementById("ceilingHeight").value=state.ceilingHeight;
+      document.getElementById("branch").value=state.branch;document.getElementById("stageSelect").value=state.projectStage;document.getElementById("plan").value=state.plan;document.getElementById("note").value=state.note;
       document.querySelectorAll("#cabinetSwatches .swatch").forEach(function(b){b.classList.toggle("active",b.dataset.value===state.cabinet);b.addEventListener("click",function(){state.cabinet=b.dataset.value;document.querySelectorAll("#cabinetSwatches .swatch").forEach(function(x){x.classList.toggle("active",x===b)});fallbackSync()})});
       document.querySelectorAll("#worktopSwatches .swatch").forEach(function(b){b.classList.toggle("active",b.dataset.value===state.worktop);b.addEventListener("click",function(){state.worktop=b.dataset.value;document.querySelectorAll("#worktopSwatches .swatch").forEach(function(x){x.classList.toggle("active",x===b)});fallbackSync()})});
       document.querySelectorAll(".look").forEach(function(b){b.classList.toggle("active",b.dataset.light===state.light);b.addEventListener("click",function(){state.light=b.dataset.light;document.querySelectorAll(".look").forEach(function(x){x.classList.toggle("active",x===b)});fallbackSync()})});
-      [["branch","branch"],["stageSelect","projectStage"],["shape","shape"],["size","size"],["plan","plan"],["note","note"]].forEach(function(pair){var el=document.getElementById(pair[0]);el.addEventListener(el.tagName==="INPUT"?"input":"change",function(){state[pair[1]]=el.value.trim();fallbackSync()})});
-      document.getElementById("startBtn").addEventListener("click",function(){document.getElementById("studio").scrollIntoView({behavior:"smooth",block:"center"})});
+      document.querySelectorAll("#layoutOptions .option-btn").forEach(function(b){b.classList.toggle("active",b.dataset.layout===state.layout);b.addEventListener("click",function(){state.layout=b.dataset.layout;if(state.layout==="island")state.modules.island=true;document.querySelectorAll("#layoutOptions .option-btn").forEach(function(x){x.classList.toggle("active",x===b)});document.querySelectorAll("#moduleOptions .toggle-btn").forEach(function(x){x.classList.toggle("active",!!state.modules[x.dataset.module])});fallbackSync()})});
+      document.querySelectorAll("#moduleOptions .toggle-btn").forEach(function(b){b.classList.toggle("active",!!state.modules[b.dataset.module]);b.addEventListener("click",function(){var k=b.dataset.module;state.modules[k]=!state.modules[k];b.classList.toggle("active",state.modules[k]);fallbackSync()})});
+      document.querySelectorAll("#interiorOptions .toggle-btn").forEach(function(b){b.classList.toggle("active",!!state.interiors[b.dataset.interior]);b.addEventListener("click",function(){var k=b.dataset.interior;state.interiors[k]=!state.interiors[k];b.classList.toggle("active",state.interiors[k]);fallbackSync()})});
+      [["wallLength","wallLength"],["roomWidth","roomWidth"],["ceilingHeight","ceilingHeight"]].forEach(function(pair){var el=document.getElementById(pair[0]);el.addEventListener("input",function(){state[pair[1]]=el.value;fallbackSync()})});
+      [["branch","branch"],["stageSelect","projectStage"],["plan","plan"],["note","note"]].forEach(function(pair){var el=document.getElementById(pair[0]);el.addEventListener(el.tagName==="INPUT"?"input":"change",function(){state[pair[1]]=el.value.trim();fallbackSync()})});
+      document.getElementById("startBtn").addEventListener("click",function(){document.getElementById("planner").scrollIntoView({behavior:"smooth",block:"start"})});
       document.getElementById("copyState").addEventListener("click",function(){fallbackSync();if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(location.href)});
       fallbackSync();
       return;
