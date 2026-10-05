@@ -73,7 +73,7 @@ jobs:
             await page.evaluate(({x,y})=>{const c=document.querySelector('#heroCanvas');c.dispatchEvent(new PointerEvent('pointerdown',{pointerId:92,pointerType:'touch',clientX:x,clientY:y,bubbles:true}));c.dispatchEvent(new PointerEvent('pointermove',{pointerId:92,pointerType:'touch',clientX:x+4,clientY:y-120,bubbles:true}));c.dispatchEvent(new PointerEvent('pointerup',{pointerId:92,pointerType:'touch',clientX:x+4,clientY:y-120,bubbles:true}))},{x,y});
             await page.evaluate(()=>scrollBy(0,220));await sleep(120);return (await page.evaluate(()=>scrollY))>before
           }
-          async function openGroup(page,k){const d=page.locator('.requirementGroup[data-reqgroup="'+k+'"]');if(!(await d.getAttribute('open')))await d.locator('summary').click();await sleep(100);await d.scrollIntoViewIfNeeded()}
+          async function openGroup(page,k){const d=page.locator('.requirementGroup[data-reqgroup="'+k+'"]');if(!(await d.evaluate(e=>e.open)))await d.locator('summary').click();await sleep(100);await d.scrollIntoViewIfNeeded()}
           async function fullFlow(width,height){
             const tag=String(width),x=await launch(width,height),{page,browser,mobile,errors}=x;
             const heroOrbit=await orbit(page,'#heroCanvas');if(!heroOrbit)throw new Error(tag+' hero orbit');
