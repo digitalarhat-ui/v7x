@@ -268,3 +268,68 @@ body{background:var(--bg);color:var(--ink);text-rendering:optimizeLegibility;-we
   .ke-known-grid>div{padding:20px}
   .ke-message-preview{grid-template-columns:1fr;gap:12px}
 }
+
+
+/* V4.1 — FN Cadena strength merge: editorial proof + five-phase journey + signature 3D */
+.ke-preview-kicker{color:#92713e;font-size:9px;font-weight:800;letter-spacing:.08em;margin-bottom:14px}
+.ke-hero-plan{background:#eee7db;min-height:260px;display:grid;place-items:center;padding:18px;margin-bottom:22px;overflow:hidden}
+.ke-hero-plan .ke-plan-svg{max-width:520px}
+.ke-proof-strip{background:#f6f1e8;color:#173d32;border-bottom:1px solid #d8d6ca}
+.ke-proof-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
+.ke-proof-grid article{padding:30px 28px 32px;border-inline-start:1px solid #d8d6ca}
+.ke-proof-grid article:first-child{border-inline-start:0}
+.ke-proof-grid article>span{display:block;color:#a99065;font-size:10px;font-weight:900;letter-spacing:.08em;margin-bottom:11px}
+.ke-proof-grid article>b{display:block;font-size:16px;line-height:1.55;font-weight:850}
+.ke-proof-grid article>p{margin:8px 0 0;color:#526055;font-size:12px;line-height:1.9}
+.ke-journey{background:#eee7da;color:#173d32;padding:86px 0 96px}
+.ke-journey-intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.82fr);gap:64px;align-items:start;border-top:1px solid #b4a58a;padding-top:28px}
+.ke-journey-intro h2{margin:0;font-size:clamp(38px,4vw,58px);line-height:1.25;letter-spacing:-.04em;font-weight:800;text-wrap:balance}
+.ke-journey-intro>p{margin:0;color:#667169;font-size:16px;line-height:1.95}
+.ke-journey-list{list-style:none;padding:0;margin:58px 0 0;position:relative}
+.ke-journey-list:before{content:"";position:absolute;right:29px;top:30px;bottom:30px;width:1px;background:#cfc5b7}
+.ke-journey-list li{display:grid;grid-template-columns:58px 1fr;gap:28px;position:relative;padding:0 0 46px}
+.ke-journey-list li:last-child{padding-bottom:0}
+.ke-journey-list li>span{width:58px;height:58px;border-radius:999px;background:#f5f2eb;border:1px solid #b4a58a;display:grid;place-items:center;color:#92713e;font-size:13px;font-weight:900;z-index:1}
+.ke-journey-list li>div{padding-top:3px}
+.ke-journey-list li b{display:block;font-size:24px;font-weight:800;line-height:1.45}
+.ke-journey-list li p{max-width:620px;margin:8px 0 0;color:#667169;font-size:14px;line-height:1.85}
+.ke-stage{scroll-margin-top:98px}
+.ke-twin-inline{margin-top:22px}
+.ke-twin-heading{padding:28px 28px 18px;background:#143c32;color:#f5f2eb;border-bottom:1px solid #f5f2eb1c}
+.ke-twin-heading span{display:block;color:#d5b77a;font-size:9px;font-weight:850;letter-spacing:.05em;margin-bottom:8px}
+.ke-twin-heading h3{margin:0;font-size:26px;line-height:1.45;font-weight:800}
+.ke-twin-heading p{max-width:720px;margin:8px 0 0;color:#d7dfda;font-size:12px;line-height:1.9}
+.ke-commercial-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:22px}
+.ke-commercial-card{padding:28px;background:#fff;border:1px solid #202b2617;border-radius:18px;box-shadow:0 8px 24px #1127200e}
+.ke-commercial-card>span{display:block;color:#a99065;font-size:9px;font-weight:900;letter-spacing:.08em;margin-bottom:9px}
+.ke-commercial-card h3{margin:0;color:#173d32;font-size:22px;line-height:1.5;font-weight:800}
+.ke-commercial-card ul{margin:18px 0 0;padding:0 18px 0 0;color:#526055;font-size:12px;line-height:2}
+.ke-commercial-card.confirm{background:#173d32;color:#f5f2eb}
+.ke-commercial-card.confirm h3{color:#f5f2eb}
+.ke-commercial-card.confirm ul{color:#d7dfda}
+.ke-handoff-readiness{min-height:100%}
+.ke-final-handoff{min-height:330px}
+.ke-official-link{display:flex;align-items:center;justify-content:space-between;min-height:48px;margin-top:10px;border-bottom:1px solid #a99065;color:#173d32;font-size:12px;font-weight:800;padding:8px 2px}
+@media(max-width:980px){
+  .ke-proof-grid,.ke-journey-intro,.ke-commercial-grid{grid-template-columns:1fr}
+  .ke-proof-grid article{border-inline-start:0;border-top:1px solid #d8d6ca}
+  .ke-proof-grid article:first-child{border-top:0}
+  .ke-journey-intro{gap:16px}
+}
+@media(max-width:600px){
+  .ke-hero-plan{min-height:210px;padding:10px}
+  .ke-proof-grid article{padding:22px 4px 24px}
+  .ke-journey{padding:60px 0 70px}
+  .ke-journey-intro{padding-top:22px}
+  .ke-journey-intro h2{font-size:34px;line-height:1.3}
+  .ke-journey-intro>p{font-size:13px}
+  .ke-journey-list{margin-top:38px}
+  .ke-journey-list:before{right:22px}
+  .ke-journey-list li{grid-template-columns:44px 1fr;gap:18px;padding-bottom:34px}
+  .ke-journey-list li>span{width:44px;height:44px;font-size:11px}
+  .ke-journey-list li b{font-size:19px}
+  .ke-journey-list li p{font-size:12px}
+  .ke-twin-heading{padding:22px 18px 14px}
+  .ke-twin-heading h3{font-size:22px}
+  .ke-commercial-card{padding:22px}
+}
