@@ -1,0 +1,8 @@
+{
+  "status": "FAIL",
+  "regression": {},
+  "screenshots": [],
+  "errors": [
+    "page.waitForSelector: Timeout 20000ms exceeded.\nCall log:\n  - waiting for locator('.stage[data-stage=\"2\"].active') to be visible\n\n    at regression (/home/runner/work/v7x/v7x/phase3-qa.mjs:53:64)\n    at async file:///home/runner/work/v7x/v7x/phase3-qa.mjs:78:125"
+  ]
+}
