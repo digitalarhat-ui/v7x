@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow">
   <meta name="theme-color" content="#11110f">
-  <title>دخاخني | استوديو قرار المطبخ قبل خدمة التصميم</title>
+  <title>دخاخني | مخطط المطبخ التفاعلي قبل التصميم</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23100f0c'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-size='22' fill='%23c6a66b' font-family='Arial'%3EAD%3C/text%3E%3C/svg%3E">
-  <meta name="description" content="استوديو قرار تجريبي لمطابخ دخاخني: نموذج 3D ثابت لاتجاهات اللون والسطح مع حفظ الحالة وتجهيز ملخص مشروع مختصر قبل خدمة التصميم.">
+  <meta name="description" content="مخطط مطبخ تفاعلي تجريبي لدخاخني: أبعاد المساحة، شكل المطبخ، الوحدات، التفاصيل الداخلية، الخامات، حفظ المشروع وإرساله لفريق التصميم.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -171,6 +171,66 @@
     .fallback-kitchen i{display:block;background:#d7cfc1;border:1px solid rgba(0,0,0,.12);box-shadow:inset 0 -10px 22px rgba(0,0,0,.04)}
     .fallback-kitchen i:nth-child(1){grid-row:1/3}.fallback-kitchen i:nth-child(2){background:#7f8c75}.fallback-kitchen i:nth-child(3){background:#d8d0c2}.fallback-kitchen i:nth-child(4){grid-row:1/3;background:#3e403d}.fallback-kitchen i:nth-child(5){grid-column:2/4;background:#ebe8e0}
     @media(max-width:700px){.authentic-card{grid-template-columns:1fr}.authentic-card img{height:300px}.authentic-card figcaption{padding:18px}}
+
+    /* IKEA-inspired bounded planner MVP */
+    .planner-shell{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(340px,.94fr);gap:20px;align-items:start}
+    .planner-card{background:#fffaf2;border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden}
+    .planner-head{padding:22px 24px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:18px;align-items:flex-start}
+    .planner-head h3{font-family:"Noto Kufi Arabic";font-size:20px;line-height:1.6;margin:0}
+    .planner-head p{font-size:10px;line-height:1.9;color:#7c766c;margin:5px 0 0;max-width:560px}
+    .project-code{direction:ltr;font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;color:#26251f;border:1px solid #d4c8b6;background:#f1e8da;padding:9px 11px;white-space:nowrap}
+    .planner-steps{display:flex;gap:6px;overflow-x:auto;padding:12px 18px;border-bottom:1px solid var(--line);scrollbar-width:none}
+    .planner-steps::-webkit-scrollbar{display:none}
+    .planner-step{min-width:max-content;border:1px solid #ddd3c4;background:#fbf6ee;color:#827a6f;padding:8px 10px;font-size:9px}
+    .planner-step.active{background:#191913;color:#f4efe5;border-color:#191913}
+    .planner-body{padding:22px}
+    .planner-group{padding:18px 0;border-bottom:1px solid #e3dacd}
+    .planner-group:first-child{padding-top:0}.planner-group:last-child{border-bottom:0;padding-bottom:0}
+    .group-title{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:13px}
+    .group-title b{font-family:"Noto Kufi Arabic";font-size:13px}.group-title span{font-size:9px;color:#9b9387;line-height:1.7}
+    .dimension-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+    .dim-field{border:1px solid #d8cec0;background:#fff;padding:10px}
+    .dim-field label{display:block;font-size:9px;color:#7c756b;margin-bottom:5px}
+    .dim-input{display:flex;align-items:center;gap:6px;direction:ltr}
+    .dim-input input{min-width:0;width:100%;border:0;background:transparent;font-weight:700;font-size:16px;color:#23221d;outline:0}
+    .dim-input span{font-size:9px;color:#999084}
+    .option-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+    .option-btn,.toggle-btn{border:1px solid #d9cfbf;background:#fff;color:#4f4b44;padding:11px 8px;font-size:9px;line-height:1.5;min-height:46px}
+    .option-btn.active,.toggle-btn.active{background:#1a1a16;color:#f7f1e8;border-color:#1a1a16}
+    .toggle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .toggle-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:right}
+    .toggle-btn i{width:9px;height:9px;border-radius:50%;background:#d4ccbf;flex:0 0 auto}
+    .toggle-btn.active i{background:#d2b57a;box-shadow:0 0 0 3px rgba(210,181,122,.15)}
+    .planner-side{position:sticky;top:18px;display:grid;gap:14px}
+    .plan-card{background:#151612;color:#f3eee4;border:1px solid #2e2f2a;padding:18px}
+    .plan-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}
+    .plan-top b{font-family:"Noto Kufi Arabic";font-size:14px}.plan-top span{font-size:9px;color:#8f9089}
+    .plan-frame{background:#e8e1d6;padding:18px;min-height:330px;display:grid;place-items:center;overflow:hidden}
+    .plan-room{position:relative;width:min(100%,440px);aspect-ratio:1.3;background:#f9f7f1;border:3px solid #312f2a;box-shadow:inset 0 0 0 1px #cfc6b7;transition:aspect-ratio .2s ease}
+    .plan-run{position:absolute;background:#282823;border:1px solid #11120f;display:flex;overflow:hidden}
+    .plan-run.primary{top:7%;left:9%;right:9%;height:16%}
+    .plan-run.side-r{top:22%;bottom:10%;right:6%;width:14%;flex-direction:column}
+    .plan-run.side-l{top:22%;bottom:10%;left:6%;width:14%;flex-direction:column}
+    .plan-run.island{top:50%;left:31%;width:38%;height:17%;background:#a98d62;border-color:#675338}
+    .plan-unit{flex:1;border-inline-start:1px solid rgba(255,255,255,.18);display:grid;place-items:center;color:#eee9de;font-size:7px;min-width:0;padding:2px;text-align:center}
+    .plan-run.side-r .plan-unit,.plan-run.side-l .plan-unit{border-inline-start:0;border-top:1px solid rgba(255,255,255,.18)}
+    .plan-dim{position:absolute;font-size:8px;color:#615b52;background:#f9f7f1;padding:1px 4px}
+    .plan-dim.w{bottom:-18px;left:50%;transform:translateX(-50%)}.plan-dim.d{right:-27px;top:50%;transform:rotate(90deg) translateY(-50%);transform-origin:center}
+    .plan-legend{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;font-size:8px;color:#a5a39c}
+    .plan-legend span{border:1px solid #373832;padding:5px 7px}
+    .mini-summary{background:#f8f3ea;border:1px solid var(--line);padding:17px}
+    .mini-summary h4{font-family:"Noto Kufi Arabic";font-size:13px;margin:0 0 11px}
+    .mini-lines{display:grid;gap:7px}
+    .mini-line{display:flex;justify-content:space-between;gap:12px;font-size:9px;border-bottom:1px solid #e0d7ca;padding-bottom:7px}
+    .mini-line span{color:#8a8276}.mini-line b{color:#27251f;text-align:left;max-width:62%}
+    .planner-context{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+    .planner-context .field.full{grid-column:1/-1}
+    .planner-note{margin-top:12px;font-size:9px;line-height:1.85;color:#8a8276;background:#f3ede3;border:1px solid #ddd3c5;padding:11px}
+    .module-count{font-weight:700;color:#b18d55}
+    .summary-list.planner-summary{grid-template-columns:repeat(3,1fr)}
+    @media(max-width:980px){.planner-shell{grid-template-columns:1fr}.planner-side{position:static}.option-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:600px){.planner-body{padding:15px}.planner-head{padding:17px;display:grid}.dimension-grid{grid-template-columns:1fr}.toggle-grid{grid-template-columns:repeat(2,1fr)}.planner-context{grid-template-columns:1fr}.planner-context .field.full{grid-column:auto}.plan-frame{min-height:275px;padding:14px}.summary-list.planner-summary{grid-template-columns:1fr}.option-grid{grid-template-columns:repeat(2,1fr)}}
+
   </style>
 </head>
 <body>
@@ -180,7 +240,7 @@
         <div class="brand-mark">AD</div>
         <div><strong>دخاخني</strong><small>دخاخني للمطابخ والخزائن</small></div>
       </div>
-      <div class="nav-note">استوديو قرار تفاعلي قبل خدمة التصميم</div>
+      <div class="nav-note">مخطط مطبخ تفاعلي قبل خدمة التصميم</div>
     </div>
   </header>
 
@@ -188,19 +248,19 @@
     <section class="hero">
       <div class="shell hero-grid">
         <div class="hero-copy">
-          <div class="kicker">استوديو قرار قبل خدمة التصميم</div>
-          <h1>اختَر اتجاهك<br>قبل خدمة التصميم.</h1>
-          <p>جرّب اتجاهات ألوان الخزائن والأسطح على نموذج ثلاثي الأبعاد ثابت، احفظ الحالة نفسها، ثم أضف فقط معلومات المشروع التي تساعد فريق دخاخني على بدء خدمة التصميم من نقطة أوضح.</p>
+          <div class="kicker">نسخة تجريبية مخصصة لدخاخني</div>
+          <h1>خطّط مطبخك<br>قبل التصميم الفعلي.</h1>
+          <p>ابدأ بأبعاد المساحة، اختر شكل المطبخ والوحدات الأساسية والتفاصيل الداخلية، جرّب الخامات على النموذج، ثم احفظ المشروع وأرسله لفريق دخاخني كملخص منظم قبل بدء التصميم.</p>
           <div class="hero-actions">
-            <button class="primary" id="startBtn">ابدأ من النموذج</button>
-            <a class="ghost" href="#summary">شاهد شكل الملخص</a>
+            <button class="primary" id="startBtn">ابدأ التخطيط</button>
+            <a class="ghost" href="#planner">افتح المخطط</a>
           </div>
           <div class="hero-proof">
-            <span>اختيار بصري محفوظ</span>
-            <span>سياق مشروع مختصر</span>
-            <span>تحويل إلى فريق دخاخني</span>
+            <span>أبعاد + شكل المساحة</span>
+            <span>وحدات وتفاصيل داخلية</span>
+            <span>حفظ وإرسال المشروع</span>
           </div>
-          <p class="truth-note">مشهد 3D هنا نموذج تجريبي ثابت لإثبات الفكرة، وليس كتالوج دخاخني الرسمي ولا تمثيلاً لخامة أو لون معتمد. الاعتماد النهائي يبقى مع فريق التصميم والقياس في دخاخني.</p>
+          <p class="truth-note">هذه نسخة تخطيط أولية لإثبات تجربة المستخدم وليست برنامج CAD أو كتالوج دخاخني الرسمي أو عرض سعر. المقاسات والخامات والتنفيذ النهائي تعتمد حصراً مع فريق التصميم والقياس في دخاخني.</p>
         </div>
 
         <div class="studio" id="studio">
@@ -212,8 +272,8 @@
               <span>يمكنك الاستمرار في تحديد الاتجاهات وحفظ ملخص المشروع؛ وسيتم اعتماد التصميم الفعلي مع فريق دخاخني.</span>
             </div>
             <div class="stage-top">
-              <div class="scene-label"><b>نموذج 3D تجريبي</b>اسحب لتدوير المشهد</div>
-              <div class="orbit-tip">لون الخزائن + سطح العمل + الإضاءة</div>
+              <div class="scene-label"><b>معاينة 3D تفاعلية</b>اسحب لتدوير المشهد</div>
+              <div class="orbit-tip">الشكل + الوحدات + الخامات</div>
             </div>
             <div class="stage-bottom">
               <div class="look-row">
@@ -252,80 +312,117 @@
       </div>
     </section>
 
-    <section class="section" id="readiness">
+    <section class="section" id="planner">
       <div class="shell">
         <div class="section-head">
           <div>
-            <div class="eyebrow">حفظ القرار</div>
-            <h2>من الاختيار البصري<br>إلى سياق مفيد.</h2>
+            <div class="eyebrow">مخطط أولي قبل التصميم</div>
+            <h2>ابدأ بالمساحة.<br>ثم كوّن احتياجك.</h2>
           </div>
-          <p>بدلاً من إرسال صورة منفصلة أو وصف طويل، يحتفظ النموذج بحالة الاختيار نفسها ويضيف إليها الحد الأدنى من المعلومات التي قد تفيد قبل الموعد. لا يوجد تسعير آلي ولا ادعاء بأنه بديل عن مهندس التصميم أو القياس.</p>
+          <p>التجربة مستوحاة من قوة أدوات التخطيط المعيارية: يبدأ العميل بأبعاد حقيقية تقريبية، ثم يختار التكوين والوحدات والتفاصيل الداخلية قبل أن يصل إلى المصمم. هذه النسخة محدودة لإثبات الفكرة وليست برنامج تصنيع أو تسعير آلي.</p>
         </div>
-        <div class="decision-card">
-          <div class="decision-grid">
-            <div class="state-panel">
-              <div class="label">الحالة الحالية محفوظة</div>
-              <h3>اتجاهك البصري</h3>
-              <div class="state-rows">
-                <div class="state-row"><span>لون الخزائن</span><b id="stateCabinet">عاجي دافئ</b></div>
-                <div class="state-row"><span>سطح العمل</span><b id="stateWorktop">فاتح هادئ</b></div>
-                <div class="state-row"><span>الإضاءة</span><b id="stateLight">نهارية</b></div>
-              </div>
-              <button class="share-state" id="copyState">نسخ رابط هذه الحالة</button>
+
+        <div class="planner-shell">
+          <div class="planner-card">
+            <div class="planner-head">
+              <div><h3>مخطط دخاخني الأولي للمطبخ</h3><p>كوّن نسخة أولية قابلة للحفظ والمشاركة، ثم اترك القياس والاعتماد والتصميم النهائي لفريق دخاخني.</p></div>
+              <div class="project-code" id="projectCode">DK-000000</div>
             </div>
-            <div>
-              <div class="form-grid">
-                <div class="field">
-                  <label for="branch">موقع المشروع</label>
-                  <input id="branch" type="text" maxlength="80" placeholder="مثال: المدينة — الحي">
+            <div class="planner-steps">
+              <div class="planner-step active">1 · المساحة</div>
+              <div class="planner-step">2 · الشكل</div>
+              <div class="planner-step">3 · الوحدات</div>
+              <div class="planner-step">4 · الداخل</div>
+              <div class="planner-step">5 · الخامات</div>
+              <div class="planner-step">6 · الإرسال</div>
+            </div>
+
+            <div class="planner-body">
+              <div class="planner-group">
+                <div class="group-title"><div><b>01 — أبعاد المساحة</b></div><span>قياسات تقريبية بالمتر؛ الاعتماد النهائي بعد القياس.</span></div>
+                <div class="dimension-grid">
+                  <div class="dim-field"><label for="wallLength">طول الجدار الرئيسي</label><div class="dim-input"><input id="wallLength" type="number" min="2" max="9" step="0.1" value="4.2"><span>م</span></div></div>
+                  <div class="dim-field"><label for="roomWidth">عرض المساحة</label><div class="dim-input"><input id="roomWidth" type="number" min="2" max="8" step="0.1" value="3.2"><span>م</span></div></div>
+                  <div class="dim-field"><label for="ceilingHeight">ارتفاع السقف</label><div class="dim-input"><input id="ceilingHeight" type="number" min="2.2" max="4.5" step="0.05" value="2.8"><span>م</span></div></div>
                 </div>
-                <div class="field">
-                  <label for="stageSelect">مرحلة المشروع</label>
-                  <select id="stageSelect">
-                    <option value="">غير محدد</option>
-                    <option>مطبخ جديد</option>
-                    <option>تجديد مطبخ قائم</option>
-                    <option>ما زلت أستكشف الخيارات</option>
-                  </select>
-                </div>
-                <div class="field">
-                  <label for="shape">شكل المساحة المتوقع</label>
-                  <select id="shape">
-                    <option value="">غير محدد</option>
-                    <option>جدار واحد</option>
-                    <option>حرف L</option>
-                    <option>حرف U</option>
-                    <option>مع جزيرة</option>
-                    <option>يحدده المهندس بعد القياس</option>
-                  </select>
-                </div>
-                <div class="field">
-                  <label for="size">مقاس تقريبي إن كان معروفاً</label>
-                  <input id="size" type="text" inputmode="decimal" placeholder="مثال: 4 × 3 م">
-                </div>
-                <div class="field">
-                  <label for="plan">المخطط / القياس</label>
-                  <select id="plan">
-                    <option value="">غير محدد</option>
-                    <option>مخطط جاهز</option>
-                    <option>قياسات مبدئية متوفرة</option>
-                    <option>أحتاج قياساً</option>
-                    <option>غير متأكد</option>
-                  </select>
-                </div>
-                <div class="field full">
-                  <label for="note">ملاحظة واحدة مهمة للمهندس</label>
-                  <input id="note" type="text" maxlength="140" placeholder="مثال: أحتاج مساحة تخزين أكبر أو مكاناً واضحاً للأجهزة">
-                </div>
-                <div class="form-note">القياسات والاتجاهات البصرية هنا تمهيدية فقط وليست كتالوجاً رسمياً. الاعتماد النهائي للخامات والمقاسات والتصميم يتم عبر فريق دخاخني.</div>
               </div>
+
+              <div class="planner-group">
+                <div class="group-title"><div><b>02 — شكل المطبخ</b></div><span>اختيار مبدئي يمكن للمصمم تعديله بعد القياس.</span></div>
+                <div class="option-grid" id="layoutOptions">
+                  <button class="option-btn active" data-layout="straight">جدار واحد</button>
+                  <button class="option-btn" data-layout="l">حرف L</button>
+                  <button class="option-btn" data-layout="u">حرف U</button>
+                  <button class="option-btn" data-layout="island">مع جزيرة</button>
+                </div>
+              </div>
+
+              <div class="planner-group">
+                <div class="group-title"><div><b>03 — الوحدات الأساسية</b></div><span>اختر ما تريد أن يظهر في ملخص المشروع.</span></div>
+                <div class="toggle-grid" id="moduleOptions">
+                  <button class="toggle-btn active" data-module="base"><span>خزائن سفلية</span><i></i></button>
+                  <button class="toggle-btn active" data-module="wall"><span>خزائن علوية</span><i></i></button>
+                  <button class="toggle-btn active" data-module="tall"><span>خزانة طويلة / مؤن</span><i></i></button>
+                  <button class="toggle-btn active" data-module="fridge"><span>وحدة ثلاجة</span><i></i></button>
+                  <button class="toggle-btn active" data-module="sink"><span>منطقة الحوض</span><i></i></button>
+                  <button class="toggle-btn active" data-module="oven"><span>فرن + موقد</span><i></i></button>
+                  <button class="toggle-btn" data-module="island"><span>جزيرة</span><i></i></button>
+                </div>
+              </div>
+
+              <div class="planner-group">
+                <div class="group-title"><div><b>04 — تفاصيل داخلية</b></div><span>اختيارات تمهيدية تساعد المصمم على فهم الأولوية.</span></div>
+                <div class="toggle-grid" id="interiorOptions">
+                  <button class="toggle-btn active" data-interior="drawers"><span>أدراج</span><i></i></button>
+                  <button class="toggle-btn active" data-interior="shelves"><span>رفوف داخلية</span><i></i></button>
+                  <button class="toggle-btn" data-interior="pullout"><span>سحب مؤن</span><i></i></button>
+                  <button class="toggle-btn active" data-interior="cutlery"><span>منظم أدوات</span><i></i></button>
+                  <button class="toggle-btn" data-interior="corner"><span>حل للزاوية</span><i></i></button>
+                  <button class="toggle-btn" data-interior="waste"><span>وحدة نفايات</span><i></i></button>
+                </div>
+              </div>
+
+              <div class="planner-group">
+                <div class="group-title"><div><b>05 — معلومات مفيدة لفريق التصميم</b></div><span>لا نطلب إلا ما يفيد الخطوة التالية.</span></div>
+                <div class="planner-context">
+                  <div class="field"><label for="branch">موقع المشروع</label><input id="branch" type="text" maxlength="80" placeholder="المدينة — الحي"></div>
+                  <div class="field"><label for="stageSelect">مرحلة المشروع</label><select id="stageSelect"><option value="">غير محدد</option><option>مطبخ جديد</option><option>تجديد مطبخ قائم</option><option>ما زلت أستكشف الخيارات</option></select></div>
+                  <div class="field"><label for="plan">المخطط / القياس</label><select id="plan"><option value="">غير محدد</option><option>مخطط جاهز</option><option>قياسات مبدئية متوفرة</option><option>أحتاج قياساً</option><option>غير متأكد</option></select></div>
+                  <div class="field full"><label for="note">ملاحظة واحدة للمصمم</label><input id="note" type="text" maxlength="160" placeholder="مثال: أحتاج تخزيناً أكبر أو مكاناً واضحاً للأجهزة"></div>
+                  <select id="shape" hidden><option>جدار واحد</option><option>حرف L</option><option>حرف U</option><option>مع جزيرة</option></select>
+                  <input id="size" type="hidden" value="4.2 × 3.2 × 2.8 م">
+                </div>
+                <div class="planner-note">الخامات والوحدات والمقاسات في هذه التجربة اتجاهات أولية فقط. لا تمثل كتالوج دخاخني الرسمي ولا عرض سعر ولا مخطط تصنيع.</div>
+              </div>
+
               <div class="readiness-meter" aria-live="polite">
-                <div class="readiness-head"><b>جاهزية ملخص المشروع</b><span id="readinessScore">40%</span></div>
-                <div class="readiness-track"><i id="readinessFill"></i></div>
-                <div class="readiness-hint" id="readinessHint">أضف ما تعرفه فقط؛ لا حاجة لتخمين معلومات غير متاحة.</div>
+                <div class="readiness-head"><b>جاهزية ملخص المشروع</b><span id="readinessScore">70%</span></div>
+                <div class="readiness-track"><i id="readinessFill" style="width:70%"></i></div>
+                <div class="readiness-hint" id="readinessHint">أضف ما تعرفه فقط؛ الاعتماد النهائي مع فريق دخاخني.</div>
               </div>
             </div>
           </div>
+
+          <aside class="planner-side">
+            <div class="plan-card">
+              <div class="plan-top"><div><b>المخطط ثنائي الأبعاد</b><span>تمثيل أولي للتكوين</span></div><span id="planLayoutLabel">جدار واحد</span></div>
+              <div class="plan-frame"><div class="plan-room" id="planRoom"></div></div>
+              <div class="plan-legend"><span>■ وحدات المطبخ</span><span>■ الجزيرة</span><span>المقاسات تقريبية</span></div>
+            </div>
+            <div class="mini-summary">
+              <h4>الحالة المحفوظة</h4>
+              <div class="mini-lines">
+                <div class="mini-line"><span>الشكل</span><b id="stateLayout">جدار واحد</b></div>
+                <div class="mini-line"><span>الأبعاد</span><b id="stateDimensions">4.2 × 3.2 × 2.8 م</b></div>
+                <div class="mini-line"><span>الوحدات</span><b id="stateModules">6 اختيارات</b></div>
+                <div class="mini-line"><span>الداخل</span><b id="stateInteriors">3 اختيارات</b></div>
+                <div class="mini-line"><span>الخزائن</span><b id="stateCabinet">عاجي دافئ</b></div>
+                <div class="mini-line"><span>السطح</span><b id="stateWorktop">فاتح هادئ</b></div>
+                <div class="mini-line"><span>الإضاءة</span><b id="stateLight">نهارية</b></div>
+              </div>
+              <button class="share-state" id="copyState">نسخ رابط المشروع المحفوظ</button>
+            </div>
+          </aside>
         </div>
       </div>
     </section>
@@ -333,31 +430,27 @@
     <section class="section summary-section" id="summary">
       <div class="shell">
         <div class="section-head">
-          <div>
-            <div class="eyebrow">ملخص قبل الموعد</div>
-            <h2>معلومة أقل.<br>وضوح أكثر.</h2>
-          </div>
-          <p>هذا هو الناتج المقصود: ليس بديلاً عن خدمة التصميم لدى دخاخني، بل ملخص قابل للمراجعة يربط القرار البصري بسياق المشروع ثم يعيده إلى قناة التواصل الحالية.</p>
+          <div><div class="eyebrow">ملخص جاهز للمصمم</div><h2>مشروع محفوظ.<br>وبداية أوضح.</h2></div>
+          <p>النتيجة ليست تصميماً نهائياً؛ هي brief منظم يجمع المساحة والتكوين والوحدات والاختيارات البصرية في حالة واحدة قابلة للحفظ والإرسال.</p>
         </div>
         <div class="summary-shell">
           <div class="summary-grid">
-            <div class="summary-list">
-              <div class="summary-item"><small>اتجاه الخزائن</small><strong id="sumCabinet">عاجي دافئ</strong></div>
+            <div class="summary-list planner-summary">
+              <div class="summary-item"><small>رقم المشروع</small><strong id="sumCode">DK-000000</strong></div>
+              <div class="summary-item"><small>شكل المطبخ</small><strong id="sumShape">جدار واحد</strong></div>
+              <div class="summary-item"><small>الأبعاد</small><strong id="sumSize">4.2 × 3.2 × 2.8 م</strong></div>
+              <div class="summary-item"><small>الوحدات</small><strong id="sumModules">—</strong></div>
+              <div class="summary-item"><small>التفاصيل الداخلية</small><strong id="sumInteriors">—</strong></div>
+              <div class="summary-item"><small>الخزائن</small><strong id="sumCabinet">عاجي دافئ</strong></div>
               <div class="summary-item"><small>سطح العمل</small><strong id="sumWorktop">فاتح هادئ</strong></div>
               <div class="summary-item"><small>موقع المشروع</small><strong id="sumBranch">غير محدد</strong></div>
               <div class="summary-item"><small>مرحلة المشروع</small><strong id="sumStage">غير محددة</strong></div>
-              <div class="summary-item"><small>شكل المساحة</small><strong id="sumShape">غير محدد</strong></div>
-              <div class="summary-item"><small>مقاس تقريبي</small><strong id="sumSize">غير مضاف</strong></div>
               <div class="summary-item"><small>المخطط / القياس</small><strong id="sumPlan">غير محدد</strong></div>
-              <div class="summary-item" style="grid-column:1/-1"><small>ملاحظة للمهندس</small><strong id="sumNote">لا توجد ملاحظة إضافية</strong></div>
+              <div class="summary-item" style="grid-column:1/-1"><small>ملاحظة للمصمم</small><strong id="sumNote">لا توجد ملاحظة إضافية</strong></div>
             </div>
             <aside class="handoff">
-              <div>
-                <small>الخطوة التالية</small>
-                <h3>أرسل الملخص إلى فريق دخاخني.</h3>
-                <p>يفتح واتساب على قناة فريق دخاخني الحالية مع ملخص الخيارات. هذا النموذج لا يحدد السعر ولا يلغي الاستشارة أو القياس.</p>
-              </div>
-              <a class="whatsapp" id="whatsappLink" href="#" target="_blank" rel="noopener">متابعة عبر واتساب</a>
+              <div><small>06 — الإرسال</small><h3>أرسل المشروع إلى فريق دخاخني.</h3><p>يفتح واتساب مع رقم المشروع والأبعاد والشكل والوحدات والتفاصيل المختارة. السعر والقياس والاعتماد النهائي يبقون مع فريق دخاخني.</p></div>
+              <a class="whatsapp" id="whatsappLink" href="#" target="_blank" rel="noopener">إرسال المشروع عبر واتساب</a>
               <a class="source-note" style="display:block;text-align:center;margin-top:10px" href="https://ad-woods.com/" target="_blank" rel="noopener">الموقع الرسمي لدخاخني</a>
             </aside>
           </div>
@@ -372,12 +465,12 @@
             <div class="eyebrow">هوية دخاخني الحالية</div>
             <h2>التجربة مرتبطة<br>بقرار العميل.</h2>
           </div>
-          <p>دخاخني تقدم مطابخ وخزائن حسب الطلب ولديها مسار تصميم فعلي قبل التنفيذ، مع واتساب كقناة تواصل حالية. لذلك هذه التجربة لا تدّعي أن 3D هو المشكلة ولا تحاول استبدال المصمم؛ بل تختبر خطوة قرار محفوظة قبل انتقال العميل إلى فريق التصميم والقياس.</p>
+          <p>دخاخني لديها بالفعل مسار تصميم فعلي قبل التنفيذ. لذلك هذه التجربة لا تستبدل المصمم؛ بل تنقل جزءاً من الاستكشاف الأولي إلى مخطط ذاتي محدود، ثم تعيد المشروع المحفوظ إلى فريق التصميم والقياس.</p>
         </div>
         <div class="proof-strip">
-          <article class="proof-card"><small>01</small><h3>اختيار بصري</h3><p>العميل يختبر اتجاهاً للون الخزائن وسطح العمل على مشهد 3D تجريبي واضح.</p></article>
-          <article class="proof-card"><small>02</small><h3>حالة محفوظة</h3><p>الرابط يحتفظ بالاختيارات وسياق المشروع حتى لا يبدأ الحوار من الصفر.</p></article>
-          <article class="proof-card"><small>03</small><h3>عودة للمصمم</h3><p>الملخص ينتقل إلى واتساب، بينما القياس والاعتماد النهائي يبقيان مع فريق دخاخني.</p></article>
+          <article class="proof-card"><small>01</small><h3>ابدأ بالمساحة</h3><p>أبعاد تقريبية وشكل المطبخ قبل الدخول في الألوان أو التفاصيل.</p></article>
+          <article class="proof-card"><small>02</small><h3>كوّن الحل</h3><p>وحدات أساسية وتفاصيل داخلية وخامات محفوظة في مشروع واحد.</p></article>
+          <article class="proof-card"><small>03</small><h3>سلّم للمصمم</h3><p>رقم مشروع وملخص منظم ينتقل إلى واتساب، بينما القياس والاعتماد النهائي مع دخاخني.</p></article>
         </div>
       </div>
     </section>
@@ -387,7 +480,7 @@
         <div class="question-card">
           <div>
             <h3>سؤال واحد للفريق</h3>
-            <p>هل وصول العميل بهذه الحالة المحفوظة قبل بدء خدمة التصميم يمكن أن يقلل الأسئلة الأولية على فريقكم؟</p>
+            <p>هل مخطط أولي بهذه الصورة — أبعاد + تكوين + وحدات + تفاصيل محفوظة — أقرب للفكرة التي تقصدونها من النموذج السابق؟</p>
           </div>
         </div>
       </div>
@@ -397,7 +490,7 @@
         <div class="question-card">
           <div>
             <h3>الخطوة التالية — إذا ثبتت الفكرة</h3>
-            <p>إذا أثبتت التجربة فائدتها: تنفيذ نسخة مدفوعة محدودة لدخاخني بخاماتكم واتجاهاتكم المعتمدة، وربطها بطلب التصميم الحالي وقياس عدد الملخصات المكتملة التي تتحول إلى بدء فعلي لخدمة التصميم.</p>
+            <p>إذا اعتمدتم اتجاه التجربة، تكون الخطوة المدفوعة المحدودة هي ربطها بمقاسات ووحدات وخامات دخاخني الفعلية، ثم إضافة قواعد التوافق والأسعار فقط عندما تزودوننا ببياناتها المعتمدة.</p>
           </div>
         </div>
       </div>
@@ -418,12 +511,18 @@
   (function(){
     var state={
       cabinet:"ivory",worktop:"softwhite",light:"day",
-      branch:"",projectStage:"",shape:"",size:"",plan:"",note:""
+      layout:"straight",wallLength:"4.2",roomWidth:"3.2",ceilingHeight:"2.8",
+      modules:{base:true,wall:true,tall:true,fridge:true,sink:true,oven:true,island:false},
+      interiors:{drawers:true,shelves:true,pullout:false,cutlery:true,corner:false,waste:false},
+      branch:"",projectStage:"",shape:"جدار واحد",size:"4.2 × 3.2 × 2.8 م",plan:"",note:""
     };
     var labels={
       cabinet:{ivory:"عاجي دافئ",sage:"أخضر هادئ",sand:"رملي",taupe:"تاوب",clay:"طيني",navy:"أزرق داكن",charcoal:"فحمي",black:"أسود مطفي"},
       worktop:{softwhite:"فاتح هادئ",calacatta:"أبيض بعروق",warmstone:"حجر دافئ",sandveil:"بيج حجري",graphite:"جرافيت"},
-      light:{day:"نهارية",warm:"دافئة"}
+      light:{day:"نهارية",warm:"دافئة"},
+      layout:{straight:"جدار واحد",l:"حرف L",u:"حرف U",island:"مع جزيرة"},
+      module:{base:"خزائن سفلية",wall:"خزائن علوية",tall:"خزانة طويلة / مؤن",fridge:"وحدة ثلاجة",sink:"منطقة الحوض",oven:"فرن + موقد",island:"جزيرة"},
+      interior:{drawers:"أدراج",shelves:"رفوف داخلية",pullout:"سحب مؤن",cutlery:"منظم أدوات",corner:"حل للزاوية",waste:"وحدة نفايات"}
     };
     var colors={
       cabinet:{ivory:0xd8d0c2,sage:0x7f8c75,sand:0xb89f7b,taupe:0x8f8275,clay:0xa56f5c,navy:0x344451,charcoal:0x3e403d,black:0x20211f},
@@ -767,9 +866,10 @@
       m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;(parent||kitchen).add(m);
       return m;
     }
-    function frontPanel(w,h,x,y,z,mat){
-      addBox(w+.018,h+.018,.028,gapMat,x,y,z-.014,kitchen);
-      return beveledPanel(w,h,.042,mat||cabinetMat,x,y,z,kitchen);
+    function frontPanel(w,h,x,y,z,mat,parent){
+      var p=parent||kitchen;
+      addBox(w+.018,h+.018,.028,gapMat,x,y,z-.014,p);
+      return beveledPanel(w,h,.042,mat||cabinetMat,x,y,z,p);
     }
     function drawerStack(x,w,count){
       var baseY=.49,total=.72,gap=.025,h=(total-gap*(count-1))/count;
@@ -981,6 +1081,49 @@
     var underB=new THREE.PointLight(0xffd7a1,5.2,2.8,2);underB.position.set(1.55,1.52,-1.88);scene.add(underB);
     var windowFill=new THREE.PointLight(0xd9eaff,7.5,7.5,2);windowFill.position.set(4.1,2.55,3.5);scene.add(windowFill);
 
+
+    // Planner-specific 3D response: bounded proof, not manufacturing CAD.
+    var layoutExtensions=new THREE.Group();room.add(layoutExtensions);
+    var baseSceneIsland=kitchen.children.filter(function(o){return o.position&&o.position.z>-.45&&o.position.x>-1.5&&o.position.x<1.6});
+    var baseSceneWall=kitchen.children.filter(function(o){return o.position&&o.position.y>1.62&&o.position.z<-1.70&&o.position.x>-1.85});
+    var baseSceneTall=kitchen.children.filter(function(o){return o.position&&o.position.x<-1.82&&o.position.z<-1.70});
+    var islandDecor=decor.children.filter(function(o){return o.position&&o.position.x>-1.6&&o.position.x<1.7&&o.position.z>-.35&&o.position.z<1.45&&o.position.y<1.85});
+
+    function clear3DGroup(g){while(g.children.length){var c=g.children.pop();if(c.geometry&&c.geometry.dispose)c.geometry.dispose()}}
+    function simpleRun(parent,count){
+      var run=new THREE.Group();parent.add(run);
+      var start=-(count-1)*.41;
+      for(var i=0;i<count;i++){
+        var x=start+i*.82;
+        addBox(.78,.78,.62,cabinetSideMat,x,.52,-2.30,run);
+        frontPanel(.70,.68,x,.52,-1.972,cabinetMat,run);
+      }
+      addBox(count*.82+.06,.074,.76,worktopMat,0,.975,-2.16,run);
+      addBox(count*.82-.06,.09,.48,gapMat,0,.105,-2.31,run);
+      return run;
+    }
+    function rebuildLayoutExtensions(){
+      clear3DGroup(layoutExtensions);
+      if(state.layout==="l"||state.layout==="u"){
+        var right=simpleRun(layoutExtensions,3);
+        right.rotation.y=-Math.PI/2;right.position.set(1.75,0,.72);
+      }
+      if(state.layout==="u"){
+        var left=simpleRun(layoutExtensions,3);
+        left.rotation.y=Math.PI/2;left.position.set(-2.65,0,.72);
+      }
+    }
+    function applyPlanner3D(){
+      var showIsland=state.layout==="island"||!!state.modules.island;
+      baseSceneIsland.forEach(function(o){o.visible=showIsland});
+      islandDecor.forEach(function(o){o.visible=showIsland});
+      baseSceneWall.forEach(function(o){o.visible=!!state.modules.wall});
+      baseSceneTall.forEach(function(o){o.visible=!!state.modules.tall||!!state.modules.fridge});
+      rebuildLayoutExtensions();
+      var wl=parseFloat(state.wallLength)||4.2;
+      kitchen.scale.x=Math.max(.84,Math.min(1.12,wl/4.2));
+    }
+
     // Camera orbit controls: the ROOM stays fixed; the camera moves.
     var dragging=false,lastX=0,lastY=0;
     function pointerDown(e){
@@ -1059,51 +1202,103 @@
     function setActive(group,value){
       document.querySelectorAll(group+" button").forEach(function(b){b.classList.toggle("active",b.dataset.value===value)});
     }
+    function activeKeys(obj){return Object.keys(obj).filter(function(k){return !!obj[k]})}
+    function fmtDimensions(){
+      return (state.wallLength||"—")+" × "+(state.roomWidth||"—")+" × "+(state.ceilingHeight||"—")+" م";
+    }
+    function stateHash(){
+      var raw=JSON.stringify([state.layout,state.wallLength,state.roomWidth,state.ceilingHeight,state.modules,state.interiors,state.cabinet,state.worktop,state.branch,state.plan,state.note]);
+      var h=2166136261;
+      for(var i=0;i<raw.length;i++){h^=raw.charCodeAt(i);h+=(h<<1)+(h<<4)+(h<<7)+(h<<8)+(h<<24)}
+      return "DK-"+((h>>>0).toString(36).toUpperCase()+"000000").slice(0,6);
+    }
+    function updateCompatFields(){
+      state.shape=labels.layout[state.layout];
+      state.size=fmtDimensions();
+      var shapeEl=document.getElementById("shape"),sizeEl=document.getElementById("size");
+      if(shapeEl)shapeEl.value=state.shape;if(sizeEl)sizeEl.value=state.size;
+    }
     function updateUrl(){
+      updateCompatFields();
       var p=new URLSearchParams();
       p.set("c",state.cabinet);p.set("w",state.worktop);p.set("l",state.light);
-      if(state.branch)p.set("b",state.branch);
-      if(state.projectStage)p.set("s",state.projectStage);
-      if(state.shape)p.set("sh",state.shape);
-      if(state.size)p.set("z",state.size);
-      if(state.plan)p.set("p",state.plan);if(state.note)p.set("n",state.note);
+      p.set("ly",state.layout);p.set("wl",state.wallLength);p.set("rw",state.roomWidth);p.set("ch",state.ceilingHeight);
+      p.set("m",activeKeys(state.modules).join(","));p.set("i",activeKeys(state.interiors).join(","));
+      if(state.branch)p.set("b",state.branch);if(state.projectStage)p.set("s",state.projectStage);if(state.plan)p.set("p",state.plan);if(state.note)p.set("n",state.note);
       history.replaceState(null,"",location.pathname+"?"+p.toString());
-      try{localStorage.setItem("dakhakhni-demo-state",JSON.stringify(state))}catch(e){}
+      try{localStorage.setItem("dakhakhni-demo-state-v3",JSON.stringify(state))}catch(e){}
+    }
+    function renderPlan(){
+      var room=document.getElementById("planRoom");if(!room)return;
+      var wl=Math.max(2,parseFloat(state.wallLength)||4.2),rw=Math.max(2,parseFloat(state.roomWidth)||3.2);
+      room.style.aspectRatio=String(Math.max(.8,Math.min(1.9,wl/rw)));
+      var selected=activeKeys(state.modules);
+      var primaryUnits=[];
+      if(state.modules.tall)primaryUnits.push("مؤن");
+      if(state.modules.fridge)primaryUnits.push("ثلاجة");
+      if(state.modules.sink)primaryUnits.push("حوض");
+      if(state.modules.oven)primaryUnits.push("فرن");
+      if(state.modules.base&&primaryUnits.length<4)primaryUnits.push("تخزين");
+      if(!primaryUnits.length)primaryUnits=["مساحة"];
+      function units(arr){return arr.map(function(x){return '<span class="plan-unit">'+x+'</span>'}).join("")}
+      var html='<div class="plan-run primary">'+units(primaryUnits)+'</div>';
+      if(state.layout==="l"||state.layout==="u")html+='<div class="plan-run side-r">'+units(["تخزين","سطح","تخزين"])+'</div>';
+      if(state.layout==="u")html+='<div class="plan-run side-l">'+units(["تخزين","سطح","تخزين"])+'</div>';
+      if(state.layout==="island"||state.modules.island)html+='<div class="plan-run island">'+units(["جزيرة","تخزين"])+'</div>';
+      html+='<div class="plan-dim w">'+state.wallLength+' م</div><div class="plan-dim d">'+state.roomWidth+' م</div>';
+      room.innerHTML=html;
+      document.getElementById("planLayoutLabel").textContent=labels.layout[state.layout];
     }
     function updateText(){
+      updateCompatFields();
+      var mods=activeKeys(state.modules),ins=activeKeys(state.interiors),code=stateHash();
+      var modText=mods.length?mods.map(function(k){return labels.module[k]}).join("، "):"لم يتم اختيار وحدات";
+      var intText=ins.length?ins.map(function(k){return labels.interior[k]}).join("، "):"لا توجد تفاصيل إضافية";
+      document.getElementById("projectCode").textContent=code;
+      document.getElementById("stateLayout").textContent=labels.layout[state.layout];
+      document.getElementById("stateDimensions").textContent=fmtDimensions();
+      document.getElementById("stateModules").textContent=mods.length+" اختيارات";
+      document.getElementById("stateInteriors").textContent=ins.length+" اختيارات";
       document.getElementById("stateCabinet").textContent=labels.cabinet[state.cabinet];
       document.getElementById("stateWorktop").textContent=labels.worktop[state.worktop];
       document.getElementById("stateLight").textContent=labels.light[state.light];
+      document.getElementById("sumCode").textContent=code;
       document.getElementById("sumCabinet").textContent=labels.cabinet[state.cabinet];
       document.getElementById("sumWorktop").textContent=labels.worktop[state.worktop];
       document.getElementById("sumBranch").textContent=state.branch||"غير محدد";
       document.getElementById("sumStage").textContent=state.projectStage||"غير محددة";
-      document.getElementById("sumShape").textContent=state.shape||"غير محدد";
-      document.getElementById("sumSize").textContent=state.size||"غير مضاف";document.getElementById("sumPlan").textContent=state.plan||"غير محدد";
+      document.getElementById("sumShape").textContent=labels.layout[state.layout];
+      document.getElementById("sumSize").textContent=fmtDimensions();
+      document.getElementById("sumModules").textContent=modText;
+      document.getElementById("sumInteriors").textContent=intText;
+      document.getElementById("sumPlan").textContent=state.plan||"غير محدد";
       document.getElementById("sumNote").textContent=state.note||"لا توجد ملاحظة إضافية";
-      var readinessFields=["branch","projectStage","shape","size","plan","note"];
-      var readinessDone=readinessFields.filter(function(k){return String(state[k]||"").trim().length>0}).length;
-      var readinessScore=40+readinessDone*10;
+      var readinessFields=[state.wallLength,state.roomWidth,state.ceilingHeight,state.layout,mods.length,ins.length,state.branch,state.plan];
+      var readinessDone=readinessFields.filter(function(v){return !!v}).length;
+      var readinessScore=55+Math.round(readinessDone/8*45);
       document.getElementById("readinessScore").textContent=readinessScore+"%";
       document.getElementById("readinessFill").style.width=readinessScore+"%";
-      var missing=readinessFields.filter(function(k){return !String(state[k]||"").trim()});
-      document.getElementById("readinessHint").textContent=missing.length?"أضف ما تعرفه فقط؛ المتبقي يمكن مناقشته مع فريق دخاخني.":"الملخص جاهز للإرسال إلى فريق دخاخني.";
+      document.getElementById("readinessHint").textContent=(state.branch&&state.plan)?"المشروع جاهز كملخص أولي للإرسال إلى فريق دخاخني.":"يمكن حفظ المشروع الآن؛ أضف الموقع وحالة القياس إذا كانت معروفة.";
       var lines=[
-        "السلام عليكم، هذا ملخص أولي قبل خدمة التصميم مع دخاخني:",
-        "اتجاه لون الخزائن: "+labels.cabinet[state.cabinet],
-        "اتجاه سطح العمل: "+labels.worktop[state.worktop],
-        "الإضاءة في النموذج: "+labels.light[state.light],
+        "السلام عليكم، هذا مشروع أولي من مخطط دخاخني:",
+        "رقم المشروع: "+code,
+        "شكل المطبخ: "+labels.layout[state.layout],
+        "الأبعاد التقريبية: "+fmtDimensions(),
+        "الوحدات: "+modText,
+        "التفاصيل الداخلية: "+intText,
+        "لون الخزائن التجريبي: "+labels.cabinet[state.cabinet],
+        "سطح العمل التجريبي: "+labels.worktop[state.worktop],
         "موقع المشروع: "+(state.branch||"غير محدد"),
         "مرحلة المشروع: "+(state.projectStage||"غير محددة"),
-        "شكل المساحة: "+(state.shape||"غير محدد"),
-        "مقاس تقريبي: "+(state.size||"غير مضاف"),"المخطط / القياس: "+(state.plan||"غير محدد")
+        "المخطط / القياس: "+(state.plan||"غير محدد")
       ];
-      if(state.note)lines.push("ملاحظة للمهندس: "+state.note);
-      lines.push("الاتجاهات البصرية أعلاه تجريبية وليست كتالوج دخاخني الرسمي؛ الاعتماد النهائي مع فريق التصميم والقياس.");
+      if(state.note)lines.push("ملاحظة للمصمم: "+state.note);
+      lines.push("هذا تكوين أولي تجريبي وليس مخطط تصنيع أو عرض سعر؛ الاعتماد النهائي مع فريق التصميم والقياس في دخاخني.");
       document.getElementById("whatsappLink").href="https://wa.me/966545246478?text="+encodeURIComponent(lines.join("\n"));
+      renderPlan();
     }
     function sync(){
-      applyVisual();updateText();updateUrl();
+      applyVisual();applyPlanner3D();updateText();updateUrl();
     }
 
     document.querySelectorAll("#cabinetSwatches .swatch").forEach(function(b){
@@ -1113,64 +1308,71 @@
       b.addEventListener("click",function(){state.worktop=b.dataset.value;setActive("#worktopSwatches",state.worktop);sync()});
     });
     document.querySelectorAll(".look").forEach(function(b){
+      b.addEventListener("click",function(){state.light=b.dataset.light;document.querySelectorAll(".look").forEach(function(x){x.classList.toggle("active",x===b)});sync()});
+    });
+    document.querySelectorAll("#layoutOptions .option-btn").forEach(function(b){
       b.addEventListener("click",function(){
-        state.light=b.dataset.light;document.querySelectorAll(".look").forEach(function(x){x.classList.toggle("active",x===b)});sync();
+        state.layout=b.dataset.layout;
+        if(state.layout==="island")state.modules.island=true;
+        document.querySelectorAll("#layoutOptions .option-btn").forEach(function(x){x.classList.toggle("active",x===b)});
+        document.querySelectorAll('[data-module="island"]').forEach(function(x){x.classList.toggle("active",!!state.modules.island)});
+        sync();
       });
     });
+    document.querySelectorAll("#moduleOptions .toggle-btn").forEach(function(b){
+      b.addEventListener("click",function(){var k=b.dataset.module;state.modules[k]=!state.modules[k];b.classList.toggle("active",state.modules[k]);sync()});
+    });
+    document.querySelectorAll("#interiorOptions .toggle-btn").forEach(function(b){
+      b.addEventListener("click",function(){var k=b.dataset.interior;state.interiors[k]=!state.interiors[k];b.classList.toggle("active",state.interiors[k]);sync()});
+    });
 
-    var inputs=[
-      ["branch","branch"],["stageSelect","projectStage"],["shape","shape"],["size","size"],["plan","plan"],["note","note"]
-    ];
-    inputs.forEach(function(pair){
-      var el=document.getElementById(pair[0]);
-      el.addEventListener(el.tagName==="INPUT"?"input":"change",function(){state[pair[1]]=el.value.trim();sync()});
+    [["wallLength","wallLength"],["roomWidth","roomWidth"],["ceilingHeight","ceilingHeight"]].forEach(function(pair){
+      var el=document.getElementById(pair[0]);el.addEventListener("input",function(){state[pair[1]]=el.value;sync()});
+    });
+    [["branch","branch"],["stageSelect","projectStage"],["plan","plan"],["note","note"]].forEach(function(pair){
+      var el=document.getElementById(pair[0]);el.addEventListener(el.tagName==="INPUT"?"input":"change",function(){state[pair[1]]=el.value.trim();sync()});
     });
 
     document.getElementById("resetView").addEventListener("click",function(){
       orbit.theta=orbitHome.theta;orbit.phi=orbitHome.phi;
-      orbit.radius=stageEl.clientWidth<620?9.7:(stageEl.clientWidth<900?9.05:orbitHome.radius);
+      orbit.radius=stageEl.clientWidth<620?9.15:(stageEl.clientWidth<900?8.65:orbitHome.radius);
       updateCamera();
     });
-    document.getElementById("startBtn").addEventListener("click",function(){document.getElementById("studio").scrollIntoView({behavior:"smooth",block:"center"})});
+    document.getElementById("startBtn").addEventListener("click",function(){document.getElementById("planner").scrollIntoView({behavior:"smooth",block:"start"})});
     document.getElementById("copyState").addEventListener("click",function(){
-      updateUrl();
-      var u=location.href;
-      if(navigator.clipboard&&navigator.clipboard.writeText){
-        navigator.clipboard.writeText(u).then(function(){showToast("تم نسخ رابط الحالة")}).catch(function(){showToast("الرابط محفوظ في شريط العنوان")});
-      }else{showToast("الرابط محفوظ في شريط العنوان")}
-    });
-    document.querySelectorAll(".question-actions button").forEach(function(b){
-      b.addEventListener("click",function(){
-        document.querySelectorAll(".question-actions button").forEach(function(x){x.classList.remove("active")});
-        b.classList.add("active");
-        showToast(b.dataset.answer==="yes"?"تم تسجيل: مفيد":"تم تسجيل: يحتاج تعديل");
-      });
+      updateUrl();var u=location.href;
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(function(){showToast("تم نسخ رابط المشروع")}).catch(function(){showToast("الرابط محفوظ في شريط العنوان")})}
+      else{showToast("الرابط محفوظ في شريط العنوان")}
     });
 
     try{
-      var saved=JSON.parse(localStorage.getItem("dakhakhni-demo-state")||"null");
-      if(saved&&typeof saved==="object")Object.keys(state).forEach(function(k){if(saved[k]!==undefined)state[k]=saved[k]});
+      var saved=JSON.parse(localStorage.getItem("dakhakhni-demo-state-v3")||localStorage.getItem("dakhakhni-demo-state")||"null");
+      if(saved&&typeof saved==="object"){
+        Object.keys(state).forEach(function(k){
+          if(saved[k]!==undefined){
+            if((k==="modules"||k==="interiors")&&saved[k]&&typeof saved[k]==="object")state[k]=Object.assign({},state[k],saved[k]);
+            else state[k]=saved[k];
+          }
+        });
+      }
     }catch(e){}
     var q=new URLSearchParams(location.search);
     if(q.get("c")&&colors.cabinet[q.get("c")])state.cabinet=q.get("c");
     if(q.get("w")&&colors.worktop[q.get("w")])state.worktop=q.get("w");
     if(q.get("l")==="warm"||q.get("l")==="day")state.light=q.get("l");
-    if(q.get("b"))state.branch=q.get("b");
-    if(q.get("s"))state.projectStage=q.get("s");
-    if(q.get("sh"))state.shape=q.get("sh");
-    if(q.get("z"))state.size=q.get("z");
-    if(q.get("p"))state.plan=q.get("p");
-    if(q.get("n"))state.note=q.get("n");
+    if(q.get("ly")&&labels.layout[q.get("ly")])state.layout=q.get("ly");
+    if(q.get("wl"))state.wallLength=q.get("wl");if(q.get("rw"))state.roomWidth=q.get("rw");if(q.get("ch"))state.ceilingHeight=q.get("ch");
+    if(q.has("m")){Object.keys(state.modules).forEach(function(k){state.modules[k]=false});q.get("m").split(",").filter(Boolean).forEach(function(k){if(k in state.modules)state.modules[k]=true})}
+    if(q.has("i")){Object.keys(state.interiors).forEach(function(k){state.interiors[k]=false});q.get("i").split(",").filter(Boolean).forEach(function(k){if(k in state.interiors)state.interiors[k]=true})}
+    if(q.get("b"))state.branch=q.get("b");if(q.get("s"))state.projectStage=q.get("s");if(q.get("p"))state.plan=q.get("p");if(q.get("n"))state.note=q.get("n");
 
-    document.getElementById("branch").value=state.branch;
-    document.getElementById("stageSelect").value=state.projectStage;
-    document.getElementById("shape").value=state.shape;
-    document.getElementById("size").value=state.size;
-    document.getElementById("plan").value=state.plan;
-    document.getElementById("note").value=state.note;
-    setActive("#cabinetSwatches",state.cabinet);
-    setActive("#worktopSwatches",state.worktop);
+    document.getElementById("wallLength").value=state.wallLength;document.getElementById("roomWidth").value=state.roomWidth;document.getElementById("ceilingHeight").value=state.ceilingHeight;
+    document.getElementById("branch").value=state.branch;document.getElementById("stageSelect").value=state.projectStage;document.getElementById("plan").value=state.plan;document.getElementById("note").value=state.note;
+    setActive("#cabinetSwatches",state.cabinet);setActive("#worktopSwatches",state.worktop);
     document.querySelectorAll(".look").forEach(function(b){b.classList.toggle("active",b.dataset.light===state.light)});
+    document.querySelectorAll("#layoutOptions .option-btn").forEach(function(b){b.classList.toggle("active",b.dataset.layout===state.layout)});
+    document.querySelectorAll("#moduleOptions .toggle-btn").forEach(function(b){b.classList.toggle("active",!!state.modules[b.dataset.module])});
+    document.querySelectorAll("#interiorOptions .toggle-btn").forEach(function(b){b.classList.toggle("active",!!state.interiors[b.dataset.interior])});
     sync();
   })();
   </script>
