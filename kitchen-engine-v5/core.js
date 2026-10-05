@@ -79,16 +79,16 @@ function defaultBaseSlots(tallSlots){
  return slots.slice(0,count)
 }
 function ensureConfigurator(force){
- if(!state.config||typeof state.config!=="object")state.config=clone(defaults.config);
+ if(!state.config||typeof state.config!=="object")state.config=clone(defaults.config);var seededNow=false;
  if(force||!state.config.seeded||!Array.isArray(state.config.baseSlots)||!state.config.baseSlots.length){
-  var tall=defaultTallSlots();state.config.tallSlots=tall;state.config.baseSlots=defaultBaseSlots(tall);state.config.seeded=true;state.config.inspect=false;state.config.selected="base:0"
+  var tall=defaultTallSlots();state.config.tallSlots=tall;state.config.baseSlots=defaultBaseSlots(tall);state.config.seeded=true;state.config.inspect=false;state.config.selected="base:0";seededNow=true
  }
  if(!Array.isArray(state.config.tallSlots))state.config.tallSlots=defaultTallSlots();
  if(!state.config.activeTab||!configTabLabels[state.config.activeTab])state.config.activeTab="configuration";
  if(!state.config.pantryInterior||!interiorLabels[state.config.pantryInterior])state.config.pantryInterior="shelves";
  if(state.config.layout==="island"&&!hasPlausibleIsland())state.config.layout="";
  if(!state.config.selected)state.config.selected="base:0";
- syncConfigDetails()
+ if(seededNow)syncConfigDetails()
 }
 function syncConfigDetails(){
  if(!state.config)return;var b=state.config.baseSlots||[],t=state.config.tallSlots||[];
