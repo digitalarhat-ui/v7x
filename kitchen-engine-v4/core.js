@@ -155,7 +155,7 @@ function renderState(){
  var ns=document.getElementById("needsStory");if(ns)ns.textContent="الأجهزة: "+active(state.requirements.appliances).map(function(k){return labels.appliance[k]}).slice(0,5).join("، ")+". التخزين: "+active(state.requirements.storage).map(function(k){return labels.storage[k]}).slice(0,5).join("، ")+".";
  var cb=document.getElementById("concepts");if(cb){var cs=concepts();cb.innerHTML=["A","B"].map(function(id){var x=cs[id];return '<article class="ke-concept '+(state.concept.selected===id?"active":"")+'"><div class="ke-concept-tag">تصور أولي للمناقشة مع المصمم</div><h3>'+x.title+' — '+labels.layout[x.layout]+'</h3><p>'+x.reason+'.</p><button data-concept="'+id+'">'+(state.concept.selected===id?"محدد حالياً":"اختيار هذا التصور")+'</button></article>'}).join("")}
  var ds=document.getElementById("decisionStory");if(ds)ds.textContent=decisionStory();
- var hr=document.getElementById("heroRoom"),hn=document.getElementById("heroNeeds"),hc=document.getElementById("heroConcept"),sc=document.getElementById("spaceCode");if(hr)hr.textContent=state.room.length+" × "+state.room.width+" سم";if(hn)hn.textContent=active(state.requirements.appliances).length+" أجهزة + "+active(state.requirements.storage).length+" تخزين";if(hc)hc.textContent=labels.layout[chosen().layout];if(sc)sc.textContent=code();
+ var hr=document.getElementById("heroRoom"),hn=document.getElementById("heroNeeds"),hc=document.getElementById("heroConcept"),hp=document.getElementById("heroPlan"),sc=document.getElementById("spaceCode");if(hr)hr.textContent=state.room.length+" × "+state.room.width+" سم";if(hn)hn.textContent=active(state.requirements.appliances).length+" أجهزة + "+active(state.requirements.storage).length+" تخزين";if(hc)hc.textContent=labels.layout[chosen().layout];if(hp)hp.innerHTML=planSvg();if(sc)sc.textContent=code();
  var real=document.getElementById("realTools");if(real)real.style.display=state.spaceMode==="real"?"block":"none";
  var combo=document.getElementById("useCombo");if(combo){combo.textContent=state.visual.saved?"تم استخدام هذه التوليفة ✓":"استخدم هذه التوليفة في طلبي";combo.classList.toggle("active",!!state.visual.saved)}
  var rb2=document.getElementById("readinessBar"),rt=document.getElementById("readinessText"),kl=document.getElementById("knownList"),cl=document.getElementById("confirmList");if(rb2)rb2.style.width=readiness()+"%";if(rt)rt.textContent="اكتمال الملخص الأولي: "+readiness()+"%";
@@ -172,15 +172,11 @@ function hydrate(){
 function goStep(n){
  runtime.step=Math.max(1,Math.min(5,n));
  document.querySelectorAll(".ke-stage").forEach(function(e){e.classList.toggle("active",Number(e.dataset.step)===runtime.step)});
- document.querySelectorAll(".ke-phase-progress li").forEach(function(e,i){e.dataset.active=(i+1===runtime.step)?"true":"false";e.dataset.complete=(i+1<runtime.step)?"true":"false"});
- var phaseNames=["المساحة والتخطيط","الشكل واللون","الخزائن والتفاصيل","الجاهزية والخطوة التالية","التواصل والمراجعة"];
- var nextLabels=["التالي: الشكل واللون","التالي: الخزائن والتفاصيل","التالي: الجاهزية","التالي: التواصل والمراجعة","حفظ المشروع"];
- var back=document.getElementById("backBtn"),next=document.getElementById("nextBtn");
- back.disabled=runtime.step===1;back.style.opacity=runtime.step===1?".45":"1";next.textContent=nextLabels[runtime.step-1];
- document.getElementById("stepProgress").textContent="المرحلة "+runtime.step+" من 5";
- var pn=document.getElementById("phaseNum"),pname=document.getElementById("phaseName");if(pn)pn.textContent=runtime.step;if(pname)pname.textContent=phaseNames[runtime.step-1];
+ document.querySelectorAll(".ke-stepchip").forEach(function(e,i){e.classList.toggle("active",i+1===runtime.step);e.classList.toggle("done",i+1<runtime.step)});
+ var nextLabels=["التالي: الشكل واللون","التالي: الخزائن والتفاصيل","التالي: الجاهزية السعرية","التالي: التواصل والمراجعة","حفظ المشروع"],back=document.getElementById("backBtn"),next=document.getElementById("nextBtn");
+ back.disabled=runtime.step===1;back.style.opacity=runtime.step===1?".45":"1";next.textContent=nextLabels[runtime.step-1];document.getElementById("stepProgress").textContent="المرحلة "+runtime.step+" من 5";
  if(runtime.step===2){initTwin();setTimeout(function(){rebuildTwin();cameraPreset("hero")},60)}
- renderState();emit("step",{step:runtime.step,code:code()});document.getElementById("phaseProgress").scrollIntoView({behavior:"smooth",block:"start"});
+ renderState();emit("step",{step:runtime.step,code:code()});document.getElementById("plannerStart").scrollIntoView({behavior:"smooth",block:"start"});
 }
 function handleReference(file){
  if(!file)return;state.room.referenceName=file.name;var box=document.getElementById("filePreview");
@@ -192,7 +188,7 @@ function bindEvents(){
  root.addEventListener("click",function(ev){
   var t=ev.target.closest("button,a");if(!t)return;
   if(t.id==="startPlanner"){goStep(1);return}
-  if(t.id==="seePhases"){document.getElementById("phaseProgress").scrollIntoView({behavior:"smooth",block:"start"});return}
+  if(t.dataset.scrolljourney){document.getElementById("journeyOverview").scrollIntoView({behavior:"smooth",block:"start"});return}
   if(t.id==="useCombo"){state.visual.saved=true;renderState();toast("تمت إضافة التوليفة إلى ملخص المشروع");return}
   if(t.dataset.stepnav){goStep(Number(t.dataset.stepnav));return}
   if(t.dataset.mode){state.spaceMode=t.dataset.mode;document.querySelectorAll("[data-mode]").forEach(function(x){x.classList.toggle("active",x===t)});renderState();return}
