@@ -8,6 +8,9 @@ on:
       - '.github/workflows/dakhakhni-phase3-realism-qa.yml'
 permissions:
   contents: read
+concurrency:
+  group: dakhakhni-phase3-realism-qa
+  cancel-in-progress: true
 jobs:
   qa:
     runs-on: ubuntu-latest
