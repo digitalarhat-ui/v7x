@@ -18,18 +18,18 @@ jobs:
         uses: actions/checkout@v6
       - name: Prepare static bundle
         run: |
-          rm -rf .dakhakhni-dist
-          mkdir -p .dakhakhni-dist/kitchen-engine-v4/configs .dakhakhni-dist/vendor
-          cp dakhakhni-kitchen-v4/index.html .dakhakhni-dist/index.html
-          cp kitchen-engine-v4/core.css .dakhakhni-dist/kitchen-engine-v4/core.css
-          cp kitchen-engine-v4/core.js .dakhakhni-dist/kitchen-engine-v4/core.js
-          cp kitchen-engine-v4/configs/dakhakhni.js .dakhakhni-dist/kitchen-engine-v4/configs/dakhakhni.js
-          cp vendor/three-r128.min.js .dakhakhni-dist/vendor/three-r128.min.js
-          if [ -f favicon.ico ]; then cp favicon.ico .dakhakhni-dist/favicon.ico; fi
+          rm -rf dakhakhni-dist
+          mkdir -p dakhakhni-dist/kitchen-engine-v4/configs dakhakhni-dist/vendor
+          cp dakhakhni-kitchen-v4/index.html dakhakhni-dist/index.html
+          cp kitchen-engine-v4/core.css dakhakhni-dist/kitchen-engine-v4/core.css
+          cp kitchen-engine-v4/core.js dakhakhni-dist/kitchen-engine-v4/core.js
+          cp kitchen-engine-v4/configs/dakhakhni.js dakhakhni-dist/kitchen-engine-v4/configs/dakhakhni.js
+          cp vendor/three-r128.min.js dakhakhni-dist/vendor/three-r128.min.js
+          if [ -f favicon.ico ]; then cp favicon.ico dakhakhni-dist/favicon.ico; fi
       - name: Upload bundle
         uses: actions/upload-artifact@v4
         with:
           name: dakhakhni-netlify
-          path: .dakhakhni-dist
+          path: dakhakhni-dist
           if-no-files-found: error
           retention-days: 1
