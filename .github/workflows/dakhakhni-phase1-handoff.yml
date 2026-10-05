@@ -1,0 +1,223 @@
+name: Build Dakhakhni Phase 1 Handoff ZIP
+on:
+  push:
+    branches: [dakhakhni-phase1-handoff]
+    paths:
+      - '.github/workflows/dakhakhni-phase1-handoff.yml'
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - name: Prepare handoff folder
+        run: |
+          rm -rf handoff
+          mkdir -p handoff/dakhakhni-kitchen-v5 handoff/kitchen-engine-v5/assets handoff/kitchen-engine-v5/configs handoff/vendor
+          cp dakhakhni-kitchen-v5/index.html handoff/dakhakhni-kitchen-v5/index.html
+          cp kitchen-engine-v5/core.js handoff/kitchen-engine-v5/core.js
+          cp kitchen-engine-v5/core.css handoff/kitchen-engine-v5/core.css
+          cp kitchen-engine-v5/configs/dakhakhni.js handoff/kitchen-engine-v5/configs/dakhakhni.js
+          cp kitchen-engine-v5/assets/ASSET-SOURCES.md handoff/kitchen-engine-v5/assets/ASSET-SOURCES.md
+          cp kitchen-engine-v5/assets/kiara_interior_1k.hdr handoff/kitchen-engine-v5/assets/kiara_interior_1k.hdr
+          cp kitchen-engine-v5/assets/kitchen_tap.glb handoff/kitchen-engine-v5/assets/kitchen_tap.glb
+          cp kitchen-engine-v5/assets/sink_01.glb handoff/kitchen-engine-v5/assets/sink_01.glb
+          cp vendor/three-r128.min.js handoff/vendor/three-r128.min.js
+          cp vendor/GLTFLoader-r128.js handoff/vendor/GLTFLoader-r128.js
+          cp vendor/RGBELoader-r128.js handoff/vendor/RGBELoader-r128.js
+          cp vercel.json handoff/vercel.json
+          git rev-parse HEAD > handoff/SOURCE-COMMIT.txt
+
+          cat > handoff/README-FIRST.md <<'EOF'
+          # Dakhakhni Kitchen Demo — Phase 1 Handoff
+
+          Upload this ZIP in a new ChatGPT chat together with PHASE-1-PROMPT.md.
+
+          ## Current production
+          https://dakhakhni-kitchen-studio.vercel.app/
+
+          ## Repository
+          digitalarhat-ui/v7x
+
+          ## Current problem
+          The current V5 is not final. The main confirmed defects are:
+          - hero 3D is not meaningfully interactive on mobile;
+          - 3D colour/material controls are discovered too late;
+          - Phase 1 is too long before the customer reaches visual reward;
+          - sticky header + giant phase progress + fixed bottom navigation consume too much mobile viewport;
+          - five-phase explanation is duplicated;
+          - kitchen-shape cards are too tall;
+          - advanced openings/services appear too early;
+          - current procedural 3D still looks synthetic/cartoonish.
+
+          ## This handoff scope
+          Phase 1 ONLY fixes:
+          - first 30 seconds;
+          - mobile shell and sticky chrome;
+          - hierarchy;
+          - phase progress treatment;
+          - simplified Phase 1;
+          - obvious/working access to 3D.
+
+          Do NOT rebuild final 3D realism in Phase 1. That is Phase 2/3.
+
+          ## Business truth
+          Dakhakhni already provides design and 3D. The mechanism is pre-design customer organization and stateful handoff, not "they lack 3D".
+          Verified WhatsApp: +966 54 524 6478.
+          Do not invent pricing, ROI, official materials, engineering approval or manufacturing/CAD claims.
+          EOF
+
+          cat > handoff/PHASE-1-PROMPT.md <<'EOF'
+          # DAKHAKHNI-V5-FIX-PHASE-1
+          /MOBILE-FIRST
+          /FIRST-30-SECONDS
+          /JOURNEY-ARCHITECTURE
+          /NO-3D-REALISM-WORK-YET
+          /NO-PHASE-2-TO-7-WORK
+          /USE-CURRENT-PRODUCTION-AS-BASE
+          /IDENTITY-LOCK
+          /NO-FAKE-CLAIMS
+          /FIX-NOT-DISCUSS
+          /BUILD-AND-DEPLOY
+          /SCREENSHOT-QA
+
+          CURRENT PRODUCTION:
+          https://dakhakhni-kitchen-studio.vercel.app/
+
+          REPO:
+          digitalarhat-ui/v7x
+
+          MISSION:
+          Fix ONLY:
+          1) first 30 seconds,
+          2) mobile shell,
+          3) information hierarchy,
+          4) sticky/navigation chrome,
+          5) five-phase journey architecture,
+          6) fast access to the existing 3D experience.
+
+          BUSINESS / PRODUCT TRUTH:
+          - Prospect: دخاخني مطابخ وخزائن / AD للصناعات الخشبية والمقاولات.
+          - Verified WhatsApp: +966545246478.
+          - Dakhakhni already provides design and 3D.
+          - Never pitch “you lack 3D”.
+          - Mechanism: customer organizes space + preliminary visual direction + requirements before the designer, then sends one structured project brief.
+          - No fake price, ROI, official material, CAD, manufacturing, engineering or approval claims.
+          - Arabic-first, mobile-first.
+          - Keep current green / warm ivory / restrained brass direction if useful.
+          - FN Cadena is UX reference only; never copy its identity/assets/data.
+
+          LOCKED FINDINGS:
+          A) Mobile chrome is too heavy.
+          - browser chrome + sticky site header + oversized phase progress + fixed bottom bar leave too little usable viewport.
+          - replace mobile phase card with a compact strip around 45–55px.
+          - prevent sticky overlap and content hiding.
+
+          B) Five-phase explanation is duplicated.
+          - reduce or remove the pre-planner five-stage editorial repetition.
+          - the interactive planner progress is the source of truth.
+
+          C) First 30 sec must prove:
+          5 sec: premium Dakhakhni kitchen experience.
+          10 sec: “I can organize my kitchen project here.”
+          20 sec: “I can access an interactive 3D direction.”
+          30 sec: “My selections become one clear designer brief.”
+
+          D) Hero 3D access is broken/unclear.
+          - current hero drag is disabled in code because pointer handlers are attached only when !isHero.
+          - fix hero access in this phase.
+          - ideally allow touch/drag orbit on hero, with vertical scrolling preserved.
+          - if that is unsafe, tapping the hero 3D must jump immediately to Phase 2 studio.
+          - do NOT rebuild materials/geometry realism in Phase 1.
+
+          E) Phase 1 is too long before reward.
+          Before Phase 2 require only:
+          - نوع المشروع
+          - شكل المطبخ
+          - القياسات التقريبية OR “لا أعرف / أحتاج قياساً”
+          City may move later if it creates friction.
+          Move door/window/column/water/drain/electricity/ventilation into:
+          “تفاصيل إضافية للمساحة — اختياري”
+          collapsed/progressive disclosure.
+
+          F) Kitchen-shape selector is too tall.
+          - use compact 2-column mobile visual grid.
+          - preserve:
+            مستقيم
+            حرف L
+            حرف U
+            متوازي
+            جزيرة
+            غير متأكد
+          - selected state obvious.
+          - min 44px touch targets.
+
+          G) Website, not SaaS/dashboard.
+          Reduce excessive boxes, borders, repeated explanations and form feel.
+          Increase hierarchy, whitespace, visual selection and one decision at a time.
+
+          TARGET PAGE:
+          1. compact premium header
+          2. hero with:
+             - clear promise
+             - visible existing 3D
+             - primary CTA: ابدأ مشروعك
+             - secondary CTA: جرّب 3D الآن
+          3. very compact proof row only if useful
+          4. compact five-stage teaser or none if redundant
+          5. planner
+          6. compact mobile phase progress
+          7. simplified Phase 1
+          8. quick access to Phase 2
+
+          PRESERVE:
+          - state model
+          - localStorage
+          - clean URL behavior
+          - explicit share URL only on user action
+          - later WhatsApp summary
+          - verified WhatsApp number
+          - five-phase numbering
+          - later Phase 2/3/4/5 data unless needed for navigation
+          - current production alias
+
+          QA BEFORE RELEASE:
+          Render and screenshot:
+          - 390px
+          - 430px
+          - 1440px
+
+          Verify:
+          - no horizontal overflow
+          - no sticky overlap
+          - no content hidden behind bottom nav
+          - >=44px important mobile touch targets
+          - much shorter path to Phase 2
+          - hero 3D entry obvious
+          - hero drag/tap path works as implemented
+          - vertical page scrolling not trapped by 3D
+          - no cross-prospect contamination
+          - no fake claims
+          - later phase data not broken
+
+          RELEASE:
+          Existing production URL only:
+          https://dakhakhni-kitchen-studio.vercel.app/
+
+          At end report only:
+          - what changed
+          - what is deliberately deferred to Phase 2
+          - QA results for 390 / 430 / 1440
+          - final live link
+
+          Do not claim 10/10 yet.
+          EOF
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dakhakhni-phase1-handoff
+          path: handoff
+          if-no-files-found: error
+          retention-days: 2
