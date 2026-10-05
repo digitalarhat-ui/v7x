@@ -49,7 +49,7 @@ sage_flat=flatten_albedo(sage_src,0.90,1536)
 # Sage reference can look fabric-like if copied literally. Preserve tone, restrain color variation.
 sa=np.asarray(sage_flat).astype(np.float32)/255.0
 smean=sa.mean(axis=(0,1),keepdims=True)
-sa=np.clip(smean + (sa-smean)*0.28,0,1)
+sa=np.clip(smean + (sa-smean)*0.10,0,1)
 sage_albedo=Image.fromarray((sa*255).astype(np.uint8),'RGB')
 wood_albedo.save(ASSETS/'hc-wood-albedo.jpg',quality=92,subsampling=0)
 sage_albedo.save(ASSETS/'hc-sage-albedo.jpg',quality=92,subsampling=0)
@@ -72,7 +72,7 @@ def support_maps(img:Image.Image, rough_base:float, rough_amp:float, normal_stre
     Image.fromarray((normal*255).astype(np.uint8),'RGB').save(ASSETS/f'{prefix}-normal.png')
 
 support_maps(wood_albedo,0.58,0.85,0.42,'hc-wood')
-support_maps(sage_albedo,0.64,0.38,0.16,'hc-sage')
+support_maps(sage_albedo,0.62,0.14,0.055,'hc-sage')
 
 # Quiet illustrative neutral stone PBR maps using irregular multi-scale noise + warped veins.
 rng=np.random.default_rng(43)
@@ -246,7 +246,7 @@ for i,x in enumerate(centers,1):
         cylinder(.008,.045,hx,.71,front_z+.012,'z',f'HC_HANDLES__B{i}_DOOR_MOUNT_2','HC_HANDLES',16)
 
 # toe kick recessed
-panel(4.00,.135,.45,-.02,.085,-1.600,'HC_KICK__BASE_PLINTH','HC_KICK',0.002,'front')
+panel(4.00,.150,.42,-.02,.075,-1.585,'HC_KICK__BASE_PLINTH','HC_KICK',0.002,'front')
 
 # countertop + backsplash
 counter=cq.Workplane('XY').box(4.23,.040,.76,centered=(True,True,True)).edges().fillet(.004).translate((-.02,1.025,-1.64))

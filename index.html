@@ -711,11 +711,24 @@
     stage.appendChild(renderer.domElement);
 
     const pmrem = new THREE.PMREMGenerator(renderer);
-    const roomEnvironment = new RoomEnvironment();
-    const envRT = pmrem.fromScene(roomEnvironment, .045);
+    const envScene = new THREE.Scene();
+    envScene.background = new THREE.Color(0x4c4944);
+    const envPanels=[];
+    function addEnvPanel(w,h,color,pos,rot=[0,0,0]){
+      const mat=new THREE.MeshBasicMaterial({color,side:THREE.DoubleSide,toneMapped:false});
+      const mesh=new THREE.Mesh(new THREE.PlaneGeometry(w,h),mat);
+      mesh.position.set(...pos);mesh.rotation.set(...rot);envScene.add(mesh);envPanels.push(mesh);
+    }
+    // Large soft window, ceiling bounce and restrained frontal card create photographic broad reflections.
+    addEnvPanel(5.8,4.8,new THREE.Color().setRGB(4.8,4.55,4.20),[-3.3,1.7,.4],[0,Math.PI/2,0]);
+    addEnvPanel(5.0,2.3,new THREE.Color().setRGB(1.15,1.08,.98),[2.8,2.0,1.8],[0,-.72,0]);
+    addEnvPanel(7.5,5.0,new THREE.Color().setRGB(.46,.44,.41),[0,1.7,-3.2],[0,0,0]);
+    addEnvPanel(7.5,5.0,new THREE.Color().setRGB(.68,.65,.60),[0,1.7,3.6],[0,Math.PI,0]);
+    addEnvPanel(7.0,6.0,new THREE.Color().setRGB(.74,.70,.64),[0,3.8,0],[Math.PI/2,0,0]);
+    const envRT = pmrem.fromScene(envScene,.055,.1,30);
     scene.environment = envRT.texture;
-    scene.environmentIntensity = .72;
-    roomEnvironment.dispose();
+    scene.environmentIntensity = .78;
+    envPanels.forEach(m=>{m.geometry.dispose();m.material.dispose();});
     pmrem.dispose();
 
     const controls = new OrbitControls(camera, renderer.domElement);
@@ -803,7 +816,7 @@
     const carcassMat=new THREE.MeshStandardMaterial({color:0x6b6d67,metalness:0,roughness:.88,envMapIntensity:.36});
     const jointMat=new THREE.MeshStandardMaterial({color:0x8d887f,metalness:0,roughness:.94,envMapIntensity:.15});
     const backsplashMat=new THREE.MeshPhysicalMaterial({color:0xf4f1eb,map:stoneAlbedo,normalMap:stoneNormal,roughnessMap:stoneRough,normalScale:new THREE.Vector2(.035,.035),metalness:0,roughness:.52,clearcoat:.012,clearcoatRoughness:.84,envMapIntensity:.72});
-    const kickMat=new THREE.MeshStandardMaterial({color:0x343633,metalness:.08,roughness:.72,envMapIntensity:.34});
+    const kickMat=new THREE.MeshStandardMaterial({color:0x4a4c47,metalness:.16,roughness:.60,envMapIntensity:.52});
     const roomFloorMat=new THREE.MeshStandardMaterial({color:0xffffff,map:floorTexture,metalness:0,roughness:.78,envMapIntensity:.46});
     const roomWallMat=new THREE.MeshStandardMaterial({color:0xaaa49c,metalness:0,roughness:.93,envMapIntensity:.18});
     const roomCeilingMat=new THREE.MeshStandardMaterial({color:0xbdb7af,metalness:0,roughness:.95,envMapIntensity:.15});
@@ -899,7 +912,7 @@
       if(state.reference==="wood"){
         mat.color.setHex(0xf0e9df);mat.map=woodAlbedo;mat.normalMap=woodNormal;mat.roughnessMap=woodRough;mat.normalScale.set(.045,.045);mat.roughness=materialRoughness(.50);
       }else if(state.reference==="sage"){
-        mat.color.setHex(0xaeb7aa);mat.map=sageAlbedo;mat.normalMap=sageNormal;mat.roughnessMap=sageRough;mat.normalScale.set(.012,.012);mat.roughness=materialRoughness(.54);
+        mat.color.setHex(0xaeb7aa);mat.map=sageAlbedo;mat.normalMap=sageNormal;mat.roughnessMap=sageRough;mat.normalScale.set(.006,.006);mat.roughness=materialRoughness(.52);
       }else{
         const src=materialStates[currentMaterial];mat.roughness=materialRoughness(src.roughness);
         if(currentMaterial==="wood"){mat.normalMap=woodNormal;mat.roughnessMap=woodRough;mat.normalScale.set(.055,.055);}
