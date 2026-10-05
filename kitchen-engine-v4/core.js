@@ -3,7 +3,7 @@
 var cfg=window.KITCHEN_PROSPECT_CONFIG,root=document.getElementById("kitchenEngineApp");
 if(!cfg||!root)return;
 var STORAGE="kitchen-engine-v4:"+cfg.id;
-var runtime={step:1,twin:null,lastUrl:"",refData:""};
+var runtime={step:1,twin:null,heroTwin:null,lastUrl:"",refData:""};
 var labels={
  layout:{straight:"مستقيم",l:"حرف L",u:"حرف U",parallel:"متوازي",island:"جزيرة"},
  appliance:{fridge:"ثلاجة",builtInFridge:"ثلاجة مدمجة",oven:"فرن",microwave:"مايكرويف",dishwasher:"غسالة صحون",hob:"موقد",hood:"شفاط",freezer:"فريزر"},
@@ -32,11 +32,26 @@ function clone(v){return JSON.parse(JSON.stringify(v))}
 function merge(a,b){if(!b||typeof b!=="object")return a;Object.keys(b).forEach(function(k){if(b[k]&&typeof b[k]==="object"&&!Array.isArray(b[k])){if(!a[k]||typeof a[k]!=="object")a[k]={};merge(a[k],b[k])}else{a[k]=b[k]}});return a}
 function enc(v){try{return btoa(unescape(encodeURIComponent(JSON.stringify(v)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}catch(e){return""}}
 function dec(v){try{var s=v.replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";return JSON.parse(decodeURIComponent(escape(atob(s))))}catch(e){return null}}
-(function(){var q=new URLSearchParams(location.search),p=q.get("project"),x=p?dec(p):null;if(!x){try{x=JSON.parse(localStorage.getItem(STORAGE)||"null")}catch(e){}}if(x)merge(state,x)})();
+(function(){var q=new URLSearchParams(location.search),p=q.get("project"),x=p?dec(p):null;if(!x){try{x=JSON.parse(localStorage.getItem(STORAGE)||"null")}catch(e){}}if(x)merge(state,x);if(p){history.replaceState(null,"",location.pathname);runtime.lastUrl=location.pathname}})();
 function safe(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"})[c]})}
 function active(o){return Object.keys(o).filter(function(k){return !!o[k]})}
 function code(){var raw=JSON.stringify([state.room,state.requirements,state.concept,state.visual,state.project]),h=2166136261;for(var i=0;i<raw.length;i++){h^=raw.charCodeAt(i);h+=(h<<1)+(h<<4)+(h<<7)+(h<<8)+(h<<24)}return "DK-"+((h>>>0).toString(36).toUpperCase()+"000000").slice(0,6)}
-function save(){var p=enc(state),u=location.pathname+(p?"?project="+p:"");try{localStorage.setItem(STORAGE,JSON.stringify(state))}catch(e){}if(u!==runtime.lastUrl){history.replaceState(null,"",u);runtime.lastUrl=u}}
+function save(){
+ try{localStorage.setItem(STORAGE,JSON.stringify(state))}catch(e){}
+ runtime.lastUrl=location.pathname;
+}
+function projectShareUrl(){
+ var p=enc(state);return location.origin+location.pathname+(p?"?project="+p:"");
+}
+function shareProject(){
+ var u=projectShareUrl();
+ if(navigator.clipboard&&navigator.clipboard.writeText){
+  navigator.clipboard.writeText(u).then(function(){toast("تم نسخ رابط المشروع")}).catch(function(){toast("تعذر النسخ — جرّب مرة أخرى")});
+ }else{
+  var ta=document.createElement("textarea");ta.value=u;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");toast("تم نسخ رابط المشروع")}catch(e){toast("تعذر النسخ")};ta.remove();
+ }
+ emit("shared",{code:code()});
+}
 function emit(n,d){try{window.dispatchEvent(new CustomEvent("kitchen-engine:"+n,{detail:d||{}}))}catch(e){}}
 function toast(m){var e=document.getElementById("keToast");if(!e)return;e.textContent=m;e.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(function(){e.classList.remove("show")},1600)}
 function applyTheme(){var t=cfg.theme||{};if(t.bg)document.documentElement.style.setProperty("--bg",t.bg);if(t.ink)document.documentElement.style.setProperty("--ink",t.ink);if(t.dark)document.documentElement.style.setProperty("--dark",t.dark);if(t.accent)document.documentElement.style.setProperty("--gold",t.accent);if(t.accentSoft)document.documentElement.style.setProperty("--gold2",t.accentSoft)}
@@ -44,15 +59,15 @@ function dim(id,name,val){return '<div class="ke-field"><label>'+name+'</label><
 function tog(name,key,on,type){return '<button class="ke-toggle '+(on?"active":"")+'" data-'+type+'="'+key+'"><span>'+name+'</span><i></i></button>'}
 function swatch(key,color,type){var on=(type==="cabinet"?state.visual.cabinet:state.visual.worktop)===key;return '<button class="ke-swatch '+(on?"active":"")+'" data-'+type+'="'+key+'" style="--sw:'+color+'"><i></i></button>'}
 function renderPage(){
- var steps=["المساحة والتخطيط","الشكل واللون","الخزائن والتفاصيل","الجاهزية السعرية","التواصل والمراجعة"];
- return '<header class="ke-top"><div class="ke-shell ke-nav"><div class="ke-brand"><div class="ke-mark">AD</div><div><b>'+safe(cfg.displayName)+'</b><small>'+safe(cfg.legalName)+'</small></div></div><div class="ke-stepbar">'+steps.map(function(x,i){return '<button class="ke-stepchip '+(i===0?"active":"")+'" data-stepnav="'+(i+1)+'">'+(i+1)+' · '+x+'</button>'}).join("")+'</div></div></header>'+
- '<section class="ke-hero"><div class="ke-shell ke-hero-grid"><div><div class="ke-eyebrow">دخاخني — تجربة طلب مطبخ قبل التصميم</div><h1>من الفكرة إلى طلب تصميم أوضح.</h1><p>رتّب مساحة مطبخك واتجاه الشكل واللون واحتياجات الخزائن قبل إرسال المشروع لفريق دخاخني. النتيجة ليست لعبة 3D؛ هي ملخص منظم يكمل خدمة التصميم الحالية.</p><div class="ke-flowstrip"><span>مساحتك أولاً</span><span>اتجاه بصري</span><span>تفاصيل عملية</span><span>معاينة 3D</span><span>طلب منظم</span></div><div class="ke-actions"><button class="ke-btn primary" id="startPlanner">ابدأ مشروع مطبخك ←</button><button class="ke-btn ghost" data-scrolljourney="true">كيف تعمل التجربة؟</button></div><p class="ke-truth">التصورات والألوان هنا مبدئية للمناقشة. القياس والخامة والاعتماد النهائي مع فريق التصميم في دخاخني.</p></div>'+
- '<div class="ke-owner-preview"><div class="ke-preview-kicker">PROJECT PREVIEW · تصور تجريبي</div><div class="ke-hero-plan" id="heroPlan"></div><div class="ke-money-card"><div class="ke-money-grid"><div><small>المساحة الحالية</small><b id="heroRoom"></b></div><div><small>احتياجات المشروع</small><b id="heroNeeds"></b></div><div><small>التصور الحالي</small><b id="heroConcept"></b></div><div><small>الناتج النهائي</small><b>ملخص واضح للمصمم</b></div></div></div></div></div></section>'+
- '<section class="ke-proof-strip"><div class="ke-shell ke-proof-grid"><article><span>01</span><b>خدمة تصميم قائمة بالفعل</b><p>دخاخني يطلب المخطط والأبعاد والمتطلبات قبل بدء التصميم.</p></article><article><span>02</span><b>التصور الثلاثي جزء من العملية</b><p>لذلك هذه التجربة لا تدّعي أن 3D هو المشكلة؛ بل تنظّم ما يصل قبله.</p></article><article><span>03</span><b>التحسين المقترح</b><p>العميل يصل للمصمم ومعه قرارات أولية محفوظة بدل رسالة عامة فقط.</p></article></div></section>'+
- '<section class="ke-journey" id="journeyOverview"><div class="ke-shell"><div class="ke-journey-intro"><div><div class="ke-eyebrow">مسار واحد · خمس مراحل</div><h2>رحلة طلب واضحة من المساحة إلى مراجعة المصمم.</h2></div><p>المساحة أولاً، ثم الشكل واللون، ثم الخزائن والتفاصيل، وبعدها جاهزية واضحة للمراجعة السعرية، وأخيراً تسليم منظم لفريق التصميم.</p></div><ol class="ke-journey-list">'+steps.map(function(x,i){var d=["حدد المساحة والقيود قبل أي قرار جمالي.","اختر اتجاهاً بصرياً وشاهده داخل معاينة ثلاثية الأبعاد.","رتّب الأجهزة والتخزين والتفاصيل العملية التي يحتاجها المصمم.","اعرف ما هو معروف وما يحتاج تأكيداً بدون اختراع سعر.","أرسل نفس حالة المشروع كملخص منظم إلى دخاخني."][i];return '<li><span>0'+(i+1)+'</span><div><b>'+x+'</b><p>'+d+'</p></div></li>'}).join("")+'</ol></div></section>'+
+ var steps=["مساحتك","التصور 3D","احتياجاتك","مراجعة الطلب","إرسال للمصمم"];
+ return '<header class="ke-top"><div class="ke-shell ke-nav"><div class="ke-brand"><div class="ke-mark">AD</div><div><b>'+safe(cfg.displayName)+'</b><small>'+safe(cfg.legalName)+'</small></div></div><button class="ke-header-cta" id="headerStart">ابدأ مشروعك</button></div></header>'+
+ '<section class="ke-hero"><div class="ke-shell ke-hero-grid"><div class="ke-hero-copy"><div class="ke-eyebrow">دخاخني · تجربة تمهيدية قبل التصميم</div><h1>رتّب مطبخك<br>قبل جلسة التصميم.</h1><p>بدلاً من شرح المقاسات والاحتياجات والصور في رسائل متفرقة، اجمعها في مشروع واحد: حدّد المساحة، جرّب تصوراً مبدئياً ثلاثي الأبعاد، اختر التخزين والأجهزة، ثم أرسل ملخصاً واضحاً لفريق دخاخني.</p><div class="ke-hero-benefits"><span><b>01</b>المساحة أولاً</span><span><b>02</b>معاينة 3D تفاعلية</span><span><b>03</b>ملخص واحد للمصمم</span></div><div class="ke-actions"><button class="ke-btn primary" id="startPlanner">ابدأ من مساحتك ←</button><button class="ke-btn ghost" id="jump3d">جرّب المعاينة 3D</button></div><p class="ke-truth">التصور والألوان تمهيدية للمناقشة فقط. القياس والخامة والاعتماد النهائي مع فريق التصميم في دخاخني.</p></div>'+
+ '<div class="ke-hero-visual"><div class="ke-hero-visual-head"><div><small>معاينة ثلاثية الأبعاد</small><b>شاهد أثر اختياراتك قبل الإرسال</b></div><button id="heroTo3d">فتح التجربة الكاملة</button></div><div class="ke-hero-twin-wrap" id="heroTwinWrap"><canvas id="heroTwin"></canvas><div class="ke-hero-twin-badge">3D · تصور مبدئي</div><div class="ke-hero-twin-state"><span id="heroRoom"></span><span id="heroConcept"></span></div></div><div class="ke-hero-result"><div><small>بدلاً من</small><b>«أبغى مطبخ مودرن، كم السعر؟»</b></div><i>←</i><div><small>يصل للمصمم</small><b>مساحة + احتياجات + تصور محفوظ</b></div></div></div></div></section>'+
+ '<section class="ke-proof-strip"><div class="ke-shell ke-proof-grid"><article><span>01</span><b>مطابخ وخزائن حسب الطلب</b><p>التجربة تبدأ من مساحة مشروعك وليست من قالب جاهز.</p></article><article><span>02</span><b>تصور 3D قبل التنفيذ</b><p>استخدم المعاينة لفهم الاتجاه، ثم اعتمد التفاصيل مع المصمم.</p></article><article><span>03</span><b>قراراتك محفوظة</b><p>الشكل واللون والاحتياجات تبقى مرتبطة بنفس المشروع.</p></article><article><span>04</span><b>مراجعة مباشرة مع الفريق</b><p>الخطوة الأخيرة تنقل ملخصاً واحداً إلى واتساب دخاخني.</p></article></div></section>'+
+ '<section class="ke-journey" id="journeyOverview"><div class="ke-shell"><div class="ke-journey-intro"><div><div class="ke-eyebrow">مسار واحد · خمس مراحل</div><h2>من أول قياس إلى ملخص جاهز للمراجعة.</h2></div><p>كل مرحلة تضيف معلومة يحتاجها المشروع فعلاً، من دون تسجيل دخول أو نموذج طويل أو سعر آلي غير موثّق.</p></div><ol class="ke-journey-list">'+steps.map(function(x,i){var d=["أدخل الأبعاد والفتحات ونقاط الخدمات التي تعرفها.","اختر اتجاهاً مبدئياً وشاهده مباشرة في 3D.","حدّد التخزين والأجهزة وطريقة الاستخدام.","راجع ما أصبح معروفاً وما يحتاج تأكيداً بشرياً.","افتح واتساب بملخص واحد قابل للمراجعة قبل الإرسال."][i];return '<li><span>0'+(i+1)+'</span><div><b>'+x+'</b><p>'+d+'</p></div></li>'}).join("")+'</ol></div></section>'+
  '<main class="ke-main" id="plannerStart"><div class="ke-shell">'+step1()+step2()+step3()+step4()+step5()+'</div></main>'+
- '<div class="ke-navbottom"><div class="ke-shell ke-navbottom-inner"><button class="ke-back" id="backBtn">السابق</button><div class="ke-progress" id="stepProgress">المرحلة 1 من 5</div><button class="ke-next" id="nextBtn">التالي: الشكل واللون</button></div></div>'+
- '<footer class="ke-footer"><div class="ke-shell"><b>'+safe(cfg.displayName)+'</b> — تجربة تمهيدية تكمل مسار المصمم الحالي ولا تستبدله.</div></footer><div class="ke-toast" id="keToast">تم</div>';
+ '<div class="ke-navbottom"><div class="ke-shell ke-navbottom-inner"><button class="ke-back" id="backBtn">السابق</button><div class="ke-progress" id="stepProgress">المرحلة 1 من 5</div><button class="ke-next" id="nextBtn">التالي: التصور 3D</button></div></div>'+
+ '<footer class="ke-footer"><div class="ke-shell"><b>'+safe(cfg.displayName)+'</b> — تجربة تمهيدية تساعدك على ترتيب مشروعك قبل المراجعة النهائية مع المصمم.</div></footer><div class="ke-toast" id="keToast">تم</div>';
 }
 function step1(){
  return '<section class="ke-stage active" data-step="1"><div class="ke-stage-head"><div><div class="ke-eyebrow">01 — المساحة والتخطيط</div><h2>كيف تبدو مساحة مطبخك؟</h2></div><p>ابدأ سريعاً أو أدخل مساحتك الفعلية تقريبياً. المقاسات بالسنتيمتر وتغيّر المخطط فعلياً.</p></div><div class="ke-grid"><div class="ke-card"><div class="ke-card-h"><div><h3>بصمة المساحة</h3><p>المساحة هي أساس المشروع — وليس اللون.</p></div><span id="spaceCode"></span></div><div class="ke-card-b">'+
@@ -79,15 +94,15 @@ function step3(){
  '</div></div><aside class="ke-aside"><div class="ke-mini"><h4>ما تم تحديده</h4><div id="needsMini"></div></div><div class="ke-memory"><h4>ملخص الاحتياجات للمصمم</h4><p id="needsStory"></p></div></aside></div></section>';
 }
 function step4(){
- return '<section class="ke-stage" data-step="4"><div class="ke-stage-head"><div><div class="ke-eyebrow">04 — الجاهزية السعرية والخطوة التالية</div><h2>بدون سعر مخترع: ما الذي أصبح جاهزاً للمراجعة؟</h2></div><p>لا توجد معادلة تسعير مشروع مطبخ موثقة لدينا من دخاخني، لذلك لا نظهر حاسبة وهمية. بدلاً من ذلك نوضح ما أصبح معروفاً وما يجب أن يؤكده الفريق قبل العرض النهائي.</p></div>'+
- '<div class="ke-readiness"><div><span>جاهزية الملخص قبل المراجعة</span><b id="readinessText"></b></div><div class="ke-readiness-track"><i id="readinessBar"></i></div></div><div class="ke-commercial-grid"><article class="ke-commercial-card known"><span>معلوم الآن</span><h3>المشروع صار أوضح قبل التسعير</h3><ul id="knownList"></ul></article><article class="ke-commercial-card confirm"><span>يحتاج تأكيداً</span><h3>هذه النقاط تبقى بشرية</h3><ul id="confirmList"></ul></article></div>'+
- '<div class="ke-owner-card"><div class="ke-owner-grid"><div><div class="ke-summary" id="finalSummary"></div><div class="ke-memory" style="margin-top:14px"><h4>ملخص المشروع بصياغة بشرية</h4><p id="finalStory"></p></div></div><aside class="ke-handoff ke-handoff-readiness"><div><small>جاهز للمراجعة السعرية</small><h3 id="finalCode"></h3><p id="finalReadiness"></p><div class="ke-q"><b>قيمة هذه المرحلة</b><p>بدلاً من سؤال عام مثل «كم سعر المتر؟»، يصل الفريق إلى سياق مشروع أوضح قبل تحديد السعر.</p></div></div></aside></div></div></section>';
+ return '<section class="ke-stage" data-step="4"><div class="ke-stage-head"><div><div class="ke-eyebrow">04 — مراجعة الطلب</div><h2>ما الذي أصبح واضحاً قبل التواصل؟</h2></div><p>هذه المرحلة لا تحسب سعراً تلقائياً. السعر النهائي يعتمد على القياس والخامات والتفاصيل التي يعتمدها فريق دخاخني، لكن يمكنك الآن مراجعة ما تم ترتيبه وما يزال يحتاج تأكيداً.</p></div>'+
+ '<div class="ke-readiness"><div><span>اكتمال ملخص المشروع</span><b id="readinessText"></b></div><div class="ke-readiness-track"><i id="readinessBar"></i></div></div><div class="ke-commercial-grid"><article class="ke-commercial-card known"><span>تم ترتيبه</span><h3>هذه المعلومات ستصل مع طلبك</h3><ul id="knownList"></ul></article><article class="ke-commercial-card confirm"><span>يُعتمد مع الفريق</span><h3>هذه النقاط تحتاج مراجعة بشرية</h3><ul id="confirmList"></ul></article></div>'+
+ '<div class="ke-owner-card"><div class="ke-owner-grid"><div><div class="ke-summary" id="finalSummary"></div><div class="ke-memory" style="margin-top:14px"><h4>قصة مشروعك باختصار</h4><p id="finalStory"></p></div></div><aside class="ke-handoff ke-handoff-readiness"><div><small>جاهز للخطوة التالية</small><h3 id="finalCode"></h3><p id="finalReadiness"></p><div class="ke-q"><b>ماذا بعد؟</b><p>أكمل موقع المشروع وحالة القياس، ثم راجع الرسالة قبل فتح واتساب دخاخني.</p></div></div></aside></div></div></section>';
 }
 function step5(){
- return '<section class="ke-stage" data-step="5"><div class="ke-stage-head"><div><div class="ke-eyebrow">05 — التواصل والمراجعة</div><h2>أرسل نفس حالة المشروع إلى فريق دخاخني.</h2></div><p>آخر خطوة تجمع فقط السياق المفيد للمصمم ثم تنقل نفس الملخص إلى واتساب دخاخني الموثق، من دون تسجيل دخول أو تكامل وهمي.</p></div>'+
- '<div class="ke-grid"><div class="ke-card"><div class="ke-card-h"><div><h3>أكمل ما يفيد المراجعة فقط</h3><p>يمكن ترك أي معلومة غير معروفة الآن؛ لا نحجب الطلب بسبب نقص القياس.</p></div></div><div class="ke-card-b"><div class="ke-select-grid"><div class="ke-field"><label>موقع المشروع</label><input id="location" placeholder="المدينة — الحي"></div><div class="ke-field"><label>مرحلة المشروع</label><select id="stage"><option value="">غير محدد</option><option>مطبخ جديد</option><option>تجديد مطبخ قائم</option><option>استكشاف أولي</option></select></div><div class="ke-field"><label>المخطط / القياس</label><select id="planStatus"><option value="">غير محدد</option><option>مخطط جاهز</option><option>قياسات مبدئية متوفرة</option><option>أحتاج قياساً</option><option>غير متأكد</option></select></div><div class="ke-field"><label>ملاحظة للمصمم</label><input id="note" placeholder="مثال: أولوية تخزين أو جهاز محدد"></div></div></div></div>'+
- '<aside class="ke-aside"><div class="ke-handoff ke-final-handoff"><div><small>نفس المشروع · نفس الحالة</small><h3>ملخص جاهز لفريق التصميم</h3><p>واتساب سيحتوي على الشكل، الأبعاد التقريبية، الأجهزة، التخزين، الاتجاه البصري، حالة القياس وقصة القرار.</p><div class="ke-q"><b>سؤال تجاري واحد للفريق</b><p>'+safe(cfg.labels.commercialQuestion)+'</p></div></div><div class="ke-wa-preview"><small>رسالة واتساب المنظمة</small><pre id="waPreview"></pre></div><a class="ke-whatsapp" id="wa" target="_blank" rel="noopener">إرسال الملخص عبر واتساب ←</a></div><a class="ke-official-link" href="'+safe(cfg.officialSite)+'" target="_blank" rel="noopener">الموقع الرسمي لدخاخني ↗</a></aside></div>'+
- '<div class="ke-beforeafter"><div class="ke-ba"><small>قبل</small><h4>استفسار عام</h4><p>«أبغى مطبخ مودرن. كم السعر؟»</p></div><div class="ke-ba"><small>بعد هذه التجربة</small><h4>طلب قابل للمراجعة</h4><ul><li>مساحة وشكل واضحان</li><li>اتجاه بصري محفوظ</li><li>أجهزة وتخزين محدد</li><li>حالة قياس وموقع المشروع</li><li>نقاط غير محسومة للمصمم</li></ul></div></div></section>';
+ return '<section class="ke-stage" data-step="5"><div class="ke-stage-head"><div><div class="ke-eyebrow">05 — إرسال للمصمم</div><h2>راجع مشروعك ثم أرسله لفريق دخاخني.</h2></div><p>أضف فقط المعلومات التي تعرفها الآن. ستبقى الرسالة أمامك للمراجعة قبل فتح واتساب، ويمكنك أيضاً نسخ رابط المشروع والعودة إليه لاحقاً.</p></div>'+
+ '<div class="ke-grid"><div class="ke-card"><div class="ke-card-h"><div><h3>معلومات تساعد المصمم</h3><p>يمكن ترك أي خانة غير معروفة الآن.</p></div></div><div class="ke-card-b"><div class="ke-select-grid"><div class="ke-field"><label>موقع المشروع</label><input id="location" placeholder="المدينة — الحي"></div><div class="ke-field"><label>مرحلة المشروع</label><select id="stage"><option value="">غير محدد</option><option>مطبخ جديد</option><option>تجديد مطبخ قائم</option><option>استكشاف أولي</option></select></div><div class="ke-field"><label>المخطط / القياس</label><select id="planStatus"><option value="">غير محدد</option><option>مخطط جاهز</option><option>قياسات مبدئية متوفرة</option><option>أحتاج قياساً</option><option>غير متأكد</option></select></div><div class="ke-field"><label>ملاحظة للمصمم</label><input id="note" placeholder="مثال: أولوية تخزين أو جهاز محدد"></div></div><button class="ke-share-project" id="shareProject">نسخ رابط المشروع للمراجعة لاحقاً</button></div></div>'+
+ '<aside class="ke-aside"><div class="ke-handoff ke-final-handoff"><div><small>ملخص واحد · نفس اختياراتك</small><h3>راجع الرسالة قبل الإرسال</h3><p>تتضمن الشكل، الأبعاد التقريبية، الأجهزة، التخزين، الاتجاه البصري وحالة القياس.</p></div><div class="ke-wa-preview"><small>رسالة واتساب المنظمة</small><pre id="waPreview"></pre></div><a class="ke-whatsapp" id="wa" target="_blank" rel="noopener">فتح واتساب دخاخني ←</a></div><a class="ke-official-link" href="'+safe(cfg.officialSite)+'" target="_blank" rel="noopener">الموقع الرسمي لدخاخني ↗</a></aside></div>'+
+ '<div class="ke-beforeafter"><div class="ke-ba"><small>بداية متفرقة</small><h4>شرح ورسائل متعددة</h4><p>مقاسات وصور وأجهزة واحتياجات موزعة بين الرسائل.</p></div><div class="ke-ba"><small>بعد التجربة</small><h4>مشروع واحد قابل للمراجعة</h4><ul><li>مساحة وشكل واضحان</li><li>اتجاه 3D محفوظ</li><li>أجهزة وتخزين محدد</li><li>حالة قياس وموقع المشروع</li><li>ملخص جاهز للمصمم</li></ul></div></div></section>';
 }
 function planSvg(){
  var L=Math.max(220,Number(state.room.length)||420),W=Math.max(200,Number(state.room.width)||320),scale=Math.min(520/L,330/W),rw=L*scale,rh=W*scale,x=(600-rw)/2,y=(400-rh)/2,a=[];
@@ -162,7 +177,7 @@ function renderState(){
  if(kl){var known=["الشكل: "+labels.layout[chosen().layout],"المقاسات التقريبية: "+state.room.length+" × "+state.room.width+" سم","التخزين: "+active(state.requirements.storage).length+" اختيارات","الأجهزة: "+active(state.requirements.appliances).length+" اختيارات","الاتجاه البصري: "+labels.style[state.visual.style]+" / "+labels.cabinet[state.visual.cabinet]];kl.innerHTML=known.map(function(x){return "<li>"+safe(x)+"</li>"}).join("")}
  if(cl){var todo=["الخامة النهائية والعينة الفعلية","القياس الموقعي النهائي","مواقع الأجهزة واعتماد التمديدات","الإكسسوارات والتفاصيل التنفيذية","عرض السعر النهائي"];cl.innerHTML=todo.map(function(x){return "<li>"+safe(x)+"</li>"}).join("")}
  var fs=document.getElementById("finalSummary");if(fs){var aa=active(state.requirements.appliances).map(function(k){return labels.appliance[k]}),ss=active(state.requirements.storage).map(function(k){return labels.storage[k]}),rows=[["رقم المشروع",code()],["التصور المختار",chosen().title+" — "+labels.layout[chosen().layout]],["المساحة",state.room.length+" × "+state.room.width+" × "+state.room.height+" سم"],["القيود",state.room.markers.length+" عناصر"],["الأجهزة",aa.join("، ")||"غير محدد"],["التخزين",ss.join("، ")||"غير محدد"],["التوليفة البصرية",(state.visual.saved?"محفوظة — ":"غير محفوظة — ")+labels.style[state.visual.style]+" / "+labels.cabinet[state.visual.cabinet]+" / "+labels.worktop[state.visual.worktop]],["أسئلة للمراجعة","الخامة النهائية، مواقع الأجهزة، القياس"],["جاهزية المشروع",readiness()+"%"],["الموقع",state.project.location||"غير محدد"]];fs.innerHTML=rows.map(function(r){return '<div><small>'+r[0]+'</small><b>'+safe(r[1])+'</b></div>'}).join("");document.getElementById("finalStory").textContent=decisionStory();document.getElementById("finalCode").textContent=code();document.getElementById("finalReadiness").textContent="جاهزية الملخص الأولي: "+readiness()+"%. "+cfg.disclaimers.planning;document.getElementById("wa").href=whatsappUrl();var preview=document.getElementById("waPreview");if(preview){try{preview.textContent=decodeURIComponent((whatsappUrl().split("?text=")[1]||"").replace(/\+/g," "))}catch(e){preview.textContent=""}}}
- if(runtime.twin)rebuildTwin();
+ if(runtime.twin)rebuildTwin();if(runtime.heroTwin)rebuildHeroTwin();
 }
 
 function hydrate(){
@@ -173,7 +188,7 @@ function goStep(n){
  runtime.step=Math.max(1,Math.min(5,n));
  document.querySelectorAll(".ke-stage").forEach(function(e){e.classList.toggle("active",Number(e.dataset.step)===runtime.step)});
  document.querySelectorAll(".ke-stepchip").forEach(function(e,i){e.classList.toggle("active",i+1===runtime.step);e.classList.toggle("done",i+1<runtime.step)});
- var nextLabels=["التالي: الشكل واللون","التالي: الخزائن والتفاصيل","التالي: الجاهزية السعرية","التالي: التواصل والمراجعة","حفظ المشروع"],back=document.getElementById("backBtn"),next=document.getElementById("nextBtn");
+ var nextLabels=["التالي: التصور 3D","التالي: احتياجاتك","التالي: مراجعة الطلب","التالي: إرسال للمصمم","حفظ المشروع"],back=document.getElementById("backBtn"),next=document.getElementById("nextBtn");
  back.disabled=runtime.step===1;back.style.opacity=runtime.step===1?".45":"1";next.textContent=nextLabels[runtime.step-1];document.getElementById("stepProgress").textContent="المرحلة "+runtime.step+" من 5";
  if(runtime.step===2){initTwin();setTimeout(function(){rebuildTwin();cameraPreset("hero")},60)}
  renderState();emit("step",{step:runtime.step,code:code()});document.getElementById("plannerStart").scrollIntoView({behavior:"smooth",block:"start"});
@@ -187,7 +202,9 @@ function handleReference(file){
 function bindEvents(){
  root.addEventListener("click",function(ev){
   var t=ev.target.closest("button,a");if(!t)return;
-  if(t.id==="startPlanner"){goStep(1);return}
+  if(t.id==="startPlanner"||t.id==="headerStart"){goStep(1);return}
+  if(t.id==="jump3d"||t.id==="heroTo3d"){goStep(2);return}
+  if(t.id==="shareProject"){shareProject();return}
   if(t.dataset.scrolljourney){document.getElementById("journeyOverview").scrollIntoView({behavior:"smooth",block:"start"});return}
   if(t.id==="useCombo"){state.visual.saved=true;renderState();toast("تمت إضافة التوليفة إلى ملخص المشروع");return}
   if(t.dataset.stepnav){goStep(Number(t.dataset.stepnav));return}
@@ -330,6 +347,22 @@ function rebuildTwin(){
  if(layout==="island"||state.requirements.preferences.island){[-.45,.15,.75].forEach(function(px){put(g,new THREE.Mesh(new THREE.CylinderGeometry(.12,.22,.22,28,1,true),pendantMat),px,2.45,.25);put(g,box(.012,.55,.012,pendantMat),px,2.78,.25)})}
  runtime.twin.target.set(0,1.1,-.2);
 }
+function rebuildHeroTwin(){
+ if(!runtime.heroTwin)return;var old=runtime.twin;runtime.twin=runtime.heroTwin;rebuildTwin();runtime.twin=old;
+ var L=Math.max(2.4,state.room.length/100),W=Math.max(2.2,state.room.width/100),c=runtime.heroTwin.camGoal,t=runtime.heroTwin.target;
+ c.set(L*.70,2.75,W*.82);t.set(0,1.0,-.28);
+}
+function initHeroTwin(){
+ if(runtime.heroTwin||!window.THREE)return;var canvas=document.getElementById("heroTwin"),wrap=document.getElementById("heroTwinWrap");if(!canvas||!wrap)return;var renderer;
+ try{renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,powerPreference:"high-performance",alpha:false})}catch(e){wrap.innerHTML='<div class="ke-hero-plan-fallback">'+planSvg()+'</div>';return}
+ renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,window.innerWidth<700?1:1.25));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1;renderer.physicallyCorrectLights=true;
+ var scene=new THREE.Scene();scene.background=new THREE.Color(0xd9d6ce);scene.environment=envTexture();var camera=new THREE.PerspectiveCamera(34,1,.1,80),world=new THREE.Group();scene.add(world);
+ scene.add(new THREE.HemisphereLight(0xf6f2e9,0x5c564e,.68));var sun=new THREE.DirectionalLight(0xfff2df,2.1);sun.position.set(5,8,6);sun.castShadow=true;sun.shadow.mapSize.set(window.innerWidth<700?768:1024,window.innerWidth<700?768:1024);scene.add(sun);var fill=new THREE.DirectionalLight(0xd8e8f5,.48);fill.position.set(-5,4,5);scene.add(fill);
+ var camGoal=new THREE.Vector3(5,2.75,6),target=new THREE.Vector3(0,1.0,-.28);camera.position.copy(camGoal);camera.lookAt(target);
+ function resize(){var w=wrap.clientWidth,h=wrap.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}window.addEventListener("resize",resize);resize();
+ function loop(){requestAnimationFrame(loop);camera.position.lerp(camGoal,.07);camera.lookAt(target);var r=wrap.getBoundingClientRect();if(!document.hidden&&r.bottom>0&&r.top<window.innerHeight)renderer.render(scene,camera)}loop();
+ runtime.heroTwin={renderer:renderer,scene:scene,camera:camera,world:world,camGoal:camGoal,target:target};rebuildHeroTwin();
+}
 function initTwin(){
  if(runtime.twin||!window.THREE)return;var canvas=document.getElementById("keTwin"),wrap=document.getElementById("twinWrap");if(!canvas||!wrap)return;var renderer;
  try{renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,powerPreference:"high-performance"})}catch(e){wrap.innerHTML='<div class="ke-rule warn">المعاينة ثلاثية الأبعاد غير متاحة على هذا الجهاز. المخطط والملخص ما زالا قابلين للاستخدام.</div>';return}
@@ -347,5 +380,5 @@ function cameraPreset(name){
 }
 function togglePresentation(){if(!runtime.twin)return;var b=document.getElementById("presentation"),o=document.getElementById("presentationOverlay"),on=!o.classList.contains("on");o.classList.toggle("on",on);b.classList.toggle("active",on);runtime.twin.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,on?2:(window.innerWidth<700?1.25:1.7)));cameraPreset(on?"hero":"wide");toast(on?"وضع عرض عالي الجودة":"العودة للعرض التفاعلي")}
 
-applyTheme();root.innerHTML=renderPage();bindEvents();hydrate();renderState();document.getElementById("backBtn").disabled=true;
+applyTheme();root.innerHTML=renderPage();bindEvents();hydrate();renderState();document.getElementById("backBtn").disabled=true;initHeroTwin();
 })();
