@@ -137,7 +137,7 @@ jobs:
           async function friction(width,height){
             const x=await launch(width,height),p=x.page;let taps=0;const T=async sel=>{await p.locator(sel).click({force:true});taps++;await sleep(80)};
             const M=async n=>p.evaluate(n=>{const s=document.querySelector('.stage[data-stage="'+n+'"]');return{height:s?.scrollHeight||0,screens:+((s?.scrollHeight||0)/innerHeight).toFixed(2),copy:(s?.innerText||'').replace(/\s+/g,' ').trim().length,inputs:s?[...s.querySelectorAll('input,select,textarea')].filter(e=>e.offsetParent!==null).length:0}},n);
-            await T('#heroStart');const p1m=await M(1);await T('[data-projecttype="new"]');await T('[data-layout="l"]');await T('[data-measuremode="known"]');await p.locator('#roomLength').fill('420');await p.locator('#roomWidth').fill('320');await T('#nextBtn');const p2m=await M(2);
+            await T('#heroStart');const p1m=await M(1);await T('[data-projecttype="new"]');await T('[data-layout="l"]');await T('[data-measuremode="known"]');await p.locator('#roomLength').fill('420');await p.locator('#roomWidth').fill('320');await T('#nextBtn');await p.waitForSelector('.stage[data-stage="2"].active');const p2m=await M(2);
             await T('#nextBtn');await p.waitForSelector('.stage[data-stage="3"].active');const p3m=await M(3);
             await T('#nextBtn');await p.waitForSelector('.stage[data-stage="4"].active');const p4m=await M(4);
             await T('#nextBtn');await p.waitForSelector('.stage[data-stage="5"].active');const p5m=await M(5);
