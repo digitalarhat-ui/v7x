@@ -104,6 +104,8 @@ jobs:
 
             await page.locator('#nextBtn').click();await page.waitForSelector('.stage[data-stage="3"].active');await page.locator('#backBtn').click();await page.waitForSelector('.stage[data-stage="2"].active');st=await state(page);
             if(st.config.baseSlots[4]!=='drawers'||st.config.tallSlots[0]!=='pantry'||st.visual.cabinet!=='graphite'||st.visual.worktop!=='dark')throw new Error(tag+' Phase3 return state');
+            const p2Metrics=await page.evaluate(()=>({sw:document.documentElement.scrollWidth,iw:innerWidth,targets:[...document.querySelectorAll('.configTabs button,.configOption,.materialTile,.slot,.inspectBtn,.cameraBar button,#saveVisual')].filter(e=>e.offsetParent!==null).map(e=>e.getBoundingClientRect().height)}));
+            const p2Min=Math.min(...p2Metrics.targets);if(p2Metrics.sw>p2Metrics.iw+1)throw new Error(tag+' Phase2 horizontal overflow');if(mobile&&p2Min<44)throw new Error(tag+' Phase2 touch target '+p2Min);
             const studioGeo=await page.locator('#studioWrap').getAttribute('data-geometry-state');
             await page.evaluate(()=>scrollTo(0,0));await sleep(450);const heroGeo=await page.locator('#heroWrap').getAttribute('data-geometry-state'),heroAfter=await canvasHash(page,'#heroCanvas');
             if(heroGeo!==studioGeo)throw new Error(tag+' hero/studio geometry diverged');if(initialHero===heroAfter)throw new Error(tag+' hero did not reflect configuration');
@@ -114,11 +116,11 @@ jobs:
             if(!/وحدة أدراج|تخزين طويل|برج فرن|ثلاجة|وحدة حوض/.test(summary))throw new Error(tag+' Phase5 config summary missing');
             if(!wa?.startsWith('https://wa.me/966545246478?text='))throw new Error(tag+' WhatsApp route');
 
-            const metrics=await page.evaluate(()=>({sw:document.documentElement.scrollWidth,iw:innerWidth,contamination:/FN\s*Cadena|Makan\s*Cars/i.test(document.body.innerText),targets:[...document.querySelectorAll('.configTabs button,.configOption,.materialTile,.slot,.inspectBtn,.cameraBar button,#saveVisual')].filter(e=>e.offsetParent!==null).map(e=>e.getBoundingClientRect().height)}));
-            if(metrics.sw>metrics.iw+1)throw new Error(tag+' horizontal overflow');if(metrics.contamination)throw new Error(tag+' contamination');if(mobile&&Math.min(...metrics.targets)<44)throw new Error(tag+' touch target '+Math.min(...metrics.targets));if(errors.length)throw new Error(tag+' runtime '+errors.join(' | '));
+            const metrics=await page.evaluate(()=>({sw:document.documentElement.scrollWidth,iw:innerWidth,contamination:/FN\s*Cadena|Makan\s*Cars/i.test(document.body.innerText)}));
+            if(metrics.sw>metrics.iw+1)throw new Error(tag+' horizontal overflow');if(metrics.contamination)throw new Error(tag+' contamination');if(errors.length)throw new Error(tag+' runtime '+errors.join(' | '));
             if(mobile){await page.locator('[data-editphase="2"]').click();await page.waitForSelector('.stage[data-stage="2"].active');await page.locator('[data-configtab="modules"]').click();await shot(page,tag+'-09-mobile-controls','.configuratorGrid')}
             else {await page.locator('[data-editphase="2"]').click();await page.waitForSelector('.stage[data-stage="2"].active');await shot(page,'1440-10-desktop-studio','.configuratorGrid')}
-            result.viewports[tag]={baseSlots:st.config.baseSlots,tallSlots:st.config.tallSlots,upper:st.visual.upper,handle:st.visual.handle,interior:st.config.pantryInterior,orbit:or,scrollWidth:metrics.sw,minTouch:Math.min(...metrics.targets),summaryOK:true,whatsappOK:true,errors};
+            result.viewports[tag]={baseSlots:st.config.baseSlots,tallSlots:st.config.tallSlots,upper:st.visual.upper,handle:st.visual.handle,interior:st.config.pantryInterior,orbit:or,scrollWidth:metrics.sw,minTouch:p2Min,summaryOK:true,whatsappOK:true,errors};
             await browser.close()
           }
           try{await configure(390,844);await configure(430,900);await configure(1440,1000)}
