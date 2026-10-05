@@ -4,7 +4,7 @@ on:
     branches: [fn-cadena-ux-audit]
     paths: ['.github/workflows/fn-cadena-ux-audit.yml']
 permissions:
-  contents: read
+  contents: write
 jobs:
   audit:
     runs-on: ubuntu-latest
@@ -63,6 +63,20 @@ jobs:
           await run('mobile',{width:390,height:844});
           EOF
           node /tmp/audit.mjs
+      - name: Commit base64 screenshots for inspection
+        run: |
+          rm -rf audit-output
+          mkdir -p audit-output
+          for f in fn-audit/*.png; do
+            b="$(basename "$f" .png)"
+            base64 -w 0 "$f" > "audit-output/$b.b64"
+          done
+          cp fn-audit/*-summary.txt audit-output/ || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit-output
+          git commit -m "Store FN Cadena UX audit captures" || true
+          git push origin HEAD:fn-cadena-ux-audit
       - uses: actions/upload-artifact@v4
         with:
           name: fn-cadena-ux-audit
