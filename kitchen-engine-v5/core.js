@@ -382,7 +382,7 @@ function cachedTexture(kind,variant){
  var woodMapped=state.visual.cabinet==="oak"||state.visual.cabinet==="walnut";
  var wood=woodMapped?cachedTexture("wood",state.visual.cabinet):null,stone=cachedTexture("stone",state.visual.worktop),floor=cachedTexture("floor","warm-porcelain");
  if(wood)wood.repeat.set(1.25,.72);stone.repeat.set(1.18,.62);floor.repeat.set(3.2,2.8);
- var cc={ivory:0xd9d2c6,sage:0x788678,graphite:0x3d423f,white:0xefede7}[state.visual.cabinet]||0xd9d2c6,darkStone=state.visual.worktop==="dark";
+ var cc={ivory:0xd9d2c6,sage:0x858881,graphite:0x3d423f,white:0xefede7}[state.visual.cabinet]||0xd9d2c6,darkStone=state.visual.worktop==="dark";
  var set={
   cab:new THREE.MeshPhysicalMaterial({color:woodMapped?0xffffff:cc,map:woodMapped?wood:null,roughness:woodMapped?.48:(state.visual.cabinet==="white"?.34:.58),metalness:0,clearcoat:state.visual.cabinet==="white"?.20:.06,clearcoatRoughness:.48,envMapIntensity:.52}),
   inside:new THREE.MeshStandardMaterial({color:0xc9c4bb,roughness:.72}),
@@ -550,7 +550,7 @@ function rebuildScene(instance,preserveCamera){
 function geometryStateKey(){ensureConfigurator();return JSON.stringify([knownMeasurements(),state.room.length,state.room.width,state.room.height,effectiveLayout(),state.room.markers,state.visual.upper,state.visual.handle,state.config.baseSlots,state.config.tallSlots,state.config.pantryInterior,state.config.inspect,state.config.selected])}
 function stamp3DState(instance){if(!instance||!instance.wrap)return;instance.wrap.dataset.cameraMode=instance.cameraMode||"hero";instance.wrap.dataset.materialState=instance.materialKey||materialStateKey();instance.wrap.dataset.geometryState=instance.geometryKey||geometryStateKey()}
 function applyVisualMaterials(instance){
- if(!instance||!instance.materialSet)return;var set=instance.materialSet,woodMapped=state.visual.cabinet==="oak"||state.visual.cabinet==="walnut",cabColor=woodMapped?0xffffff:({ivory:0xd9d2c6,sage:0x788678,graphite:0x3d423f,white:0xefede7}[state.visual.cabinet]||0xd9d2c6);
+ if(!instance||!instance.materialSet)return;var set=instance.materialSet,woodMapped=state.visual.cabinet==="oak"||state.visual.cabinet==="walnut",cabColor=woodMapped?0xffffff:({ivory:0xd9d2c6,sage:0x858881,graphite:0x3d423f,white:0xefede7}[state.visual.cabinet]||0xd9d2c6);
  set.cab.color.setHex(cabColor);set.cab.map=woodMapped?cachedTexture("wood",state.visual.cabinet):null;if(set.cab.map)set.cab.map.repeat.set(1.25,.72);set.cab.roughness=woodMapped?.48:(state.visual.cabinet==="white"?.34:.58);set.cab.clearcoat=state.visual.cabinet==="white"?.20:.06;set.cab.needsUpdate=true;
  set.stone.map=cachedTexture("stone",state.visual.worktop);set.stone.map.repeat.set(1.18,.62);set.stone.color.setHex(state.visual.worktop==="dark"?0x55544f:0xffffff);set.stone.roughness=state.visual.worktop==="dark"?.30:.34;set.stone.needsUpdate=true;
  instance.materialKey=materialStateKey();stamp3DState(instance)
