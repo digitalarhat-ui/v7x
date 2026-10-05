@@ -50,7 +50,6 @@ jobs:
             const context=await browser.newContext({viewport:{width,height},deviceScaleFactor:1,reducedMotion:'reduce',hasTouch:mobile,isMobile:mobile,permissions:['clipboard-read','clipboard-write']});
             const page=await context.newPage();page.setDefaultTimeout(18000);const errors=[];
             page.on('console',m=>{if(m.type()==='error')errors.push('console:'+m.text())});page.on('pageerror',e=>errors.push('page:'+e.message));
-            await page.addInitScript(()=>localStorage.clear());
             await page.goto(base,{waitUntil:'domcontentloaded',timeout:30000});await page.waitForSelector('#heroCanvas');await sleep(800);
             return{browser,context,page,mobile,errors}
           }
