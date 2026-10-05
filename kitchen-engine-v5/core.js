@@ -24,7 +24,7 @@ var defaults={
  contact:{name:""},
  meta:{createdAt:Date.now(),updatedAt:Date.now()}
 };
-var runtime={phase:1,maxPhase:1,refFile:null,refData:"",hero:null,studio:null,assetCache:{},assetWait:{},hdr:null,hdrLoading:false,hdrWait:[],suspendHistory:false};
+var runtime={phase:1,maxPhase:1,refFile:null,refData:"",hero:null,studio:null,instances:[],raf:0,assetCache:{},assetWait:{},hdr:null,hdrLoading:false,hdrWait:[],suspendHistory:false};
 function clone(v){return JSON.parse(JSON.stringify(v))}
 function merge(a,b){if(!b||typeof b!=="object")return a;Object.keys(b).forEach(function(k){if(b[k]&&typeof b[k]==="object"&&!Array.isArray(b[k])){if(!a[k]||typeof a[k]!=="object")a[k]={};merge(a[k],b[k])}else a[k]=b[k]});return a}
 function safe(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"})[c]})}
@@ -65,11 +65,12 @@ function layoutSketch(type){
 function choice(label,key,on,attr){return'<button class="choice '+(on?"active":"")+'" type="button" data-'+attr+'="'+key+'">'+safe(label)+'</button>'}
 function toggle(label,key,on,attr){return'<button class="toggle '+(on?"active":"")+'" type="button" data-'+attr+'="'+key+'">'+safe(label)+'</button>'}
 function swatch(key,color,type){return'<button class="swatch '+((type==="cabinet"?state.visual.cabinet:state.visual.worktop)===key?"active":"")+'" type="button" data-'+type+'="'+key+'" aria-label="'+safe((type==="cabinet"?cabinetLabels:worktopLabels)[key])+'"><i style="--sw:'+color+'"></i></button>'}
+function heroSwatch(key,color,type,label){var active=(type==="cabinet"?state.visual.cabinet:state.visual.worktop)===key;return'<button class="heroSwatch '+(active?"active":"")+'" type="button" data-'+type+'="'+key+'" aria-label="'+safe(label)+'"><i style="--sw:'+color+'"></i><span>'+safe(label)+'</span></button>'}
 function page(){
  var phases=["المساحة والتخطيط","الشكل واللون","الخزائن والتفاصيل","المراجعة والخطوة التالية","التواصل والمراجعة"];
  return'<header class="topbar"><div class="shell nav"><div class="brand"><div class="brandMark">AD</div><div class="brandText"><b>'+safe(cfg.brand)+'</b><small>'+safe(cfg.legalName)+'</small></div></div><button class="topCta" id="headerStart">ابدأ مشروعك</button></div></header>'+
  '<section class="hero"><div class="shell heroGrid"><div><div class="eyebrow">'+safe(cfg.labels.heroEyebrow)+'</div><h1>'+safe(cfg.labels.heroTitle).replace(/\n/g,"<br>")+'</h1><p class="heroLead">'+safe(cfg.labels.heroBody)+'</p><div class="heroBenefits"><div><small>01</small><b>رتّب المساحة بسرعة</b></div><div><small>02</small><b>جرّب اتجاهاً في 3D</b></div><div><small>03</small><b>أرسل ملخصاً واحداً</b></div></div><div class="heroActions"><button class="btnPrimary" id="heroStart">ابدأ مشروعك</button><button class="btnSecondary" id="hero3d">جرّب 3D الآن</button></div><p class="heroTruth">'+safe(cfg.disclaimers.visual)+'</p></div>'+
- '<div class="heroVisual" id="heroWrap" role="button" tabindex="0" aria-label="جرّب المعاينة ثلاثية الأبعاد ثم افتح الاستوديو"><canvas id="heroCanvas"></canvas><div class="heroVisualTop"><span>اسحب أفقياً لتغيير الزاوية</span><b>اضغط لفتح استوديو 3D</b></div><div class="heroState"><span id="heroLayout">نموذج توضيحي</span><span id="heroDims">المقاسات بعد إدخالها</span><span id="heroFinish">'+safe(cabinetLabels[state.visual.cabinet])+'</span></div></div></div></section>'+
+ '<div class="hero3dBlock"><div class="heroVisual" id="heroWrap" role="button" tabindex="0" aria-label="اسحب أفقياً لتدوير المطبخ، أو اضغط لفتح الاستوديو"><canvas id="heroCanvas"></canvas><div class="heroVisualTop"><span>اسحب أفقياً لتغيير الزاوية</span><b>3D مباشر</b></div><div class="heroState"><span id="heroLayout">نموذج توضيحي</span><span id="heroDims">المقاسات بعد إدخالها</span><span id="heroFinish">'+safe(cabinetLabels[state.visual.cabinet])+'</span></div></div><div class="heroQuickControls"><div class="heroQuickGroup"><b>واجهات</b><div>'+heroSwatch("ivory","#d9d1c4","cabinet","عاجي")+heroSwatch("oak","#a47d56","cabinet","خشبي")+heroSwatch("graphite","#3b3f3b","cabinet","فحمي")+'</div></div><div class="heroQuickGroup"><b>سطح</b><div>'+heroSwatch("veined","#ece8df","worktop","فاتح")+heroSwatch("warm","#aa9c87","worktop","دافئ")+heroSwatch("dark","#4d4c48","worktop","داكن")+'</div></div><p>اتجاهات بصرية تجريبية فقط — وليست كتالوج خامات رسمي.</p></div></div></div></section>'+
  '<section class="truthStrip"><div class="shell truthGrid"><article><small>1</small><b>ابدأ بما تعرفه</b><p>نوع المشروع، الشكل، والقياسات التقريبية فقط.</p></article><article><small>2</small><b>شاهد الاتجاه بصرياً</b><p>انتقل سريعاً إلى معاينة 3D التفاعلية.</p></article><article><small>3</small><b>رتّب التفاصيل لاحقاً</b><p>الخزائن والأجهزة تظهر بعد المكافأة البصرية.</p></article><article><small>4</small><b>ملخص واحد للمصمم</b><p>اختيارات المشروع تبقى مجمعة للمراجعة.</p></article></div></section>'+
  '<main class="planner" id="planner"><div class="shell"><div class="phaseProgress" id="phaseProgress"><div class="phaseProgressTop"><span class="phaseCount"><b id="phaseNumber">1</b> / 5</span><strong id="phaseTitle">'+phases[0]+'</strong><i class="phaseTrack" aria-hidden="true"><i id="phaseBarFill"></i></i></div><ol>'+phases.map(function(p,i){return'<li data-phase="'+(i+1)+'"><button type="button" data-jump="'+(i+1)+'"><span>'+(i+1)+'</span><b>'+p+'</b></button></li>'}).join("")+'</ol></div>'+
  stage1()+stage2()+stage3()+stage4()+stage5()+'</div></main>'+
@@ -91,9 +92,8 @@ function measurementFields(){
  return'<div class="fieldGrid coreMeasurements" style="margin-top:12px"><div class="field"><label>الطول التقريبي</label><input id="roomLength" type="number" min="200" max="1200" step="5" value="'+state.room.length+'"></div><div class="field"><label>العرض التقريبي</label><input id="roomWidth" type="number" min="180" max="1000" step="5" value="'+state.room.width+'"></div></div><div class="error" id="errDims"></div>';
 }
 function stage2(){
- return'<section class="stage" data-stage="2"><div class="stageHead"><div><div class="stageEyebrow">02 — الشكل واللون</div><h2>شاهد الاتجاه قبل أن تشرحه.</h2></div><p>المعاينة ثلاثية الأبعاد تساعدك على رؤية الاتجاه قبل جلسة التصميم. التكوين يتبع الشكل والمقاسات التي أدخلتها، أو يستخدم نموذجاً توضيحياً واضحاً إذا لم تتوفر القياسات.</p></div>'+
- '<div class="studio"><div class="studioHead"><div><small>المعاينة التفاعلية</small><h3>تصور مبدئي لمشروعك</h3></div><button class="saveVisual '+(state.visual.saved?"saved":"")+'" id="saveVisual">'+(state.visual.saved?"تم حفظ الاتجاه ✓":"استخدم هذا الاتجاه في طلبي")+'</button></div><div class="cameraBar"><button class="active" data-camera="hero">منظور رئيسي</button><button data-camera="functional">منظور وظيفي</button><button data-camera="elevation">واجهة أمامية</button><button data-camera="island">الجزيرة</button><button data-camera="wide">المشهد الكامل</button></div><div class="viewer" id="studioWrap"><canvas id="studioCanvas"></canvas><div class="viewerLabel" id="viewerLabel">نموذج توضيحي</div><div class="viewerDisclaimer">'+safe(cfg.disclaimers.visual)+' '+safe(cfg.disclaimers.materials)+'</div></div><div class="finishBar"><div class="finishGroup"><b>اتجاه واجهات الخزائن</b><div class="swatches">'+swatch("ivory","#d9d1c4","cabinet")+swatch("oak","#a47d56","cabinet")+swatch("walnut","#594033","cabinet")+swatch("sage","#79877a","cabinet")+swatch("graphite","#3b3f3b","cabinet")+swatch("white","#efeee8","cabinet")+'</div></div><div class="finishGroup"><b>اتجاه سطح العمل</b><div class="swatches">'+swatch("quartz","#e4e0d7","worktop")+swatch("veined","#ece8df","worktop")+swatch("warm","#aa9c87","worktop")+swatch("dark","#4d4c48","worktop")+'</div></div></div></div>'+
- '<div class="paper" style="margin-top:18px"><div class="section"><div class="sectionTitle"><b>الخزائن العلوية</b><span>اتجاه بصري أولي فقط.</span></div><div class="choiceGrid">'+Object.keys(upperLabels).map(function(k){return choice(upperLabels[k],k,state.visual.upper===k,"upper")}).join("")+'</div></div><div class="section"><div class="sectionTitle"><b>اتجاه المقابض</b><span>يمكن تغيير هذا لاحقاً مع المصمم.</span></div><div class="choiceGrid">'+Object.keys(handleLabels).map(function(k){return choice(handleLabels[k],k,state.visual.handle===k,"handle")}).join("")+'</div></div><div class="error" id="errVisual"></div></div></section>';
+ return'<section class="stage" data-stage="2"><div class="stageHead"><div><div class="stageEyebrow">02 — الشكل واللون</div><h2>جرّب التوليفة مباشرة على مشروعك.</h2></div><p>المعاينة ثلاثية الأبعاد تستخدم نفس حالة المشروع التي بدأت بها في الأعلى. غيّر الواجهات أو سطح العمل وشاهد النتيجة فوراً، ثم احفظ الاتجاه للمراجعة مع المصمم.</p></div>'+
+ '<div class="studio"><div class="studioHead"><div><small>استوديو 3D التفاعلي</small><h3>تصور مبدئي لمشروعك</h3></div><span class="studioState" id="studioState">'+safe(effectiveLabel())+'</span></div><div class="viewer" id="studioWrap"><canvas id="studioCanvas"></canvas><div class="viewerLabel" id="viewerLabel">نموذج توضيحي</div><div class="viewerHint">اسحب أفقياً للدوران</div><div class="viewerDisclaimer">'+safe(cfg.disclaimers.visual)+' '+safe(cfg.disclaimers.materials)+'</div></div><div class="cameraBar" aria-label="زوايا المعاينة"><button class="active" data-camera="hero">منظور رئيسي</button><button data-camera="functional">منظور عملي</button><button data-camera="elevation">واجهة</button><button data-camera="island">الجزيرة</button><button data-camera="wide">المشهد الكامل</button></div><div class="finishBar"><div class="finishGroup"><b>اتجاه واجهات الخزائن</b><div class="swatches">'+swatch("ivory","#d9d1c4","cabinet")+swatch("oak","#a47d56","cabinet")+swatch("walnut","#594033","cabinet")+swatch("sage","#79877a","cabinet")+swatch("graphite","#3b3f3b","cabinet")+swatch("white","#efeee8","cabinet")+'</div></div><div class="finishGroup"><b>اتجاه سطح العمل</b><div class="swatches">'+swatch("quartz","#e4e0d7","worktop")+swatch("veined","#ece8df","worktop")+swatch("warm","#aa9c87","worktop")+swatch("dark","#4d4c48","worktop")+'</div></div></div><div class="advancedVisual"><div><b>الخزائن العلوية</b><span>اتجاه بصري أولي</span><div class="choiceGrid">'+Object.keys(upperLabels).map(function(k){return choice(upperLabels[k],k,state.visual.upper===k,"upper")}).join("")+'</div></div><div><b>اتجاه المقابض</b><span>قابل للمراجعة مع المصمم</span><div class="choiceGrid">'+Object.keys(handleLabels).map(function(k){return choice(handleLabels[k],k,state.visual.handle===k,"handle")}).join("")+'</div></div></div><div class="studioSave"><button class="saveVisual '+(state.visual.saved?"saved":"")+'" id="saveVisual">'+(state.visual.saved?"تم حفظ التوليفة ✓":"استخدم هذه التوليفة في طلبي")+'</button><small>حفظ التوليفة لا يعني اعتماد خامة أو تصميم نهائي.</small><div class="error" id="errVisual"></div></div></div></section>';
 }
 function stage3(){
  return'<section class="stage" data-stage="3"><div class="stageHead"><div><div class="stageEyebrow">03 — الخزائن والتفاصيل</div><h2>أضف ما يغيّر استخدام المطبخ فعلاً.</h2></div><p>التفاصيل الوظيفية تظهر تدريجياً بدل نموذج طويل. نلتقط فقط ما يساعد المصمم على فهم الاستخدام قبل أن يبدأ.</p></div><div class="paper">'+
@@ -121,7 +121,7 @@ function validatePhase(n,show){
 function goPhase(n,mode){
  n=Math.max(1,Math.min(5,n));if(n>runtime.maxPhase)return;runtime.phase=n;state.phase=n;save();renderDynamic();
  if(!runtime.suspendHistory){var method=mode==="replace"?"replaceState":"pushState";history[method]({phase:n},"",location.pathname+"#phase-"+n)}runtime.suspendHistory=false;
- if(n===2){initStudio();setTimeout(function(){rebuildAll3D();cameraPreset(runtime.studio,"hero")},50)}
+ if(n===2){initStudio();setTimeout(function(){syncAll3D();if(runtime.studio&&runtime.studio.cameraMode==="hero")cameraPreset(runtime.studio,"hero");updateCameraControls()},50)}
  document.getElementById("phaseProgress").scrollIntoView({behavior:"smooth",block:"start"});emit("phase",{phase:n,code:projectCode()});
 }
 function nextPhase(){if(!validatePhase(runtime.phase,true))return;if(runtime.phase<5){runtime.maxPhase=Math.max(runtime.maxPhase,runtime.phase+1);state.maxPhase=runtime.maxPhase;save();goPhase(runtime.phase+1)}else{save();toast("تم حفظ المشروع على هذا الجهاز")}}
@@ -155,6 +155,9 @@ function summaryGroups(){
  ];
  e.innerHTML=groups.map(function(g){return'<div class="summaryGroup"><div class="summaryGroupHead"><h4>'+g[0]+'</h4><button type="button" data-editphase="'+g[1]+'">تعديل</button></div>'+g[2].map(function(x){return'<p>'+safe(x)+'</p>'}).join("")+'</div>'}).join("");
 }
+function viewerStateLabel(){if(!state.room.layout||state.room.layout==="unsure")return"نموذج توضيحي — شكل المساحة يحتاج تأكيد المصمم";if(!knownMeasurements())return"نموذج توضيحي — القياسات غير متوفرة";return roomText()}
+function syncVisualControls(){document.querySelectorAll("[data-cabinet]").forEach(function(x){x.classList.toggle("active",x.dataset.cabinet===state.visual.cabinet)});document.querySelectorAll("[data-worktop]").forEach(function(x){x.classList.toggle("active",x.dataset.worktop===state.visual.worktop)});document.querySelectorAll("[data-upper]").forEach(function(x){x.classList.toggle("active",x.dataset.upper===state.visual.upper)});document.querySelectorAll("[data-handle]").forEach(function(x){x.classList.toggle("active",x.dataset.handle===state.visual.handle)})}
+function updateCameraControls(){var hasIsland=effectiveLayout()==="island";document.querySelectorAll("[data-camera]").forEach(function(x){var island=x.dataset.camera==="island";x.hidden=island&&!hasIsland;x.disabled=island&&!hasIsland;x.classList.toggle("active",!!runtime.studio&&runtime.studio.cameraMode===x.dataset.camera)})}
 function renderDynamic(){
  save();
  document.querySelectorAll(".stage").forEach(function(e){e.classList.toggle("active",Number(e.dataset.stage)===runtime.phase)});
@@ -164,15 +167,15 @@ function renderDynamic(){
  var next=["التالي: الشكل واللون","التالي: الخزائن والتفاصيل","التالي: المراجعة","التالي: التواصل","حفظ المشروع"];document.getElementById("nextBtn").textContent=next[runtime.phase-1];document.getElementById("backBtn").disabled=runtime.phase===1;document.getElementById("backBtn").style.opacity=runtime.phase===1?".45":"1";
  var mm=document.getElementById("measurementPanel");if(mm)mm.innerHTML=measurementFields();markerRows();
  var users=document.getElementById("users"),cooking=document.getElementById("cooking"),sink=document.getElementById("sinkMode");if(users)users.value=state.details.users;if(cooking)cooking.value=state.details.cooking;if(sink)sink.value=state.details.sink;
- var vf=document.getElementById("viewerLabel");if(vf)vf.textContent=knownMeasurements()?roomText():"نموذج توضيحي — القياسات غير متوفرة";
- var sv=document.getElementById("saveVisual");if(sv){sv.textContent=state.visual.saved?"تم حفظ الاتجاه ✓":"استخدم هذا الاتجاه في طلبي";sv.classList.toggle("saved",state.visual.saved)}
+ var vf=document.getElementById("viewerLabel");if(vf)vf.textContent=viewerStateLabel();var ss=document.getElementById("studioState");if(ss)ss.textContent=(state.room.layout?layoutLabels[state.room.layout]:"نموذج توضيحي")+" · "+(knownMeasurements()?state.room.length+" × "+state.room.width+" سم":"قياسات غير مؤكدة");
+ var sv=document.getElementById("saveVisual");if(sv){sv.textContent=state.visual.saved?"تم حفظ التوليفة ✓":"استخدم هذه التوليفة في طلبي";sv.classList.toggle("saved",state.visual.saved)}
  var rd=document.getElementById("detailsReviewed");if(rd)rd.textContent=state.details.reviewed?"تمت مراجعة التفاصيل ✓":"تمت مراجعة التفاصيل — متابعة";
  var rc=document.getElementById("reviewConfirmed");if(rc)rc.textContent=state.review.confirmed?"تمت المراجعة ✓":"راجعت المشروع — متابعة للتواصل";
  var r=readiness(),rb=document.getElementById("readinessBar"),rt=document.getElementById("readinessText");if(rb)rb.style.width=r+"%";if(rt)rt.textContent=r+"%";var rcod=document.getElementById("readinessCode");if(rcod)rcod.textContent=projectCode();
  var kl=document.getElementById("knownList"),cl=document.getElementById("confirmList");if(kl)kl.innerHTML=knownItems().map(function(x){return"<li>"+safe(x)+"</li>"}).join("");if(cl)cl.innerHTML=confirmItems().map(function(x){return"<li>"+safe(x)+"</li>"}).join("");
  summaryGroups();var wp=document.getElementById("waPreview"),wb=document.getElementById("waButton");if(wp)wp.textContent=whatsappSummary();if(wb)wb.href=whatsappUrl();
  var hl=document.getElementById("heroLayout"),hd=document.getElementById("heroDims"),hf=document.getElementById("heroFinish");if(hl)hl.textContent=state.room.layout?layoutLabels[state.room.layout]:"نموذج توضيحي";if(hd)hd.textContent=knownMeasurements()?state.room.length+" × "+state.room.width+" سم":"أدخل المقاسات أو تابع بدونها";if(hf)hf.textContent=cabinetLabels[state.visual.cabinet];
- if(runtime.hero)rebuildScene(runtime.hero);if(runtime.studio)rebuildScene(runtime.studio);
+ syncVisualControls();updateCameraControls();syncAll3D();
 }
 function handleFile(file){
  runtime.refFile=null;runtime.refData="";var box=document.getElementById("filePreview");if(!file){if(box)box.innerHTML="";return}
@@ -192,18 +195,18 @@ function bind(){
   if(t.dataset.measuremode){state.project.measurementMode=t.dataset.measuremode;invalidateVisual();document.querySelectorAll("[data-measuremode]").forEach(function(x){x.classList.toggle("active",x===t)});renderDynamic();return}
   if(t.dataset.addmarker){state.room.markers.push({id:"m"+Date.now().toString(36),type:t.dataset.addmarker,wall:"north",pos:50});invalidateVisual();renderDynamic();return}
   if(t.dataset.delmarker){state.room.markers=state.room.markers.filter(function(m){return m.id!==t.dataset.delmarker});invalidateVisual();renderDynamic();return}
-  if(t.dataset.cabinet){state.visual.cabinet=t.dataset.cabinet;invalidateVisual();document.querySelectorAll("[data-cabinet]").forEach(function(x){x.classList.toggle("active",x===t)});renderDynamic();return}
-  if(t.dataset.worktop){state.visual.worktop=t.dataset.worktop;invalidateVisual();document.querySelectorAll("[data-worktop]").forEach(function(x){x.classList.toggle("active",x===t)});renderDynamic();return}
+  if(t.dataset.cabinet){state.visual.cabinet=t.dataset.cabinet;invalidateVisual();stopAutoPresentation(runtime.hero);renderDynamic();return}
+  if(t.dataset.worktop){state.visual.worktop=t.dataset.worktop;invalidateVisual();stopAutoPresentation(runtime.hero);renderDynamic();return}
   if(t.dataset.upper){state.visual.upper=t.dataset.upper;invalidateVisual();document.querySelectorAll("[data-upper]").forEach(function(x){x.classList.toggle("active",x===t)});renderDynamic();return}
   if(t.dataset.handle){state.visual.handle=t.dataset.handle;invalidateVisual();document.querySelectorAll("[data-handle]").forEach(function(x){x.classList.toggle("active",x===t)});renderDynamic();return}
-  if(t.id==="saveVisual"){state.visual.saved=true;runtime.maxPhase=Math.max(runtime.maxPhase,3);save();renderDynamic();toast("تم حفظ الاتجاه داخل المشروع");return}
+  if(t.id==="saveVisual"){state.visual.saved=true;runtime.maxPhase=Math.max(runtime.maxPhase,3);save();renderDynamic();toast("تم حفظ التوليفة داخل المشروع ✓");return}
   if(t.dataset.storage){var sk=t.dataset.storage;state.details.storage[sk]=!state.details.storage[sk];invalidateDetails();t.classList.toggle("active",state.details.storage[sk]);renderDynamic();return}
   if(t.dataset.appliance){var ak=t.dataset.appliance;state.details.appliances[ak]=!state.details.appliances[ak];invalidateDetails();t.classList.toggle("active",state.details.appliances[ak]);renderDynamic();return}
   if(t.id==="detailsReviewed"){state.details.reviewed=true;runtime.maxPhase=Math.max(runtime.maxPhase,4);save();renderDynamic();toast("تم حفظ تفاصيل المشروع");return}
   if(t.dataset.follow){state.review.followUp=t.dataset.follow;state.review.confirmed=false;runtime.maxPhase=Math.min(runtime.maxPhase,4);state.maxPhase=runtime.maxPhase;document.querySelectorAll("[data-follow]").forEach(function(x){x.classList.toggle("active",x===t)});renderDynamic();return}
   if(t.id==="reviewConfirmed"){state.review.confirmed=true;runtime.maxPhase=Math.max(runtime.maxPhase,5);save();renderDynamic();toast("تمت مراجعة المشروع");return}
   if(t.dataset.editphase){goPhase(Number(t.dataset.editphase));return}
-  if(t.dataset.camera){cameraPreset(runtime.studio,t.dataset.camera);document.querySelectorAll("[data-camera]").forEach(function(x){x.classList.toggle("active",x===t)});return}
+  if(t.dataset.camera){cameraPreset(runtime.studio,t.dataset.camera);updateCameraControls();return}
   if(t.id==="shareProject"){copyShare();return}
   if(t.id==="waButton"){
     var earliest=0;if(!validatePhase(1,false))earliest=1;else if(!state.visual.saved)earliest=2;else if(!state.details.reviewed)earliest=3;else if(!state.review.confirmed)earliest=4;
@@ -252,7 +255,7 @@ function materials(){
  var wood=canvasTexture("wood"),stone=canvasTexture("stone"),floor=canvasTexture("floor");wood.repeat.set(2.4,1);stone.repeat.set(2.2,.75);floor.repeat.set(4,4);
  var woodMapped=state.visual.cabinet==="oak"||state.visual.cabinet==="walnut",cc=woodMapped?0xffffff:{ivory:0xd9d1c4,sage:0x788678,graphite:0x3a3e3a,white:0xf0eee9}[state.visual.cabinet]||0xd9d1c4;
  var darkStone=state.visual.worktop==="dark";
- return{cab:new THREE.MeshPhysicalMaterial({color:woodMapped?(state.visual.cabinet==="walnut"?0x62483b:0xa9825f):cc,roughness:state.visual.cabinet==="white"?.25:(woodMapped?.42:.36),metalness:0,clearcoat:state.visual.cabinet==="white"?.30:.10,clearcoatRoughness:.34,envMapIntensity:.28}),inside:new THREE.MeshStandardMaterial({color:0xcfcac1,roughness:.58}),stone:new THREE.MeshPhysicalMaterial({color:darkStone?0x55524e:0xffffff,map:stone,roughness:.24,clearcoat:.28,clearcoatRoughness:.23,envMapIntensity:.9}),chrome:new THREE.MeshStandardMaterial({color:0xaeb3b1,roughness:.17,metalness:.95,envMapIntensity:1.3}),black:new THREE.MeshPhysicalMaterial({color:0x101210,roughness:.18,metalness:.30,clearcoat:.75,clearcoatRoughness:.09}),glass:new THREE.MeshPhysicalMaterial({color:0xcdd9d8,roughness:.06,metalness:0,transparent:true,opacity:.24,clearcoat:1,envMapIntensity:1.1}),wall:new THREE.MeshStandardMaterial({color:0xe8e2d9,roughness:.92}),floor:new THREE.MeshPhysicalMaterial({color:0xffffff,map:floor,roughness:.68,envMapIntensity:.25}),plinth:new THREE.MeshStandardMaterial({color:0x1b1e1b,roughness:.42,metalness:.25}),wood:new THREE.MeshPhysicalMaterial({color:0xffffff,map:wood,roughness:.38,clearcoat:.08}),led:new THREE.MeshStandardMaterial({color:0xffe2ae,emissive:0xffc76a,emissiveIntensity:.85}),shadow:new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.13,depthWrite:false})}
+ var set={cab:new THREE.MeshPhysicalMaterial({color:woodMapped?(state.visual.cabinet==="walnut"?0x62483b:0xa9825f):cc,roughness:state.visual.cabinet==="white"?.25:(woodMapped?.42:.36),metalness:0,clearcoat:state.visual.cabinet==="white"?.30:.10,clearcoatRoughness:.34,envMapIntensity:.28}),inside:new THREE.MeshStandardMaterial({color:0xcfcac1,roughness:.58}),stone:new THREE.MeshPhysicalMaterial({color:darkStone?0x55524e:0xffffff,map:stone,roughness:.24,clearcoat:.28,clearcoatRoughness:.23,envMapIntensity:.9}),chrome:new THREE.MeshStandardMaterial({color:0xaeb3b1,roughness:.17,metalness:.95,envMapIntensity:1.3}),black:new THREE.MeshPhysicalMaterial({color:0x101210,roughness:.18,metalness:.30,clearcoat:.75,clearcoatRoughness:.09}),glass:new THREE.MeshPhysicalMaterial({color:0xcdd9d8,roughness:.06,metalness:0,transparent:true,opacity:.24,clearcoat:1,envMapIntensity:1.1}),wall:new THREE.MeshStandardMaterial({color:0xe8e2d9,roughness:.92}),floor:new THREE.MeshPhysicalMaterial({color:0xffffff,map:floor,roughness:.68,envMapIntensity:.25}),plinth:new THREE.MeshStandardMaterial({color:0x1b1e1b,roughness:.42,metalness:.25}),wood:new THREE.MeshPhysicalMaterial({color:0xffffff,map:wood,roughness:.38,clearcoat:.08}),led:new THREE.MeshStandardMaterial({color:0xffe2ae,emissive:0xffc76a,emissiveIntensity:.85}),shadow:new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.13,depthWrite:false})};Object.keys(set).forEach(function(k){set[k].userData.dakhRole=k});return set
 }
 function box(w,h,d,mat,bevel){
  var geo;if(bevel!==false&&Math.min(w,h,d)>.02&&w<2.8&&h<2.8&&d<2.8){var r=Math.max(.002,Math.min(.009,Math.min(w,h,d)*.15)),iw=Math.max(.004,w-2*r),ih=Math.max(.004,h-2*r),dep=Math.max(.004,d-2*r),sh=new THREE.Shape();sh.moveTo(-iw/2,-ih/2);sh.lineTo(iw/2,-ih/2);sh.lineTo(iw/2,ih/2);sh.lineTo(-iw/2,ih/2);sh.closePath();geo=new THREE.ExtrudeGeometry(sh,{depth:dep,steps:1,bevelEnabled:true,bevelSegments:2,bevelSize:r,bevelThickness:r,curveSegments:1});geo.translate(0,0,-dep/2);geo.computeVertexNormals()}else geo=new THREE.BoxGeometry(w,h,d);var m=new THREE.Mesh(geo,mat);m.castShadow=true;m.receiveShadow=true;return m
@@ -322,12 +325,12 @@ function simpleSink(m){
 function clearWorld(instance){if(!instance)return;instance.generation=(instance.generation||0)+1;while(instance.world.children.length){var o=instance.world.children[0];instance.world.remove(o);dispose(o)}}
 function dispose(o){if(o&&o.userData&&o.userData.skipDispose)return;o.traverse&&o.traverse(function(n){if(n.geometry&&n.geometry.dispose)n.geometry.dispose();if(n.material){var a=Array.isArray(n.material)?n.material:[n.material];a.forEach(function(mm){if(mm.map&&mm.map.dispose)mm.map.dispose();if(mm.dispose)mm.dispose()})}})}
 function addRun(world,m,length,z,rotation,xpos){
- var count=Math.max(3,Math.min(6,Math.floor(length/.62))),runLen=count*.62,start=-runLen/2+.31,g=new THREE.Group(),sinkIndex=Math.min(1,count-1),hobIndex=Math.min(3,count-1),hasHob=state.details.appliances.hob||runtime.phase<3;
+ var count=Math.max(3,Math.min(6,Math.floor(length/.62))),runLen=count*.62,start=-runLen/2+.31,g=new THREE.Group(),sinkIndex=Math.min(1,count-1),hobIndex=Math.min(3,count-1),hasHob=state.details.appliances.hob||!state.details.reviewed;
  for(var i=0;i<count;i++){var type=i===sinkIndex?"doors":i===hobIndex&&hasHob?"oven":(i%3===0?"drawers":"doors");put(g,baseUnit(m,type,.60),start+i*.62,.115,0)}
  put(g,box(runLen+.06,.045,.68,m.stone),0,.955,0);put(g,box(runLen+.02,.085,.45,m.plinth),0,.042,.02);
  put(g,box(runLen+.02,.53,.020,m.stone),0,1.255,-.338);
  var sx=start+sinkIndex*.62;put(g,simpleSink(m),sx,.992,0);
- if(hasHob){var hx=start+hobIndex*.62;put(g,hobUnit(m),hx,.993,0);if(state.details.appliances.hood||runtime.phase<3)put(g,hoodUnit(m),hx,1.88,.08)}
+ if(hasHob){var hx=start+hobIndex*.62;put(g,hobUnit(m),hx,.993,0);if(state.details.appliances.hood||!state.details.reviewed)put(g,hoodUnit(m),hx,1.88,.08)}
  var wc=Math.max(2,Math.min(5,count-1));
  for(var j=0;j<wc;j++){var glass=state.visual.upper==="glass"||(state.visual.upper==="mixed"&&j===wc-2);if(state.visual.upper!=="open")put(g,wallUnit(m,.66,glass),start+.31+j*.68,1.54,-.16)}
  if(state.visual.upper==="open"){for(var r=0;r<2;r++)put(g,box(Math.min(1.55,runLen*.55),.035,.25,m.wood),.3,1.65+r*.30,-.20)}
@@ -366,18 +369,18 @@ function addCC0Details(instance,sinkPos){
   instance.world.add(model)
  })
 }
-function rebuildScene(instance){
- if(!instance||!window.THREE)return;clearWorld(instance);
- var m=materials(),r=effectiveRoom(),L=Math.max(2.6,r.length/100),W=Math.max(2.35,r.width/100),H=Math.max(2.4,r.height/100),layout=effectiveLayout(),world=instance.world;
+function rebuildScene(instance,preserveCamera){
+ if(!instance||!window.THREE)return;var oldGoal=instance.camGoal?instance.camGoal.clone():null,oldTarget=instance.target?instance.target.clone():null,oldMode=instance.cameraMode;clearWorld(instance);
+ var m=materials();instance.materialSet=m;var r=effectiveRoom(),L=Math.max(2.6,r.length/100),W=Math.max(2.35,r.width/100),H=Math.max(2.4,r.height/100),layout=effectiveLayout(),world=instance.world;
  var floor=new THREE.Mesh(new THREE.PlaneGeometry(L+1.8,W+1.8),m.floor);floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;world.add(floor);
  put(world,box(L,H,.07,m.wall,false),0,H/2,-W/2-.035);
  addWindow(world,m,L,W,H);addRoomDecor(world,m,L,W,H);
 
  var towerTypes=[];
  if(state.details.storage.tall)towerTypes.push("pantry");
- if(state.details.appliances.fridge||runtime.phase<3)towerTypes.push("fridge");
- if(state.details.appliances.oven||runtime.phase<3)towerTypes.push("oven");
- if(runtime.phase<3&&towerTypes.length>2)towerTypes=towerTypes.slice(towerTypes.length-2);
+ if(state.details.appliances.fridge||!state.details.reviewed)towerTypes.push("fridge");
+ if(state.details.appliances.oven||!state.details.reviewed)towerTypes.push("oven");
+ if(!state.details.reviewed&&towerTypes.length>2)towerTypes=towerTypes.slice(towerTypes.length-2);
  var towerWidth=towerTypes.length*.68;
  var mainLength=Math.max(1.86,L-towerWidth-.42),mainX=towerWidth/2;
  var main=addRun(world,m,mainLength,-W/2+.35,0,mainX);
@@ -404,8 +407,14 @@ function rebuildScene(instance){
   put(isl,box(2.03,.05,.92,m.stone),0,.96,0);put(isl,box(1.72,.085,.56,m.plinth),0,.043,0);isl.position.set(.15,0,.24);world.add(isl);
   [-.48,.15,.78].forEach(function(px){var shade=new THREE.Mesh(new THREE.CylinderGeometry(.10,.19,.17,28,1,true),m.plinth);put(world,shade,px,H-.58,.24);put(world,box(.007,.42,.007,m.plinth,false),px,H-.29,.24);var light=new THREE.PointLight(0xffd89b,.22,2.2,2);light.position.set(px,H-.65,.24);world.add(light)})
  }
- addCC0Details(instance,main.sinkWorld);cameraPreset(instance,instance.cameraMode||"hero")
+ addCC0Details(instance,main.sinkWorld);if(preserveCamera&&oldGoal&&oldTarget){instance.camGoal.copy(oldGoal);instance.target.copy(oldTarget);instance.cameraMode=oldMode||"manual"}else cameraPreset(instance,oldMode&&oldMode!=="manual"?oldMode:"hero")
 }
+function materialStateKey(){return state.visual.cabinet+"|"+state.visual.worktop}
+function geometryStateKey(){return JSON.stringify([knownMeasurements(),state.room.length,state.room.width,state.room.height,effectiveLayout(),state.room.markers,state.visual.upper,state.visual.handle,state.details.reviewed,state.details.storage.tall,state.details.appliances.fridge,state.details.appliances.oven,state.details.appliances.hob,state.details.appliances.hood])}
+function stamp3DState(instance){if(!instance||!instance.wrap)return;instance.wrap.dataset.cameraMode=instance.cameraMode||"hero";instance.wrap.dataset.materialState=instance.materialKey||materialStateKey();instance.wrap.dataset.geometryState=instance.geometryKey||geometryStateKey()}
+function applyVisualMaterials(instance){if(!instance||!instance.materialSet)return;var set=instance.materialSet,woodMapped=state.visual.cabinet==="oak"||state.visual.cabinet==="walnut",cabColor=woodMapped?(state.visual.cabinet==="walnut"?0x62483b:0xa9825f):({ivory:0xd9d1c4,sage:0x788678,graphite:0x3a3e3a,white:0xf0eee9}[state.visual.cabinet]||0xd9d1c4);set.cab.color.setHex(cabColor);set.cab.roughness=state.visual.cabinet==="white"?.25:(woodMapped?.42:.36);set.cab.clearcoat=state.visual.cabinet==="white"?.30:.10;set.cab.needsUpdate=true;var stone=canvasTexture("stone");stone.repeat.set(2.2,.75);if(set.stone.map&&set.stone.map.dispose)set.stone.map.dispose();set.stone.map=stone;set.stone.color.setHex(state.visual.worktop==="dark"?0x55524e:0xffffff);set.stone.needsUpdate=true;var wood=canvasTexture("wood");wood.repeat.set(2.4,1);if(set.wood.map&&set.wood.map.dispose)set.wood.map.dispose();set.wood.map=wood;set.wood.needsUpdate=true;instance.materialKey=materialStateKey();stamp3DState(instance)}
+function sync3D(instance,force){if(!instance)return;var g=geometryStateKey(),m=materialStateKey();if(force||instance.geometryKey!==g){var preserve=!!instance.geometryKey;rebuildScene(instance,preserve);instance.geometryKey=g;instance.materialKey=m}else if(instance.materialKey!==m)applyVisualMaterials(instance);stamp3DState(instance)}
+function syncAll3D(){if(runtime.hero)sync3D(runtime.hero);if(runtime.studio)sync3D(runtime.studio)}
 function applyHDR(instance){
  if(!instance||!window.THREE||!THREE.RGBELoader)return;
  if(runtime.hdr){runtime.hdr.mapping=THREE.EquirectangularReflectionMapping;instance.scene.environment=runtime.hdr;return}
@@ -426,10 +435,15 @@ function environment(){
  }
  var tex=new THREE.CubeTexture(faces);tex.encoding=THREE.sRGBEncoding;tex.needsUpdate=true;return tex
 }
+function show3DFallback(wrap,canvas){if(!wrap)return;if(canvas)canvas.style.visibility="hidden";var old=wrap.querySelector(".threeFallback");if(old)return;var d=document.createElement("div");d.className="threeFallback";d.innerHTML='<b>تعذر تشغيل المعاينة ثلاثية الأبعاد على هذا الجهاز.</b><span>يمكنك متابعة تجهيز طلبك، وسيتم تأكيد التصور مع فريق التصميم.</span>';wrap.appendChild(d)}
+function stopAutoPresentation(instance){if(!instance)return;instance.autoPresentation=false}
+function orbitCamera(instance,delta,manual){if(!instance)return;var c=instance.camGoal,t=instance.target,dx=c.x-t.x,dz=c.z-t.z,r=Math.max(2.15,Math.sqrt(dx*dx+dz*dz)),angle=Math.atan2(dz,dx)-delta;angle=Math.max(.48,Math.min(2.68,angle));c.x=t.x+Math.cos(angle)*r;c.z=t.z+Math.sin(angle)*r;instance.orbitAngle=angle;if(manual){stopAutoPresentation(instance);instance.cameraMode="manual";stamp3DState(instance);updateCameraControls()}}
+function ensureRenderLoop(){if(runtime.raf)return;function tick(ts){runtime.raf=requestAnimationFrame(tick);if(document.hidden)return;runtime.instances.forEach(function(instance){if(!instance||!instance.renderer||!instance.visible)return;if(instance.isHero&&instance.autoPresentation){var e=ts-instance.autoStart;if(e>6500)instance.autoPresentation=false;else{var desired=instance.autoBaseAngle+Math.sin(e/1500)*.035,now=instance.orbitAngle==null?instance.autoBaseAngle:instance.orbitAngle;orbitCamera(instance,now-desired,false)}}instance.camera.position.lerp(instance.camGoal,.11);instance.camera.lookAt(instance.target);instance.renderer.render(instance.scene,instance.camera)})}runtime.raf=requestAnimationFrame(tick)}
+function observe3D(instance){if(!instance)return;if("IntersectionObserver" in window){instance.observer=new IntersectionObserver(function(entries){entries.forEach(function(e){instance.visible=e.isIntersecting})},{rootMargin:"120px 0px 120px 0px",threshold:.01});instance.observer.observe(instance.wrap)}else instance.visible=true}
 function create3D(canvas,wrap,isHero){
  if(!window.THREE||!canvas||!wrap)return null;var renderer;
- try{renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,powerPreference:"high-performance"})}catch(e){wrap.innerHTML='<div class="heroFallback">المعاينة ثلاثية الأبعاد غير متاحة على هذا الجهاز، لكن يمكنك متابعة بقية المراحل.</div>';return null}
- renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,isHero?1.25:(window.innerWidth<700?1.15:1.55)));
+ try{renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,powerPreference:"high-performance"})}catch(e){show3DFallback(wrap,canvas);return null}
+ renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,isHero?1.2:(window.innerWidth<700?1.15:1.5)));
  renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.04;renderer.physicallyCorrectLights=true;
  var scene=new THREE.Scene();scene.background=new THREE.Color(0xc9c8c2);scene.environment=environment();
  var camera=new THREE.PerspectiveCamera(isHero?(window.innerWidth<700?39:34):35,1,.1,70),world=new THREE.Group();scene.add(world);
@@ -438,33 +452,27 @@ function create3D(canvas,wrap,isHero){
  var fill=new THREE.DirectionalLight(0xd8e8ee,.52);fill.position.set(-4,3.6,5);scene.add(fill);
  var warm=new THREE.PointLight(0xffd9a0,.14,4.5,2);warm.position.set(-1.2,2.2,1.4);scene.add(warm);
  var camGoal=new THREE.Vector3(4.8,1.78,5.1),target=new THREE.Vector3(.20,1.03,-.65);camera.position.copy(camGoal);camera.lookAt(target);
- var instance={renderer:renderer,scene:scene,camera:camera,world:world,camGoal:camGoal,target:target,wrap:wrap,isHero:isHero,cameraMode:"hero",generation:0};
+ var instance={renderer:renderer,scene:scene,camera:camera,world:world,camGoal:camGoal,target:target,wrap:wrap,canvas:canvas,isHero:isHero,cameraMode:"hero",generation:0,geometryKey:"",materialKey:"",materialSet:null,visible:true,autoPresentation:false,orbitAngle:null};runtime.instances.push(instance);
  applyHDR(instance);
  function resize(){var w=wrap.clientWidth,h=wrap.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
- addEventListener("resize",resize);resize();
- var drag=false,lx=0,ly=0,totalX=0,totalY=0,orbiting=false;canvas.addEventListener("pointerdown",function(e){drag=true;orbiting=false;totalX=0;totalY=0;lx=e.clientX;ly=e.clientY});canvas.addEventListener("pointermove",function(e){if(!drag)return;var rawX=e.clientX-lx,rawY=e.clientY-ly;totalX+=rawX;totalY+=rawY;if(!orbiting){if(Math.abs(totalX)<6&&Math.abs(totalY)<6){lx=e.clientX;ly=e.clientY;return}if(e.pointerType==="touch"&&Math.abs(totalY)>Math.abs(totalX)){drag=false;return}orbiting=true}if(orbiting){var dx=rawX*.0034;camGoal.applyAxisAngle(new THREE.Vector3(0,1,0),-dx)}lx=e.clientX;ly=e.clientY});canvas.addEventListener("pointerup",function(){var wasTap=drag&&!orbiting&&Math.abs(totalX)<7&&Math.abs(totalY)<7;drag=false;if(isHero&&wasTap)open3DStudio()});canvas.addEventListener("pointercancel",function(){drag=false});
- function loop(){requestAnimationFrame(loop);camera.position.lerp(camGoal,.07);camera.lookAt(target);var rect=wrap.getBoundingClientRect();if(!document.hidden&&rect.bottom>0&&rect.top<innerHeight)renderer.render(scene,camera)}
- loop();return instance
+ addEventListener("resize",resize,{passive:true});resize();observe3D(instance);
+ canvas.addEventListener("webglcontextlost",function(e){e.preventDefault();show3DFallback(wrap,canvas)},{once:true});
+ var drag=false,lx=0,ly=0,totalX=0,totalY=0,orbiting=false;canvas.addEventListener("pointerdown",function(e){stopAutoPresentation(instance);drag=true;orbiting=false;totalX=0;totalY=0;lx=e.clientX;ly=e.clientY;if(e.pointerType!=="touch"&&canvas.setPointerCapture)try{canvas.setPointerCapture(e.pointerId)}catch(_){} });canvas.addEventListener("pointermove",function(e){if(!drag)return;var rawX=e.clientX-lx,rawY=e.clientY-ly;totalX+=rawX;totalY+=rawY;if(!orbiting){if(Math.abs(totalX)<7&&Math.abs(totalY)<7){lx=e.clientX;ly=e.clientY;return}if(e.pointerType==="touch"&&Math.abs(totalY)>Math.abs(totalX)*1.08){drag=false;return}orbiting=true}if(orbiting)orbitCamera(instance,rawX*.0032,true);lx=e.clientX;ly=e.clientY});canvas.addEventListener("pointerup",function(){var wasTap=drag&&!orbiting&&Math.abs(totalX)<7&&Math.abs(totalY)<7;drag=false;if(isHero&&wasTap)open3DStudio()});canvas.addEventListener("pointercancel",function(){drag=false});
+ if(isHero&&!matchMedia("(prefers-reduced-motion: reduce)").matches){instance.autoPresentation=true;instance.autoStart=performance.now()}
+ ensureRenderLoop();return instance
 }
 function cameraPreset(instance,name){
- if(!instance)return;instance.cameraMode=name;
- var r=effectiveRoom(),L=Math.max(2.6,r.length/100),W=Math.max(2.35,r.width/100),c=instance.camGoal,t=instance.target;
- if(name==="hero"){
-  c.set(-L*.34,window.innerWidth<700?1.60:1.68,W*.80);
-  t.set(.08,1.02,-W*.34)
- }else if(name==="functional"){
-  c.set(L*.06,1.52,W*.72);t.set(.10,.97,-W*.37)
- }else if(name==="elevation"){
-  c.set(.04,1.46,W*.75);t.set(.04,1.16,-W*.48)
- }else if(name==="island"){
-  c.set(-L*.44,1.66,W*.60);t.set(.10,.95,-.02)
- }else if(name==="wide"){
-  c.set(-L*.52,1.92,W*.92);t.set(.04,1.00,-W*.20)
- }
+ if(!instance)return;if(name==="island"&&effectiveLayout()!=="island")name="hero";stopAutoPresentation(instance);instance.cameraMode=name;stamp3DState(instance);
+ var r=effectiveRoom(),L=Math.max(2.6,r.length/100),W=Math.max(2.35,r.width/100),c=instance.camGoal,t=instance.target,mobile=window.innerWidth<700;
+ if(name==="hero"){c.set(-L*.34,mobile?1.58:1.68,W*.80);t.set(.08,1.02,-W*.34)}
+ else if(name==="functional"){c.set(L*.08,mobile?1.48:1.54,W*.70);t.set(.10,.97,-W*.37)}
+ else if(name==="elevation"){c.set(.04,mobile?1.42:1.48,W*.76);t.set(.04,1.16,-W*.48)}
+ else if(name==="island"){c.set(-L*.42,mobile?1.56:1.66,W*.62);t.set(.10,.95,-.02)}
+ else if(name==="wide"){c.set(-L*.50,mobile?1.78:1.90,W*.92);t.set(.04,1.00,-W*.20)}
+ var dx=c.x-t.x,dz=c.z-t.z;instance.orbitAngle=Math.atan2(dz,dx);if(instance.isHero&&!matchMedia("(prefers-reduced-motion: reduce)").matches){instance.autoBaseAngle=instance.orbitAngle;instance.autoStart=performance.now();instance.autoPresentation=true}
 }
-function initHero(){if(runtime.hero)return;runtime.hero=create3D(document.getElementById("heroCanvas"),document.getElementById("heroWrap"),true);if(runtime.hero)rebuildScene(runtime.hero)}
-function initStudio(){if(runtime.studio)return;runtime.studio=create3D(document.getElementById("studioCanvas"),document.getElementById("studioWrap"),false);if(runtime.studio)rebuildScene(runtime.studio)}
-function rebuildAll3D(){if(runtime.hero)rebuildScene(runtime.hero);if(runtime.studio)rebuildScene(runtime.studio)}
+function initHero(){if(runtime.hero)return;runtime.hero=create3D(document.getElementById("heroCanvas"),document.getElementById("heroWrap"),true);if(runtime.hero){rebuildScene(runtime.hero,false);runtime.hero.geometryKey=geometryStateKey();runtime.hero.materialKey=materialStateKey();stamp3DState(runtime.hero);runtime.hero.autoBaseAngle=runtime.hero.orbitAngle;runtime.hero.autoStart=performance.now();runtime.hero.autoPresentation=!matchMedia("(prefers-reduced-motion: reduce)").matches}}
+function initStudio(){if(runtime.studio)return;runtime.studio=create3D(document.getElementById("studioCanvas"),document.getElementById("studioWrap"),false);if(runtime.studio){rebuildScene(runtime.studio,false);runtime.studio.geometryKey=geometryStateKey();runtime.studio.materialKey=materialStateKey();stamp3DState(runtime.studio);updateCameraControls()}}
 root.innerHTML=page();bind();renderDynamic();initHero();var heroWrap=document.getElementById("heroWrap");if(heroWrap)heroWrap.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();open3DStudio()}});
 (function(){
  var planner=document.getElementById("planner");
