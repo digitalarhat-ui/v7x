@@ -1,0 +1,280 @@
+name: Dakhakhni Phase 2 QA
+on:
+  push:
+    branches: [dakhakhni-phase2]
+    paths:
+      - 'dakhakhni-kitchen-v5/**'
+      - 'kitchen-engine-v5/**'
+      - '.github/workflows/dakhakhni-phase2-qa.yml'
+permissions:
+  contents: write
+concurrency:
+  group: dakhakhni-phase2-qa
+  cancel-in-progress: true
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install --no-save playwright@1.55.0
+      - run: npx playwright install --with-deps chromium
+      - name: Start static server
+        run: |
+          python3 -m http.server 4175 --bind 127.0.0.1 >/tmp/dakh-p2-server.log 2>&1 &
+          for i in $(seq 1 50); do
+            curl -fsS http://127.0.0.1:4175/dakhakhni-kitchen-v5/ >/dev/null && exit 0
+            sleep 0.2
+          done
+          cat /tmp/dakh-p2-server.log
+          exit 1
+      - name: Run Phase 2 browser QA
+        run: |
+          cat > phase2-qa.mjs <<'EOF'
+          import { chromium } from 'playwright';
+          import fs from 'fs';
+          import crypto from 'crypto';
+
+          const base='http://127.0.0.1:4175/dakhakhni-kitchen-v5/';
+          const out='qa-phase2'; fs.mkdirSync(out,{recursive:true});
+          const result={status:'PASS',viewports:{},global:{},errors:[]};
+          const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
+
+          async function canvasHash(page,sel){
+            return hash(await page.locator(sel).screenshot({animations:'disabled'}));
+          }
+          async function touchGesture(context,page,sel,dx,dy){
+            const box=await page.locator(sel).boundingBox();
+            if(!box) throw new Error('No box for '+sel);
+            const x=box.x+box.width*.5,y=box.y+box.height*.55;
+            const cdp=await context.newCDPSession(page);
+            await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y,radiusX:2,radiusY:2,force:1,id:1}]});
+            for(let i=1;i<=8;i++) await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x+dx*i/8,y:y+dy*i/8,radiusX:2,radiusY:2,force:1,id:1}]});
+            await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+            await page.waitForTimeout(280);
+          }
+          async function horizontalOrbit(context,page,sel,mobile){
+            const before=await canvasHash(page,sel);
+            const box=await page.locator(sel).boundingBox();
+            if(!box) throw new Error('Canvas missing '+sel);
+            if(mobile) await touchGesture(context,page,sel,90,0);
+            else {
+              const x=box.x+box.width*.45,y=box.y+box.height*.55;
+              await page.mouse.move(x,y);await page.mouse.down();
+              for(let i=1;i<=10;i++)await page.mouse.move(x+100*i/10,y,{steps:1});
+              await page.mouse.up();await page.waitForTimeout(320);
+            }
+            const after=await canvasHash(page,sel);
+            return {before,after,changed:before!==after};
+          }
+          async function verticalScrollGesture(context,page,sel){
+            const before=await page.evaluate(()=>scrollY);
+            await touchGesture(context,page,sel,0,-145);
+            const after=await page.evaluate(()=>scrollY);
+            return {before,after,changed:after>before+20};
+          }
+          async function snap(page,name){await page.screenshot({path:out+'/'+name+'.png',fullPage:false});}
+          async function state(page){return page.evaluate(()=>JSON.parse(localStorage.getItem('dakhakhni:v5:project')||'null'));}
+
+          // Explicitly test subtle auto-presentation and reduced-motion behavior.
+          {
+            const b=await chromium.launch({headless:true});
+            const c=await b.newContext({viewport:{width:1440,height:1000},deviceScaleFactor:1});
+            const p=await c.newPage();p.setDefaultTimeout(20000);
+            await p.goto(base,{waitUntil:'domcontentloaded'});await p.waitForSelector('#heroCanvas');await p.waitForTimeout(1700);
+            const h1=await canvasHash(p,'#heroCanvas');await p.waitForTimeout(900);const h2=await canvasHash(p,'#heroCanvas');
+            result.global.autoPresentationChanged=h1!==h2;
+            await b.close();
+            const b2=await chromium.launch({headless:true});
+            const c2=await b2.newContext({viewport:{width:1440,height:1000},deviceScaleFactor:1,reducedMotion:'reduce'});
+            const p2=await c2.newPage();p2.setDefaultTimeout(20000);
+            await p2.goto(base,{waitUntil:'domcontentloaded'});await p2.waitForSelector('#heroCanvas');await p2.waitForTimeout(1700);
+            const r1=await canvasHash(p2,'#heroCanvas');await p2.waitForTimeout(900);const r2=await canvasHash(p2,'#heroCanvas');
+            result.global.reducedMotionStable=r1===r2;
+            await b2.close();
+          }
+
+          async function run(v){
+            const mobile=v.width<=430;
+            const browser=await chromium.launch({headless:true});
+            const context=await browser.newContext({
+              viewport:{width:v.width,height:v.height},
+              deviceScaleFactor:1,
+              isMobile:mobile,
+              hasTouch:mobile,
+              reducedMotion:'reduce',
+              permissions:['clipboard-read','clipboard-write']
+            });
+            const page=await context.newPage();page.setDefaultTimeout(20000);
+            const errs=[];
+            page.on('pageerror',e=>errs.push('page:'+e.message));
+            page.on('console',m=>{if(m.type()==='error')errs.push('console:'+m.text())});
+            await page.addInitScript(()=>{
+              const original=HTMLCanvasElement.prototype.getContext;
+              HTMLCanvasElement.prototype.getContext=function(type,...args){
+                const ctx=original.call(this,type,...args);
+                if(ctx && /webgl/i.test(type)) this.dataset.webglContext=type;
+                return ctx;
+              };
+            });
+            await page.goto(base,{waitUntil:'domcontentloaded',timeout:30000});
+            await page.waitForSelector('#heroCanvas');
+            await page.waitForTimeout(1400);
+            const initial=await page.evaluate(()=>({
+              title:document.title,
+              width:innerWidth,
+              scrollWidth:document.documentElement.scrollWidth,
+              webgl:document.querySelector('#heroCanvas')?.dataset.webglContext||'',
+              fallback:!!document.querySelector('#heroWrap .threeFallback'),
+              contamination:/FN\s*Cadena|Makan\s*Cars/i.test(document.body.innerText),
+              phase1Headline:document.querySelector('[data-stage="1"] h2')?.textContent||'',
+              whatsapp:(document.querySelector('#waButton')?.getAttribute('href')||'')
+            }));
+            if(!initial.webgl||initial.fallback)throw new Error(v.name+' WebGL hero did not initialize');
+            if(initial.contamination)throw new Error(v.name+' cross-prospect contamination');
+            if(!initial.phase1Headline.includes('ثلاثة اختيارات'))throw new Error(v.name+' Phase 1 regression');
+
+            const heroOrbit=await horizontalOrbit(context,page,'#heroCanvas',mobile);
+            if(!heroOrbit.changed)throw new Error(v.name+' hero orbit did not visibly change canvas');
+
+            let vertical=null;
+            if(mobile){
+              await page.evaluate(()=>scrollTo(0,0));await page.waitForTimeout(120);
+              vertical=await verticalScrollGesture(context,page,'#heroCanvas');
+              if(!vertical.changed)throw new Error(v.name+' vertical touch over hero did not scroll page');
+            }
+
+            await page.locator('.heroQuickControls [data-cabinet="oak"]').click();
+            await page.locator('.heroQuickControls [data-worktop="warm"]').click();
+            await page.waitForTimeout(300);
+            await snap(page,v.name+'-01-hero-controls');
+            let st=await state(page);
+            if(st.visual.cabinet!=='oak'||st.visual.worktop!=='warm')throw new Error(v.name+' hero visual state not persisted');
+
+            await page.locator('#heroStart').click();
+            await page.locator('[data-projecttype="new"]').click();
+            await page.locator('[data-layout="l"]').click();
+            await page.locator('[data-measuremode="known"]').click();
+            await page.locator('#roomLength').fill('420');await page.locator('#roomLength').dispatchEvent('input');
+            await page.locator('#roomWidth').fill('320');await page.locator('#roomWidth').dispatchEvent('input');
+            await page.locator('#nextBtn').click();
+            await page.waitForSelector('.stage[data-stage="2"].active');
+            await page.waitForTimeout(850);
+            await snap(page,v.name+'-02-phase2-initial');
+
+            const phase2Initial=await page.evaluate(()=>({
+              cab:[...document.querySelectorAll('.finishBar [data-cabinet]')].filter(x=>x.classList.contains('active')).map(x=>x.dataset.cabinet),
+              work:[...document.querySelectorAll('.finishBar [data-worktop]')].filter(x=>x.classList.contains('active')).map(x=>x.dataset.worktop),
+              viewerText:document.querySelector('#viewerLabel')?.textContent||'',
+              islandVisible:!!document.querySelector('[data-camera="island"]') && !document.querySelector('[data-camera="island"]').hidden,
+              webgl:document.querySelector('#studioCanvas')?.dataset.webglContext||'',
+              fallback:!!document.querySelector('#studioWrap .threeFallback')
+            }));
+            if(phase2Initial.cab[0]!=='oak'||phase2Initial.work[0]!=='warm')throw new Error(v.name+' hero/studio state continuity failed');
+            if(!phase2Initial.viewerText.includes('420 × 320 × 280'))throw new Error(v.name+' dimensions did not carry into Phase 2');
+            if(phase2Initial.islandVisible)throw new Error(v.name+' island camera should be hidden for L layout');
+            if(!phase2Initial.webgl||phase2Initial.fallback)throw new Error(v.name+' studio WebGL did not initialize');
+
+            const studioOrbit=await horizontalOrbit(context,page,'#studioCanvas',mobile);
+            if(!studioOrbit.changed)throw new Error(v.name+' studio orbit did not visibly change canvas');
+
+            for(const cam of ['functional','elevation','wide']){
+              await page.locator('[data-camera="'+cam+'"]').click();
+              await page.waitForTimeout(360);
+              const active=await page.locator('[data-camera="'+cam+'"]').evaluate(el=>el.classList.contains('active'));
+              if(!active)throw new Error(v.name+' camera preset '+cam+' not active');
+            }
+            await snap(page,v.name+'-04-camera-wide');
+
+            await page.locator('.finishBar [data-cabinet="graphite"]').click();
+            await page.locator('.finishBar [data-worktop="dark"]').click();
+            await page.waitForTimeout(320);
+            const wideStill=await page.locator('[data-camera="wide"]').evaluate(el=>el.classList.contains('active'));
+            if(!wideStill)throw new Error(v.name+' material change reset camera preset');
+            await snap(page,v.name+'-03-material-change');
+
+            await page.locator('#saveVisual').click();
+            await page.waitForTimeout(180);
+            await snap(page,v.name+'-05-saved');
+            st=await state(page);
+            if(st.visual.cabinet!=='graphite'||st.visual.worktop!=='dark'||!st.visual.saved)throw new Error(v.name+' saved visual state mismatch');
+
+            const urlBeforeReload=page.url();
+            if(urlBeforeReload.includes('?project='))throw new Error(v.name+' normal navigation appended project query');
+            await page.reload({waitUntil:'domcontentloaded'});await page.waitForSelector('.stage[data-stage="2"].active');await page.waitForTimeout(900);
+            const restored=await state(page);
+            if(restored.visual.cabinet!=='graphite'||restored.visual.worktop!=='dark'||!restored.visual.saved)throw new Error(v.name+' visual state failed reload restore');
+            const restoredUi=await page.evaluate(()=>({
+              cab:document.querySelector('.finishBar [data-cabinet="graphite"]')?.classList.contains('active'),
+              work:document.querySelector('.finishBar [data-worktop="dark"]')?.classList.contains('active'),
+              saved:document.querySelector('#saveVisual')?.textContent||'',
+              heroCab:document.querySelector('.heroQuickControls [data-cabinet="graphite"]')?.classList.contains('active'),
+              heroWork:document.querySelector('.heroQuickControls [data-worktop="dark"]')?.classList.contains('active')
+            }));
+            if(!restoredUi.cab||!restoredUi.work||!restoredUi.heroCab||!restoredUi.heroWork||!restoredUi.saved.includes('تم حفظ التوليفة'))throw new Error(v.name+' restored UI continuity failed');
+
+            await page.locator('#nextBtn').click();await page.waitForSelector('.stage[data-stage="3"].active');
+            await page.locator('#backBtn').click();await page.waitForSelector('.stage[data-stage="2"].active');
+            const afterBack=await state(page);
+            if(afterBack.visual.cabinet!=='graphite'||afterBack.visual.worktop!=='dark'||!afterBack.visual.saved)throw new Error(v.name+' Phase 3/back lost Phase 2 state');
+
+            const metrics=await page.evaluate(()=>({
+              scrollWidth:document.documentElement.scrollWidth,
+              innerWidth,
+              bodyText:document.body.innerText,
+              whatsapp:document.querySelector('#waButton')?.getAttribute('href')||'',
+              major:[...document.querySelectorAll('.topCta,.btnPrimary,.btnSecondary,.heroSwatch,.choice,.toggle,.swatch,.cameraBar button,.saveVisual,.backBtn,.nextBtn')].filter(x=>x.offsetParent!==null).map(x=>({h:x.getBoundingClientRect().height,t:(x.textContent||'').trim().slice(0,30)}))
+            }));
+            const min=Math.min(...metrics.major.map(x=>x.h));
+            if(metrics.scrollWidth>v.width+1)throw new Error(v.name+' horizontal overflow '+metrics.scrollWidth+'>'+v.width);
+            if(mobile&&min<44)throw new Error(v.name+' visible touch target below 44px: '+min);
+            if(!metrics.whatsapp.startsWith('https://wa.me/966545246478?text='))throw new Error(v.name+' WhatsApp route mismatch');
+            if(/FN\s*Cadena|Makan\s*Cars/i.test(metrics.bodyText))throw new Error(v.name+' contamination after journey');
+            if(errs.length)throw new Error(v.name+' runtime errors: '+errs.join(' | '));
+
+            result.viewports[v.name]={initial,heroOrbit,vertical,phase2Initial,studioOrbit,restoredUi,minTouch:min,scrollWidth:metrics.scrollWidth,errors:errs};
+            await browser.close();
+          }
+
+          try{
+            for(const v of [
+              {name:'mobile-390',width:390,height:844},
+              {name:'mobile-430',width:430,height:900},
+              {name:'desktop-1440',width:1440,height:1000}
+            ]) await run(v);
+            if(!result.global.autoPresentationChanged)throw new Error('hero auto-presentation did not produce visible drift');
+            if(!result.global.reducedMotionStable)throw new Error('prefers-reduced-motion did not stop auto presentation');
+          }catch(e){result.status='FAIL';result.errors.push(e.stack||String(e));}
+
+          fs.writeFileSync(out+'/results.json',JSON.stringify(result,null,2));
+          if(result.status!=='PASS')process.exitCode=1;
+          EOF
+          node phase2-qa.mjs
+      - name: Preserve Phase 2 screenshots and results
+        if: always()
+        run: |
+          rm -rf audit-v5-phase2-output
+          mkdir -p audit-v5-phase2-output
+          if [ -d qa-phase2 ]; then
+            for f in qa-phase2/*.png; do
+              [ -e "$f" ] || continue
+              b="$(basename "$f" .png)"
+              base64 -w 0 "$f" > "audit-v5-phase2-output/$b.b64"
+            done
+            cp qa-phase2/results.json audit-v5-phase2-output/results.json || true
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit-v5-phase2-output
+          git commit -m "Store Dakhakhni Phase 2 QA captures" || true
+          git push origin HEAD:dakhakhni-phase2
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dakhakhni-phase2-qa
+          path: qa-phase2
+          if-no-files-found: warn
+          retention-days: 2
