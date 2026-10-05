@@ -59,7 +59,8 @@ function knownMeasurements(){return state.project.measurementMode==="known"}
 function roomText(){return knownMeasurements()?state.room.length+" × "+state.room.width+" × "+state.room.height+" سم":"القياسات غير متوفرة حالياً"}
 function effectiveLayout(){return state.config&&state.config.layout?state.config.layout:(state.room.layout&&state.room.layout!=="unsure"?state.room.layout:"l")}
 function effectiveRoom(){return{length:knownMeasurements()?state.room.length:420,width:knownMeasurements()?state.room.width:320,height:knownMeasurements()?state.room.height:280}}
-function roomCanSupportIsland(){var r=effectiveRoom();return r.length>=340&&r.width>=300}\nfunction hasPlausibleIsland(){return effectiveLayout()==="island"&&roomCanSupportIsland()}
+function roomCanSupportIsland(){var r=effectiveRoom();return r.length>=340&&r.width>=300}
+function hasPlausibleIsland(){return effectiveLayout()==="island"&&roomCanSupportIsland()}
 function effectiveLabel(){return state.room.layout?layoutLabels[state.room.layout]:"لم يتم الاختيار بعد"}
 function defaultTallSlots(){
  var L=Math.max(2.6,effectiveRoom().length/100),slots=[];
