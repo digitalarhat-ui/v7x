@@ -73,6 +73,7 @@ jobs:
             await shot(page,tag+'-01-hero-oak-light','#heroWrap');
             await phase1(page);
             let st=await state(page);if(st.visual.cabinet!=='oak'||st.visual.worktop!=='veined')throw new Error(tag+' material continuity');
+            const detailsBeforeConfig=JSON.stringify(st.details);
             await shot(page,tag+'-02-preliminary','#studioWrap');
             await page.locator('[data-configtab="configuration"]').click();
             if(await page.locator('[data-configlayout="island"]').isDisabled())throw new Error(tag+' plausible island refinement incorrectly disabled');
@@ -94,9 +95,10 @@ jobs:
             st=await state(page);if(st.config.tallSlots[0]!=='pantry'||st.config.pantryInterior!=='internalDrawers'||!st.config.inspect)throw new Error(tag+' pantry inspection state');
             await shot(page,tag+'-06-inspection','.configuratorGrid');
             page.once('dialog',dialog=>dialog.accept());await page.locator('#resetConfig').click();await sleep(120);let resetState=await state(page);
-            if(resetState.config.tallSlots[0]==='pantry'&&resetState.config.baseSlots[4]==='drawers')throw new Error(tag+' scoped configurator reset failed');
+            if(resetState.config.tallSlots[0]!=='fridge'||resetState.config.baseSlots[4]!=='doors')throw new Error(tag+' scoped configurator reset failed');
             await page.locator('#undoConfig').click();st=await state(page);
             if(st.config.tallSlots[0]!=='pantry'||st.config.baseSlots[4]!=='drawers'||st.config.pantryInterior!=='internalDrawers')throw new Error(tag+' undo after reset failed');
+            if(JSON.stringify(st.details)!==detailsBeforeConfig)throw new Error(tag+' Phase4 config mutated Phase3 detail state');
 
             const or=await orbit(page,'#studioCanvas');if(or.mode!=='manual')throw new Error(tag+' orbit mode '+or.mode);
             for(const cam of ['hero','functional','elevation','wide']){await page.locator('[data-camera="'+cam+'"]').click();await sleep(180);if(!(await page.locator('[data-camera="'+cam+'"]').evaluate(e=>e.classList.contains('active'))))throw new Error(tag+' camera '+cam)}
@@ -131,7 +133,15 @@ jobs:
             result.viewports[tag]={baseSlots:st.config.baseSlots,tallSlots:st.config.tallSlots,upper:st.visual.upper,handle:st.visual.handle,interior:st.config.pantryInterior,orbit:or,scrollWidth:metrics.sw,minTouch:p2Min,summaryOK:true,whatsappOK:true,errors};
             await browser.close()
           }
-          try{await configure(390,844);await configure(430,900);await configure(1440,1000)}
+          async function tinyIslandGate(){
+            const x=await launch(390,844),p=x.page;
+            await p.locator('#heroStart').click();await p.locator('[data-projecttype="new"]').click();await p.locator('[data-layout="l"]').click();await p.locator('[data-measuremode="known"]').click();
+            await p.locator('#roomLength').fill('300');await p.locator('#roomLength').dispatchEvent('input');await p.locator('#roomWidth').fill('250');await p.locator('#roomWidth').dispatchEvent('input');
+            await p.locator('#nextBtn').click({force:true});await p.waitForSelector('.stage[data-stage="2"].active');await p.locator('[data-configtab="configuration"]').click();
+            if(!(await p.locator('[data-configlayout="island"]').isDisabled()))throw new Error('tiny-room island refinement should be disabled');
+            await x.browser.close()
+          }
+          try{await tinyIslandGate();await configure(390,844);await configure(430,900);await configure(1440,1000)}
           catch(e){result.status='FAIL';result.errors.push(e.stack||String(e))}
           fs.writeFileSync(out+'/results.json',JSON.stringify(result,null,2));
           if(result.status!=='PASS'){console.error(JSON.stringify(result,null,2));process.exit(1)}
