@@ -44,3 +44,40 @@ body.planner-nav-ready .bottomNav{visibility:visible}
   .section,.choice,.toggle,.layoutChoice,.field,.reviewBlock,.summaryGroup{scroll-margin-top:154px;scroll-margin-bottom:92px}
   .planner{padding-bottom:112px}
 }
+
+
+/* DAKHAKHNI V5 — Phase 1 journey architecture fixes */
+.phaseCount{direction:ltr;unicode-bidi:isolate}.phaseTrack{display:none;width:84px;height:3px;background:rgba(20,60,50,.13);overflow:hidden;flex:0 0 auto}.phaseTrack i{display:block;height:100%;width:20%;background:var(--brass);transition:width .2s ease}
+.heroVisual{cursor:grab}.heroVisual:active{cursor:grabbing}.heroVisual:focus-visible{outline:2px solid var(--brass2);outline-offset:-4px}.heroVisual canvas{touch-action:pan-y}
+.studio{scroll-margin-top:150px}.viewer canvas{touch-action:pan-y}
+.phaseOnePaper .optionalDetails{margin-top:0;border-top:1px solid var(--line)}
+.optionalDetails summary{list-style:none;min-height:64px;padding:16px 0;display:flex;align-items:center;justify-content:space-between;gap:18px;cursor:pointer;color:var(--forest)}
+.optionalDetails summary::-webkit-details-marker{display:none}.optionalDetails summary span{display:grid;gap:4px}.optionalDetails summary b{font-size:13px}.optionalDetails summary small{font-size:9px;color:var(--muted);font-weight:500}.optionalDetails summary>i{width:34px;height:34px;border:1px solid var(--line);display:grid;place-items:center;font-style:normal;font-size:20px;line-height:1;background:#fff;transition:transform .18s ease}.optionalDetails[open] summary>i{transform:rotate(45deg)}.optionalDetailsBody{padding:0 0 6px}
+.coreMeasurements{grid-template-columns:repeat(2,1fr)}
+
+@media(max-width:700px){
+  html{scroll-padding-top:118px;scroll-padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+  .shell{width:min(100% - 24px,1240px)}
+  .topbar{height:56px}.brandMark{width:36px;height:36px}.brandText b{font-size:13px}.topCta{min-height:44px;padding:0 12px}
+  .heroGrid{padding:26px 0 30px;gap:20px}.hero h1{font-size:32px;line-height:1.3;margin-bottom:10px}.heroLead{font-size:11.5px;line-height:1.8}.heroBenefits{margin-top:15px}.heroBenefits div{padding:7px 0}.heroBenefits small{margin-bottom:4px}.heroBenefits b{font-size:7.8px}.heroActions{margin-top:16px;gap:12px}.btnPrimary,.btnSecondary{min-height:48px}.btnSecondary{padding-inline:7px}.heroTruth{margin-top:9px}
+  .heroVisual{min-height:300px}.heroVisual canvas{height:300px}.heroVisualTop{padding:11px 12px}.heroVisualTop span,.heroVisualTop b{font-size:7.5px}.heroState{right:8px;left:8px;bottom:8px}.heroState span{font-size:6.8px;padding:5px 7px}
+  .truthGrid{grid-template-columns:repeat(2,1fr)}.truthGrid article{min-height:80px;padding:12px 10px}.truthGrid b{font-size:9.5px}.truthGrid p{font-size:7.8px;line-height:1.55}.truthGrid small{margin-bottom:4px}
+  .planner{padding:28px 0 calc(88px + env(safe-area-inset-bottom,0px))}
+  .phaseProgress{top:56px;padding:0 12px;margin-bottom:18px;min-height:52px;display:flex;align-items:center;border-inline:0;box-shadow:0 8px 24px rgba(20,60,50,.07)}
+  .phaseProgressTop{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) 76px;align-items:center;gap:10px;padding:0;border:0}.phaseProgressTop span{font-size:9px;white-space:nowrap}.phaseProgressTop strong{font-size:9.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.phaseTrack{display:block;width:76px}.phaseProgress ol{display:none}
+  .stageHead{padding-top:16px;margin-bottom:16px;gap:7px}.stageHead h2{font-size:25px;line-height:1.4}.stageHead p{font-size:10.5px;line-height:1.75}.stageEyebrow{font-size:8px;margin-bottom:6px}
+  .paper{padding:14px}.phaseOnePaper .section{padding:15px 0}.sectionTitle{margin-bottom:10px}.sectionTitle b{font-size:12px}.sectionTitle span{font-size:8.3px;line-height:1.55}
+  .phaseOnePaper .choiceGrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.phaseOnePaper .choice{min-height:48px;padding:8px 7px;font-size:8.5px;text-align:center;line-height:1.45}.phaseOnePaper .measureChoices{grid-template-columns:repeat(2,minmax(0,1fr))}.phaseOnePaper .markerChoices{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .compactLayouts{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.compactLayouts .layoutChoice{min-height:102px;padding:8px}.compactLayouts .layoutChoice svg{height:52px;margin-bottom:5px}.compactLayouts .layoutChoice b{font-size:9.5px}.compactLayouts .layoutChoice small{font-size:7px;margin-top:2px;line-height:1.3}
+  .coreMeasurements{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.coreMeasurements .field{padding:10px}.coreMeasurements .field input{font-size:12px}
+  .optionalDetails summary{min-height:58px;padding:13px 0}.optionalDetails summary b{font-size:11px}.optionalDetails summary small{font-size:7.7px}.optionalDetails summary>i{width:32px;height:32px}.optionalDetailsBody .section{padding:14px 0}
+  #markerList>div{grid-template-columns:1fr 1fr!important}#markerList>div input[type="range"]{grid-column:1/-1;width:100%}
+  .studio{scroll-margin-top:118px}
+  .bottomNav{padding-bottom:env(safe-area-inset-bottom,0px)}.bottomInner{min-height:58px}.backBtn,.nextBtn{min-height:44px;padding:0 14px;font-size:9px}.toast{bottom:calc(70px + env(safe-area-inset-bottom,0px))}
+  .section,.choice,.toggle,.layoutChoice,.field,.reviewBlock,.summaryGroup{scroll-margin-top:122px;scroll-margin-bottom:82px}
+}
+
+@media(max-width:430px){
+  .phaseOnePaper .choiceGrid{grid-template-columns:repeat(3,minmax(0,1fr))}.phaseOnePaper .measureChoices,.phaseOnePaper .markerChoices{grid-template-columns:repeat(2,minmax(0,1fr))}.compactLayouts{grid-template-columns:repeat(2,minmax(0,1fr))}.coreMeasurements{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero h1{font-size:30px}.heroVisual{min-height:286px}.heroVisual canvas{height:286px}.phaseProgressTop{grid-template-columns:auto minmax(0,1fr) 66px}.phaseTrack{width:66px}
+}
