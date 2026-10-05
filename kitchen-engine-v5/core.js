@@ -253,7 +253,7 @@ function materials(){
  var wood=canvasTexture("wood"),stone=canvasTexture("stone"),floor=canvasTexture("floor");wood.repeat.set(2.4,1);stone.repeat.set(2.2,.75);floor.repeat.set(4,4);
  var woodMapped=state.visual.cabinet==="oak"||state.visual.cabinet==="walnut",cc=woodMapped?0xffffff:{ivory:0xd9d1c4,sage:0x788678,graphite:0x3a3e3a,white:0xf0eee9}[state.visual.cabinet]||0xd9d1c4;
  var darkStone=state.visual.worktop==="dark";
- return{cab:new THREE.MeshPhysicalMaterial({color:woodMapped?(state.visual.cabinet==="walnut"?0x62483b:0xa9825f):cc,roughness:state.visual.cabinet==="white"?.25:(woodMapped?.42:.36),metalness:0,clearcoat:state.visual.cabinet==="white"?.30:.10,clearcoatRoughness:.34,envMapIntensity:.68}),inside:new THREE.MeshStandardMaterial({color:0xcfcac1,roughness:.58}),stone:new THREE.MeshPhysicalMaterial({color:darkStone?0x55524e:0xffffff,map:stone,roughness:.24,clearcoat:.28,clearcoatRoughness:.23,envMapIntensity:.9}),chrome:new THREE.MeshStandardMaterial({color:0xaeb3b1,roughness:.17,metalness:.95,envMapIntensity:1.3}),black:new THREE.MeshPhysicalMaterial({color:0x101210,roughness:.18,metalness:.30,clearcoat:.75,clearcoatRoughness:.09}),glass:new THREE.MeshPhysicalMaterial({color:0xcdd9d8,roughness:.06,metalness:0,transparent:true,opacity:.24,clearcoat:1,envMapIntensity:1.1}),wall:new THREE.MeshStandardMaterial({color:0xe8e2d9,roughness:.92}),floor:new THREE.MeshPhysicalMaterial({color:0xffffff,map:floor,roughness:.68,envMapIntensity:.25}),plinth:new THREE.MeshStandardMaterial({color:0x1b1e1b,roughness:.42,metalness:.25}),wood:new THREE.MeshPhysicalMaterial({color:0xffffff,map:wood,roughness:.38,clearcoat:.08}),led:new THREE.MeshStandardMaterial({color:0xffe2ae,emissive:0xffc76a,emissiveIntensity:.85}),shadow:new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.13,depthWrite:false})}
+ return{cab:new THREE.MeshPhysicalMaterial({color:woodMapped?(state.visual.cabinet==="walnut"?0x62483b:0xa9825f):cc,roughness:state.visual.cabinet==="white"?.25:(woodMapped?.42:.36),metalness:0,clearcoat:state.visual.cabinet==="white"?.30:.10,clearcoatRoughness:.34,envMapIntensity:.28}),inside:new THREE.MeshStandardMaterial({color:0xcfcac1,roughness:.58}),stone:new THREE.MeshPhysicalMaterial({color:darkStone?0x55524e:0xffffff,map:stone,roughness:.24,clearcoat:.28,clearcoatRoughness:.23,envMapIntensity:.9}),chrome:new THREE.MeshStandardMaterial({color:0xaeb3b1,roughness:.17,metalness:.95,envMapIntensity:1.3}),black:new THREE.MeshPhysicalMaterial({color:0x101210,roughness:.18,metalness:.30,clearcoat:.75,clearcoatRoughness:.09}),glass:new THREE.MeshPhysicalMaterial({color:0xcdd9d8,roughness:.06,metalness:0,transparent:true,opacity:.24,clearcoat:1,envMapIntensity:1.1}),wall:new THREE.MeshStandardMaterial({color:0xe8e2d9,roughness:.92}),floor:new THREE.MeshPhysicalMaterial({color:0xffffff,map:floor,roughness:.68,envMapIntensity:.25}),plinth:new THREE.MeshStandardMaterial({color:0x1b1e1b,roughness:.42,metalness:.25}),wood:new THREE.MeshPhysicalMaterial({color:0xffffff,map:wood,roughness:.38,clearcoat:.08}),led:new THREE.MeshStandardMaterial({color:0xffe2ae,emissive:0xffc76a,emissiveIntensity:.85}),shadow:new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.13,depthWrite:false})}
 }
 function box(w,h,d,mat,bevel){
  var geo;if(bevel!==false&&Math.min(w,h,d)>.02&&w<2.8&&h<2.8&&d<2.8){var r=Math.max(.002,Math.min(.009,Math.min(w,h,d)*.15)),iw=Math.max(.004,w-2*r),ih=Math.max(.004,h-2*r),dep=Math.max(.004,d-2*r),sh=new THREE.Shape();sh.moveTo(-iw/2,-ih/2);sh.lineTo(iw/2,-ih/2);sh.lineTo(iw/2,ih/2);sh.lineTo(-iw/2,ih/2);sh.closePath();geo=new THREE.ExtrudeGeometry(sh,{depth:dep,steps:1,bevelEnabled:true,bevelSegments:2,bevelSize:r,bevelThickness:r,curveSegments:1});geo.translate(0,0,-dep/2);geo.computeVertexNormals()}else geo=new THREE.BoxGeometry(w,h,d);var m=new THREE.Mesh(geo,mat);m.castShadow=true;m.receiveShadow=true;return m
@@ -291,12 +291,19 @@ function tallUnit(m,type){
  put(g,box(p,h,d,m.cab),-w/2+p/2,h/2,0);put(g,box(p,h,d,m.cab),w/2-p/2,h/2,0);
  put(g,box(w-p*2,p,d,m.cab),0,p/2,0);put(g,box(w-p*2,p,d,m.cab),0,h-p/2,0);
  put(g,box(w-p*2,h-p*2,.014,m.inside),0,h/2,-d/2+.007);
- if(type==="fridge"){front(g,m,w,1.34,1.50,z);front(g,m,w,.67,.39,z);put(g,box(.012,.46,.016,m.black),.22,1.48,z+.023)}
- else if(type==="oven"){front(g,m,w,.57,.34,z);put(g,box(w-.010,.54,.022,m.black),0,1.06,z+.001);put(g,box(w*.44,.008,.010,m.chrome),0,1.28,z+.022);front(g,m,w,.61,1.88,z)}
- else{front(g,m,w,2.12,1.11,z)}
+ if(type==="fridge"){
+  front(g,m,w,.76,.40,z);front(g,m,w,1.38,1.50,z);
+  put(g,box(.009,.40,.012,m.plinth),.22,1.48,z+.019)
+ }else if(type==="oven"){
+  front(g,m,w,.72,.38,z);
+  put(g,box(w-.012,.57,.021,m.black),0,1.03,z+.001);
+  put(g,box(w*.42,.008,.010,m.chrome),0,1.29,z+.020);
+  front(g,m,w,.78,1.79,z)
+ }else{
+  front(g,m,w,2.14,1.11,z)
+ }
  return g
 }
-function hoodUnit(m){var g=new THREE.Group();put(g,box(.64,.055,.36,m.chrome),0,0,0);put(g,box(.28,.46,.19,m.chrome),0,.25,-.035);put(g,box(.45,.012,.16,m.black),0,-.035,.05);return g}
 function hobUnit(m){var g=new THREE.Group();put(g,box(.56,.014,.42,m.black),0,0,0);for(var i=0;i<4;i++){var ring=new THREE.Mesh(new THREE.TorusGeometry(.065,.005,12,30),m.chrome);ring.rotation.x=Math.PI/2;ring.position.set((i%2?1:-1)*.14,.014,(i>1?1:-1)*.105);g.add(ring)}return g}
 function simpleSink(m){
  var g=new THREE.Group();
@@ -324,7 +331,7 @@ function addRun(world,m,length,z,rotation,xpos){
 }
 function addRoomDecor(world,m,L,W,H){
  put(world,box(L+.6,.08,W+.6,m.wall,false),0,H+.04,0);
- put(world,box(L,.075,.055,m.wall),0,.075,-W/2+.02,false);put(world,box(.055,.075,W,m.wall),L/2-.02,.075,0,false);
+ put(world,box(L,.075,.055,m.wall),0,.075,-W/2+.02,false);
  var shadow=new THREE.Mesh(new THREE.PlaneGeometry(Math.max(1,L-.5),.72),m.shadow);shadow.rotation.x=-Math.PI/2;shadow.position.set(0,.006,-W/2+.37);world.add(shadow);
  var positions=[[-L*.26,-W*.15],[0,W*.05],[L*.26,-W*.08]];positions.forEach(function(p){var fixture=new THREE.Mesh(new THREE.CylinderGeometry(.045,.045,.018,24),m.chrome);fixture.position.set(p[0],H-.045,p[1]);fixture.rotation.x=Math.PI/2;world.add(fixture);var light=new THREE.PointLight(0xffe7bd,.38,3.2,2);light.position.set(p[0],H-.12,p[1]);world.add(light)});
  var pot=new THREE.Mesh(new THREE.CylinderGeometry(.08,.11,.19,24),m.wood);put(world,pot,L*.27,1.07,-W/2+.53);var lm=new THREE.MeshStandardMaterial({color:0x60725e,roughness:.82});for(var i=0;i<4;i++){var leaf=new THREE.Mesh(new THREE.SphereGeometry(.07,16,12),lm);leaf.scale.set(.45,1.6,.38);put(world,leaf,L*.27+(i-1.5)*.045,1.25+i*.015,-W/2+.53+(i%2?.03:-.03))}
@@ -355,9 +362,8 @@ function addCC0Details(instance,sinkPos){
 function rebuildScene(instance){
  if(!instance||!window.THREE)return;clearWorld(instance);
  var m=materials(),r=effectiveRoom(),L=Math.max(2.6,r.length/100),W=Math.max(2.35,r.width/100),H=Math.max(2.4,r.height/100),layout=effectiveLayout(),world=instance.world;
- var floor=new THREE.Mesh(new THREE.PlaneGeometry(L+.9,W+.9),m.floor);floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;world.add(floor);
- put(world,box(L,H,.07,m.wall,false),0,H/2,-W/2-.035);put(world,box(.07,H,W,m.wall,false),L/2+.035,H/2,0);
- if(layout==="u")put(world,box(.07,H,W,m.wall,false),-L/2-.035,H/2,0);
+ var floor=new THREE.Mesh(new THREE.PlaneGeometry(L+1.8,W+1.8),m.floor);floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;world.add(floor);
+ put(world,box(L,H,.07,m.wall,false),0,H/2,-W/2-.035);
  addWindow(world,m,L,W,H);addRoomDecor(world,m,L,W,H);
 
  var towerTypes=[];
@@ -437,20 +443,16 @@ function cameraPreset(instance,name){
  if(!instance)return;instance.cameraMode=name;
  var r=effectiveRoom(),L=Math.max(2.6,r.length/100),W=Math.max(2.35,r.width/100),c=instance.camGoal,t=instance.target;
  if(name==="hero"){
-  c.set(Math.min(L*.28,L/2-.34),window.innerWidth<700?1.58:1.66,Math.min(W*.34,W/2-.24));
-  t.set(-.12,1.08,-W*.34)
+  c.set(L*.58,window.innerWidth<700?1.62:1.70,W*.72);
+  t.set(-.08,1.05,-W*.30)
  }else if(name==="functional"){
-  c.set(Math.min(L*.10,L/2-.45),1.54,Math.min(W*.32,W/2-.28));
-  t.set(.10,.98,-W*.40)
+  c.set(L*.18,1.54,W*.68);t.set(.08,.98,-W*.36)
  }else if(name==="elevation"){
-  c.set(0,1.48,Math.min(W*.38,W/2-.20));
-  t.set(0,1.18,-W*.47)
+  c.set(0,1.47,W*.72);t.set(0,1.18,-W*.47)
  }else if(name==="island"){
-  c.set(Math.max(-L*.27,-L/2+.30),1.66,Math.min(W*.32,W/2-.28));
-  t.set(.12,.97,-.04)
+  c.set(-L*.42,1.67,W*.58);t.set(.12,.97,-.02)
  }else if(name==="wide"){
-  c.set(Math.min(L*.34,L/2-.22),1.86,Math.min(W*.40,W/2-.18));
-  t.set(0,1.02,-W*.24)
+  c.set(L*.70,1.88,W*.86);t.set(0,1.02,-W*.22)
  }
 }
 function initHero(){if(runtime.hero)return;runtime.hero=create3D(document.getElementById("heroCanvas"),document.getElementById("heroWrap"),true);if(runtime.hero)rebuildScene(runtime.hero)}
