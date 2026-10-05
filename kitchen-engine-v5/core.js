@@ -423,12 +423,24 @@ function create3D(canvas,wrap,isHero){
  loop();return instance
 }
 function cameraPreset(instance,name){
- if(!instance)return;instance.cameraMode=name;var r=effectiveRoom(),L=Math.max(2.6,r.length/100),W=Math.max(2.35,r.width/100),c=instance.camGoal,t=instance.target;
- if(name==="hero"){c.set(L*.72,window.innerWidth<700?1.62:1.70,W*.92);t.set(-.12,1.10,-W*.40)}
- else if(name==="functional"){c.set(L*.20,1.55,W*.90);t.set(-.05,1.00,-W*.39)}
- else if(name==="elevation"){c.set(.05,1.48,W*.90);t.set(.05,1.18,-W*.48)}
- else if(name==="island"){c.set(-L*.50,1.70,W*.66);t.set(.12,.98,-.02)}
- else if(name==="wide"){c.set(L*.80,2.00,W*1.10);t.set(.02,1.02,-.18)}
+ if(!instance)return;instance.cameraMode=name;
+ var r=effectiveRoom(),L=Math.max(2.6,r.length/100),W=Math.max(2.35,r.width/100),c=instance.camGoal,t=instance.target;
+ if(name==="hero"){
+  c.set(Math.min(L*.28,L/2-.34),window.innerWidth<700?1.58:1.66,Math.min(W*.34,W/2-.24));
+  t.set(-.12,1.08,-W*.34)
+ }else if(name==="functional"){
+  c.set(Math.min(L*.10,L/2-.45),1.54,Math.min(W*.32,W/2-.28));
+  t.set(.10,.98,-W*.40)
+ }else if(name==="elevation"){
+  c.set(0,1.48,Math.min(W*.38,W/2-.20));
+  t.set(0,1.18,-W*.47)
+ }else if(name==="island"){
+  c.set(Math.max(-L*.27,-L/2+.30),1.66,Math.min(W*.32,W/2-.28));
+  t.set(.12,.97,-.04)
+ }else if(name==="wide"){
+  c.set(Math.min(L*.34,L/2-.22),1.86,Math.min(W*.40,W/2-.18));
+  t.set(0,1.02,-W*.24)
+ }
 }
 function initHero(){if(runtime.hero)return;runtime.hero=create3D(document.getElementById("heroCanvas"),document.getElementById("heroWrap"),true);if(runtime.hero)rebuildScene(runtime.hero)}
 function initStudio(){if(runtime.studio)return;runtime.studio=create3D(document.getElementById("studioCanvas"),document.getElementById("studioWrap"),false);if(runtime.studio)rebuildScene(runtime.studio)}
