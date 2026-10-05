@@ -1,0 +1,142 @@
+name: Dakhakhni Phase 3 QA
+on:
+  push:
+    branches: [dakhakhni-phase3-realism]
+    paths:
+      - 'dakhakhni-kitchen-v5/**'
+      - 'kitchen-engine-v5/**'
+      - '.github/workflows/dakhakhni-phase3-qa.yml'
+permissions:
+  contents: write
+concurrency:
+  group: dakhakhni-phase3-qa
+  cancel-in-progress: true
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: npm install --no-save playwright@1.55.0
+      - run: npx playwright install --with-deps chromium
+      - name: Start static server
+        run: |
+          python3 -m http.server 4175 --bind 127.0.0.1 >/tmp/dakh-p3-server.log 2>&1 &
+          for i in $(seq 1 50); do
+            curl -fsS http://127.0.0.1:4175/dakhakhni-kitchen-v5/ >/dev/null && exit 0
+            sleep 0.2
+          done
+          cat /tmp/dakh-p3-server.log
+          exit 1
+      - name: Run Phase 3 visual and regression QA
+        run: |
+          cat > phase3-qa.mjs <<'EOF'
+          import { chromium } from 'playwright';
+          import fs from 'fs';
+          import crypto from 'crypto';
+          const base='http://127.0.0.1:4175/dakhakhni-kitchen-v5/';
+          const out='qa-phase3'; fs.mkdirSync(out,{recursive:true});
+          const result={status:'PASS',regression:{},screenshots:[],errors:[]};
+          const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
+          async function canvasHash(page,sel){return hash(await page.locator(sel).screenshot({animations:'disabled'}))}
+          async function touchGesture(context,page,sel,dx,dy){
+            const box=await page.locator(sel).boundingBox(); if(!box) throw new Error('No box '+sel);
+            const x=box.x+box.width*.5,y=box.y+box.height*.55,cdp=await context.newCDPSession(page);
+            await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y,radiusX:2,radiusY:2,force:1,id:1}]});
+            for(let i=1;i<=8;i++) await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x+dx*i/8,y:y+dy*i/8,radiusX:2,radiusY:2,force:1,id:1}]});
+            await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]}); await page.waitForTimeout(260);
+          }
+          async function orbit(context,page,sel,mobile){
+            const before=await canvasHash(page,sel),box=await page.locator(sel).boundingBox(); if(!box) throw new Error('No canvas '+sel);
+            if(mobile) await touchGesture(context,page,sel,90,0);
+            else {const x=box.x+box.width*.45,y=box.y+box.height*.55;await page.mouse.move(x,y);await page.mouse.down();await page.mouse.move(x+105,y,{steps:10});await page.mouse.up();await page.waitForTimeout(260)}
+            const after=await canvasHash(page,sel); return before!==after;
+          }
+          async function shot(page,name,sel){await page.locator(sel).screenshot({path:out+'/'+name+'.png',animations:'disabled'});result.screenshots.push(name+'.png')}
+          async function state(page){return page.evaluate(()=>JSON.parse(localStorage.getItem('dakhakhni:v5:project')||'null'))}
+          async function fresh(view){
+            const mobile=view.width<=430,browser=await chromium.launch({headless:true});
+            const context=await browser.newContext({viewport:{width:view.width,height:view.height},deviceScaleFactor:1,isMobile:mobile,hasTouch:mobile,reducedMotion:'reduce'});
+            const page=await context.newPage();page.setDefaultTimeout(20000);const errs=[];
+            page.on('pageerror',e=>errs.push(e.message));page.on('console',m=>{if(m.type()==='error')errs.push(m.text())});
+            await page.addInitScript(()=>{localStorage.clear();});
+            await page.goto(base,{waitUntil:'domcontentloaded'});await page.waitForSelector('#heroCanvas');await page.waitForTimeout(1000);
+            return {browser,context,page,mobile,errs};
+          }
+          async function choosePhase1(page,layout='l'){
+            await page.locator('#heroStart').click();await page.locator('[data-projecttype="new"]').click();await page.locator('[data-layout="'+layout+'"]').click();await page.locator('[data-measuremode="known"]').click();
+            await page.locator('#roomLength').fill('420');await page.locator('#roomLength').dispatchEvent('input');
+            await page.locator('#roomWidth').fill('320');await page.locator('#roomWidth').dispatchEvent('input');
+            await page.locator('#nextBtn').click();await page.waitForSelector('.stage[data-stage="2"].active');await page.waitForTimeout(700);
+          }
+          async function regression(view){
+            const {browser,context,page,mobile,errs}=await fresh(view);
+            const heroOrbit=await orbit(context,page,'#heroCanvas',mobile); if(!heroOrbit)throw new Error(view.name+' hero orbit');
+            let scrollOK=true;if(mobile){await page.evaluate(()=>scrollTo(0,0));const before=await page.evaluate(()=>scrollY);await touchGesture(context,page,'#heroCanvas',0,-150);const after=await page.evaluate(()=>scrollY);scrollOK=after>before+20;if(!scrollOK)throw new Error(view.name+' vertical scroll')}
+            await page.locator('.heroQuickControls [data-cabinet="oak"]').click();await page.locator('.heroQuickControls [data-worktop="warm"]').click();await choosePhase1(page,'l');
+            let st=await state(page);if(st.visual.cabinet!=='oak'||st.visual.worktop!=='warm')throw new Error(view.name+' hero/studio continuity');
+            const viewer=await page.locator('#viewerLabel').textContent();if(!viewer.includes('420 × 320 × 280'))throw new Error(view.name+' dimensions');
+            if(!(await orbit(context,page,'#studioCanvas',mobile)))throw new Error(view.name+' studio orbit');
+            for(const cam of ['functional','elevation','wide']){await page.locator('[data-camera="'+cam+'"]').click();await page.waitForTimeout(180);if(!(await page.locator('[data-camera="'+cam+'"]').evaluate(e=>e.classList.contains('active'))))throw new Error(view.name+' camera '+cam)}
+            if(!await page.locator('[data-camera="island"]').isHidden())throw new Error(view.name+' island camera visible on L');
+            await page.locator('.finishBar [data-cabinet="graphite"]').click();await page.locator('.finishBar [data-worktop="dark"]').click();
+            if(!(await page.locator('[data-camera="wide"]').evaluate(e=>e.classList.contains('active'))))throw new Error(view.name+' camera reset on material');
+            await page.locator('#saveVisual').click();st=await state(page);if(!st.visual.saved||st.visual.cabinet!=='graphite'||st.visual.worktop!=='dark')throw new Error(view.name+' save');
+            if(page.url().includes('?project='))throw new Error(view.name+' dirty URL');
+            await page.reload({waitUntil:'domcontentloaded'});await page.waitForSelector('.stage[data-stage="2"].active');await page.waitForTimeout(600);st=await state(page);
+            if(!st.visual.saved||st.visual.cabinet!=='graphite'||st.visual.worktop!=='dark')throw new Error(view.name+' reload');
+            await page.locator('#nextBtn').click();await page.waitForSelector('.stage[data-stage="3"].active');await page.locator('#backBtn').click();await page.waitForSelector('.stage[data-stage="2"].active');st=await state(page);
+            if(!st.visual.saved||st.visual.cabinet!=='graphite'||st.visual.worktop!=='dark')throw new Error(view.name+' Phase3 back');
+            const m=await page.evaluate(()=>({sw:document.documentElement.scrollWidth,iw:innerWidth,wa:document.querySelector('#waButton')?.getAttribute('href')||'',txt:document.body.innerText,heights:[...document.querySelectorAll('.heroSwatch,.swatch,.cameraBar button,.saveVisual,.backBtn,.nextBtn')].filter(x=>x.offsetParent!==null).map(x=>x.getBoundingClientRect().height)}));
+            if(m.sw>m.iw+1)throw new Error(view.name+' overflow');if(!m.wa.startsWith('https://wa.me/966545246478?text='))throw new Error(view.name+' WhatsApp');if(/FN\s*Cadena|Makan\s*Cars/i.test(m.txt))throw new Error(view.name+' contamination');if(mobile&&Math.min(...m.heights)<44)throw new Error(view.name+' touch target');if(errs.length)throw new Error(view.name+' runtime '+errs.join('|'));
+            result.regression[view.name]={heroOrbit,scrollOK,scrollWidth:m.sw,minTouch:Math.min(...m.heights),errors:errs};await browser.close();
+          }
+          async function visual1440(){
+            let x=await fresh({name:'1440',width:1440,height:1000}),p=x.page;
+            await shot(p,'1440-01-hero-ivory','#heroWrap');
+            await p.locator('.heroQuickControls [data-cabinet="oak"]').click();await p.locator('.heroQuickControls [data-worktop="veined"]').click();await p.waitForTimeout(250);await shot(p,'1440-02-hero-oak','#heroWrap');
+            await p.locator('.heroQuickControls [data-cabinet="graphite"]').click();await p.locator('.heroQuickControls [data-worktop="dark"]').click();await p.waitForTimeout(250);await shot(p,'1440-03-hero-graphite','#heroWrap');await x.browser.close();
+            x=await fresh({name:'1440s',width:1440,height:1000});p=x.page;await choosePhase1(p,'l');await shot(p,'1440-04-studio-hero','#studioWrap');
+            for(const [cam,name] of [['functional','1440-05-functional'],['elevation','1440-06-elevation'],['wide','1440-08-wide']]){await p.locator('[data-camera="'+cam+'"]').click();await p.waitForTimeout(260);await shot(p,name,'#studioWrap')} await x.browser.close();
+            x=await fresh({name:'1440i',width:1440,height:1000});p=x.page;await choosePhase1(p,'island');if(await p.locator('[data-camera="island"]').isHidden())throw new Error('island camera hidden for plausible island');await p.locator('[data-camera="island"]').click();await p.waitForTimeout(260);await shot(p,'1440-07-island','#studioWrap');await x.browser.close();
+          }
+          async function visualMobile(w,h,prefix){
+            const x=await fresh({name:prefix,width:w,height:h}),p=x.page;await shot(p,prefix+'-01-hero','#heroWrap');await choosePhase1(p,'l');await shot(p,prefix+'-02-phase2-default','#studioWrap');
+            await p.locator('.finishBar [data-cabinet="graphite"]').click();await p.locator('.finishBar [data-worktop="dark"]').click();await p.waitForTimeout(260);await shot(p,prefix+'-03-dark','#studioWrap');
+            if(prefix==='430'){await p.locator('[data-camera="functional"]').click();await p.waitForTimeout(250);await shot(p,prefix+'-04-alt-camera','#studioWrap')}
+            else {await p.locator('#saveVisual').click();await p.waitForTimeout(180);await shot(p,prefix+'-04-saved','.studio')}
+            await x.browser.close();
+          }
+          try{
+            for(const v of [{name:'390',width:390,height:844},{name:'430',width:430,height:900},{name:'1440',width:1440,height:1000}])await regression(v);
+            await visual1440();await visualMobile(430,900,'430');await visualMobile(390,844,'390');
+          }catch(e){result.status='FAIL';result.errors.push(e.stack||String(e))}
+          fs.writeFileSync(out+'/results.json',JSON.stringify(result,null,2));if(result.status!=='PASS'){console.error(JSON.stringify(result,null,2));process.exit(1)}
+          EOF
+          node phase3-qa.mjs
+      - name: Preserve Phase 3 QA
+        if: always()
+        run: |
+          rm -rf audit-v5-phase3-output
+          mkdir -p audit-v5-phase3-output
+          if [ -d qa-phase3 ]; then
+            for f in qa-phase3/*.png; do
+              [ -e "$f" ] || continue
+              b="$(basename "$f" .png)"
+              base64 -w 0 "$f" > "audit-v5-phase3-output/$b.b64"
+            done
+            cp qa-phase3/results.json audit-v5-phase3-output/results.json || true
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit-v5-phase3-output
+          git commit -m "Store Dakhakhni Phase 3 QA captures" || true
+          git push origin HEAD:dakhakhni-phase3-realism
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dakhakhni-phase3-qa
+          path: qa-phase3
+          retention-days: 2
