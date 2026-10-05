@@ -363,7 +363,7 @@ function dispose(o){if(o&&o.userData&&o.userData.skipDispose)return;o.traverse&&
 }function addWindow(world,m,L,W,H){
  var windows=state.room.markers.filter(function(x){return x.type==="window"});if(!windows.length&&!knownMeasurements())windows=[{wall:"north",pos:70}];
  windows.forEach(function(mm){if(mm.wall!=="north")return;var x=-L/2+L*(mm.pos/100),ww=Math.min(1.38,L*.28),wh=1.12,z=-W/2+.020;
-  put(world,box(ww+.18,wh+.18,.10,m.frame,false),x,1.68,z-.055);put(world,box(ww+.10,wh+.10,.025,m.sky,false),x,1.68,z-.112);
+  put(world,box(ww+.18,wh+.18,.10,m.frame,false),x,1.68,z-.055);put(world,box(ww+.02,wh+.02,.012,m.sky,false),x,1.68,z+.002);
   put(world,box(ww,wh,.018,m.glass,false),x,1.68,z+.010);put(world,box(ww+.08,.045,.075,m.frame,false),x,1.10,z+.045);put(world,box(ww+.08,.045,.075,m.frame,false),x,2.25,z+.045);
   put(world,box(.045,wh+.08,.075,m.frame,false),x-ww/2-.02,1.68,z+.045);put(world,box(.045,wh+.08,.075,m.frame,false),x+ww/2+.02,1.68,z+.045);put(world,box(.035,wh,.055,m.frame,false),x,1.68,z+.050);
   put(world,box(ww+.18,.055,.18,m.stone),x,1.075,z+.085)
