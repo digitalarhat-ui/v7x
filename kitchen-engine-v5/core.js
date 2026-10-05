@@ -176,8 +176,8 @@ function handleFile(file){
  var ok=/^(image\/jpeg|image\/png|image\/webp|application\/pdf)$/.test(file.type)&&file.size<=12*1024*1024;if(!ok){toast("الملف يجب أن يكون JPG / PNG / WEBP / PDF وبحجم حتى 12MB");var inp=document.getElementById("refFile");if(inp)inp.value="";return}
  runtime.refFile=file;if(file.type.indexOf("image/")===0){var r=new FileReader();r.onload=function(){runtime.refData=r.result;if(box)box.innerHTML='<div class="fileCard"><img src="'+r.result+'" alt=""><div><b>'+safe(file.name)+'</b><small>يبقى على جهازك — أرفقه يدوياً في واتساب</small></div></div>';renderDynamic()};r.readAsDataURL(file)}else if(box)box.innerHTML='<div class="fileCard"><div style="width:58px;height:58px;display:grid;place-items:center;background:#143c32;color:#fff;font-weight:900">PDF</div><div><b>'+safe(file.name)+'</b><small>يبقى على جهازك — أرفقه يدوياً في واتساب</small></div></div>';
 }
-function invalidateVisual(){state.visual.saved=false;state.review.confirmed=false}
-function invalidateDetails(){state.details.reviewed=false;state.review.confirmed=false}
+function invalidateVisual(){state.visual.saved=false;state.review.confirmed=false;runtime.maxPhase=Math.min(runtime.maxPhase,runtime.phase<=1?1:2);state.maxPhase=runtime.maxPhase}
+function invalidateDetails(){state.details.reviewed=false;state.review.confirmed=false;runtime.maxPhase=Math.min(runtime.maxPhase,3);state.maxPhase=runtime.maxPhase}
 function bind(){
  root.addEventListener("click",function(ev){var t=ev.target.closest("button,a");if(!t)return;
   if(t.id==="headerStart"||t.id==="heroStart"){runtime.maxPhase=Math.max(runtime.maxPhase,1);goPhase(1);return}
@@ -196,11 +196,15 @@ function bind(){
   if(t.dataset.storage){var sk=t.dataset.storage;state.details.storage[sk]=!state.details.storage[sk];invalidateDetails();t.classList.toggle("active",state.details.storage[sk]);renderDynamic();return}
   if(t.dataset.appliance){var ak=t.dataset.appliance;state.details.appliances[ak]=!state.details.appliances[ak];invalidateDetails();t.classList.toggle("active",state.details.appliances[ak]);renderDynamic();return}
   if(t.id==="detailsReviewed"){state.details.reviewed=true;runtime.maxPhase=Math.max(runtime.maxPhase,4);save();renderDynamic();toast("تم حفظ تفاصيل المشروع");return}
-  if(t.dataset.follow){state.review.followUp=t.dataset.follow;state.review.confirmed=false;document.querySelectorAll("[data-follow]").forEach(function(x){x.classList.toggle("active",x===t)});renderDynamic();return}
+  if(t.dataset.follow){state.review.followUp=t.dataset.follow;state.review.confirmed=false;runtime.maxPhase=Math.min(runtime.maxPhase,4);state.maxPhase=runtime.maxPhase;document.querySelectorAll("[data-follow]").forEach(function(x){x.classList.toggle("active",x===t)});renderDynamic();return}
   if(t.id==="reviewConfirmed"){state.review.confirmed=true;runtime.maxPhase=Math.max(runtime.maxPhase,5);save();renderDynamic();toast("تمت مراجعة المشروع");return}
   if(t.dataset.editphase){goPhase(Number(t.dataset.editphase));return}
   if(t.dataset.camera){cameraPreset(runtime.studio,t.dataset.camera);document.querySelectorAll("[data-camera]").forEach(function(x){x.classList.toggle("active",x===t)});return}
   if(t.id==="shareProject"){copyShare();return}
+  if(t.id==="waButton"){
+    var earliest=0;if(!validatePhase(1,false))earliest=1;else if(!state.visual.saved)earliest=2;else if(!state.details.reviewed)earliest=3;else if(!state.review.confirmed)earliest=4;
+    if(earliest){ev.preventDefault();runtime.maxPhase=Math.max(runtime.maxPhase,earliest);state.maxPhase=runtime.maxPhase;goPhase(earliest);toast("راجع هذه المرحلة قبل فتح واتساب");return}
+  }
  });
  root.addEventListener("input",function(ev){var e=ev.target,id=e.id;
   if(id==="city"){state.project.city=e.value.trim();state.review.confirmed=false}
@@ -264,7 +268,7 @@ function hoodUnit(m){var g=new THREE.Group();put(g,box(.64,.055,.36,m.chrome),0,
 function hobUnit(m){var g=new THREE.Group();put(g,box(.56,.014,.42,m.black),0,0,0);for(var i=0;i<4;i++){var ring=new THREE.Mesh(new THREE.TorusGeometry(.065,.005,12,30),m.chrome);ring.rotation.x=Math.PI/2;ring.position.set((i%2?1:-1)*.14,.014,(i>1?1:-1)*.105);g.add(ring)}return g}
 function simpleSink(m){var g=new THREE.Group();put(g,box(.50,.045,.36,m.chrome),0,0,0);put(g,box(.42,.018,.29,m.black),0,.026,0);var curve=new THREE.CatmullRomCurve3([new THREE.Vector3(-.17,.01,0),new THREE.Vector3(-.17,.30,0),new THREE.Vector3(-.02,.46,0),new THREE.Vector3(.15,.35,0)]),tap=new THREE.Mesh(new THREE.TubeGeometry(curve,28,.014,10,false),m.chrome);tap.castShadow=true;g.add(tap);return g}
 function clearWorld(instance){if(!instance)return;instance.generation=(instance.generation||0)+1;while(instance.world.children.length){var o=instance.world.children[0];instance.world.remove(o);dispose(o)}}
-function dispose(o){o.traverse&&o.traverse(function(n){if(n.geometry&&n.geometry.dispose)n.geometry.dispose();if(n.material){var a=Array.isArray(n.material)?n.material:[n.material];a.forEach(function(mm){if(mm.map&&mm.map.dispose)mm.map.dispose();if(mm.dispose)mm.dispose()})}})}
+function dispose(o){if(o&&o.userData&&o.userData.skipDispose)return;o.traverse&&o.traverse(function(n){if(n.geometry&&n.geometry.dispose)n.geometry.dispose();if(n.material){var a=Array.isArray(n.material)?n.material:[n.material];a.forEach(function(mm){if(mm.map&&mm.map.dispose)mm.map.dispose();if(mm.dispose)mm.dispose()})}})}
 function addRun(world,m,length,z,rotation,xpos,sideMode){
  var count=Math.max(3,Math.min(6,Math.floor(length/.62))),runLen=count*.62,start=-runLen/2+.31,g=new THREE.Group(),sinkIndex=Math.min(1,count-1),hobIndex=Math.min(3,count-1),hasSink=true,hasHob=state.details.appliances.hob||runtime.phase<3;
  for(var i=0;i<count;i++){var type=i===sinkIndex?"doors":i===hobIndex&&hasHob?"oven":(i%3===0?"drawers":"doors");put(g,baseUnit(m,type,.60),start+i*.62,.115,0)}
@@ -297,8 +301,8 @@ function getAsset(url,cb){
 }
 function addCC0Details(instance,sinkPos){
  if(!instance||!sinkPos||!window.THREE||!THREE.GLTFLoader)return;var gen=instance.generation;
- getAsset(cfg.cc0Assets.sink,function(model){if(instance.generation!==gen)return;fitModel(model,.48);model.position.set(sinkPos.x,.97,sinkPos.z);instance.world.add(model)});
- getAsset(cfg.cc0Assets.tap,function(model){if(instance.generation!==gen)return;fitModel(model,.38);model.position.set(sinkPos.x-.16,1.00,sinkPos.z-.07);model.rotation.y=Math.PI;instance.world.add(model)})
+ getAsset(cfg.cc0Assets.sink,function(model){if(instance.generation!==gen)return;model.userData.skipDispose=true;fitModel(model,.48);model.position.set(sinkPos.x,.97,sinkPos.z);instance.world.add(model)});
+ getAsset(cfg.cc0Assets.tap,function(model){if(instance.generation!==gen)return;model.userData.skipDispose=true;fitModel(model,.38);model.position.set(sinkPos.x-.16,1.00,sinkPos.z-.07);model.rotation.y=Math.PI;instance.world.add(model)})
 }
 function rebuildScene(instance){
  if(!instance||!window.THREE)return;clearWorld(instance);var m=materials(),r=effectiveRoom(),L=Math.max(2.4,r.length/100),W=Math.max(2.25,r.width/100),H=Math.max(2.35,r.height/100),layout=effectiveLayout(),world=instance.world;
