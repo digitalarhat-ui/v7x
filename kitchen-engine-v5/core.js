@@ -44,6 +44,11 @@ function save(){state.phase=runtime.phase;state.maxPhase=runtime.maxPhase;state.
 function emit(n,d){try{dispatchEvent(new CustomEvent("dakhakhni-v5:"+n,{detail:d||{}}))}catch(e){}}
 function toast(msg){var e=document.getElementById("toast");if(!e)return;e.textContent=msg;e.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(function(){e.classList.remove("show")},1700)}
 function activeKeys(o){return Object.keys(o).filter(function(k){return !!o[k]})}
+function assetUrl(url){
+ var base=window.DAKH_ASSET_BASE||"";
+ if(base&&url&&url.charAt(0)==="/")return base.replace(/\/$/,"")+url;
+ return url
+}
 function projectCode(){var raw=JSON.stringify([state.project,state.room,state.visual,state.details]),h=2166136261;for(var i=0;i<raw.length;i++){h^=raw.charCodeAt(i);h+=(h<<1)+(h<<4)+(h<<7)+(h<<8)+(h<<24)}return"DK-"+((h>>>0).toString(36).toUpperCase()+"000000").slice(0,6)}
 function knownMeasurements(){return state.project.measurementMode==="known"}
 function roomText(){return knownMeasurements()?state.room.length+" × "+state.room.width+" × "+state.room.height+" سم":"القياسات غير متوفرة حالياً"}
@@ -326,7 +331,7 @@ function fitModel(model,targetSize){
  var b=new THREE.Box3().setFromObject(model),size=new THREE.Vector3();b.getSize(size);var max=Math.max(size.x,size.y,size.z)||1,scale=targetSize/max;model.scale.setScalar(scale);b.setFromObject(model);var center=new THREE.Vector3();b.getCenter(center);model.position.x-=center.x;model.position.z-=center.z;model.position.y-=b.min.y;model.traverse(function(n){if(n.isMesh){n.castShadow=true;n.receiveShadow=true}});return model
 }
 function getAsset(url,cb){
- if(!window.THREE||!THREE.GLTFLoader)return;
+ if(!window.THREE||!THREE.GLTFLoader)return;url=assetUrl(url);
  if(runtime.assetCache[url]){cb(runtime.assetCache[url].clone(true));return}
  if(runtime.assetWait[url]){runtime.assetWait[url].push(cb);return}
  runtime.assetWait[url]=[cb];var loader=new THREE.GLTFLoader();loader.load(url,function(g){runtime.assetCache[url]=g.scene;var list=runtime.assetWait[url]||[];delete runtime.assetWait[url];list.forEach(function(fn){fn(g.scene.clone(true))})},undefined,function(){delete runtime.assetWait[url]})
@@ -381,7 +386,7 @@ function applyHDR(instance){
  if(!instance||!window.THREE||!THREE.RGBELoader)return;
  if(runtime.hdr){runtime.hdr.mapping=THREE.EquirectangularReflectionMapping;instance.scene.environment=runtime.hdr;return}
  runtime.hdrWait.push(instance);if(runtime.hdrLoading)return;runtime.hdrLoading=true;
- new THREE.RGBELoader().load("/kitchen-engine-v5/assets/kiara_interior_1k.hdr",function(tex){
+ new THREE.RGBELoader().load(assetUrl("/kitchen-engine-v5/assets/kiara_interior_1k.hdr"),function(tex){
   tex.mapping=THREE.EquirectangularReflectionMapping;runtime.hdr=tex;runtime.hdrLoading=false;
   var list=runtime.hdrWait.splice(0);list.forEach(function(it){if(it&&it.scene)it.scene.environment=tex})
  },undefined,function(){runtime.hdrLoading=false;runtime.hdrWait=[]})
