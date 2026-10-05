@@ -1,0 +1,70 @@
+name: FN Cadena UX Audit
+on:
+  push:
+    branches: [fn-cadena-ux-audit]
+    paths: ['.github/workflows/fn-cadena-ux-audit.yml']
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install --no-save playwright@1.55.0
+      - run: npx playwright install --with-deps chromium
+      - name: Capture filled 5-phase flow
+        run: |
+          cat > /tmp/audit.mjs <<'EOF'
+          import { chromium } from 'playwright';
+          import fs from 'fs';
+          const out='fn-audit'; fs.mkdirSync(out,{recursive:true});
+          async function run(name,viewport){
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage({viewportSize:viewport,deviceScaleFactor:1});
+            page.setDefaultTimeout(30000);
+            await page.goto('https://fn-cadena-clean-rebuild-a4380y8av-digitalarhat-9177s-projects.vercel.app/request?service=kitchen',{waitUntil:'networkidle'});
+            await page.screenshot({path:`${out}/${name}-phase1-start.png`,fullPage:true});
+            await page.getByTestId('phase11-project-new').click();
+            await page.locator('#phase11-city').fill('الرياض - الياسمين');
+            await page.getByTestId('phase11-layout-l-shape').click();
+            await page.getByTestId('phase11-measurement-mode-known').click();
+            await page.locator('#phase11-measurement').fill('4*3.5');
+            await page.screenshot({path:`${out}/${name}-phase1-filled.png`,fullPage:true});
+            await page.getByTestId('phase11-next').click();
+            await page.waitForSelector('[data-testid="phase11-phase-2"]');
+            await page.getByTestId('phase11-system-wood').click();
+            const dir=page.locator('[data-testid^="phase11-direction-"]').first(); await dir.click();
+            const colour=page.locator('[data-testid^="phase11-colour-"]').first(); await colour.click();
+            await page.getByTestId('phase11-surface-local-stone-2cm').click();
+            await page.screenshot({path:`${out}/${name}-phase2-filled.png`,fullPage:true});
+            await page.getByTestId('phase11-next').click();
+            await page.waitForSelector('[data-testid="phase11-phase-3"]');
+            await page.getByTestId('phase11-ceiling-standard').click();
+            await page.getByTestId('phase11-hardware-italian-hydraulic').click();
+            await page.getByTestId('phase11-sink-no-new-sink').click();
+            await page.screenshot({path:`${out}/${name}-phase3-filled.png`,fullPage:true});
+            await page.getByTestId('phase11-next').click();
+            await page.waitForSelector('[data-testid="phase11-phase-4"]');
+            await page.getByTestId('phase11-followup-whatsapp').click();
+            await page.screenshot({path:`${out}/${name}-phase4-filled.png`,fullPage:true});
+            await page.getByTestId('phase11-next').click();
+            await page.waitForSelector('[data-testid="phase11-phase-5"]');
+            await page.locator('#phase11-customer-name').fill('عميل تجريبي');
+            await page.locator('#phase11-mobile').fill('0555555555');
+            await page.locator('#phase11-notes').fill('أولوية للتخزين ومساحة التحضير.');
+            await page.screenshot({path:`${out}/${name}-phase5-filled.png`,fullPage:true});
+            fs.writeFileSync(`${out}/${name}-summary.txt`,await page.getByTestId('phase11-whatsapp-summary').innerText());
+            await browser.close();
+          }
+          await run('desktop',{width:1440,height:1000});
+          await run('mobile',{width:390,height:844});
+          EOF
+          node /tmp/audit.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fn-cadena-ux-audit
+          path: fn-audit
+          retention-days: 2
