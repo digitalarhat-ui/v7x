@@ -118,7 +118,9 @@ jobs:
             const preview=(await page.locator('#waPreview').innerText()).trim(),lines=preview.split('\n').filter(Boolean);if(lines.length>15)throw new Error(tag+' WhatsApp too long '+lines.length);if(/slot_|cabinet=|baseSlots|config/i.test(preview))throw new Error(tag+' technical WhatsApp copy');
             const wa=await page.locator('#waButton').getAttribute('href');if(!wa?.startsWith('https://wa.me/966545246478?text='))throw new Error(tag+' WhatsApp route');
             if(width<700){await page.locator('.whatsappPanel').scrollIntoViewIfNeeded();await shot(page,tag+'-06-phase5-whatsapp')}else{await page.locator('.stage[data-stage="5"]').scrollIntoViewIfNeeded();await shot(page,'1440-05-phase5')}
-            const savedBefore=await state(page);await page.reload({waitUntil:'domcontentloaded'});await page.waitForSelector('.stage[data-stage="5"].active');const savedAfter=await state(page);
+            const savedBefore=await state(page),reloadUrl=page.url();if(savedBefore.phase!==5||savedBefore.maxPhase<5)throw new Error(tag+' pre-reload phase state '+JSON.stringify({phase:savedBefore.phase,maxPhase:savedBefore.maxPhase,url:reloadUrl}));
+            await page.reload({waitUntil:'domcontentloaded'});await sleep(900);const savedAfter=await state(page),reloadDom=await page.evaluate(()=>({hash:location.hash,active:document.querySelector('.stage.active')?.dataset.stage||'',phase:document.body.dataset.phase||''}));
+            if(savedAfter.phase!==5||savedAfter.maxPhase<5||reloadDom.active!=='5')throw new Error(tag+' reload phase restore '+JSON.stringify({saved:{phase:savedAfter.phase,maxPhase:savedAfter.maxPhase},dom:reloadDom,url:page.url()}));
             if(savedAfter.contact.name!=='عميل تجريبي'||savedAfter.project.city!=='الرياض'||savedAfter.visual.cabinet!=='oak'||savedAfter.visual.worktop!=='veined'||savedAfter.config.tallSlots[0]!=='oven'||!savedAfter.details.storage.pantry)throw new Error(tag+' reload persistence');
 
             await page.locator('#summaryGroups [data-editphase="1"]').first().click();await page.waitForSelector('.stage[data-stage="1"].active');
