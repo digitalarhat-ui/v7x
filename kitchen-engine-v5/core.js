@@ -59,7 +59,7 @@ function knownMeasurements(){return state.project.measurementMode==="known"}
 function roomText(){return knownMeasurements()?state.room.length+" × "+state.room.width+" × "+state.room.height+" سم":"القياسات غير متوفرة حالياً"}
 function effectiveLayout(){return state.config&&state.config.layout?state.config.layout:(state.room.layout&&state.room.layout!=="unsure"?state.room.layout:"l")}
 function effectiveRoom(){return{length:knownMeasurements()?state.room.length:420,width:knownMeasurements()?state.room.width:320,height:knownMeasurements()?state.room.height:280}}
-function hasPlausibleIsland(){var r=effectiveRoom();return effectiveLayout()==="island"&&r.length>=340&&r.width>=300}
+function roomCanSupportIsland(){var r=effectiveRoom();return r.length>=340&&r.width>=300}\nfunction hasPlausibleIsland(){return effectiveLayout()==="island"&&roomCanSupportIsland()}
 function effectiveLabel(){return state.room.layout?layoutLabels[state.room.layout]:"لم يتم الاختيار بعد"}
 function defaultTallSlots(){
  var L=Math.max(2.6,effectiveRoom().length/100),slots=[];
@@ -119,7 +119,7 @@ function configOption(label,key,active,attr,disabled){return'<button type="butto
 function configPanel(){
  ensureConfigurator();var tab=state.config.activeTab,sel=selectedConfig(),html="";
  if(tab==="configuration"){
-  var layouts=["straight","l","u","parallel","island"];html='<div class="configPanelHead"><b>تكوين مبدئي</b><span>ابدأ بالاتجاه الحالي ثم عدّل ما يفيد جلسة التصميم.</span></div><div class="configChoices">'+layouts.map(function(k){var blocked=k==="island"&&!hasPlausibleIsland();return configOption(layoutLabels[k],k,effectiveLayout()===k,"configlayout",blocked)}).join("")+'</div>';
+  var layouts=["straight","l","u","parallel","island"];html='<div class="configPanelHead"><b>تكوين مبدئي</b><span>ابدأ بالاتجاه الحالي ثم عدّل ما يفيد جلسة التصميم.</span></div><div class="configChoices">'+layouts.map(function(k){var blocked=k==="island"&&!roomCanSupportIsland();return configOption(layoutLabels[k],k,effectiveLayout()===k,"configlayout",blocked)}).join("")+'</div>';
   if(state.room.layout==="unsure"&&!state.config.layout)html+='<p class="configNote">تم عرض حرف L كتكوين توضيحي فقط لأن الشكل النهائي غير محدد.</p>'
  }else if(tab==="cabinet"){
   html='<div class="configPanelHead"><b>واجهات الخزائن</b><span>اتجاهات بصرية تمهيدية وليست كتالوج دخاخني الرسمي.</span></div><div class="configMaterialGrid">'+Object.keys(cabinetLabels).map(function(k){return'<button type="button" class="materialTile '+(state.visual.cabinet===k?"active":"")+'" data-cabinet="'+k+'"><i style="--sw:'+({ivory:"#d9d1c4",oak:"#a47d56",walnut:"#594033",sage:"#858881",graphite:"#3b3f3b",white:"#efeee8"}[k])+'"></i><span>'+safe(cabinetLabels[k])+'</span></button>'}).join("")+'</div>'
@@ -292,7 +292,7 @@ function bind(){
   if(t.dataset.addmarker){state.room.markers.push({id:"m"+Date.now().toString(36),type:t.dataset.addmarker,wall:"north",pos:50});invalidateVisual();renderDynamic();return}
   if(t.dataset.delmarker){state.room.markers=state.room.markers.filter(function(m){return m.id!==t.dataset.delmarker});invalidateVisual();renderDynamic();return}
   if(t.dataset.configtab){state.config.activeTab=t.dataset.configtab;save();renderDynamic();return}
-  if(t.dataset.configlayout){if(t.disabled)return;pushConfigUndo();state.config.layout=t.dataset.configlayout;if(state.config.layout==="island"&&!hasPlausibleIsland())state.config.layout="";state.config.seeded=false;ensureConfigurator(true);state.config.layout=t.dataset.configlayout;invalidateVisual();renderDynamic();return}
+  if(t.dataset.configlayout){if(t.disabled)return;pushConfigUndo();var requested=t.dataset.configlayout;if(requested==="island"&&!roomCanSupportIsland())return;state.config.layout=requested;state.config.seeded=false;ensureConfigurator(true);state.config.layout=requested;invalidateVisual();renderDynamic();return}
   if(t.dataset.configslot){state.config.selected=t.dataset.configslot;state.config.inspect=false;renderDynamic();return}
   if(t.dataset.configreplace){
     ensureConfigurator();var sel=selectedConfig();pushConfigUndo();
