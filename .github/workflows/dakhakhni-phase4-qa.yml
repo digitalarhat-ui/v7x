@@ -93,7 +93,7 @@ jobs:
 
             const or=await orbit(page,'#studioCanvas');if(or.mode!=='manual')throw new Error(tag+' orbit mode '+or.mode);
             for(const cam of ['hero','functional','elevation','wide']){await page.locator('[data-camera="'+cam+'"]').click();await sleep(180);if(!(await page.locator('[data-camera="'+cam+'"]').evaluate(e=>e.classList.contains('active'))))throw new Error(tag+' camera '+cam)}
-            await page.locator('[data-configtab="cabinet"]').click();await page.locator('[data-cabinet="graphite"]').click();await page.locator('[data-configtab="worktop"]').click();await page.locator('[data-worktop="dark"]').click();await sleep(250);await shot(page,tag+'-08-dark','.configuratorGrid');
+            await page.locator('[data-configtab="cabinet"]').click();await page.locator('#configPanel [data-cabinet="graphite"]').click();await page.locator('[data-configtab="worktop"]').click();await page.locator('#configPanel [data-worktop="dark"]').click();await sleep(250);await shot(page,tag+'-08-dark','.configuratorGrid');
             const modeBefore=await page.locator('#studioWrap').getAttribute('data-camera-mode');if(modeBefore!=='wide')throw new Error(tag+' material reset camera');
 
             await page.locator('#saveVisual').click();await sleep(180);await shot(page,tag+'-07-saved','.configuratorStudio');
