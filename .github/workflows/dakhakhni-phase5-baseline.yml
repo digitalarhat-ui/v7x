@@ -67,7 +67,7 @@ jobs:
             const ceremonial=await page.evaluate(()=>['detailsReviewed','reviewConfirmed'].filter(id=>!!document.getElementById(id)).length);
             const instructionalCopy=p1Before.copy+p2.copy+p3.copy+p4.copy+p5.copy;
             result[String(width)]={taps,minimalRequiredTextFields:2,selectInputsPhase3:3,heroScreens:heroMetrics.screens,pre3DScreens:+(p1Before.screens).toFixed(2),duplicateQuestions:duplicates,duplicateQuestionCount:duplicates.length,ceremonialButtons:ceremonial,instructionalCopyChars:instructionalCopy,phases:{p1:p1Before,p2,p3,p4,p5}};
-            await page.screenshot({path:out+'/'+width+'-phase5-current.png',fullPage:true});await browser.close()
+            await browser.close()
           }
           for(const [w,h] of [[390,844],[430,900],[1440,1000]])await one(w,h);
           fs.writeFileSync(out+'/results.json',JSON.stringify(result,null,2));
