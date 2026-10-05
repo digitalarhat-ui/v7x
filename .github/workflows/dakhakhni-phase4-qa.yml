@@ -108,7 +108,7 @@ jobs:
             await page.evaluate(()=>scrollTo(0,0));await sleep(450);const heroGeo=await page.locator('#heroWrap').getAttribute('data-geometry-state'),heroAfter=await canvasHash(page,'#heroCanvas');
             if(heroGeo!==studioGeo)throw new Error(tag+' hero/studio geometry diverged');if(initialHero===heroAfter)throw new Error(tag+' hero did not reflect configuration');
 
-            await page.locator('#nextBtn').click();await page.waitForSelector('.stage[data-stage="3"].active');await page.locator('#detailsReviewed').click();await page.locator('#nextBtn').click();await page.waitForSelector('.stage[data-stage="4"].active');
+            await page.locator('#phaseProgress').scrollIntoViewIfNeeded();await sleep(180);await page.locator('#nextBtn').click();await page.waitForSelector('.stage[data-stage="3"].active');await page.locator('#detailsReviewed').click();await page.locator('#nextBtn').click();await page.waitForSelector('.stage[data-stage="4"].active');
             await page.locator('#reviewConfirmed').click();await page.locator('#nextBtn').click();await page.waitForSelector('.stage[data-stage="5"].active');
             const summary=await page.locator('#summaryGroups').innerText(),wa=await page.locator('#waButton').getAttribute('href');
             if(!/وحدة أدراج|تخزين طويل|برج فرن|ثلاجة|وحدة حوض/.test(summary))throw new Error(tag+' Phase5 config summary missing');
