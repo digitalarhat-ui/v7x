@@ -425,7 +425,7 @@ function applyHDR(instance){
  if(!instance||!window.THREE||!THREE.RGBELoader)return;if(runtime.hdr){instance.scene.environment=runtime.hdr;return}
  runtime.hdrWait.push(instance);if(runtime.hdrLoading)return;runtime.hdrLoading=true;
  new THREE.RGBELoader().load(assetUrl("/kitchen-engine-v5/assets/kiara_interior_1k.hdr"),function(tex){
-  var pmrem=new THREE.PMREMGenerator(instance.renderer);pmrem.compileEquirectangularShader();runtime.hdr=pmrem.fromEquirectangular(tex).texture;tex.dispose();pmrem.dispose();runtime.hdrLoading=false;
+  var pmrem=new THREE.PMREMGenerator(instance.renderer);if(pmrem.compileEquirectangularShader)pmrem.compileEquirectangularShader();runtime.hdr=pmrem.fromEquirectangular(tex).texture;tex.dispose();pmrem.dispose();runtime.hdrLoading=false;
   var list=runtime.hdrWait.splice(0);list.forEach(function(it){if(it&&it.scene)it.scene.environment=runtime.hdr})
  },undefined,function(){runtime.hdrLoading=false;runtime.hdrWait=[]})
 }function environment(){
