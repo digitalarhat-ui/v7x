@@ -53,7 +53,7 @@ jobs:
             await page.locator('#heroStart').click();await page.locator('[data-projecttype="new"]').click();await page.locator('[data-layout="'+layout+'"]').click();await page.locator('[data-measuremode="known"]').click();
             await page.locator('#roomLength').fill(String(L));await page.locator('#roomLength').dispatchEvent('input');
             await page.locator('#roomWidth').fill(String(W));await page.locator('#roomWidth').dispatchEvent('input');
-            await page.locator('#nextBtn').click();await page.waitForSelector('.stage[data-stage="2"].active');await sleep(700);
+            await page.locator('#nextBtn').click({force:true});await page.waitForSelector('.stage[data-stage="2"].active');await sleep(700);
           }
           async function setMaterial(page,cab,top){await page.locator('[data-cabinet="'+cab+'"]').first().click();await page.locator('[data-worktop="'+top+'"]').first().click();await sleep(350);}
           async function camera(page,name){const b=page.locator('[data-camera="'+name+'"]');if(await b.isVisible()){await b.click();await sleep(450);return true}return false}
@@ -62,7 +62,7 @@ jobs:
             await shot(page,tag+'-01-hero-ivory-light');await page.locator('.heroQuickControls [data-cabinet="oak"]').click();await page.locator('.heroQuickControls [data-worktop="veined"]').click();await sleep(350);if(width===1440)await shot(page,'1440-02-hero-oak-veined');
             await page.locator('.heroQuickControls [data-cabinet="graphite"]').click();await page.locator('.heroQuickControls [data-worktop="dark"]').click();await sleep(350);if(width===1440)await shot(page,'1440-03-hero-graphite-dark');
             const heroState=await page.evaluate(()=>({cab:localStorage.getItem('dakhakhni:v5:project'),overflow:document.documentElement.scrollWidth-innerWidth,webgl:!!document.querySelector('#heroCanvas'),touch:getComputedStyle(document.querySelector('#heroCanvas')).touchAction}));
-            if(heroState.overflow>1)throw new Error(tag+' hero overflow '+heroState.overflow);if(!heroState.webgl)throw new Error(tag+' missing hero canvas');if(width<700&&heroState.touch!=='pan-y')throw new Error(tag+' hero touch-action '+heroState.touch);
+            if(heroState.overflow>1)throw new Error(tag+' hero overflow '+heroState.overflow);if(!heroState.webgl)throw new Error(tag+' missing hero canvas');if(width<700&&heroState.touch!=='pan-y')throw new Error(tag+' hero touch-action '+heroState.touch);if(errors.length)throw new Error(tag+' hero runtime '+errors.join(' | '));
             await browser.close();return {errors};
           }
           async function studioSet(width,height){
