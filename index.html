@@ -739,7 +739,7 @@
     key.shadow.mapSize.set(mobileQuality?1536:3072,mobileQuality?1536:3072);
     key.shadow.camera.left=-5.5;key.shadow.camera.right=5.5;key.shadow.camera.top=5.2;key.shadow.camera.bottom=-2.4;
     key.shadow.camera.near=.5;key.shadow.camera.far=18;
-    key.shadow.bias=-.00003;key.shadow.normalBias=.018;key.shadow.radius=3;
+    key.shadow.bias=-.00003;key.shadow.normalBias=.020;key.shadow.radius=5;
     scene.add(key);
     const windowFill = new THREE.RectAreaLight(0xfffaf3,.74,6.8,5.2);
     windowFill.position.set(-4.9,4.2,3.8);windowFill.lookAt(-.15,1.35,-1.62);scene.add(windowFill);
@@ -793,20 +793,20 @@
     const upperCabinetMat=new THREE.MeshPhysicalMaterial({color:0xf4eee6,metalness:0,roughness:.57,clearcoat:.006,clearcoatRoughness:.92,envMapIntensity:.70,specularIntensity:.34});
     const tallCabinetMat=new THREE.MeshPhysicalMaterial({color:0x8b9588,metalness:0,roughness:.60,clearcoat:.006,clearcoatRoughness:.92,envMapIntensity:.68,specularIntensity:.34});
     const topMat=new THREE.MeshPhysicalMaterial({color:0xffffff,map:stoneAlbedo,normalMap:stoneNormal,roughnessMap:stoneRough,normalScale:new THREE.Vector2(.035,.035),metalness:0,roughness:.55,clearcoat:.018,clearcoatRoughness:.80,envMapIntensity:.72,specularIntensity:.38});
-    const glassMat=new THREE.MeshPhysicalMaterial({color:0xf4faf7,metalness:0,roughness:.075,transmission:.93,opacity:1,thickness:.006,ior:1.48,clearcoat:.04,clearcoatRoughness:.22,envMapIntensity:1.05,attenuationColor:new THREE.Color(0xdde9e3),attenuationDistance:2.6,side:THREE.DoubleSide});
+    const glassMat=new THREE.MeshPhysicalMaterial({color:0xe7efea,metalness:0,roughness:.11,transmission:.62,transparent:true,opacity:.42,depthWrite:false,thickness:.004,ior:1.48,clearcoat:.05,clearcoatRoughness:.24,envMapIntensity:1.22,attenuationColor:new THREE.Color(0xd9e5df),attenuationDistance:1.8,side:THREE.DoubleSide});
     const handleMat=new THREE.MeshStandardMaterial({color:0xaeb4b1,metalness:.90,roughness:.34,envMapIntensity:1.12});
     const metalMat=new THREE.MeshStandardMaterial({color:0xb6bdb9,metalness:.91,roughness:.31,envMapIntensity:1.18});
     const applianceMat=new THREE.MeshPhysicalMaterial({color:0x262a29,metalness:.18,roughness:.26,clearcoat:.28,clearcoatRoughness:.22,envMapIntensity:.90});
     const applianceGlassMat=new THREE.MeshPhysicalMaterial({color:0x080a0a,metalness:.02,roughness:.10,clearcoat:.34,clearcoatRoughness:.14,envMapIntensity:1.18});
     const cooktopGlassMat=new THREE.MeshPhysicalMaterial({color:0x111514,metalness:.04,roughness:.09,clearcoat:.42,clearcoatRoughness:.12,envMapIntensity:1.22});
-    const darkCavityMat=new THREE.MeshStandardMaterial({color:0x171918,metalness:0,roughness:.92,envMapIntensity:.10});
+    const darkCavityMat=new THREE.MeshStandardMaterial({color:0x111312,metalness:0,roughness:.96,envMapIntensity:.05});
     const carcassMat=new THREE.MeshStandardMaterial({color:0x6b6d67,metalness:0,roughness:.88,envMapIntensity:.36});
     const jointMat=new THREE.MeshStandardMaterial({color:0x8d887f,metalness:0,roughness:.94,envMapIntensity:.15});
     const backsplashMat=new THREE.MeshPhysicalMaterial({color:0xf4f1eb,map:stoneAlbedo,normalMap:stoneNormal,roughnessMap:stoneRough,normalScale:new THREE.Vector2(.035,.035),metalness:0,roughness:.52,clearcoat:.012,clearcoatRoughness:.84,envMapIntensity:.72});
     const kickMat=new THREE.MeshStandardMaterial({color:0x343633,metalness:.08,roughness:.72,envMapIntensity:.34});
     const roomFloorMat=new THREE.MeshStandardMaterial({color:0xffffff,map:floorTexture,metalness:0,roughness:.78,envMapIntensity:.46});
-    const roomWallMat=new THREE.MeshStandardMaterial({color:0xb9b3aa,metalness:0,roughness:.91,envMapIntensity:.22});
-    const roomCeilingMat=new THREE.MeshStandardMaterial({color:0xcac5bd,metalness:0,roughness:.94,envMapIntensity:.18});
+    const roomWallMat=new THREE.MeshStandardMaterial({color:0xaaa49c,metalness:0,roughness:.93,envMapIntensity:.18});
+    const roomCeilingMat=new THREE.MeshStandardMaterial({color:0xbdb7af,metalness:0,roughness:.95,envMapIntensity:.15});
     const skirtingMat=new THREE.MeshStandardMaterial({color:0xc0bbb3,metalness:0,roughness:.88});
     const lightMat=new THREE.MeshStandardMaterial({color:0xffe8c6,emissive:0xffd9a6,emissiveIntensity:.42,roughness:.62});
 
@@ -824,7 +824,7 @@
       else if(n.startsWith("HC_UPPER_FRONTS")){obj.material=upperCabinetMat;zoneMeshes.upper.push(obj);}
       else if(n.startsWith("HC_TALL_FRONTS")){obj.material=tallCabinetMat;zoneMeshes.tall.push(obj);}
       else if(n.startsWith("HC_COUNTERTOP")){obj.material=topMat;zoneMeshes.top.push(obj);}
-      else if(n.startsWith("HC_GLASS")){obj.material=glassMat;zoneMeshes.glass.push(obj);}
+      else if(n.startsWith("HC_GLASS")){obj.material=glassMat;obj.renderOrder=2;zoneMeshes.glass.push(obj);}
       else if(n.startsWith("HC_HANDLES")){obj.material=handleMat;zoneMeshes.handles.push(obj);}
       else if(n.startsWith("HC_METAL")){obj.material=metalMat;zoneMeshes.metal.push(obj);}
       else if(n.startsWith("HC_DARK")){obj.material=darkCavityMat;zoneMeshes.dark.push(obj);}

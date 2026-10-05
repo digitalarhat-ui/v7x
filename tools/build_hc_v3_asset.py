@@ -221,7 +221,7 @@ rounded_box(0.035,0.075,5.1,-4.20,0.037,0.32,0.001,'HC_ROOM__SKIRTING_SIDE','HC_
 
 # ---------- base cabinets ----------
 centers=[-1.62,-.82,-.02,.78,1.58]
-W=.785
+W=.799
 cab_y0=.18; cab_h=.82; side_t=.018; base_depth=.62; front_z=-1.325; back_z=-1.66
 for i,x in enumerate(centers,1):
     # carcass panels, physically separated
@@ -232,14 +232,14 @@ for i,x in enumerate(centers,1):
     panel(W-2*side_t,cab_h-.04,.012,x,.59,-1.968,f'HC_CARCASS__B{i}_BACK','HC_CARCASS',0.0008,'front')
     if i in (2,4):
         # drawer stack with true 3mm reveals; horizontal wood UV direction
-        ys=[.335,.59,.845]
+        ys=[.318,.590,.862]
         for j,y in enumerate(ys,1):
-            panel(W-.012,.246,.020,x,y,front_z,f'HC_BASE_FRONTS__B{i}_DRAWER_{j}','HC_BASE_FRONTS',0.0022,'horizontal_front',(1.5,2.4),(i*.07,j*.11))
+            panel(W-.004,.268,.020,x,y,front_z,f'HC_BASE_FRONTS__B{i}_DRAWER_{j}','HC_BASE_FRONTS',0.0022,'horizontal_front',(1.5,2.4),(i*.07,j*.11))
             cylinder(.010,.28,x,y+.01,front_z+.035,'x',f'HC_HANDLES__B{i}_DRAWER_{j}_BAR','HC_HANDLES',20)
             cylinder(.008,.045,x-.095,y+.01,front_z+.012,'z',f'HC_HANDLES__B{i}_DRAWER_{j}_MOUNT_L','HC_HANDLES',16)
             cylinder(.008,.045,x+.095,y+.01,front_z+.012,'z',f'HC_HANDLES__B{i}_DRAWER_{j}_MOUNT_R','HC_HANDLES',16)
     else:
-        panel(W-.012,.758,.020,x,.59,front_z,f'HC_BASE_FRONTS__B{i}_DOOR','HC_BASE_FRONTS',0.0022,'front',(1.75,2.8),(i*.09,0))
+        panel(W-.004,.806,.020,x,.59,front_z,f'HC_BASE_FRONTS__B{i}_DOOR','HC_BASE_FRONTS',0.0022,'front',(1.75,2.8),(i*.09,0))
         hx=x+W/2-.075
         cylinder(.010,.36,hx,.59,front_z+.035,'y',f'HC_HANDLES__B{i}_DOOR_BAR','HC_HANDLES',20)
         cylinder(.008,.045,hx,.47,front_z+.012,'z',f'HC_HANDLES__B{i}_DOOR_MOUNT_1','HC_HANDLES',16)
@@ -249,7 +249,11 @@ for i,x in enumerate(centers,1):
 panel(4.00,.135,.28,-.02,.085,-1.835,'HC_KICK__BASE_PLINTH','HC_KICK',0.002,'front')
 
 # countertop + backsplash
-panel(4.23,.040,.82,-.02,1.025,-1.69,'HC_COUNTERTOP__MAIN_SLAB','HC_COUNTERTOP',0.004,'top',(3.0,1.5))
+counter=cq.Workplane('XY').box(4.23,.040,.82,centered=(True,True,True)).edges().fillet(.004).translate((-.02,1.025,-1.69))
+sink_open=cq.Workplane('XY').box(.61,.090,.35,centered=(True,True,True)).edges().fillet(.020).translate((-1.30,1.025,-1.59))
+cook_open=cq.Workplane('XY').box(.63,.090,.47,centered=(True,True,True)).edges().fillet(.010).translate((.82,1.025,-1.61))
+counter=counter.cut(sink_open).cut(cook_open)
+solid_to_mesh(counter.val(),'HC_COUNTERTOP__MAIN_SLAB','HC_COUNTERTOP','top',(3.0,1.5),(0,0),0.0040,0.25)
 panel(4.06,.014,.030,-.02,.998,-1.326,'HC_DARK__COUNTER_UNDERCUT','HC_DARK',0.001,'front')
 panel(4.12,1.00,.034,-.02,1.54,-2.105,'HC_BACKSPLASH__MAIN','HC_BACKSPLASH',0.002,'front',(3.2,2.2))
 # subtle silicone shadow joint as actual geometry
@@ -266,7 +270,7 @@ for i,x in enumerate(centers,1):
     panel(W-2*side_t,upper_h-.04,.012,x,upper_y,-1.963,f'HC_CARCASS__U{i}_BACK','HC_CARCASS',0.0008,'front')
     if i in (1,5):
         # slim framed glass door, actual inset pane and interior shelves
-        stile=.034; rail=.034; fw=W-.014; fh=.814
+        stile=.034; rail=.034; fw=W-.004; fh=.846
         panel(fw,rail,.025,x,upper_y+fh/2-rail/2,upper_front_z,f'HC_UPPER_FRONTS__U{i}_GLASS_TOP','HC_UPPER_FRONTS',0.0015,'front',(1.7,2.7),(i*.1,0))
         panel(fw,rail,.025,x,upper_y-fh/2+rail/2,upper_front_z,f'HC_UPPER_FRONTS__U{i}_GLASS_BOTTOM','HC_UPPER_FRONTS',0.0015,'front',(1.7,2.7),(i*.1,0))
         panel(stile,fh-2*rail,.025,x-fw/2+stile/2,upper_y,upper_front_z,f'HC_UPPER_FRONTS__U{i}_GLASS_LEFT','HC_UPPER_FRONTS',0.0015,'front',(1.7,2.7),(i*.1,0))
@@ -279,15 +283,15 @@ for i,x in enumerate(centers,1):
         hx=x+fw/2-.072
         cylinder(.009,.18,hx,upper_y,upper_front_z+.033,'y',f'HC_HANDLES__U{i}_GLASS_BAR','HC_HANDLES',18)
     else:
-        panel(W-.012,.814,.020,x,upper_y,upper_front_z,f'HC_UPPER_FRONTS__U{i}_DOOR','HC_UPPER_FRONTS',0.0021,'front',(1.75,2.8),(i*.11,.05))
+        panel(W-.004,.846,.020,x,upper_y,upper_front_z,f'HC_UPPER_FRONTS__U{i}_DOOR','HC_UPPER_FRONTS',0.0021,'front',(1.75,2.8),(i*.11,.05))
         hx=x+W/2-.075
         cylinder(.010,.34,hx,upper_y,upper_front_z+.035,'y',f'HC_HANDLES__U{i}_DOOR_BAR','HC_HANDLES',20)
         cylinder(.008,.045,hx,upper_y-.11,upper_front_z+.012,'z',f'HC_HANDLES__U{i}_DOOR_MOUNT_1','HC_HANDLES',16)
         cylinder(.008,.045,hx,upper_y+.11,upper_front_z+.012,'z',f'HC_HANDLES__U{i}_DOOR_MOUNT_2','HC_HANDLES',16)
 
 # end panels + top/bottom finishing rails
-panel(.025,1.03,.65,-2.02,.59,-1.66,'HC_CARCASS__BASE_END_LEFT','HC_CARCASS',0.0015,'side')
-panel(.025,1.03,.65,1.98,.59,-1.66,'HC_CARCASS__BASE_END_RIGHT','HC_CARCASS',0.0015,'side')
+panel(.025,.82,.65,-2.02,.59,-1.66,'HC_CARCASS__BASE_END_LEFT','HC_CARCASS',0.0015,'side')
+panel(.025,.82,.65,1.98,.59,-1.66,'HC_CARCASS__BASE_END_RIGHT','HC_CARCASS',0.0015,'side')
 panel(.025,.90,.43,-2.02,upper_y,-1.76,'HC_CARCASS__UPPER_END_LEFT','HC_CARCASS',0.0015,'side')
 panel(.025,.90,.43,1.98,upper_y,-1.76,'HC_CARCASS__UPPER_END_RIGHT','HC_CARCASS',0.0015,'side')
 panel(4.08,.026,.43,-.02,2.62,-1.76,'HC_CARCASS__UPPER_CROWN_REVEAL','HC_CARCASS',0.0015,'top')
@@ -329,10 +333,10 @@ solid_to_mesh(sink,'HC_METAL__SINK_BOWL','HC_METAL','top',(1.3,1.0),(0,0),0.0040
 panel(.50,.012,.25,-1.30,.735,-1.59,'HC_DARK__SINK_BASE_SHADOW','HC_DARK',0.010,'top')
 cylinder(.018,.010,-1.30,.746,-1.59,'y','HC_METAL__SINK_DRAIN','HC_METAL',28)
 # rim as four bars slightly above slab
-panel(.70,.008,.024,-1.30,1.050,-1.388,'HC_METAL__SINK_RIM_FRONT','HC_METAL',0.001,'top')
-panel(.70,.008,.024,-1.30,1.050,-1.792,'HC_METAL__SINK_RIM_BACK','HC_METAL',0.001,'top')
-panel(.024,.008,.38,-1.638,1.050,-1.59,'HC_METAL__SINK_RIM_LEFT','HC_METAL',0.001,'top')
-panel(.024,.008,.38,-.962,1.050,-1.59,'HC_METAL__SINK_RIM_RIGHT','HC_METAL',0.001,'top')
+panel(.64,.010,.018,-1.30,1.050,-1.405,'HC_METAL__SINK_RIM_FRONT','HC_METAL',0.001,'top')
+panel(.64,.010,.018,-1.30,1.050,-1.775,'HC_METAL__SINK_RIM_BACK','HC_METAL',0.001,'top')
+panel(.018,.010,.35,-1.601,1.050,-1.59,'HC_METAL__SINK_RIM_LEFT','HC_METAL',0.001,'top')
+panel(.018,.010,.35,-.999,1.050,-1.59,'HC_METAL__SINK_RIM_RIGHT','HC_METAL',0.001,'top')
 
 # faucet stem + authored curved spout + lever
 cylinder(.023,.46,-1.30,1.29,-1.91,'y','HC_METAL__FAUCET_STEM','HC_METAL',28)
