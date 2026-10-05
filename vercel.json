@@ -222,6 +222,32 @@
           "value": "public, max-age=0, must-revalidate"
         }
       ]
+    },
+    {
+      "source": "/dakhakhni-kitchen-v4",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/dakhakhni-kitchen-v4/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
     }
   ],
   "alias": [
@@ -506,7 +532,7 @@
     },
     {
       "source": "/",
-      "destination": "/dakhakhni-kitchen-studio-v20",
+      "destination": "/dakhakhni-kitchen-v4",
       "permanent": false,
       "has": [
         {
