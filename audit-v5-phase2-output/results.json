@@ -1,0 +1,155 @@
+{
+  "status": "FAIL",
+  "viewports": {
+    "mobile-390": {
+      "initial": {
+        "title": "دخاخني | ابدأ مشروع مطبخك",
+        "width": 390,
+        "scrollWidth": 390,
+        "webgl": "webgl2",
+        "fallback": false,
+        "contamination": false,
+        "phase1Headline": "ثلاثة اختيارات، ثم شاهد الاتجاه في 3D.",
+        "whatsapp": "https://wa.me/966545246478?text=%D8%B7%D9%84%D8%A8%20%D9%85%D8%B7%D8%A8%D8%AE%20%D9%85%D8%A8%D8%AF%D8%A6%D9%8A%20%E2%80%94%20%D8%AF%D8%AE%D8%A7%D8%AE%D9%86%D9%8A%0A%D8%B1%D9%82%D9%85%20%D8%A7%D9%84%D9%85%D8%B4%D8%B1%D9%88%D8%B9%3A%20DK-YPVLT9%0A%0A%D9%86%D9%88%D8%B9%20%D8%A7%D9%84%D9%85%D8%B4%D8%B1%D9%88%D8%B9%3A%20%E2%80%94%0A%D8%A7%D9%84%D9%85%D8%AF%D9%8A%D9%86%D8%A9%20%2F%20%D8%A7%D9%84%D8%AD%D9%8A%3A%20%E2%80%94%0A%D8%B4%D9%83%D9%84%20%D8%A7%D9%84%D9%85%D8%B7%D8%A8%D8%AE%3A%20%E2%80%94%0A%D8%A7%D9%84%D9%82%D9%8A%D8%A7%D8%B3%D8%A7%D8%AA%3A%20%D8%A7%D9%84%D9%82%D9%8A%D8%A7%D8%B3%D8%A7%D8%AA%20%D8%BA%D9%8A%D8%B1%20%D9%85%D8%AA%D9%88%D9%81%D8%B1%D8%A9%20%D8%AD%D8%A7%D9%84%D9%8A%D8%A7%D9%8B%0A%D8%A7%D9%84%D8%A7%D8%AA%D8%AC%D8%A7%D9%87%20%D8%A7%D9%84%D8%A8%D8%B5%D8%B1%D9%8A%20%D8%A7%D9%84%D8%AA%D8%AC%D8%B1%D9%8A%D8%A8%D9%8A%3A%20%D8%B9%D8%A7%D8%AC%D9%8A%20%D9%85%D8%B7%D9%81%D9%8A%20%C2%B7%20%D8%AD%D8%AC%D8%B1%20%D9%81%D8%A7%D8%AA%D8%AD%20%D8%A8%D8%B9%D8%B1%D9%88%D9%82%20%C2%B7%20%D9%85%D8%BA%D9%84%D9%82%20%2B%20%D8%B2%D8%AC%D8%A7%D8%AC%0A%D8%A7%D9%84%D9%85%D9%82%D8%A7%D8%A8%D8%B6%3A%20%D9%85%D8%AE%D9%81%D9%8A%20%2F%20%D9%85%D8%AF%D9%85%D8%AC%0A%D8%A7%D9%84%D8%AE%D8%B2%D8%A7%D8%A6%D9%86%20%D8%A7%D9%84%D8%B9%D9%84%D9%88%D9%8A%D8%A9%3A%20%D9%85%D8%BA%D9%84%D9%82%20%2B%20%D8%B2%D8%AC%D8%A7%D8%AC%0A%D8%A7%D9%84%D8%AA%D8%AE%D8%B2%D9%8A%D9%86%3A%20%D8%BA%D9%8A%D8%B1%20%D9%85%D8%AD%D8%AF%D8%AF%0A%D8%A7%D9%84%D8%A3%D8%AC%D9%87%D8%B2%D8%A9%3A%20%D8%BA%D9%8A%D8%B1%20%D9%85%D8%AD%D8%AF%D8%AF%0A%D8%A7%D9%84%D8%AD%D9%88%D8%B6%3A%20%D8%BA%D9%8A%D8%B1%20%D9%85%D8%AA%D8%A3%D9%83%D8%AF%0A%0A%D9%87%D8%B0%D8%A7%20%D9%85%D9%84%D8%AE%D8%B5%20%D8%AA%D9%85%D9%87%D9%8A%D8%AF%D9%8A%20%D9%84%D9%84%D9%85%D9%86%D8%A7%D9%82%D8%B4%D8%A9%20%D9%85%D8%B9%20%D8%A7%D9%84%D9%85%D8%B5%D9%85%D9%85%D8%8C%20%D9%88%D9%84%D9%8A%D8%B3%20%D9%85%D8%AE%D8%B7%D8%B7%20%D8%AA%D8%B5%D9%86%D9%8A%D8%B9%20%D8%A3%D9%88%20%D8%B9%D8%B1%D8%B6%20%D8%B3%D8%B9%D8%B1.%20%D8%A7%D9%84%D9%82%D9%8A%D8%A7%D8%B3%20%D9%88%D8%A7%D9%84%D8%AE%D8%A7%D9%85%D8%A7%D8%AA%20%D9%88%D8%A7%D9%84%D8%A7%D8%B9%D8%AA%D9%85%D8%A7%D8%AF%20%D8%A7%D9%84%D9%86%D9%87%D8%A7%D8%A6%D9%8A%20%D9%85%D8%B9%20%D9%81%D8%B1%D9%8A%D9%82%20%D8%AF%D8%AE%D8%A7%D8%AE%D9%86%D9%8A."
+      },
+      "heroOrbit": {
+        "before": "4677a1fcfbc4196ec72bf59fc204e3e7b7365de66d72e6df3fe9d6baa143af86",
+        "after": "bd959f1e7ecb333edcb39cc06e6194319f8a4ee8694c16c3dce1e97eb48d99b9",
+        "changed": true
+      },
+      "vertical": {
+        "before": 0,
+        "after": 130,
+        "changed": true
+      },
+      "phase2Initial": {
+        "cab": [
+          "oak"
+        ],
+        "work": [
+          "warm"
+        ],
+        "viewerText": "420 × 320 × 280 سم",
+        "islandVisible": false,
+        "webgl": "webgl2",
+        "fallback": false
+      },
+      "studioOrbit": {
+        "before": "a420f869be8a35879753f0a89de53f53dfe2dd94b915e82c11dc92fe9f9151de",
+        "after": "b41ffe9682c89cfdd773aed7fc1a87943c9e2754adddc61d09aadac29c6c1dcc",
+        "changed": true
+      },
+      "restoredUi": {
+        "cab": true,
+        "work": true,
+        "saved": "تم حفظ التوليفة ✓",
+        "heroCab": true,
+        "heroWork": true
+      },
+      "minTouch": 44,
+      "scrollWidth": 390,
+      "errors": []
+    },
+    "mobile-430": {
+      "initial": {
+        "title": "دخاخني | ابدأ مشروع مطبخك",
+        "width": 430,
+        "scrollWidth": 430,
+        "webgl": "webgl2",
+        "fallback": false,
+        "contamination": false,
+        "phase1Headline": "ثلاثة اختيارات، ثم شاهد الاتجاه في 3D.",
+        "whatsapp": "https://wa.me/966545246478?text=%D8%B7%D9%84%D8%A8%20%D9%85%D8%B7%D8%A8%D8%AE%20%D9%85%D8%A8%D8%AF%D8%A6%D9%8A%20%E2%80%94%20%D8%AF%D8%AE%D8%A7%D8%AE%D9%86%D9%8A%0A%D8%B1%D9%82%D9%85%20%D8%A7%D9%84%D9%85%D8%B4%D8%B1%D9%88%D8%B9%3A%20DK-YPVLT9%0A%0A%D9%86%D9%88%D8%B9%20%D8%A7%D9%84%D9%85%D8%B4%D8%B1%D9%88%D8%B9%3A%20%E2%80%94%0A%D8%A7%D9%84%D9%85%D8%AF%D9%8A%D9%86%D8%A9%20%2F%20%D8%A7%D9%84%D8%AD%D9%8A%3A%20%E2%80%94%0A%D8%B4%D9%83%D9%84%20%D8%A7%D9%84%D9%85%D8%B7%D8%A8%D8%AE%3A%20%E2%80%94%0A%D8%A7%D9%84%D9%82%D9%8A%D8%A7%D8%B3%D8%A7%D8%AA%3A%20%D8%A7%D9%84%D9%82%D9%8A%D8%A7%D8%B3%D8%A7%D8%AA%20%D8%BA%D9%8A%D8%B1%20%D9%85%D8%AA%D9%88%D9%81%D8%B1%D8%A9%20%D8%AD%D8%A7%D9%84%D9%8A%D8%A7%D9%8B%0A%D8%A7%D9%84%D8%A7%D8%AA%D8%AC%D8%A7%D9%87%20%D8%A7%D9%84%D8%A8%D8%B5%D8%B1%D9%8A%20%D8%A7%D9%84%D8%AA%D8%AC%D8%B1%D9%8A%D8%A8%D9%8A%3A%20%D8%B9%D8%A7%D8%AC%D9%8A%20%D9%85%D8%B7%D9%81%D9%8A%20%C2%B7%20%D8%AD%D8%AC%D8%B1%20%D9%81%D8%A7%D8%AA%D8%AD%20%D8%A8%D8%B9%D8%B1%D9%88%D9%82%20%C2%B7%20%D9%85%D8%BA%D9%84%D9%82%20%2B%20%D8%B2%D8%AC%D8%A7%D8%AC%0A%D8%A7%D9%84%D9%85%D9%82%D8%A7%D8%A8%D8%B6%3A%20%D9%85%D8%AE%D9%81%D9%8A%20%2F%20%D9%85%D8%AF%D9%85%D8%AC%0A%D8%A7%D9%84%D8%AE%D8%B2%D8%A7%D8%A6%D9%86%20%D8%A7%D9%84%D8%B9%D9%84%D9%88%D9%8A%D8%A9%3A%20%D9%85%D8%BA%D9%84%D9%82%20%2B%20%D8%B2%D8%AC%D8%A7%D8%AC%0A%D8%A7%D9%84%D8%AA%D8%AE%D8%B2%D9%8A%D9%86%3A%20%D8%BA%D9%8A%D8%B1%20%D9%85%D8%AD%D8%AF%D8%AF%0A%D8%A7%D9%84%D8%A3%D8%AC%D9%87%D8%B2%D8%A9%3A%20%D8%BA%D9%8A%D8%B1%20%D9%85%D8%AD%D8%AF%D8%AF%0A%D8%A7%D9%84%D8%AD%D9%88%D8%B6%3A%20%D8%BA%D9%8A%D8%B1%20%D9%85%D8%AA%D8%A3%D9%83%D8%AF%0A%0A%D9%87%D8%B0%D8%A7%20%D9%85%D9%84%D8%AE%D8%B5%20%D8%AA%D9%85%D9%87%D9%8A%D8%AF%D9%8A%20%D9%84%D9%84%D9%85%D9%86%D8%A7%D9%82%D8%B4%D8%A9%20%D9%85%D8%B9%20%D8%A7%D9%84%D9%85%D8%B5%D9%85%D9%85%D8%8C%20%D9%88%D9%84%D9%8A%D8%B3%20%D9%85%D8%AE%D8%B7%D8%B7%20%D8%AA%D8%B5%D9%86%D9%8A%D8%B9%20%D8%A3%D9%88%20%D8%B9%D8%B1%D8%B6%20%D8%B3%D8%B9%D8%B1.%20%D8%A7%D9%84%D9%82%D9%8A%D8%A7%D8%B3%20%D9%88%D8%A7%D9%84%D8%AE%D8%A7%D9%85%D8%A7%D8%AA%20%D9%88%D8%A7%D9%84%D8%A7%D8%B9%D8%AA%D9%85%D8%A7%D8%AF%20%D8%A7%D9%84%D9%86%D9%87%D8%A7%D8%A6%D9%8A%20%D9%85%D8%B9%20%D9%81%D8%B1%D9%8A%D9%82%20%D8%AF%D8%AE%D8%A7%D8%AE%D9%86%D9%8A."
+      },
+      "heroOrbit": {
+        "before": "d7563eefd4f2131093d52701ceceb13d024bc36d002f3a9feeb7223d0b8d9204",
+        "after": "d597086ec5080ee81eb989c8918fe058a2f068e394f8424ee009cc038c5a1b8c",
+        "changed": true
+      },
+      "vertical": {
+        "before": 0,
+        "after": 130,
+        "changed": true
+      },
+      "phase2Initial": {
+        "cab": [
+          "oak"
+        ],
+        "work": [
+          "warm"
+        ],
+        "viewerText": "420 × 320 × 280 سم",
+        "islandVisible": false,
+        "webgl": "webgl2",
+        "fallback": false
+      },
+      "studioOrbit": {
+        "before": "5fcee8d8ca6b3751cc2ccdb1e545cbb9af87c57021c64f16d6b91ee25f30031e",
+        "after": "ff419d0bdde6a619ef058a267e0ff2b11e0f57fa2267c215911047b6ae3e36a3",
+        "changed": true
+      },
+      "restoredUi": {
+        "cab": true,
+        "work": true,
+        "saved": "تم حفظ التوليفة ✓",
+        "heroCab": true,
+        "heroWork": true
+      },
+      "minTouch": 44,
+      "scrollWidth": 430,
+      "errors": []
+    },
+    "desktop-1440": {
+      "initial": {
+        "title": "دخاخني | ابدأ مشروع مطبخك",
+        "width": 1440,
+        "scrollWidth": 1440,
+        "webgl": "webgl2",
+        "fallback": false,
+        "contamination": false,
+        "phase1Headline": "ثلاثة اختيارات، ثم شاهد الاتجاه في 3D.",
+        "whatsapp": "https://wa.me/966545246478?text=%D8%B7%D9%84%D8%A8%20%D9%85%D8%B7%D8%A8%D8%AE%20%D9%85%D8%A8%D8%AF%D8%A6%D9%8A%20%E2%80%94%20%D8%AF%D8%AE%D8%A7%D8%AE%D9%86%D9%8A%0A%D8%B1%D9%82%D9%85%20%D8%A7%D9%84%D9%85%D8%B4%D8%B1%D9%88%D8%B9%3A%20DK-YPVLT9%0A%0A%D9%86%D9%88%D8%B9%20%D8%A7%D9%84%D9%85%D8%B4%D8%B1%D9%88%D8%B9%3A%20%E2%80%94%0A%D8%A7%D9%84%D9%85%D8%AF%D9%8A%D9%86%D8%A9%20%2F%20%D8%A7%D9%84%D8%AD%D9%8A%3A%20%E2%80%94%0A%D8%B4%D9%83%D9%84%20%D8%A7%D9%84%D9%85%D8%B7%D8%A8%D8%AE%3A%20%E2%80%94%0A%D8%A7%D9%84%D9%82%D9%8A%D8%A7%D8%B3%D8%A7%D8%AA%3A%20%D8%A7%D9%84%D9%82%D9%8A%D8%A7%D8%B3%D8%A7%D8%AA%20%D8%BA%D9%8A%D8%B1%20%D9%85%D8%AA%D9%88%D9%81%D8%B1%D8%A9%20%D8%AD%D8%A7%D9%84%D9%8A%D8%A7%D9%8B%0A%D8%A7%D9%84%D8%A7%D8%AA%D8%AC%D8%A7%D9%87%20%D8%A7%D9%84%D8%A8%D8%B5%D8%B1%D9%8A%20%D8%A7%D9%84%D8%AA%D8%AC%D8%B1%D9%8A%D8%A8%D9%8A%3A%20%D8%B9%D8%A7%D8%AC%D9%8A%20%D9%85%D8%B7%D9%81%D9%8A%20%C2%B7%20%D8%AD%D8%AC%D8%B1%20%D9%81%D8%A7%D8%AA%D8%AD%20%D8%A8%D8%B9%D8%B1%D9%88%D9%82%20%C2%B7%20%D9%85%D8%BA%D9%84%D9%82%20%2B%20%D8%B2%D8%AC%D8%A7%D8%AC%0A%D8%A7%D9%84%D9%85%D9%82%D8%A7%D8%A8%D8%B6%3A%20%D9%85%D8%AE%D9%81%D9%8A%20%2F%20%D9%85%D8%AF%D9%85%D8%AC%0A%D8%A7%D9%84%D8%AE%D8%B2%D8%A7%D8%A6%D9%86%20%D8%A7%D9%84%D8%B9%D9%84%D9%88%D9%8A%D8%A9%3A%20%D9%85%D8%BA%D9%84%D9%82%20%2B%20%D8%B2%D8%AC%D8%A7%D8%AC%0A%D8%A7%D9%84%D8%AA%D8%AE%D8%B2%D9%8A%D9%86%3A%20%D8%BA%D9%8A%D8%B1%20%D9%85%D8%AD%D8%AF%D8%AF%0A%D8%A7%D9%84%D8%A3%D8%AC%D9%87%D8%B2%D8%A9%3A%20%D8%BA%D9%8A%D8%B1%20%D9%85%D8%AD%D8%AF%D8%AF%0A%D8%A7%D9%84%D8%AD%D9%88%D8%B6%3A%20%D8%BA%D9%8A%D8%B1%20%D9%85%D8%AA%D8%A3%D9%83%D8%AF%0A%0A%D9%87%D8%B0%D8%A7%20%D9%85%D9%84%D8%AE%D8%B5%20%D8%AA%D9%85%D9%87%D9%8A%D8%AF%D9%8A%20%D9%84%D9%84%D9%85%D9%86%D8%A7%D9%82%D8%B4%D8%A9%20%D9%85%D8%B9%20%D8%A7%D9%84%D9%85%D8%B5%D9%85%D9%85%D8%8C%20%D9%88%D9%84%D9%8A%D8%B3%20%D9%85%D8%AE%D8%B7%D8%B7%20%D8%AA%D8%B5%D9%86%D9%8A%D8%B9%20%D8%A3%D9%88%20%D8%B9%D8%B1%D8%B6%20%D8%B3%D8%B9%D8%B1.%20%D8%A7%D9%84%D9%82%D9%8A%D8%A7%D8%B3%20%D9%88%D8%A7%D9%84%D8%AE%D8%A7%D9%85%D8%A7%D8%AA%20%D9%88%D8%A7%D9%84%D8%A7%D8%B9%D8%AA%D9%85%D8%A7%D8%AF%20%D8%A7%D9%84%D9%86%D9%87%D8%A7%D8%A6%D9%8A%20%D9%85%D8%B9%20%D9%81%D8%B1%D9%8A%D9%82%20%D8%AF%D8%AE%D8%A7%D8%AE%D9%86%D9%8A."
+      },
+      "heroOrbit": {
+        "before": "016a577952d688817acd386c9730d5e772a141c76b8cf30817a28cddc81759c6",
+        "after": "11b91a29be7dff9eb92b6a18513aeadfaa218fae3f26edc16bdfc5ab288f1e05",
+        "changed": true
+      },
+      "vertical": null,
+      "phase2Initial": {
+        "cab": [
+          "oak"
+        ],
+        "work": [
+          "warm"
+        ],
+        "viewerText": "420 × 320 × 280 سم",
+        "islandVisible": false,
+        "webgl": "webgl2",
+        "fallback": false
+      },
+      "studioOrbit": {
+        "before": "5199b8438d90c62a044fe11bf36c25c7414907927fdb615fbcdf4ef0a104336e",
+        "after": "86a0a1b5d13af717984ece756517065781ced5a346db2921baf047055bd1dee6",
+        "changed": true
+      },
+      "restoredUi": {
+        "cab": true,
+        "work": true,
+        "saved": "تم حفظ التوليفة ✓",
+        "heroCab": true,
+        "heroWork": true
+      },
+      "minTouch": 42,
+      "scrollWidth": 1440,
+      "errors": []
+    }
+  },
+  "global": {
+    "autoPresentationChanged": true,
+    "reducedMotionStable": false
+  },
+  "errors": [
+    "Error: prefers-reduced-motion did not stop auto presentation\n    at file:///home/runner/work/v7x/v7x/phase2-qa.mjs:213:47"
+  ]
+}
