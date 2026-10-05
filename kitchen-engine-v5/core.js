@@ -80,16 +80,15 @@ function defaultBaseSlots(tallSlots){
  return slots.slice(0,count)
 }
 function ensureConfigurator(force){
- if(!state.config||typeof state.config!=="object")state.config=clone(defaults.config);var seededNow=false;
+ if(!state.config||typeof state.config!=="object")state.config=clone(defaults.config);
  if(force||!state.config.seeded||!Array.isArray(state.config.baseSlots)||!state.config.baseSlots.length){
-  var tall=defaultTallSlots();state.config.tallSlots=tall;state.config.baseSlots=defaultBaseSlots(tall);state.config.seeded=true;state.config.inspect=false;state.config.selected="base:0";seededNow=true
+  var tall=defaultTallSlots();state.config.tallSlots=tall;state.config.baseSlots=defaultBaseSlots(tall);state.config.seeded=true;state.config.inspect=false;state.config.selected="base:0"
  }
  if(!Array.isArray(state.config.tallSlots))state.config.tallSlots=defaultTallSlots();
  if(!state.config.activeTab||!configTabLabels[state.config.activeTab])state.config.activeTab="configuration";
  if(!state.config.pantryInterior||!interiorLabels[state.config.pantryInterior])state.config.pantryInterior="shelves";
  if(state.config.layout==="island"&&!hasPlausibleIsland())state.config.layout="";
- if(!state.config.selected)state.config.selected="base:0";
- if(seededNow)syncConfigDetails()
+ if(!state.config.selected)state.config.selected="base:0"
 }
 function syncConfigDetails(){
  if(!state.config)return;var b=state.config.baseSlots||[],t=state.config.tallSlots||[];
@@ -103,9 +102,9 @@ function syncConfigDetails(){
  state.details.storage.pantry=t.indexOf("pantry")>=0
 }
 function resetConfiguratorForRoom(){if(!state.config)return;state.config.seeded=false;state.config.layout="";state.config.inspect=false;state.config.selected="base:0"}
-function configSnapshot(){return{config:clone(state.config),visual:clone(state.visual),storage:clone(state.details.storage),appliances:clone(state.details.appliances)}}
+function configSnapshot(){return{config:clone(state.config),visual:clone(state.visual)}}
 function pushConfigUndo(){runtime.configUndo.push(configSnapshot());if(runtime.configUndo.length>12)runtime.configUndo.shift()}
-function restoreConfigSnapshot(v){if(!v)return;state.config=clone(v.config);state.visual=clone(v.visual);state.details.storage=clone(v.storage);state.details.appliances=clone(v.appliances);state.review.confirmed=false}
+function restoreConfigSnapshot(v){if(!v)return;state.config=clone(v.config);state.visual=clone(v.visual);state.review.confirmed=false}
 function configLayoutLabel(){if(state.config&&state.config.layout)return layoutLabels[state.config.layout];return state.room.layout==="unsure"?"حرف L — توضيحي":layoutLabels[effectiveLayout()]}
 function configurationSummary(){
  ensureConfigurator();var b=(state.config.baseSlots||[]).map(function(k){return baseModuleLabels[k]||k}),t=(state.config.tallSlots||[]).map(function(k){return tallModuleLabels[k]||k});
@@ -305,7 +304,7 @@ function bind(){
       if(other>=0&&other!==sel.index){var old=state.config.tallSlots[sel.index];state.config.tallSlots[other]=old}
       state.config.tallSlots[sel.index]=next;state.config.inspect=false
     }
-    syncConfigDetails();invalidateVisual();renderDynamic();return
+    invalidateVisual();renderDynamic();return
   }
   if(t.dataset.interior){pushConfigUndo();state.config.pantryInterior=t.dataset.interior;invalidateVisual();renderDynamic();return}
   if(t.id==="inspectUnit"){
