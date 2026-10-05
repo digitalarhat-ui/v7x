@@ -27,7 +27,7 @@ window.KITCHEN_V5_CONFIG=Object.freeze({
     license:"CC0 1.0",
     sourceRepo:"Papyszoo/CC0-Public-Domain-Models",
     sourceCommit:"77343cac874f06b73d16ad0063339df7c9ca254c",
-    sink:"https://cdn.jsdelivr.net/gh/Papyszoo/CC0-Public-Domain-Models@77343cac874f06b73d16ad0063339df7c9ca254c/packs/the-base-mesh/models/sink_01/sink_01.glb",
-    tap:"https://cdn.jsdelivr.net/gh/Papyszoo/CC0-Public-Domain-Models@77343cac874f06b73d16ad0063339df7c9ca254c/packs/the-base-mesh/models/kitchen_tap/kitchen_tap.glb"
+    sink:"/kitchen-engine-v5/assets/sink_01.glb",
+    tap:"/kitchen-engine-v5/assets/kitchen_tap.glb"
   }
 });
