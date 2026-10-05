@@ -24,11 +24,11 @@ window.KITCHEN_PROSPECT_CONFIG = Object.freeze({
   enabledAppliances: ["fridge","builtInFridge","oven","microwave","dishwasher","hob","hood","freezer"],
   enabledStorage: ["pantry","tall","deepDrawers","smallAppliance","corner","trays","waste","coffee"],
   theme: {
-    bg: "#f2eee6",
-    ink: "#171713",
-    dark: "#11120f",
-    accent: "#b18b58",
-    accentSoft: "#d8bd8a"
+    bg: "#f5f2eb",
+    ink: "#202b26",
+    dark: "#143c32",
+    accent: "#a99065",
+    accentSoft: "#e6e0d5"
   },
   labels: {
     heroEyebrow: "مخطط تمهيدي قبل التصميم",
