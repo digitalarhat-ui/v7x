@@ -3,6 +3,10 @@ on:
   push:
     branches: [dakhakhni-v5-final]
     paths:
+      - 'dakhakhni-kitchen-v5/**'
+      - 'kitchen-engine-v5/**'
+      - 'vendor/GLTFLoader-r128.js'
+      - 'vendor/RGBELoader-r128.js'
       - '.github/workflows/dakhakhni-v5-snapshot.yml'
 permissions:
   contents: write
