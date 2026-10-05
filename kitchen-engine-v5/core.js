@@ -391,6 +391,17 @@ function applyHDR(instance){
   var list=runtime.hdrWait.splice(0);list.forEach(function(it){if(it&&it.scene)it.scene.environment=tex})
  },undefined,function(){runtime.hdrLoading=false;runtime.hdrWait=[]})
 }
+function environment(){
+ var faces=[];
+ for(var f=0;f<6;f++){
+  var c=document.createElement("canvas"),x=c.getContext("2d");c.width=c.height=128;
+  var g=x.createLinearGradient(0,0,0,128);g.addColorStop(0,f===3?"#79736b":"#dce5e8");g.addColorStop(.46,"#eee8de");g.addColorStop(1,"#625c54");
+  x.fillStyle=g;x.fillRect(0,0,128,128);
+  if(f===0||f===4){x.fillStyle="rgba(255,249,231,.70)";x.fillRect(18,10,34,96)}
+  faces.push(c)
+ }
+ var tex=new THREE.CubeTexture(faces);tex.encoding=THREE.sRGBEncoding;tex.needsUpdate=true;return tex
+}
 function create3D(canvas,wrap,isHero){
  if(!window.THREE||!canvas||!wrap)return null;var renderer;
  try{renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,powerPreference:"high-performance"})}catch(e){wrap.innerHTML='<div class="heroFallback">المعاينة ثلاثية الأبعاد غير متاحة على هذا الجهاز، لكن يمكنك متابعة بقية المراحل.</div>';return null}
