@@ -126,7 +126,7 @@ function syncRequirementsFromConfig(){
  if(!state.details.storageTouched){
   state.details.storage.deepDrawers=b.indexOf("drawers")>=0;
   state.details.storage.pantry=t.indexOf("pantry")>=0;
-  state.details.storage.tall=t.length>0
+  state.details.storage.tall=t.indexOf("pantry")>=0
  }
  state.details.configSynced=true
 }
@@ -356,12 +356,12 @@ function bind(){
     ensureConfigurator();var sel=selectedConfig();pushConfigUndo();
     if(sel.kind==="base"){var allowed=compatibleBaseTypes(sel.type);if(allowed.indexOf(t.dataset.configreplace)<0)return;state.config.baseSlots[sel.index]=t.dataset.configreplace}
     else{var nx=t.dataset.configreplace,other=state.config.tallSlots.indexOf(nx);if(other>=0&&other!==sel.index){var old=state.config.tallSlots[sel.index];state.config.tallSlots[other]=old}state.config.tallSlots[sel.index]=nx;state.config.inspect=false}
-    invalidateVisual();renderDynamic();return
+    state.details.configSynced=false;invalidateVisual();renderDynamic();return
   }
   if(t.dataset.interior){pushConfigUndo();state.config.pantryInterior=t.dataset.interior;invalidateVisual();renderDynamic();return}
   if(t.id==="inspectUnit"){var pantry=(state.config.tallSlots||[]).indexOf("pantry");if(pantry<0)return;state.config.selected="tall:"+pantry;state.config.inspect=!state.config.inspect;invalidateVisual();renderDynamic();return}
   if(t.id==="undoConfig"){var last=runtime.configUndo.pop();if(!last){toast("لا يوجد تغيير للتراجع");return}restoreConfigSnapshot(last);renderDynamic();return}
-  if(t.id==="resetConfig"){if(!window.confirm("العودة للتكوين المبدئي مع الاحتفاظ ببقية بيانات المشروع؟"))return;pushConfigUndo();var tab=state.config.activeTab;state.config=clone(defaults.config);state.config.activeTab=tab;ensureConfigurator(true);invalidateVisual();renderDynamic();return}
+  if(t.id==="resetConfig"){if(!window.confirm("العودة للتكوين المبدئي مع الاحتفاظ ببقية بيانات المشروع؟"))return;pushConfigUndo();var tab=state.config.activeTab;state.config=clone(defaults.config);state.config.activeTab=tab;ensureConfigurator(true);state.details.configSynced=false;invalidateVisual();renderDynamic();return}
   if(t.dataset.cabinet){if(runtime.phase===2)pushConfigUndo();state.visual.cabinet=t.dataset.cabinet;invalidateVisual();stopAutoPresentation(runtime.hero);renderDynamic();return}
   if(t.dataset.worktop){if(runtime.phase===2)pushConfigUndo();state.visual.worktop=t.dataset.worktop;invalidateVisual();stopAutoPresentation(runtime.hero);renderDynamic();return}
   if(t.dataset.upper){if(runtime.phase===2)pushConfigUndo();state.visual.upper=t.dataset.upper;invalidateVisual();renderDynamic();return}
@@ -380,7 +380,7 @@ function bind(){
   }
  });
  root.addEventListener("input",function(ev){var e=ev.target,id=e.id;
-  if(id==="city"){state.project.city=e.value.trim();state.review.confirmed=false}
+  if(id==="city"){state.project.city=e.value.trim()}
   if(id==="roomLength"){var h1=state.config&&state.config.seeded&&runtime.maxPhase>1;state.room.length=Number(e.value)||state.room.length;resetConfiguratorForRoom();invalidateVisual();if(h1)toast("تغيّرت الأبعاد؛ حدّثنا التكوين المبدئي فقط.")}
   if(id==="roomWidth"){var h2=state.config&&state.config.seeded&&runtime.maxPhase>1;state.room.width=Number(e.value)||state.room.width;resetConfiguratorForRoom();invalidateVisual();if(h2)toast("تغيّرت الأبعاد؛ حدّثنا التكوين المبدئي فقط.")}
   if(id==="roomHeight"){state.room.height=Number(e.value)||state.room.height;invalidateVisual()}
