@@ -48,7 +48,7 @@ jobs:
             const context=await browser.newContext({viewport:{width,height},deviceScaleFactor:1,reducedMotion:'reduce',hasTouch:mobile,isMobile:mobile});
             const page=await context.newPage();page.setDefaultTimeout(20000);const errors=[];
             page.on('pageerror',e=>errors.push('page:'+e.message));page.on('console',m=>{if(m.type()==='error')errors.push('console:'+m.text())});
-            await page.addInitScript(()=>localStorage.clear());await page.goto(base,{waitUntil:'domcontentloaded'});await page.waitForSelector('#heroCanvas');await sleep(650);
+            await page.goto(base,{waitUntil:'domcontentloaded'});await page.waitForSelector('#heroCanvas');await sleep(650);
             return{browser,context,page,mobile,errors}
           }
           async function state(page){return page.evaluate(()=>JSON.parse(localStorage.getItem('dakhakhni:v5:project')||'null'))}
