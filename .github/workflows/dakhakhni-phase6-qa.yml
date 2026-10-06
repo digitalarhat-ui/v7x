@@ -76,7 +76,6 @@ jobs:
             await p.locator('[data-configslot="tall:0"]').click();await p.locator('[data-configreplace="pantry"]').click();
             await p.locator('[data-configtab="upper"]').click();await p.locator('.configPanel [data-upper="mixed"]').click();
             await p.locator('[data-configtab="details"]').click();await p.locator('.configPanel [data-handle="integrated"]').click();await p.locator('[data-interior="internalDrawers"]').click();
-            await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="3"].active')
           }
           async function phase3Exact(p){
             const usage=p.locator('.requirementGroup[data-reqgroup="usage"]');if(!(await usage.evaluate(e=>e.open)))await usage.locator('summary').click();
@@ -98,6 +97,7 @@ jobs:
             await configureExact(p);
             if(!(await orbit(p,'#studioCanvas')))throw new Error(tag+' studio orbit');
             for(const cam of ['functional','elevation','wide']){await p.locator('[data-camera="'+cam+'"]').click();await sleep(80)}
+            await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="3"].active');
             await phase3Exact(p);
             let state=await st(p),codeBefore=state.meta.projectCode;if(!codeBefore||!/^DK-[A-Z0-9]{6}$/.test(codeBefore))throw new Error(tag+' stable project code missing');
             await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="4"].active');
@@ -163,7 +163,7 @@ jobs:
             result.canonical.missingInformation='PASS';await x.browser.close()
           }
           async function upstreamTest(){
-            const x=await launch(430,900),p=x.page;await phase1(p);await configureExact(p);await phase3Exact(p);await reachPhase5(p);let state=await st(p),code=state.meta.projectCode,storage=JSON.stringify(state.details.storage),apps=JSON.stringify(state.details.appliances);
+            const x=await launch(430,900),p=x.page;await phase1(p);await configureExact(p);await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="3"].active');await phase3Exact(p);await reachPhase5(p);let state=await st(p),code=state.meta.projectCode,storage=JSON.stringify(state.details.storage),apps=JSON.stringify(state.details.appliances);
             await p.locator('#summaryGroups [data-editphase="1"]').first().click();await p.waitForSelector('.stage[data-stage="1"].active');await p.locator('[data-layout="straight"]').click();await sleep(120);state=await st(p);
             if(state.visual.cabinet!=='oak'||JSON.stringify(state.details.storage)!==storage||JSON.stringify(state.details.appliances)!==apps||state.meta.projectCode!==code)throw new Error('upstream edit destroyed unrelated decisions');
             await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="2"].active');await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="3"].active');await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="4"].active');await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="5"].active');const txt=await p.locator('#waPreview').innerText();
