@@ -264,7 +264,7 @@ function customerGroups(){
  if(b.usage.users.label)use.push(b.usage.users.label);if(b.usage.cooking.label)use.push(b.usage.cooking.label);
  return[
   {title:"المساحة",phase:1,lines:[b.space.layout.label,b.space.dimensions.label].concat(b.customer.city?[b.customer.city]:[])},
-  {title:"التكوين المبدئي",phase:2,lines:[b.configuration.status,b.configuration.mainUnits.length?b.configuration.mainUnits.map(function(x){return x.label}).join("، "):"يحتاج تأكيد الوحدات",b.configuration.tallUnits.length?"طويلة: "+b.configuration.tallUnits.map(function(x){return x.label}).join("، "):"",b.configuration.tallUnits.some(function(x){return x.type==="pantry"})?"تقسيم المؤن: "+b.configuration.pantryInterior.label:""]},
+  {title:"التكوين المبدئي",phase:2,lines:[b.configuration.status,b.configuration.mainUnits.length?b.configuration.mainUnits.map(function(x){return x.label}).join("، "):"يحتاج تأكيد الوحدات",b.configuration.tallUnits.length?"طويلة: "+b.configuration.tallUnits.map(function(x){return x.label}).join("، ")+(b.configuration.tallUnits.some(function(x){return x.type==="pantry"})?" · تقسيم المؤن: "+b.configuration.pantryInterior.label:""):""]},
   {title:"الاتجاه البصري",phase:2,lines:[b.visual.cabinetDirection.label+" · "+b.visual.worktopDirection.label,"العلوية: "+b.configuration.upperDirection.label+" · المقابض: "+b.configuration.handleDirection.label]},
   {title:"احتياجات الاستخدام",phase:3,lines:[use.length?use.join(" · "):"لم تُضف تفضيلات استخدام",storage.length?"التخزين: "+storage.join("، "):""]},
   {title:"الأجهزة",phase:3,lines:[apps.length?apps.join("، "):"لم تُحدد أجهزة"]},
