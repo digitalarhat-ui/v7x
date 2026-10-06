@@ -1,0 +1,148 @@
+name: Dakhakhni Alternate Host Live QA
+on:
+  push:
+    branches: [dakhakhni-alt-host-qa]
+    paths: ['.github/workflows/dakhakhni-alt-host-live-qa.yml']
+permissions:
+  contents: write
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install --no-save playwright@1.55.0
+      - run: npx playwright install --with-deps chromium
+      - name: Test public Lovable alternate host
+        run: |
+          cat > qa.mjs <<'EOF'
+          import {chromium} from 'playwright'; import fs from 'fs';
+          fs.mkdirSync('alt-host-qa',{recursive:true});
+          const url='https://dakhakhni-kitchen-demo.lovable.app/';
+          const expectedSha='c4457536fd1d974ea30d6e97179a890f9fb39145';
+          const result={status:'PASS',url,expectedSha,viewports:{},errors:[]};
+          async function run(name,width,height){
+            const browser=await chromium.launch({headless:true});
+            const context=await browser.newContext({viewport:{width,height},deviceScaleFactor:1,reducedMotion:'reduce'});
+            const page=await context.newPage(); page.setDefaultTimeout(25000);
+            const errors=[]; page.on('pageerror',e=>errors.push('page:'+e.message)); page.on('console',m=>{if(m.type()==='error') errors.push('console:'+m.text())});
+            await page.goto(url,{waitUntil:'networkidle',timeout:90000});
+            await page.waitForSelector('#heroCanvas',{timeout:45000});
+            await page.waitForTimeout(1500);
+            const boot=await page.evaluate((sha)=>({
+              title:document.title,
+              dir:document.documentElement.dir,
+              iw:innerWidth,
+              sw:document.documentElement.scrollWidth,
+              hero:document.querySelector('.hero')?.innerText||'',
+              canvas:document.querySelector('#heroCanvas')?.getBoundingClientRect().toJSON(),
+              mount:!!document.querySelector('#dakhakhniV5'),
+              three:!!window.THREE,
+              scripts:[...document.scripts].map(s=>s.src).filter(Boolean),
+              links:[...document.querySelectorAll('link[rel="stylesheet"]')].map(l=>l.href),
+              lovableBadge:!!document.querySelector('#lovable-badge-cta') && getComputedStyle(document.querySelector('#lovable-badge-cta')).display!=='none',
+              hasExpectedSha:[...document.scripts].some(s=>(s.src||'').includes(sha)) || [...document.querySelectorAll('link[rel="stylesheet"]')].some(l=>(l.href||'').includes(sha))
+            }),expectedSha);
+            if(boot.title!=='دخاخني | ابدأ مشروع مطبخك') throw new Error(name+' title mismatch');
+            if(boot.dir!=='rtl') throw new Error(name+' rtl missing');
+            if(!boot.mount||!boot.three) throw new Error(name+' app/Three missing');
+            if(!boot.hero.includes('رتّب مشروع مطبخك')) throw new Error(name+' hero missing');
+            if(!boot.canvas||boot.canvas.width<250||boot.canvas.height<240) throw new Error(name+' hero canvas too small');
+            if(boot.sw>width+1) throw new Error(name+' horizontal overflow');
+            if(!boot.hasExpectedSha) throw new Error(name+' host not pinned to expected SHA');
+            if(boot.lovableBadge) throw new Error(name+' lovable badge visible');
+
+            // Hero material state
+            const cab=page.locator('[data-hero-cabinet]').first();
+            const work=page.locator('[data-hero-worktop]').first();
+            if(await cab.count()) await cab.click();
+            if(await work.count()) await work.click();
+
+            // Start journey and fill Phase 1 minimally.
+            await page.locator('#heroStart').click();
+            await page.locator('[data-projecttype="new"]').click();
+            await page.locator('[data-layout="l"]').click();
+            await page.locator('[data-measuremode="known"]').click();
+            await page.locator('#roomLength').fill('420');
+            await page.locator('#roomWidth').fill('320');
+            await page.locator('#roomHeight').fill('280');
+            await page.locator('#nextBtn').click();
+            await page.waitForSelector('.stage[data-stage="2"].active');
+            await page.waitForTimeout(800);
+
+            // 3D studio + configurator markers
+            const studio=await page.evaluate(()=>({
+              studioCanvas:!!document.querySelector('#studioCanvas'),
+              configPanel:!!document.querySelector('.configPanel'),
+              cameraButtons:document.querySelectorAll('[data-camera]').length,
+              cabinetControls:document.querySelectorAll('[data-cabinet]').length,
+              worktopControls:document.querySelectorAll('[data-worktop]').length
+            }));
+            if(!studio.studioCanvas||!studio.configPanel) throw new Error(name+' configurator missing');
+            if(studio.cameraButtons<3||studio.cabinetControls<3||studio.worktopControls<3) throw new Error(name+' 3D controls incomplete');
+
+            // Move through later phases using current source controls.
+            // Save visual direction if required.
+            const save=page.locator('#saveVisual');
+            if(await save.count()) await save.click();
+            await page.locator('#nextBtn').click();
+            await page.waitForSelector('.stage[data-stage="3"].active');
+            // Use current progressive selections if required, then continue.
+            const detailsReviewed=page.locator('#detailsReviewed');
+            if(await detailsReviewed.count()) await detailsReviewed.click({force:true});
+            await page.locator('#nextBtn').click();
+            await page.waitForSelector('.stage[data-stage="4"].active');
+            const reviewConfirmed=page.locator('#reviewConfirmed');
+            if(await reviewConfirmed.count()) await reviewConfirmed.click({force:true});
+            await page.locator('#nextBtn').click();
+            await page.waitForSelector('.stage[data-stage="5"].active');
+            await page.waitForTimeout(300);
+
+            const final=await page.evaluate(()=>({
+              copySummary:!!document.querySelector('#copyProjectSummary'),
+              wa:document.querySelector('#waButton')?.getAttribute('href')||'',
+              preview:document.querySelector('#waPreview')?.innerText||'',
+              canonicalText:document.body.innerText.includes('نسخ ملخص المشروع'),
+              share:!!document.querySelector('#shareProject'),
+              sw:document.documentElement.scrollWidth
+            }));
+            if(final.sw>width+1) throw new Error(name+' final overflow');
+            if(!final.wa.startsWith('https://wa.me/966545246478?text=')) throw new Error(name+' WhatsApp route mismatch');
+            if(!final.canonicalText) throw new Error(name+' Phase-6 canonical brief fingerprint missing');
+            if(!final.copySummary) throw new Error(name+' copy project summary missing');
+            if(!final.share) throw new Error(name+' share action missing');
+            if(errors.length) throw new Error(name+' runtime errors: '+errors.join(' | '));
+
+            await page.screenshot({path:'alt-host-qa/'+name+'-final.png',fullPage:true});
+            result.viewports[name]={boot,studio,final,errors};
+            await browser.close();
+          }
+          try{
+            await run('mobile-390',390,844);
+            await run('mobile-430',430,900);
+            await run('desktop-1440',1440,1000);
+          }catch(e){result.status='FAIL';result.errors.push(e.stack||String(e));}
+          fs.writeFileSync('alt-host-qa/results.json',JSON.stringify(result,null,2));
+          if(result.status!=='PASS') process.exitCode=1;
+          EOF
+          node qa.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dakhakhni-alternate-host-live-qa
+          path: alt-host-qa
+          if-no-files-found: error
+          retention-days: 2
+      - name: Store compact result
+        if: always()
+        run: |
+          mkdir -p alt-host-qa-output
+          cp alt-host-qa/results.json alt-host-qa-output/results.json || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add alt-host-qa-output
+          git commit -m "Store alternate-host live QA result" || true
+          git push origin HEAD:dakhakhni-alt-host-qa
