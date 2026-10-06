@@ -279,15 +279,6 @@ function reviewStatusText(){return briefQuality(canonicalBrief()).label}
 function renderGroupCards(targetId){
  var e=document.getElementById(targetId);if(!e)return;e.innerHTML=customerGroups().map(function(g){var lines=g.lines.filter(Boolean),edit=g.phase===5?'<a class="journeyEdit" href="#customerName">تعديل</a>':'<a class="journeyEdit" href="#phase-'+g.phase+'" data-jump="'+g.phase+'">تعديل</a>';return'<article class="journeyGroup"><div><h4>'+safe(g.title)+'</h4>'+edit+'</div>'+lines.slice(0,3).map(function(x){return'<p>'+safe(x)+'</p>'}).join("")+'</article>'}).join("")
 }
-function bindBriefEditButtons(){
- document.querySelectorAll(".journeyGroups [data-editphase]").forEach(function(btn){
-  if(btn.dataset.briefEditBound==="1")return;btn.dataset.briefEditBound="1";
-  btn.addEventListener("click",function(ev){
-   ev.preventDefault();ev.stopPropagation();var ep=Number(btn.dataset.editphase);goPhase(ep);
-   if(btn.dataset.editfield)setTimeout(function(){var el=document.getElementById(btn.dataset.editfield);if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.focus()}},90)
-  })
- })
-}
 
 
 function selectedConfig(){
@@ -477,7 +468,7 @@ function invalidateVisual(){state.visual.saved=false;state.review.confirmed=fals
 function invalidateDetails(){state.details.reviewed=false;state.review.confirmed=false;runtime.maxPhase=Math.min(runtime.maxPhase,3);state.maxPhase=runtime.maxPhase}
 function open3DStudio(){runtime.maxPhase=Math.max(runtime.maxPhase,2);state.maxPhase=runtime.maxPhase;save();goPhase(2);setTimeout(function(){var studio=document.querySelector('[data-stage="2"] .studio');if(studio)studio.scrollIntoView({behavior:"smooth",block:"start"})},120)}
 function bind(){
- root.addEventListener("click",function(ev){var t=ev.target.closest("button,a");if(!t)return;
+ root.addEventListener("click",function(ev){var t=ev.target&&ev.target.closest?ev.target.closest("button,a"):null;if(!t)return;
   if(t.id==="headerStart"||t.id==="heroStart"){runtime.maxPhase=Math.max(runtime.maxPhase,1);goPhase(1);return}
   if(t.id==="hero3d"){open3DStudio();return}
   if(t.dataset.jump){var n=Number(t.dataset.jump);if(n<=runtime.maxPhase){goPhase(n);if(t.dataset.editfield)setTimeout(function(){var el=document.getElementById(t.dataset.editfield);if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.focus()}},90)}return}
