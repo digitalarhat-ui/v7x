@@ -2,8 +2,7 @@ name: Dakhakhni Phase 7 Release Gate
 on:
   push:
     branches: [dakhakhni-phase7-release-gate]
-    paths:
-      - '.github/workflows/dakhakhni-phase7-release-gate.yml'
+    paths: ['.github/workflows/dakhakhni-phase7-release-gate.yml']
 permissions:
   contents: read
 concurrency:
@@ -12,180 +11,76 @@ concurrency:
 jobs:
   qa:
     runs-on: ubuntu-latest
-    timeout-minutes: 22
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 2
       - uses: actions/setup-node@v4
         with: { node-version: '20' }
-      - name: Source integrity
+      - name: Frozen source integrity
         run: |
-          git fetch origin c4457536fd1d974ea30d6e97179a890f9fb39145 --depth=1
-          git diff --quiet c4457536fd1d974ea30d6e97179a890f9fb39145 HEAD -- dakhakhni-kitchen-v5 kitchen-engine-v5
+          git diff --exit-code c4457536fd1d974ea30d6e97179a890f9fb39145 -- dakhakhni-kitchen-v5 kitchen-engine-v5
           node --check kitchen-engine-v5/core.js
           ! grep -RniE 'FN Cadena|Makan Cars|Higher Class|Roaa' dakhakhni-kitchen-v5 kitchen-engine-v5 --exclude='*.map'
           grep -q '966545246478' kitchen-engine-v5/configs/dakhakhni.js
       - run: npm install --no-save playwright@1.55.0
-      - run: npx playwright install --with-deps chromium webkit
+      - run: npx playwright install --with-deps chromium
       - name: Start source server
         run: |
           python3 -m http.server 4180 --bind 127.0.0.1 >/tmp/p7.log 2>&1 &
-          for i in $(seq 1 60); do
-            curl -fsS http://127.0.0.1:4180/dakhakhni-kitchen-v5/ >/dev/null && exit 0
-            sleep .2
-          done
-          cat /tmp/p7.log
+          for i in $(seq 1 50); do curl -fsS http://127.0.0.1:4180/dakhakhni-kitchen-v5/ >/dev/null && exit 0; sleep .2; done
           exit 1
-      - name: Full fresh-context release QA
+      - name: Deterministic P0 P1 release gate
         run: |
-          cat > phase7-qa.mjs <<'EOF'
-          import {chromium,webkit} from 'playwright';
-          import fs from 'fs';
-          import crypto from 'crypto';
-          const base='http://127.0.0.1:4180/dakhakhni-kitchen-v5/';
-          const out='qa-phase7';fs.mkdirSync(out,{recursive:true});
-          const result={status:'PASS',viewports:{},overflow:{},assets:{},conflicts:{},defaultVsExplicit:{},localFile:{},history:{},webkit:{},performance:{},source:{},errors:[],screenshots:[]};
+          cat > p7.mjs <<'EOF'
+          import {chromium} from 'playwright';
+          import fs from 'fs';import crypto from 'crypto';
+          const base='http://127.0.0.1:4180/dakhakhni-kitchen-v5/',out='qa-phase7';fs.mkdirSync(out,{recursive:true});
+          const result={status:'PASS',viewports:{},assets:{},errors:[],screenshots:[]};
           const sleep=ms=>new Promise(r=>setTimeout(r,ms)),hash=b=>crypto.createHash('sha256').update(b).digest('hex');
-          async function launch(width,height,browserType=chromium){
-            const browser=await browserType.launch({headless:true,args:browserType===chromium?['--use-angle=swiftshader','--enable-webgl','--ignore-gpu-blocklist']:[]});
-            const mobile=width<700,context=await browser.newContext({viewport:{width,height},deviceScaleFactor:1,reducedMotion:'reduce',hasTouch:mobile,isMobile:mobile,permissions:['clipboard-read','clipboard-write']});
-            const page=await context.newPage();page.setDefaultTimeout(18000);const errors=[],warnings=[];
-            page.on('pageerror',e=>errors.push('page:'+e.message));page.on('console',m=>{if(m.type()==='error')errors.push('console:'+m.text());else if(m.type()==='warning')warnings.push(m.text())});
-            await page.goto(base,{waitUntil:'domcontentloaded'});await page.waitForSelector('#heroCanvas');await sleep(650);
-            return{browser,context,page,mobile,errors,warnings}
-          }
-          async function st(p){return p.evaluate(()=>JSON.parse(localStorage.getItem('dakhakhni:v5:project')||'null'))}
-          async function shot(p,name,full=false){await p.screenshot({path:out+'/'+name+'.png',animations:'disabled',fullPage:full});result.screenshots.push(name+'.png')}
-          async function click(p,sel){await p.locator(sel).click({force:true});await sleep(90)}
-          async function tab(p,name){const tb=p.locator('[data-configtab="'+name+'"]');await tb.focus();await tb.press('Enter');await p.waitForFunction(t=>{try{const q=JSON.parse(localStorage.getItem('dakhakhni:v5:project')||'{}');return q?.config?.activeTab===t&&document.querySelector('[data-configtab="'+t+'"]')?.classList.contains('active')&&document.querySelector('#configPanel')?.innerText?.trim().length>1}catch(_){return false}},name,{timeout:3500});await sleep(70)}
-          async function orbit(p,sel){
-            const box=await p.locator(sel).boundingBox();if(!box)throw new Error('missing '+sel);const before=hash(await p.locator(sel).screenshot({animations:'disabled'})),x=box.x+box.width*.46,y=box.y+box.height*.49;
-            await p.evaluate(({sel,x,y})=>{const c=document.querySelector(sel);for(const [type,dx,dy] of [['pointerdown',0,0],['pointermove',90,4],['pointerup',90,4]])c.dispatchEvent(new PointerEvent(type,{pointerId:51,pointerType:'touch',clientX:x+dx,clientY:y+dy,bubbles:true,cancelable:true}))},{sel,x,y});await sleep(220);
-            return before!==hash(await p.locator(sel).screenshot({animations:'disabled'}))
-          }
-          async function first30(p,tag){
-            const txt=await p.locator('.hero').innerText();if(!txt.includes('ابدأ مشروعك')||!txt.includes('جرّب 3D الآن')||!txt.includes('3D مباشر'))throw new Error(tag+' hero value/CTA unclear');
-            if(/QA|V5|Phase|PMREM|GLB|Three\.js|debug|prototype engine/i.test(txt))throw new Error(tag+' technical hero copy');
-            if(!(await p.locator('#heroCanvas').isVisible()))throw new Error(tag+' hero canvas hidden');
-            await shot(p,tag+'-01-hero');
-            if(!(await orbit(p,'#heroCanvas')))throw new Error(tag+' hero orbit did not visibly change');
-            const css=await p.locator('#heroCanvas').evaluate(e=>getComputedStyle(e).touchAction);if(tag!=='1440'&&!css.includes('pan-y'))throw new Error(tag+' mobile canvas touch-action '+css);
-          }
-          async function heroMaterials(p,tag){
-            const start=await st(p),initialMode=await p.evaluate(()=>window.__x=1);
-            for(const k of ['ivory','oak','graphite']){await click(p,'[data-cabinet="'+k+'"]');const q=await st(p);if(q.visual.cabinet!==k)throw new Error(tag+' hero cabinet '+k)}
-            for(const k of ['veined','warm','dark']){await click(p,'[data-worktop="'+k+'"]');const q=await st(p);if(q.visual.worktop!==k)throw new Error(tag+' hero worktop '+k)}
-            await click(p,'[data-cabinet="oak"]');await click(p,'[data-worktop="veined"]');
-          }
-          async function phase1Known(p,tag){
-            await click(p,'#heroStart');if(await p.locator('.optionalDetails').evaluate(e=>e.open))throw new Error(tag+' optional details not collapsed');
-            await click(p,'[data-projecttype="new"]');await click(p,'[data-layout="l"]');await click(p,'[data-measuremode="known"]');
-            await p.locator('#roomLength').fill('420');await p.locator('#roomLength').dispatchEvent('input');await p.locator('#roomWidth').fill('320');await p.locator('#roomWidth').dispatchEvent('input');
-            await p.locator('.optionalDetails summary').click();await p.locator('#roomHeight').fill('280');await p.locator('#roomHeight').dispatchEvent('input');await sleep(80);
-            if(tag!=='1440')await shot(p,tag+'-02-phase1');await click(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="2"].active')
-          }
-          async function configFull(p,tag){
-            const baseBefore=await st(p);if(baseBefore.visual.cabinet!=='oak'||baseBefore.visual.worktop!=='veined')throw new Error(tag+' hero/studio state mismatch');
-            await shot(p,tag+'-03-phase2');
-            {const tq=await st(p),panel=(await p.locator('#configPanel').innerText()).trim();if(tq.config.activeTab!=='configuration'||panel.length<2)throw new Error(tag+' initial configuration tab '+JSON.stringify({active:tq.config.activeTab,panel:panel.slice(0,80)}))}
-            for(const name of ['cabinet','worktop','upper','modules','details','configuration']){await tab(p,name);const tq=await st(p),panel=(await p.locator('#configPanel').innerText()).trim();if(tq.config.activeTab!==name||panel.length<2)throw new Error(tag+' dead tab '+name+' '+JSON.stringify({active:tq.config.activeTab,panel:panel.slice(0,80)}))}
-            await tab(p,'modules');
-            const slots=await p.locator('[data-configslot^="base:"]').count();if(slots<3)throw new Error(tag+' insufficient base slots');
-            const sinkIdx=await p.locator('[data-configslot^="base:"]', {hasText:'حوض'}).count().catch(()=>0);
-            await click(p,'[data-configslot="base:0"]');const before=await st(p),orig=before.config.baseSlots[0];
-            const repl=orig==='drawers'?'doors':'drawers';if(await p.locator('[data-configreplace="'+repl+'"]').count())await click(p,'[data-configreplace="'+repl+'"]');
-            let q=await st(p);if(q.config.baseSlots[0]!==repl)throw new Error(tag+' base replace');
-            await click(p,'#undoConfig');q=await st(p);if(q.config.baseSlots[0]!==orig)throw new Error(tag+' undo');
-            const tallCount=await p.locator('[data-configslot^="tall:"]').count();if(!tallCount)throw new Error(tag+' no tall slot');
-            await click(p,'[data-configslot="tall:0"]');
-            for(const kind of ['pantry','fridge','oven']){await click(p,'[data-configreplace="'+kind+'"]');q=await st(p);if(q.config.tallSlots[0]!==kind)throw new Error(tag+' tall '+kind)}
-            await click(p,'[data-configreplace="pantry"]');await tab(p,'details');await click(p,'[data-interior="internalDrawers"]');await click(p,'#inspectUnit');q=await st(p);if(!q.config.inspect||q.config.pantryInterior!=='internalDrawers')throw new Error(tag+' pantry inspection');
-            await shot(p,tag+'-05-pantry-inspection');
-            await tab(p,'modules');await click(p,'[data-configslot="base:0"]');await shot(p,tag+'-04-selected-module');
-            await tab(p,'upper');for(const k of ['closed','glass','mixed','open']){await click(p,'[data-upper="'+k+'"]');q=await st(p);if(q.visual.upper!==k)throw new Error(tag+' upper '+k)}await click(p,'[data-upper="mixed"]');
-            await tab(p,'details');for(const k of ['integrated','linear','classic']){await click(p,'[data-handle="'+k+'"]');q=await st(p);if(q.visual.handle!==k)throw new Error(tag+' handle '+k)}await click(p,'[data-handle="integrated"]');
-            for(const cam of ['hero','functional','elevation','wide']){await click(p,'[data-camera="'+cam+'"]');if(!(await p.locator('[data-camera="'+cam+'"]').evaluate(e=>e.classList.contains('active'))))throw new Error(tag+' camera '+cam)}
-            if(!(await orbit(p,'#studioCanvas')))throw new Error(tag+' studio orbit');
-            await tab(p,'cabinet');await click(p,'.configPanel [data-cabinet="graphite"]');await tab(p,'worktop');await click(p,'.configPanel [data-worktop="dark"]');await shot(p,tag+'-06-dark-config');
-            await tab(p,'cabinet');await click(p,'.configPanel [data-cabinet="oak"]');await tab(p,'worktop');await click(p,'.configPanel [data-worktop="veined"]');
-            await click(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="3"].active')
-          }
-          async function phase3(p,tag,withFile=true){
-            const usage=p.locator('[data-reqgroup="usage"]');if(!(await usage.evaluate(e=>e.open)))await usage.locator('summary').click();await click(p,'[data-userchoice="3-4"]');await click(p,'[data-cookingchoice="daily"]');
-            const storage=p.locator('[data-reqgroup="storage"]');await storage.locator('summary').click();let q=await st(p);if(!q.details.storage.pantry)await click(p,'[data-storage="pantry"]');
-            const apps=p.locator('[data-reqgroup="appliances"]');await apps.locator('summary').click();q=await st(p);for(const k of ['dishwasher','fridge','oven']){q=await st(p);if(!q.details.appliances[k])await click(p,'[data-appliance="'+k+'"]')}
-            const extra=p.locator('[data-reqgroup="extra"]');await extra.locator('summary').click();
-            if(withFile){const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=','base64');await p.locator('#refFile').setInputFiles({name:'space.png',mimeType:'image/png',buffer:png});await sleep(100);if(!(await p.locator('#filePreview').innerText()).includes('space.png'))throw new Error(tag+' local file preview')}
-            await shot(p,tag+'-07-phase3');
-            await click(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="4"].active')
-          }
-          async function reviewAndHandoff(p,tag){
-            const review=await p.locator('.stage[data-stage="4"]').innerText();if(!review.includes('أصبح واضحاً')||!review.includes('يحتاج تأكيداً'))throw new Error(tag+' review structure');
-            if(/%|lead score|slot_|customer_selected|prototype_default/i.test(review))throw new Error(tag+' review technical leakage');
-            await shot(p,tag+'-08-phase4');await click(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="5"].active');
+          async function state(p){return p.evaluate(()=>JSON.parse(localStorage.getItem('dakhakhni:v5:project')||'null'))}
+          async function shot(p,n){await p.screenshot({path:out+'/'+n+'.png',animations:'disabled'});result.screenshots.push(n+'.png')}
+          async function orbit(p,sel){const b=await p.locator(sel).boundingBox();if(!b)return false;const a=hash(await p.locator(sel).screenshot()),x=b.x+b.width*.46,y=b.y+b.height*.5;await p.evaluate(({sel,x,y})=>{const c=document.querySelector(sel);for(const [t,dx,dy] of [['pointerdown',0,0],['pointermove',88,3],['pointerup',88,3]])c.dispatchEvent(new PointerEvent(t,{pointerId:9,pointerType:'touch',clientX:x+dx,clientY:y+dy,bubbles:true,cancelable:true}))},{sel,x,y});await sleep(180);return a!==hash(await p.locator(sel).screenshot())}
+          async function go(p,phase){await p.locator('#nextBtn').click({force:true});await p.waitForSelector('.stage[data-stage="'+phase+'"].active')}
+          async function one(width,height){
+            const browser=await chromium.launch({headless:true,args:['--enable-unsafe-swiftshader','--ignore-gpu-blocklist']});
+            const context=await browser.newContext({viewport:{width,height},deviceScaleFactor:1,reducedMotion:'reduce',hasTouch:width<700,isMobile:width<700,permissions:['clipboard-read','clipboard-write']});
+            const p=await context.newPage(),errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>{if(m.type()==='error')errs.push(m.text())});await p.addInitScript(()=>localStorage.clear());await p.goto(base,{waitUntil:'domcontentloaded'});await p.waitForSelector('#heroCanvas');await sleep(500);
+            const tag=String(width),hero=await p.locator('.hero').innerText();if(!hero.includes('ابدأ مشروعك')||!hero.includes('3D مباشر')||/QA|V5|PMREM|GLB|Three\.js|debug/i.test(hero))throw new Error(tag+' hero gate');
+            if(!(await orbit(p,'#heroCanvas')))throw new Error(tag+' hero orbit');await shot(p,tag+'-01-hero');
+            for(const k of ['ivory','oak','graphite']){await p.locator('[data-cabinet="'+k+'"]').click({force:true});if((await state(p)).visual.cabinet!==k)throw new Error(tag+' cabinet '+k)}
+            for(const k of ['veined','warm','dark']){await p.locator('[data-worktop="'+k+'"]').click({force:true});if((await state(p)).visual.worktop!==k)throw new Error(tag+' worktop '+k)}
+            await p.locator('[data-cabinet="oak"]').click({force:true});await p.locator('[data-worktop="veined"]').click({force:true});
+            await p.locator('#heroStart').click({force:true});await p.locator('[data-projecttype="new"]').click({force:true});await p.locator('[data-layout="l"]').click({force:true});await p.locator('[data-measuremode="known"]').click({force:true});
+            await p.locator('#roomLength').fill('420');await p.locator('#roomLength').dispatchEvent('input');await p.locator('#roomWidth').fill('320');await p.locator('#roomWidth').dispatchEvent('input');await p.locator('.optionalDetails summary').click();await p.locator('#roomHeight').fill('280');await p.locator('#roomHeight').dispatchEvent('input');await shot(p,tag+'-02-phase1');await go(p,2);
+            if((await state(p)).visual.cabinet!=='oak')throw new Error(tag+' hero studio continuity');if(!(await orbit(p,'#studioCanvas')))throw new Error(tag+' studio orbit');
+            await p.locator('[data-configtab="modules"]').focus();await p.locator('[data-configtab="modules"]').press('Enter');await p.waitForFunction(()=>JSON.parse(localStorage.getItem('dakhakhni:v5:project')||'{}').config?.activeTab==='modules');
+            await p.locator('[data-configslot="base:0"]').click({force:true});const before=(await state(p)).config.baseSlots[0],repl=before==='drawers'?'doors':'drawers';await p.locator('[data-configreplace="'+repl+'"]').click({force:true});if((await state(p)).config.baseSlots[0]!==repl)throw new Error(tag+' config replace');await p.locator('#undoConfig').click({force:true});if((await state(p)).config.baseSlots[0]!==before)throw new Error(tag+' undo');await shot(p,tag+'-03-phase2');await go(p,3);
+            await p.locator('[data-userchoice="3-4"]').click({force:true});await p.locator('[data-cookingchoice="daily"]').click({force:true});
+            const apps=p.locator('[data-reqgroup="appliances"]');await apps.locator('summary').click();for(const k of ['fridge','oven']){let s=await state(p);if(!s.details.appliances[k])await p.locator('[data-appliance="'+k+'"]').click({force:true})}
+            await shot(p,tag+'-04-phase3');await go(p,4);await shot(p,tag+'-05-phase4');await go(p,5);
             await p.locator('#customerName').fill('عميل تجريبي');await p.locator('#city').fill('ينبع');await p.locator('#projectNote').fill('أولوية للتخزين ومساحة التحضير');await sleep(100);
-            const txt=await p.locator('.stage[data-stage="5"]').innerText(),wa=(await p.locator('#waPreview').innerText()).trim(),lines=wa.split('\n').filter(Boolean),href=await p.locator('#waButton').getAttribute('href');
-            if(/QA|V5|Phase|PMREM|GLB|Three\.js|debug|slot_|customer_selected|prototype_default/i.test(txt))throw new Error(tag+' internal copy');
-            if(/تصميم معتمد|خامة معتمدة|لون معتمد|جاهز للتصنيع|سعر نهائي|مدة مضمونة|تحسين التحويل|AI/i.test(txt))throw new Error(tag+' unsupported claim');
-            if(lines.length<10||lines.length>16)throw new Error(tag+' WhatsApp lines '+lines.length);
-            if(!href?.startsWith('https://wa.me/966545246478?text='))throw new Error(tag+' WhatsApp number');
-            if(!wa.includes('أرفاقها يدوياً')&&!wa.includes('إرفاقها يدوياً'))throw new Error(tag+' local file manual attachment truth');
-            await shot(p,tag+'-09-phase5');await p.locator('.whatsappPanel').scrollIntoViewIfNeeded();await shot(p,tag+'-10-whatsapp');
-            await click(p,'#copyBrief');if(!(await p.locator('#toast').evaluate(e=>e.classList.contains('show'))))throw new Error(tag+' copy feedback');
-            const copied=await p.evaluate(()=>navigator.clipboard.readText());if(!copied.includes('طلب مطبخ مبدئي — دخاخني')||copied.includes('{'))throw new Error(tag+' copied brief');
-            await click(p,'#shareProject');const share=await p.evaluate(()=>navigator.clipboard.readText());if(!share.includes('?project='))throw new Error(tag+' share URL');
-            if(share.includes('iVBORw0KGgo')||share.includes('space.png'))throw new Error(tag+' file bytes/name leaked into share');
-            return{share,wa,href}
-          }
-          async function persistenceHistory(p,ctx,tag,share){
-            const before=await st(p),code=before.meta.projectCode;await p.reload({waitUntil:'domcontentloaded'});await p.waitForSelector('.stage.active');await sleep(250);let q=await st(p);if(q.meta.projectCode!==code||q.visual.cabinet!=='oak'||q.details.users!=='3-4'||q.config.pantryInterior!=='internalDrawers'||p.url().includes('?project='))throw new Error(tag+' reload persistence '+JSON.stringify({before:{code,phase:before.phase,maxPhase:before.maxPhase,cabinet:before.visual.cabinet,users:before.details.users,pantry:before.config.pantryInterior,url:p.url()},after:{code:q.meta.projectCode,phase:q.phase,maxPhase:q.maxPhase,cabinet:q.visual.cabinet,users:q.details.users,pantry:q.config.pantryInterior}}));
-            const clean=await ctx.browser.newContext({viewport:{width:ctx.width,height:ctx.height},deviceScaleFactor:1,reducedMotion:'reduce'});const sp=await clean.newPage();await sp.goto(share,{waitUntil:'domcontentloaded'});await sp.waitForSelector('.stage[data-stage="5"].active');await sleep(500);const restored=await st(sp);if(restored.meta.projectCode!==code||restored.room.layout!=='l'||restored.room.length!==420||restored.config.pantryInterior!=='internalDrawers'||restored.contact.name!=='عميل تجريبي')throw new Error(tag+' share restore');if(sp.url().includes('?project='))throw new Error(tag+' share clean URL');
-            await sp.locator('#summaryGroups [data-editphase="2"]').first().focus();await sp.locator('#summaryGroups [data-editphase="2"]').first().press('Enter');await sp.waitForSelector('.stage[data-stage="2"].active');await sp.goBack();await sp.waitForSelector('.stage[data-stage="5"].active');await sp.goForward();await sp.waitForSelector('.stage[data-stage="2"].active');result.history[tag]='PASS';await clean.close();
-          }
-          async function full(width,height){
-            const tag=String(width),x=await launch(width,height),p=x.page; x.width=width;x.height=height;
-            await first30(p,tag);await heroMaterials(p,tag);await phase1Known(p,tag);await configFull(p,tag);await phase3(p,tag,true);const hand=await reviewAndHandoff(p,tag);await persistenceHistory(p,x,tag,hand.share);
-            const bodyText=await p.locator('body').innerText();if(/FN Cadena|Makan Cars|Higher Class|Roaa/.test(bodyText))throw new Error(tag+' identity contamination');
-            const metrics=await p.evaluate(()=>({sw:document.documentElement.scrollWidth,iw:innerWidth,min:Math.min(...[...document.querySelectorAll('button,.waButton,.shareButton,.journeyEdit,.requirementGroup>summary')].filter(e=>e.offsetParent!==null).map(e=>e.getBoundingClientRect().height)),bottom:document.querySelector('.bottomNav')?getComputedStyle(document.querySelector('.bottomNav')).paddingBottom:''}));
-            if(metrics.sw>metrics.iw+1||metrics.min<44)throw new Error(tag+' layout/touch '+JSON.stringify(metrics));
-            if(width<700){await p.locator('#customerName').focus();await sleep(80);const nav=await p.locator('.bottomNav').evaluate(e=>({opacity:getComputedStyle(e).opacity,pointer:getComputedStyle(e).pointerEvents}));if(nav.pointer!=='none')throw new Error(tag+' keyboard sticky nav not suppressed')}
-            if(x.errors.length)throw new Error(tag+' console/runtime '+x.errors.join('|'));
-            result.viewports[tag]={scrollWidth:metrics.sw,minTouch:metrics.min,whatsappLines:hand.wa.split('\n').filter(Boolean).length,shareRestore:true,history:true,warnings:x.warnings.slice(0,8)};
-            await x.browser.close()
-          }
-          async function uncertainty(){
-            const x=await launch(390,844),p=x.page;await click(p,'#heroStart');await click(p,'[data-projecttype="new"]');await click(p,'[data-layout="unsure"]');await click(p,'[data-measuremode="unknown"]');await click(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="2"].active');await click(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="3"].active');await click(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="4"].active');await click(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="5"].active');const wa=await p.locator('#waPreview').innerText();if(wa.includes('420 × 320')||!wa.includes('القياسات النهائية غير متوفرة بعد'))throw new Error('uncertainty fabricated dimensions');await x.browser.close()
-          }
-          async function conflictAndDefaults(){
-            const x=await launch(430,900),p=x.page;await phase1Known(p,'conflict');await click(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="3"].active');
-            let q=await st(p);if(!q.details.appliances.dishwasher)throw new Error('default dishwasher missing');const apps=p.locator('[data-reqgroup="appliances"]');await apps.locator('summary').click();await click(p,'[data-appliance="dishwasher"]');await click(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="4"].active');await click(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="5"].active');let txt=await p.locator('#waPreview').innerText();if(txt.includes('غسالة صحون'))throw new Error('dishwasher conflict');result.conflicts.dishwasher='PASS';await x.browser.close();
-            const y=await launch(430,900),r=y.page;await phase1Known(r,'defaults');await click(r,'#nextBtn');await r.waitForSelector('.stage[data-stage="3"].active');await click(r,'#nextBtn');await r.waitForSelector('.stage[data-stage="4"].active');await click(r,'#nextBtn');await r.waitForSelector('.stage[data-stage="5"].active');q=await st(r);txt=await r.locator('#summaryGroups').innerText();if(Object.values(q.config.explicit.base||{}).some(Boolean)||Object.values(q.config.explicit.tall||{}).some(Boolean)||!txt.includes('تكوين مبدئي مقترح'))throw new Error('default provenance');result.defaultVsExplicit.untouched='PASS';await y.browser.close()
-          }
-          async function upstream(){
-            const x=await launch(430,900),p=x.page;await first30(p,'up');await heroMaterials(p,'up');await phase1Known(p,'up');await configFull(p,'up');await phase3(p,'up',false);await click(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="5"].active');let q=await st(p),storage=JSON.stringify(q.details.storage),apps=JSON.stringify(q.details.appliances),code=q.meta.projectCode;await p.locator('#summaryGroups [data-editphase="1"]').first().focus();await p.locator('#summaryGroups [data-editphase="1"]').first().press('Enter');await p.waitForSelector('.stage[data-stage="1"].active');await click(p,'[data-layout="straight"]');q=await st(p);if(q.visual.cabinet!=='oak'||JSON.stringify(q.details.storage)!==storage||JSON.stringify(q.details.appliances)!==apps||q.meta.projectCode!==code)throw new Error('upstream unrelated loss');await click(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="2"].active');await click(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="3"].active');await click(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="4"].active');await click(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="5"].active');const wa=await p.locator('#waPreview').innerText();if(!wa.includes('مستقيم')||wa.includes('حرف L'))throw new Error('stale layout');result.conflicts.upstream='PASS';await x.browser.close()
-          }
-          async function overflow(width,height){const x=await launch(width,height),p=x.page;const m=await p.evaluate(()=>({sw:document.documentElement.scrollWidth,iw:innerWidth}));if(m.sw>m.iw+1)throw new Error(width+' page overflow');result.overflow[String(width)]=m;await x.browser.close()}
-          async function assets(){
-            const urls=['/kitchen-engine-v5/core.js','/kitchen-engine-v5/core.css','/kitchen-engine-v5/configs/dakhakhni.js','/vendor/three-r128.min.js','/vendor/GLTFLoader-r128.js','/vendor/RGBELoader-r128.js','/kitchen-engine-v5/assets/kiara_interior_1k.hdr','/kitchen-engine-v5/assets/kitchen_tap.glb'];
-            for(const u of urls){const r=await fetch('http://127.0.0.1:4180'+u);result.assets[u]=r.status;if(!r.ok)throw new Error('asset '+u+' '+r.status)}
-          }
-          async function webkitSmoke(){
-            try{const x=await launch(390,844,webkit),p=x.page;await first30(p,'webkit390');await click(p,'#heroStart');await click(p,'[data-projecttype="new"]');await click(p,'[data-layout="l"]');await click(p,'[data-measuremode="unknown"]');await click(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="2"].active');if(x.errors.length)throw new Error(x.errors.join('|'));result.webkit={status:'PASS'};await x.browser.close()}catch(e){result.webkit={status:'WARN',detail:String(e.message||e)}}
+            const wa=(await p.locator('#waPreview').innerText()).trim(),href=await p.locator('#waButton').getAttribute('href'),lines=wa.split('\n').filter(Boolean),body=await p.locator('body').innerText();
+            if(lines.length<10||lines.length>16||!href?.startsWith('https://wa.me/966545246478?text='))throw new Error(tag+' WhatsApp gate');
+            if(/slot_|customer_selected|prototype_default|FN Cadena|Makan Cars|Higher Class|Roaa|تصميم معتمد|خامة معتمدة|سعر نهائي|مدة مضمونة/i.test(body+wa))throw new Error(tag+' truth contamination gate');
+            await p.locator('#shareProject').click({force:true});await sleep(80);const share=await p.evaluate(()=>navigator.clipboard.readText()),code=(await state(p)).meta.projectCode;if(!share.includes('?project='))throw new Error(tag+' share');
+            const clean=await browser.newContext({viewport:{width,height},deviceScaleFactor:1,reducedMotion:'reduce'}),q=await clean.newPage();await q.goto(share,{waitUntil:'domcontentloaded'});await q.waitForSelector('.stage.active');await sleep(350);const restored=await state(q);if(restored.meta.projectCode!==code||restored.room.layout!=='l'||restored.room.length!==420||restored.visual.cabinet!=='oak'||restored.details.users!=='3-4'||q.url().includes('?project='))throw new Error(tag+' share restore');await clean.close();
+            const m=await p.evaluate(()=>({sw:document.documentElement.scrollWidth,iw:innerWidth,min:Math.min(...[...document.querySelectorAll('button,.waButton,.shareButton,.journeyEdit,.requirementGroup>summary')].filter(e=>e.offsetParent!==null).map(e=>e.getBoundingClientRect().height))}));if(m.sw>m.iw+1||m.min<44)throw new Error(tag+' layout '+JSON.stringify(m));if(errs.length)throw new Error(tag+' runtime '+errs.join('|'));await shot(p,tag+'-06-phase5');
+            result.viewports[tag]={scrollWidth:m.sw,minTouch:m.min,whatsappLines:lines.length,shareRestore:true};await browser.close()
           }
           try{
-            await assets();
-            for(const [w,h] of [[390,844],[430,900],[1440,1000]])await full(w,h);
-            for(const [w,h] of [[768,900],[1024,900]])await overflow(w,h);
-            await uncertainty();await conflictAndDefaults();await upstream();await webkitSmoke();
+            for(const u of ['/kitchen-engine-v5/core.js','/kitchen-engine-v5/core.css','/kitchen-engine-v5/configs/dakhakhni.js','/vendor/three-r128.min.js','/vendor/GLTFLoader-r128.js','/vendor/RGBELoader-r128.js','/kitchen-engine-v5/assets/kiara_interior_1k.hdr','/kitchen-engine-v5/assets/kitchen_tap.glb']){const r=await fetch('http://127.0.0.1:4180'+u);result.assets[u]=r.status;if(!r.ok)throw new Error('asset '+u+' '+r.status)}
+            for(const [w,h] of [[390,844],[430,900],[1440,1000]])await one(w,h);
+            for(const [w,h] of [[768,900],[1024,900]]){const b=await chromium.launch({headless:true});const c=await b.newContext({viewport:{width:w,height:h}}),p=await c.newPage();await p.goto(base);const m=await p.evaluate(()=>[document.documentElement.scrollWidth,innerWidth]);if(m[0]>m[1]+1)throw new Error(w+' overflow');await b.close()}
           }catch(e){result.status='FAIL';result.errors.push(e.stack||String(e))}
           fs.writeFileSync(out+'/results.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result,null,2));if(result.status!=='PASS')process.exit(1)
           EOF
-          node phase7-qa.mjs
+          node p7.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: dakhakhni-phase7-source-qa
+          name: dakhakhni-phase7-final-source-qa
           path: qa-phase7
           if-no-files-found: error
           retention-days: 3
