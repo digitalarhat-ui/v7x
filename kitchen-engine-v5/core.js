@@ -23,14 +23,15 @@ var wallLabels={north:"الجدار الرئيسي",east:"الجدار الأي�
 var defaults={
  version:5,phase:1,maxPhase:1,
  project:{type:"",city:"",measurementMode:"",note:""},
- room:{length:420,width:320,height:280,layout:"",markers:[]},
- visual:{cabinet:"ivory",worktop:"veined",upper:"mixed",handle:"integrated",saved:false},
- details:{storage:{pantry:false,tall:false,deepDrawers:false,corner:false,waste:false,coffee:false},appliances:{fridge:false,oven:false,dishwasher:false,hob:false,hood:false,microwave:false},sink:"unsure",users:"",cooking:"",storageTouched:false,applianceTouched:false,configSynced:false,reviewed:false},
+ room:{length:420,width:320,height:280,heightTouched:false,layout:"",markers:[]},
+ visual:{cabinet:"ivory",worktop:"veined",upper:"mixed",handle:"integrated",saved:false,explicit:{cabinet:false,worktop:false,upper:false,handle:false}},
+ details:{storage:{pantry:false,tall:false,deepDrawers:false,corner:false,waste:false,coffee:false},appliances:{fridge:false,oven:false,dishwasher:false,hob:false,hood:false,microwave:false},storageExplicit:{},applianceExplicit:{},sink:"unsure",users:"",cooking:"",storageTouched:false,applianceTouched:false,configSynced:false,reviewed:false},
  review:{confirmed:false,followUp:"whatsapp"},
  contact:{name:""},
- config:{seeded:false,layout:"",baseSlots:[],tallSlots:[],selected:"base:0",pantryInterior:"shelves",inspect:false,activeTab:"configuration"},
- meta:{createdAt:Date.now(),updatedAt:Date.now()}
+ config:{seeded:false,layout:"",baseSlots:[],tallSlots:[],originBaseSlots:[],originTallSlots:[],explicit:{layout:false,base:{},tall:{},pantryInterior:false},selected:"base:0",pantryInterior:"shelves",inspect:false,activeTab:"configuration"},
+ meta:{createdAt:Date.now(),updatedAt:Date.now(),projectCode:""}
 };
+var QUALIFIED_BRIEF_KPI="completed qualified briefs / actual design-service starts";
 var runtime={phase:1,maxPhase:1,refFile:null,refData:"",hero:null,studio:null,instances:[],raf:0,assetCache:{},assetWait:{},textureCache:{},hdr:null,hdrLoading:false,hdrWait:[],configUndo:[],suspendHistory:false};
 function clone(v){return JSON.parse(JSON.stringify(v))}
 function merge(a,b){if(!b||typeof b!=="object")return a;Object.keys(b).forEach(function(k){if(b[k]&&typeof b[k]==="object"&&!Array.isArray(b[k])){if(!a[k]||typeof a[k]!=="object")a[k]={};merge(a[k],b[k])}else a[k]=b[k]});return a}
@@ -57,8 +58,11 @@ function assetUrl(url){
  return url
 }
 function projectCode(){
- var d={storage:state.details.storage,appliances:state.details.appliances,sink:state.details.sink,users:state.details.users,cooking:state.details.cooking},c={layout:state.config.layout,baseSlots:state.config.baseSlots,tallSlots:state.config.tallSlots,pantryInterior:state.config.pantryInterior},raw=JSON.stringify([state.project,state.room,state.visual,c,d]),h=2166136261;
- for(var i=0;i<raw.length;i++){h^=raw.charCodeAt(i);h+=(h<<1)+(h<<4)+(h<<7)+(h<<8)+(h<<24)}return"DK-"+((h>>>0).toString(36).toUpperCase()+"000000").slice(0,6)
+ if(!state.meta||typeof state.meta!=="object")state.meta={createdAt:Date.now(),updatedAt:Date.now(),projectCode:""};
+ if(state.meta.projectCode)return state.meta.projectCode;
+ var raw="dakhakhni:"+String(state.meta.createdAt||Date.now()),h=2166136261;
+ for(var i=0;i<raw.length;i++){h^=raw.charCodeAt(i);h+=(h<<1)+(h<<4)+(h<<7)+(h<<8)+(h<<24)}
+ state.meta.projectCode="DK-"+((h>>>0).toString(36).toUpperCase()+"000000").slice(0,6);return state.meta.projectCode
 }
 function knownMeasurements(){return state.project.measurementMode==="known"}
 function roomText(){return knownMeasurements()?state.room.length+" × "+state.room.width+" × "+state.room.height+" سم":"القياسات غير متوفرة حالياً"}
@@ -86,14 +90,19 @@ function defaultBaseSlots(tallSlots){
 }
 function ensureConfigurator(force){
  if(!state.config||typeof state.config!=="object")state.config=clone(defaults.config);
+ if(!state.config.explicit||typeof state.config.explicit!=="object")state.config.explicit={layout:false,base:{},tall:{},pantryInterior:false};
+ if(!state.config.explicit.base)state.config.explicit.base={};if(!state.config.explicit.tall)state.config.explicit.tall={};
  if(force||!state.config.seeded||!Array.isArray(state.config.baseSlots)||!state.config.baseSlots.length){
-  var tall=defaultTallSlots();state.config.tallSlots=tall;state.config.baseSlots=defaultBaseSlots(tall);state.config.seeded=true;state.config.inspect=false;state.config.selected="base:0"
+  var tall=defaultTallSlots(),base=defaultBaseSlots(tall);state.config.tallSlots=tall;state.config.baseSlots=base;state.config.originTallSlots=tall.slice();state.config.originBaseSlots=base.slice();state.config.explicit={layout:false,base:{},tall:{},pantryInterior:false};state.config.seeded=true;state.config.inspect=false;state.config.selected="base:0"
  }
  if(!Array.isArray(state.config.tallSlots))state.config.tallSlots=defaultTallSlots();
+ if(!Array.isArray(state.config.originBaseSlots)||!state.config.originBaseSlots.length)state.config.originBaseSlots=(state.config.baseSlots||[]).slice();
+ if(!Array.isArray(state.config.originTallSlots))state.config.originTallSlots=(state.config.tallSlots||[]).slice();
  if(!state.config.activeTab||!configTabLabels[state.config.activeTab])state.config.activeTab="configuration";
  if(!state.config.pantryInterior||!interiorLabels[state.config.pantryInterior])state.config.pantryInterior="shelves";
  if(state.config.layout==="island"&&!hasPlausibleIsland())state.config.layout="";
- if(!state.config.selected)state.config.selected="base:0"
+ if(!state.config.selected)state.config.selected="base:0";
+ ensureBriefProvenance()
 }
 function syncConfigDetails(){
  if(!state.config)return;var b=state.config.baseSlots||[],t=state.config.tallSlots||[];
@@ -106,7 +115,123 @@ function syncConfigDetails(){
  state.details.storage.tall=t.length>0;
  state.details.storage.pantry=t.indexOf("pantry")>=0
 }
-function resetConfiguratorForRoom(){if(!state.config)return;state.config.seeded=false;state.config.layout="";state.config.inspect=false;state.config.selected="base:0"}
+function resetConfiguratorForRoom(){if(!state.config)return;state.config.seeded=false;state.config.layout="";state.config.inspect=false;state.config.selected="base:0";state.config.explicit={layout:false,base:{},tall:{},pantryInterior:false};state.config.originBaseSlots=[];state.config.originTallSlots=[]}
+function ensureBriefProvenance(){
+ if(!state.visual.explicit||typeof state.visual.explicit!=="object")state.visual.explicit={cabinet:false,worktop:false,upper:false,handle:false};
+ if(!state.details.storageExplicit||typeof state.details.storageExplicit!=="object")state.details.storageExplicit={};
+ if(!state.details.applianceExplicit||typeof state.details.applianceExplicit!=="object")state.details.applianceExplicit={};
+ if(!state.config.explicit||typeof state.config.explicit!=="object")state.config.explicit={layout:false,base:{},tall:{},pantryInterior:false};
+ if(!state.config.explicit.base)state.config.explicit.base={};if(!state.config.explicit.tall)state.config.explicit.tall={};
+ if(!Array.isArray(state.config.originBaseSlots))state.config.originBaseSlots=(state.config.baseSlots||[]).slice();
+ if(!Array.isArray(state.config.originTallSlots))state.config.originTallSlots=(state.config.tallSlots||[]).slice();
+ if(typeof state.room.heightTouched!=="boolean")state.room.heightTouched=false
+}
+function sourceValue(value,label,source){return{value:value,label:label,source:source}}
+function configSlotExplicit(kind,index){ensureBriefProvenance();var map=kind==="tall"?state.config.explicit.tall:state.config.explicit.base;return !!map[String(index)]}
+function configChanged(){ensureBriefProvenance();return !!state.config.explicit.layout||Object.keys(state.config.explicit.base).some(function(k){return state.config.explicit.base[k]})||Object.keys(state.config.explicit.tall).some(function(k){return state.config.explicit.tall[k]})||!!state.config.explicit.pantryInterior}
+function applianceConfigEvidence(key){
+ ensureConfigurator();var kind=(key==="fridge"||key==="oven")?"tall":"base",type=key==="hood"?"hob":key;
+ if(["fridge","oven","dishwasher","hob","hood"].indexOf(key)<0)return{present:false,explicitPresent:false,explicitRemoved:false};
+ var cur=kind==="tall"?state.config.tallSlots:state.config.baseSlots,org=kind==="tall"?state.config.originTallSlots:state.config.originBaseSlots,emap=kind==="tall"?state.config.explicit.tall:state.config.explicit.base;
+ var present=false,explicitPresent=false,explicitRemoved=false;
+ cur.forEach(function(v,i){if(v===type){present=true;if(emap[String(i)])explicitPresent=true}});
+ org.forEach(function(v,i){if(v===type&&emap[String(i)]&&cur[i]!==type)explicitRemoved=true});
+ return{present:present,explicitPresent:explicitPresent,explicitRemoved:explicitRemoved}
+}
+function storageConfigEvidence(key){
+ ensureConfigurator();var b=state.config.baseSlots||[],t=state.config.tallSlots||[],eb=state.config.explicit.base||{},et=state.config.explicit.tall||{},ob=state.config.originBaseSlots||[],ot=state.config.originTallSlots||[];
+ var types=key==="deepDrawers"?["drawers"]:key==="pantry"||key==="tall"?["pantry"]:[],present=false,explicitPresent=false,explicitRemoved=false;
+ if(!types.length)return{present:false,explicitPresent:false,explicitRemoved:false};
+ b.forEach(function(v,i){if(types.indexOf(v)>=0){present=true;if(eb[String(i)])explicitPresent=true}});t.forEach(function(v,i){if(types.indexOf(v)>=0){present=true;if(et[String(i)])explicitPresent=true}});
+ ob.forEach(function(v,i){if(types.indexOf(v)>=0&&eb[String(i)]&&types.indexOf(b[i])<0)explicitRemoved=true});ot.forEach(function(v,i){if(types.indexOf(v)>=0&&et[String(i)]&&types.indexOf(t[i])<0)explicitRemoved=true});
+ return{present:present,explicitPresent:explicitPresent,explicitRemoved:explicitRemoved}
+}
+function resolveAppliance(key){
+ ensureBriefProvenance();var ev=applianceConfigEvidence(key),explicitReq=!!state.details.applianceExplicit[key];
+ if(ev.explicitPresent)return{present:true,source:"customer_selected"};
+ if(explicitReq)return{present:!!state.details.appliances[key],source:"customer_selected"};
+ if(ev.present)return{present:true,source:"prototype_default"};
+ if(state.details.appliances[key])return{present:true,source:state.details.applianceTouched?"customer_selected":"derived_from_configuration"};
+ return{present:false,source:"unknown"}
+}
+function resolveStorage(key){
+ ensureBriefProvenance();var ev=storageConfigEvidence(key),explicitReq=!!state.details.storageExplicit[key];
+ if(ev.explicitPresent)return{present:true,source:"customer_selected"};
+ if(explicitReq)return{present:!!state.details.storage[key],source:"customer_selected"};
+ if(ev.present)return{present:true,source:"prototype_default"};
+ if(state.details.storage[key])return{present:true,source:state.details.storageTouched?"customer_selected":"derived_from_configuration"};
+ return{present:false,source:"unknown"}
+}
+function briefDimensionText(){
+ if(!knownMeasurements())return"القياسات النهائية غير متوفرة بعد";
+ var d=state.room.length+" × "+state.room.width;return d+(state.room.heightTouched?" × "+state.room.height:"")+" سم تقريباً"
+}
+function roomConstraintLines(){return(state.room.markers||[]).map(function(m){return(markerLabels[m.type]||m.type)+" — "+(wallLabels[m.wall]||m.wall)})}
+function configurationUnits(kind){
+ ensureConfigurator();var arr=kind==="tall"?state.config.tallSlots:state.config.baseSlots,labels=kind==="tall"?tallModuleLabels:baseModuleLabels,out=[];
+ arr.forEach(function(type,i){
+  var appliance=["fridge","oven","dishwasher","hob"].indexOf(type)>=0?resolveAppliance(type):null;
+  if(appliance&&!appliance.present&&!configSlotExplicit(kind,i))return;
+  if(type==="pantry"){var sr=resolveStorage("pantry");if(!sr.present&&!configSlotExplicit(kind,i))return}
+  out.push({type:type,label:labels[type]||type,source:configSlotExplicit(kind,i)?"customer_selected":"prototype_default"})
+ });return out
+}
+function briefKnown(brief){
+ var a=[];if(brief.space.layout.source==="customer_selected"&&brief.space.layout.value!=="unsure")a.push("شكل المطبخ: "+brief.space.layout.label);
+ if(brief.space.dimensions.known)a.push("القياسات التقريبية: "+brief.space.dimensions.label);
+ if(state.visual.saved)a.push("الاتجاه البصري محفوظ للمراجعة");
+ if(brief.usage.users.label)a.push("الاستخدام: "+brief.usage.users.label+(brief.usage.cooking.label?" · "+brief.usage.cooking.label:""));
+ if(brief.usage.storageNeeds.length)a.push("أولوية التخزين: "+brief.usage.storageNeeds.map(function(x){return x.label}).join("، "));
+ return a.slice(0,5)
+}
+function briefNeedsConfirmation(){
+ var a=["القياس الموقعي النهائي"];if(!(state.room.markers||[]).length)a.push("مواقع الخدمات والفتحات");a.push("الخامات والعينات النهائية","تفاصيل التصنيع وتوافق الأجهزة","عرض السعر","مدة التنفيذ");return a
+}
+function briefExtraAppliances(brief){
+ var represented={};brief.configuration.mainUnits.concat(brief.configuration.tallUnits).forEach(function(x){if(["fridge","oven","dishwasher","hob"].indexOf(x.type)>=0)represented[x.type]=true});
+ return brief.usage.appliances.filter(function(x){return !represented[x.key]})
+}
+function canonicalBrief(){
+ ensureConfigurator();ensureBriefProvenance();
+ var mainUnits=configurationUnits("base"),tallUnits=configurationUnits("tall"),storage=[],appliances=[];
+ Object.keys(storageLabels).forEach(function(k){var r=resolveStorage(k);if(r.present)storage.push({key:k,label:storageLabels[k],source:r.source})});
+ Object.keys(applianceLabels).forEach(function(k){var r=resolveAppliance(k);if(r.present)appliances.push({key:k,label:applianceLabels[k],source:r.source})});
+ var layoutSource=state.config.explicit.layout?"customer_selected":(state.room.layout&&state.room.layout!=="unsure"?"customer_selected":"prototype_default"),layoutValue=state.config.layout||(state.room.layout||"unsure"),layoutLabel=state.config.layout?layoutLabels[state.config.layout]:(state.room.layout&&state.room.layout!=="unsure"?layoutLabels[state.room.layout]:"غير متأكد");
+ var visualSource=function(k){return state.visual.explicit[k]?"customer_selected":(state.visual.saved?"customer_approved_preliminary":"prototype_default")};
+ var brief={
+  project:{code:projectCode(),projectType:sourceValue(state.project.type,state.project.type?projectLabels[state.project.type]:"غير محدد",state.project.type?"customer_selected":"unknown")},
+  space:{layout:sourceValue(layoutValue,layoutLabel,layoutSource),dimensions:{known:knownMeasurements(),label:briefDimensionText(),source:knownMeasurements()?"customer_entered":"unknown"},measurementStatus:knownMeasurements()?"قياسات تقريبية من العميل":"القياسات النهائية غير متوفرة بعد",optionalConstraints:roomConstraintLines()},
+  configuration:{status:configChanged()?"تكوين مبدئي بعد تعديلاتك":"تكوين مبدئي مقترح",layoutDirection:sourceValue(effectiveLayout(),configLayoutLabel(),layoutSource),mainUnits:mainUnits,tallUnits:tallUnits,upperDirection:sourceValue(state.visual.upper,upperLabels[state.visual.upper],visualSource("upper")),handleDirection:sourceValue(state.visual.handle,handleLabels[state.visual.handle],visualSource("handle")),pantryInterior:sourceValue(state.config.pantryInterior,interiorLabels[state.config.pantryInterior],state.config.explicit.pantryInterior?"customer_selected":"prototype_default")},
+  visual:{status:"اتجاه بصري تمهيدي",cabinetDirection:sourceValue(state.visual.cabinet,cabinetLabels[state.visual.cabinet],visualSource("cabinet")),worktopDirection:sourceValue(state.visual.worktop,worktopLabels[state.visual.worktop],visualSource("worktop"))},
+  usage:{users:sourceValue(state.details.users,state.details.users?userLabels[state.details.users]+" أشخاص":"",state.details.users?"customer_selected":"unknown"),cooking:sourceValue(state.details.cooking,state.details.cooking?cookingLabels[state.details.cooking]:"",state.details.cooking?"customer_selected":"unknown"),storageNeeds:storage,appliances:appliances,sink:sourceValue(state.details.sink,sinkLabels[state.details.sink],state.details.sink!=="unsure"?"customer_selected":"unknown")},
+  customer:{name:state.contact.name.trim(),city:state.project.city.trim(),note:state.project.note.trim(),fileReference:!!runtime.refFile},
+  review:{known:[],needsConfirmation:briefNeedsConfirmation()}
+ };brief.review.known=briefKnown(brief);return brief
+}
+function briefQuality(brief){
+ if(!state.room.layout||state.room.layout==="unsure")return{state:"ready_with_note",label:"يمكن الإرسال الآن",note:"إضافة شكل المطبخ ستجعل الملخص أوضح."};
+ if(!brief.space.dimensions.known)return{state:"ready_with_note",label:"جاهز للمراجعة الأولية",note:"القياس النهائي سيتم تأكيده مع الفريق."};
+ return{state:"ready",label:"جاهز للمراجعة الأولية",note:"القياس والخامات والتفاصيل النهائية تعتمد مع فريق دخاخني."}
+}
+function canonicalBriefText(){
+ var b=canonicalBrief(),q=briefQuality(b),lines=["طلب مطبخ مبدئي — دخاخني","رقم المشروع: "+b.project.code,"","المشروع: "+b.project.projectType.label,"المساحة: "+b.space.layout.label+" · "+b.space.dimensions.label];
+ if(b.customer.city)lines.push("الموقع: "+b.customer.city);
+ lines.push("","التكوين المبدئي: "+b.configuration.status);
+ if(b.configuration.mainUnits.length)lines.push("الوحدات الرئيسية: "+b.configuration.mainUnits.map(function(x){return x.label}).join("، "));
+ if(b.configuration.tallUnits.length)lines.push("الوحدات الطويلة: "+b.configuration.tallUnits.map(function(x){return x.label}).join("، "));
+ if(b.configuration.tallUnits.some(function(x){return x.type==="pantry"}))lines.push("تقسيم المؤن: "+b.configuration.pantryInterior.label);
+ lines.push("العلوية والمقابض: "+b.configuration.upperDirection.label+" · "+b.configuration.handleDirection.label,"","الاتجاه البصري: "+b.visual.cabinetDirection.label+" · "+b.visual.worktopDirection.label);
+ var use=[];if(b.usage.users.label)use.push(b.usage.users.label);if(b.usage.cooking.label)use.push(b.usage.cooking.label);if(use.length)lines.push("الاستخدام: "+use.join(" · "));
+ if(b.usage.storageNeeds.length)lines.push("التخزين: "+b.usage.storageNeeds.map(function(x){return x.label}).join("، "));
+ var extraApps=briefExtraAppliances(b);if(extraApps.length)lines.push("الأجهزة الإضافية: "+extraApps.map(function(x){return x.label}).join("، "));
+ if(b.customer.name)lines.push("الاسم: "+b.customer.name);if(b.customer.note)lines.push("ملاحظة: "+b.customer.note);if(b.customer.fileReference)lines.push("مرجع للمراجعة: لدي مخطط/صورة للمساحة وسيتم إرفاقها يدوياً.");
+ lines.push("","يحتاج تأكيداً: "+b.review.needsConfirmation.slice(0,4).join(" · "),q.note);return lines.join("\n")
+}
+function copyProjectBrief(){var txt=canonicalBriefText();copyText(txt,"تم نسخ ملخص المشروع")}
+function copyText(txt,msg){if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(function(){toast(msg||"تم النسخ")}).catch(function(){fallbackCopyText(txt,msg)});else fallbackCopyText(txt,msg)}
+function fallbackCopyText(txt,msg){var t=document.createElement("textarea");t.value=txt;document.body.appendChild(t);t.select();try{document.execCommand("copy");toast(msg||"تم النسخ")}catch(e){toast("تعذر النسخ")}t.remove()}
+
+
 function configSnapshot(){return{config:clone(state.config),visual:clone(state.visual)}}
 function pushConfigUndo(){runtime.configUndo.push(configSnapshot());if(runtime.configUndo.length>12)runtime.configUndo.shift()}
 function restoreConfigSnapshot(v){if(!v)return;state.config=clone(v.config);state.visual=clone(v.visual);state.review.confirmed=false}
@@ -139,21 +264,22 @@ function requirementSummary(kind){
 }
 function choiceCard(label,key,on,attr){return'<button type="button" class="reqChoice '+(on?"active":"")+'" data-'+attr+'="'+key+'"><span>'+safe(label)+'</span></button>'}
 function customerGroups(){
- ensureConfigurator();var cs=configurationSummary(),st=selectedLabels(state.details.storage,storageLabels),ap=selectedLabels(state.details.appliances,applianceLabels),use=[];
- if(state.details.users)use.push(userLabels[state.details.users]+" مستخدمين");if(state.details.cooking)use.push(cookingLabels[state.details.cooking]);if(state.details.sink!=="unsure")use.push(sinkLabels[state.details.sink]);
+ var b=canonicalBrief(),use=[],storage=b.usage.storageNeeds.map(function(x){return x.label}),apps=briefExtraAppliances(b).map(function(x){return x.label});
+ if(b.usage.users.label)use.push(b.usage.users.label);if(b.usage.cooking.label)use.push(b.usage.cooking.label);
  return[
-  {title:"المساحة",phase:1,lines:[roomText(),state.project.city||"الموقع يضاف عند التواصل"]},
-  {title:"الشكل والتكوين",phase:2,lines:[cs.layout,"الوحدات الرئيسية: "+cs.base,"الوحدات الطويلة: "+cs.tall]},
-  {title:"الخامات",phase:2,lines:[cabinetLabels[state.visual.cabinet]+" + "+worktopLabels[state.visual.worktop],"العلوية: "+upperLabels[state.visual.upper]+" · المقابض: "+handleLabels[state.visual.handle]]},
-  {title:"الخزائن",phase:3,lines:[st.length?st.join("، "):"لا توجد احتياجات إضافية محددة"]},
-  {title:"الأجهزة",phase:3,lines:[ap.length?ap.join("، "):"لم تُحدد أجهزة إضافية"]},
-  {title:"الاستخدام",phase:3,lines:[use.length?use.join(" · "):"لم تُضف تفضيلات استخدام — وهذا اختياري"]}
+  {title:"المساحة",phase:1,lines:[b.space.layout.label,b.space.dimensions.label].concat(b.customer.city?[b.customer.city]:[])},
+  {title:"التكوين المبدئي",phase:2,lines:[b.configuration.status,b.configuration.mainUnits.length?b.configuration.mainUnits.map(function(x){return x.label}).join("، "):"يحتاج تأكيد الوحدات",b.configuration.tallUnits.length?"طويلة: "+b.configuration.tallUnits.map(function(x){return x.label}).join("، ")+(b.configuration.tallUnits.some(function(x){return x.type==="pantry"})?" · تقسيم المؤن: "+b.configuration.pantryInterior.label:""):""]},
+  {title:"الاتجاه البصري",phase:2,lines:[b.visual.cabinetDirection.label+" · "+b.visual.worktopDirection.label,"العلوية: "+b.configuration.upperDirection.label+" · المقابض: "+b.configuration.handleDirection.label]},
+  {title:"احتياجات الاستخدام",phase:3,lines:[use.length?use.join(" · "):"لم تُضف تفضيلات استخدام",storage.length?"التخزين: "+storage.join("، "):""]},
+  {title:"الأجهزة",phase:3,lines:[apps.length?apps.join("، "):"الأجهزة المطلوبة ممثلة في التكوين"]},
+  {title:"ملاحظات العميل",phase:5,lines:[b.customer.name?b.customer.name:"الاسم اختياري",b.customer.note?b.customer.note:"لا توجد ملاحظة إضافية"]}
  ]
 }
-function reviewStatusText(){return knownMeasurements()?"جاهز للمراجعة الأولية":"جاهز للمراجعة الأولية — القياس النهائي لاحقاً"}
+function reviewStatusText(){return briefQuality(canonicalBrief()).label}
 function renderGroupCards(targetId){
- var e=document.getElementById(targetId);if(!e)return;e.innerHTML=customerGroups().map(function(g){return'<article class="journeyGroup"><div><h4>'+safe(g.title)+'</h4><button type="button" data-editphase="'+g.phase+'">تعديل</button></div>'+g.lines.slice(0,3).map(function(x){return'<p>'+safe(x)+'</p>'}).join("")+'</article>'}).join("")
+ var e=document.getElementById(targetId);if(!e)return;e.innerHTML=customerGroups().map(function(g){var lines=g.lines.filter(Boolean),field=g.phase===5?"customerName":"";return'<article class="journeyGroup"><div><h4>'+safe(g.title)+'</h4><button type="button" class="journeyEdit" data-editphase="'+g.phase+'" '+(field?'data-editfield="'+field+'" ':'')+'>تعديل</button></div>'+lines.slice(0,3).map(function(x){return'<p>'+safe(x)+'</p>'}).join("")+'</article>'}).join("")
 }
+
 
 function selectedConfig(){
  ensureConfigurator();var p=String(state.config.selected||"base:0").split(":"),kind=p[0],index=Math.max(0,Number(p[1])||0),list=kind==="tall"?state.config.tallSlots:state.config.baseSlots;
@@ -244,16 +370,16 @@ function stage3(){
 }
 function stage4(){
  return'<section class="stage" data-stage="4"><div class="stageHead"><div><div class="stageEyebrow">04 — المراجعة والخطوة التالية</div><h2>راجع مشروعك قبل التواصل.</h2></div><p>ما اخترته واضح هنا، وما يحتاج تأكيداً يراجعه فريق دخاخني.</p></div>'+
- '<div class="reviewStatus"><div><small>مشروعك حتى الآن</small><h3 id="reviewStatusText">'+safe(reviewStatusText())+'</h3><p>يحدد عرض السعر بعد مراجعة القياس والخامات والتفاصيل مع فريق دخاخني.</p></div><span class="projectCode">'+projectCode()+'</span></div>'+
+ '<div class="reviewStatus"><div><small>مشروعك حتى الآن</small><h3 id="reviewStatusText">'+safe(reviewStatusText())+'</h3><p id="reviewStatusNote">'+safe(briefQuality(canonicalBrief()).note)+'</p></div><span class="projectCode">'+projectCode()+'</span></div>'+
  '<div class="journeyGroups" id="reviewGroups"></div>'+
- '<div class="reviewGrid compactReview"><article class="reviewBlock"><small>أصبح واضحاً</small><h3>جاهز للمصمم</h3><ul id="knownList"></ul></article><article class="reviewBlock"><small>يحتاج تأكيداً من فريق دخاخني</small><h3>يُحسم بعد المراجعة</h3><ul id="confirmList"></ul></article></div>'+
+ '<div class="reviewGrid compactReview"><article class="reviewBlock"><small>أصبح واضحاً</small><h3>جاهز للمصمم</h3><ul id="knownList"></ul></article><article class="reviewBlock"><small>يحتاج تأكيداً مع فريق دخاخني</small><h3>يُحسم بعد المراجعة</h3><ul id="confirmList"></ul></article></div>'+
  '<div class="error" id="errReview"></div></section>'
 }
 function stage5(){
- return'<section class="stage" data-stage="5"><div class="stageHead"><div><div class="stageEyebrow">05 — التواصل والمراجعة</div><h2>راجع الملخص ثم افتح واتساب.</h2></div><p>يمكنك تعديل أي مجموعة قبل الإرسال.</p></div><div class="finalGrid"><div>'+
- '<div class="paper contactPaper"><div class="contactGrid"><div class="field"><label>الاسم <small class="optionalTag">اختياري</small></label><input id="customerName" value="'+safe(state.contact.name)+'" placeholder="الاسم"></div><div class="field"><label>المدينة / الحي <small class="optionalTag">اختياري</small></label><input id="city" value="'+safe(state.project.city)+'" placeholder="مثال: الرياض — الياسمين"></div></div><div class="field noteField"><label>ملاحظة للمصمم <small class="optionalTag">اختياري</small></label><textarea id="projectNote" placeholder="مثال: أولوية للتخزين أو سطح تحضير أكبر">'+safe(state.project.note)+'</textarea></div></div>'+
- '<div class="summaryPaper compactSummary" style="margin-top:14px"><div class="summaryTop"><div><small>ملخص المشروع</small><h3>جاهز للمراجعة مع المصمم</h3></div><div class="projectCode">'+projectCode()+'</div></div><div class="journeyGroups" id="summaryGroups"></div></div></div>'+
- '<aside class="whatsappPanel"><div><small>المعاينة قبل الإرسال</small><h3>رسالة واتساب</h3><p>هذه هي الرسالة التي ستفتح في واتساب؛ لن تُرسل تلقائياً.</p></div><pre class="waPreview" id="waPreview"></pre><a class="waButton" id="waButton" target="_blank" rel="noopener">فتح واتساب دخاخني ←</a><button class="shareButton" id="shareProject">نسخ رابط المشروع</button><a class="officialLink" href="'+safe(cfg.officialSite)+'" target="_blank" rel="noopener">الموقع الرسمي لدخاخني ↗</a></aside></div></section>'
+ return'<section class="stage" data-stage="5"><div class="stageHead"><div><div class="stageEyebrow">05 — التواصل والمراجعة</div><h2>مشروعك جاهز للمراجعة الأولية.</h2></div><p>راجع الملخص، عدّل ما تحتاجه، ثم افتح واتساب.</p></div><div class="briefGrid"><div>'+
+ '<div class="paper contactPaper"><div class="contactGrid"><div class="field"><label>الاسم <small class="optionalTag">اختياري</small></label><input id="customerName" value="'+safe(state.contact.name)+'" placeholder="الاسم"></div><div class="field"><label>المدينة / الحي <small class="optionalTag">اختياري</small></label><input id="city" value="'+safe(state.project.city)+'" placeholder="مثال: ينبع"></div></div><div class="field noteField"><label>ملاحظة للمصمم <small class="optionalTag">اختياري</small></label><textarea id="projectNote" placeholder="مثال: أولوية للتخزين ومساحة التحضير">'+safe(state.project.note)+'</textarea></div></div>'+
+ '<div class="summaryPaper compactSummary briefDocument" style="margin-top:14px"><div class="summaryTop"><div><small>ملخص المشروع</small><h3 id="briefQualityLabel">'+safe(briefQuality(canonicalBrief()).label)+'</h3></div><div class="projectCode">'+projectCode()+'</div></div><div class="journeyGroups" id="summaryGroups"></div><div class="briefTruth"><h4>يحتاج تأكيداً مع الفريق</h4><p id="briefNeedsText">'+safe(canonicalBrief().review.needsConfirmation.join(" · "))+'</p></div></div></div>'+
+ '<aside class="handoffAside"><div class="qualityCard"><small>حالة الطلب</small><h3 id="briefQualityAside">'+safe(briefQuality(canonicalBrief()).label)+'</h3><p id="briefQualityNote">'+safe(briefQuality(canonicalBrief()).note)+'</p></div><div class="whatsappPanel"><div><small>المعاينة قبل الإرسال</small><h3>رسالة واتساب</h3><p>هذه الرسالة ستفتح في واتساب ولن تُرسل تلقائياً.</p></div><pre class="waPreview" id="waPreview"></pre><a class="waButton" id="waButton" target="_blank" rel="noopener">فتح واتساب دخاخني ←</a><button class="shareButton" id="copyBrief">نسخ ملخص المشروع</button><button class="shareButton" id="shareProject">نسخ رابط المشروع</button><a class="officialLink" href="'+safe(cfg.officialSite)+'" target="_blank" rel="noopener">الموقع الرسمي لدخاخني ↗</a></div></aside></div></section>'
 }
 function validatePhase(n,show){
  var errors=[];
@@ -282,21 +408,23 @@ function nextPhase(){
 }
 function previousPhase(){if(runtime.phase>1)goPhase(runtime.phase-1)}
 function readiness(){return state.review.confirmed?100:(state.visual.saved?75:50)}
-function knownItems(){
- ensureConfigurator();var cs=configurationSummary(),a=[roomText(),"التكوين: "+cs.layout,"الاتجاه: "+cabinetLabels[state.visual.cabinet]+" + "+worktopLabels[state.visual.worktop]],st=selectedLabels(state.details.storage,storageLabels),ap=selectedLabels(state.details.appliances,applianceLabels);
- if(st.length)a.push("التخزين: "+st.join("، "));if(ap.length)a.push("الأجهزة: "+ap.join("، "));return a.slice(0,5)
-}
-function confirmItems(){var a=["القياس الموقعي النهائي","الخامات والتفاصيل النهائية","الخدمات وتفاصيل التصنيع","عرض السعر والمدة التنفيذية"];if(!knownMeasurements())a.unshift("أبعاد المساحة النهائية");return a.slice(0,5)}
+function knownItems(){return canonicalBrief().review.known}
+function confirmItems(){return canonicalBrief().review.needsConfirmation.slice(0,6)}
 function whatsappSummary(){
- ensureConfigurator();var cs=configurationSummary(),st=selectedLabels(state.details.storage,storageLabels),ap=selectedLabels(state.details.appliances,applianceLabels),use=[];
- if(state.details.users)use.push(userLabels[state.details.users]+" مستخدمين");if(state.details.cooking)use.push(cookingLabels[state.details.cooking]);if(state.details.sink!=="unsure")use.push(sinkLabels[state.details.sink]);
- var rows=["طلب مطبخ مبدئي — دخاخني","رقم المشروع: "+projectCode(),"","المساحة: "+configLayoutLabel()+" · "+roomText()+(state.project.city?" · "+state.project.city:""),"التكوين: "+cs.base+(cs.tall!=="بدون وحدة طويلة"?" | طويل: "+cs.tall:""),"الاتجاه: "+cabinetLabels[state.visual.cabinet]+" + "+worktopLabels[state.visual.worktop]+" | العلوية: "+upperLabels[state.visual.upper]+" | المقابض: "+handleLabels[state.visual.handle],"التخزين: "+(st.length?st.join("، "):"غير محدد"),"الأجهزة: "+(ap.length?ap.join("، "):"غير محدد")];
- if(use.length)rows.push("الاستخدام: "+use.join(" · "));if(state.contact.name.trim())rows.push("الاسم: "+state.contact.name.trim());if(state.project.note.trim())rows.push("ملاحظة: "+state.project.note.trim());if(runtime.refFile)rows.push("مرجع للمراجعة: أرفقه العميل يدوياً في واتساب.");rows.push("","القياس والخامات والتفاصيل النهائية تعتمد مع فريق دخاخني.");return rows.join("\n")
+ var b=canonicalBrief(),q=briefQuality(b),lines=["طلب مطبخ مبدئي — دخاخني","رقم المشروع: "+b.project.code,"","المساحة: "+b.space.layout.label+" · "+b.space.dimensions.label];
+ if(b.customer.city)lines.push("الموقع: "+b.customer.city);
+ var config=[];if(b.configuration.mainUnits.length)config.push(b.configuration.mainUnits.map(function(x){return x.label}).join("، "));if(b.configuration.tallUnits.length)config.push(b.configuration.tallUnits.map(function(x){return x.label}).join("، "));
+ if(config.length){lines.push("","التكوين:");lines.push(config.join(" | "));if(b.configuration.tallUnits.some(function(x){return x.type==="pantry"}))lines.push("تقسيم المؤن: "+b.configuration.pantryInterior.label)}
+ lines.push("","الاتجاه: "+b.visual.cabinetDirection.label+" · "+b.visual.worktopDirection.label+" · علوية "+b.configuration.upperDirection.label+" · "+b.configuration.handleDirection.label);
+ var use=[];if(b.usage.users.label)use.push(b.usage.users.label);if(b.usage.cooking.label)use.push(b.usage.cooking.label);if(b.usage.storageNeeds.length)use.push("تخزين: "+b.usage.storageNeeds.map(function(x){return x.label}).join("، "));if(use.length)lines.push("الاستخدام: "+use.join(" · "));
+ var extraApps=briefExtraAppliances(b);if(extraApps.length)lines.push("الأجهزة: "+extraApps.map(function(x){return x.label}).join("، "));
+ if(b.customer.name)lines.push("العميل: "+b.customer.name);if(b.customer.note)lines.push("ملاحظة: "+b.customer.note);if(b.customer.fileReference)lines.push("مرجع: لدي مخطط/صورة للمساحة وسيتم إرفاقها يدوياً.");
+ lines.push("يحتاج تأكيداً: "+b.review.needsConfirmation.slice(0,4).join(" · "),q.note);return lines.join("\n")
 }
 function whatsappUrl(){return"https://wa.me/"+cfg.whatsapp+"?text="+encodeURIComponent(whatsappSummary())}
 function shareUrl(){var clean=clone(state);clean.phase=runtime.phase;clean.maxPhase=runtime.maxPhase;return location.origin+location.pathname+"?project="+encodeState(clean)+"#phase-"+runtime.phase}
-function copyShare(){var u=shareUrl();if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(u).then(function(){toast("تم نسخ رابط المشروع")}).catch(function(){fallbackCopy(u)});else fallbackCopy(u)}
-function fallbackCopy(u){var t=document.createElement("textarea");t.value=u;document.body.appendChild(t);t.select();try{document.execCommand("copy");toast("تم نسخ رابط المشروع")}catch(e){toast("تعذر النسخ")};t.remove()}
+function copyShare(){copyText(shareUrl(),"تم نسخ رابط المشروع")}
+function fallbackCopy(u){fallbackCopyText(u,"تم نسخ رابط المشروع")}
 function markerRows(){
  var e=document.getElementById("markerList");if(!e)return;if(!state.room.markers.length){e.innerHTML='<div class="notice">لم تضف أي فتحات أو نقاط خدمات — وهذا طبيعي إذا لم تكن تعرفها الآن.</div>';return}
  e.innerHTML=state.room.markers.map(function(m){return'<div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;align-items:center;border:1px solid #d8d3c9;background:#fff;padding:9px"><b style="font-size:9px;color:#143c32">'+markerLabels[m.type]+'</b><select data-markerwall="'+m.id+'" style="border:1px solid #d8d3c9;padding:7px;font-size:9px">'+Object.keys(wallLabels).map(function(w){return'<option value="'+w+'" '+(m.wall===w?"selected":"")+'>'+wallLabels[w]+'</option>'}).join("")+'</select><input type="range" min="5" max="95" value="'+m.pos+'" data-markerpos="'+m.id+'"><button type="button" data-delmarker="'+m.id+'" style="border:0;background:#eee7dc;padding:7px 10px">×</button></div>'}).join("");
@@ -325,9 +453,9 @@ function updateCameraControls(){var hasIsland=hasPlausibleIsland();document.quer
  var cp=document.getElementById("configPanel");if(cp)cp.innerHTML=configPanel();var tabs=document.querySelector(".configTabs");if(tabs)tabs.innerHTML=configTabsHtml();
  var vf=document.getElementById("viewerLabel");if(vf)vf.textContent=viewerStateLabel();var ss=document.getElementById("studioState");if(ss)ss.textContent=configLayoutLabel()+" · "+(knownMeasurements()?state.room.length+" × "+state.room.width+" سم":"قياسات غير مؤكدة");
  var ps=document.getElementById("phase2SavedState");if(ps)ps.textContent=state.visual.saved?"الاتجاه محفوظ":"";
- var kl=document.getElementById("knownList"),cl=document.getElementById("confirmList");if(kl)kl.innerHTML=knownItems().map(function(x){return"<li>"+safe(x)+"</li>"}).join("");if(cl)cl.innerHTML=confirmItems().map(function(x){return"<li>"+safe(x)+"</li>"}).join("");
+ var brief=canonicalBrief(),quality=briefQuality(brief),kl=document.getElementById("knownList"),cl=document.getElementById("confirmList");if(kl)kl.innerHTML=brief.review.known.map(function(x){return"<li>"+safe(x)+"</li>"}).join("");if(cl)cl.innerHTML=brief.review.needsConfirmation.slice(0,6).map(function(x){return"<li>"+safe(x)+"</li>"}).join("");
  renderGroupCards("reviewGroups");summaryGroups();var wp=document.getElementById("waPreview"),wb=document.getElementById("waButton");if(wp)wp.textContent=whatsappSummary();if(wb)wb.href=whatsappUrl();
- var rs=document.getElementById("reviewStatusText");if(rs)rs.textContent=reviewStatusText();
+ var rs=document.getElementById("reviewStatusText"),rn=document.getElementById("reviewStatusNote"),bq=document.getElementById("briefQualityLabel"),bqa=document.getElementById("briefQualityAside"),bqn=document.getElementById("briefQualityNote"),bnt=document.getElementById("briefNeedsText");if(rs)rs.textContent=quality.label;if(rn)rn.textContent=quality.note;if(bq)bq.textContent=quality.label;if(bqa)bqa.textContent=quality.label;if(bqn)bqn.textContent=quality.note;if(bnt)bnt.textContent=brief.review.needsConfirmation.join(" · ");
  var hl=document.getElementById("heroLayout"),hd=document.getElementById("heroDims"),hf=document.getElementById("heroFinish");if(hl)hl.textContent=configLayoutLabel();if(hd)hd.textContent=knownMeasurements()?state.room.length+" × "+state.room.width+" سم":"أدخل المقاسات أو تابع بدونها";if(hf)hf.textContent=cabinetLabels[state.visual.cabinet];
  syncVisualControls();syncRequirementControls();updateCameraControls();syncAll3D()
 }
@@ -340,39 +468,40 @@ function invalidateVisual(){state.visual.saved=false;state.review.confirmed=fals
 function invalidateDetails(){state.details.reviewed=false;state.review.confirmed=false;runtime.maxPhase=Math.min(runtime.maxPhase,3);state.maxPhase=runtime.maxPhase}
 function open3DStudio(){runtime.maxPhase=Math.max(runtime.maxPhase,2);state.maxPhase=runtime.maxPhase;save();goPhase(2);setTimeout(function(){var studio=document.querySelector('[data-stage="2"] .studio');if(studio)studio.scrollIntoView({behavior:"smooth",block:"start"})},120)}
 function bind(){
- root.addEventListener("click",function(ev){var t=ev.target.closest("button,a");if(!t)return;
+ root.addEventListener("click",function(ev){var t=ev.target&&ev.target.closest?ev.target.closest("button,a"):null;if(!t)return;
   if(t.id==="headerStart"||t.id==="heroStart"){runtime.maxPhase=Math.max(runtime.maxPhase,1);goPhase(1);return}
   if(t.id==="hero3d"){open3DStudio();return}
-  if(t.dataset.jump){var n=Number(t.dataset.jump);if(n<=runtime.maxPhase)goPhase(n);return}
+  if(t.dataset.jump){var n=Number(t.dataset.jump);if(n<=runtime.maxPhase){goPhase(n);if(t.dataset.editfield)setTimeout(function(){var el=document.getElementById(t.dataset.editfield);if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.focus()}},90)}return}
   if(t.dataset.projecttype){state.project.type=t.dataset.projecttype;state.review.confirmed=false;renderDynamic();return}
   if(t.dataset.layout){var had=state.config&&state.config.seeded&&runtime.maxPhase>1;state.room.layout=t.dataset.layout;resetConfiguratorForRoom();invalidateVisual();renderDynamic();if(had)toast("تغيّر شكل المطبخ؛ حدّثنا التكوين المبدئي ليتوافق مع المساحة.");return}
   if(t.dataset.measuremode){var hm=state.config&&state.config.seeded&&runtime.maxPhase>1;state.project.measurementMode=t.dataset.measuremode;resetConfiguratorForRoom();invalidateVisual();renderDynamic();if(hm)toast("تغيّرت حالة القياس؛ حدّثنا التكوين المبدئي فقط.");return}
   if(t.dataset.addmarker){state.room.markers.push({id:"m"+Date.now().toString(36),type:t.dataset.addmarker,wall:"north",pos:50});invalidateVisual();renderDynamic();return}
   if(t.dataset.delmarker){state.room.markers=state.room.markers.filter(function(m){return m.id!==t.dataset.delmarker});invalidateVisual();renderDynamic();return}
   if(t.dataset.configtab){state.config.activeTab=t.dataset.configtab;save();renderDynamic();return}
-  if(t.dataset.configlayout){if(t.disabled)return;pushConfigUndo();var requested=t.dataset.configlayout;if(requested==="island"&&!roomCanSupportIsland())return;state.config.layout=requested;state.config.seeded=false;ensureConfigurator(true);state.config.layout=requested;invalidateVisual();renderDynamic();return}
+  if(t.dataset.configlayout){if(t.disabled)return;pushConfigUndo();var requested=t.dataset.configlayout;if(requested==="island"&&!roomCanSupportIsland())return;state.config.layout=requested;state.config.seeded=false;ensureConfigurator(true);state.config.layout=requested;state.config.explicit.layout=true;invalidateVisual();renderDynamic();return}
   if(t.dataset.configslot){state.config.selected=t.dataset.configslot;state.config.inspect=false;renderDynamic();return}
   if(t.dataset.configreplace){
     ensureConfigurator();var sel=selectedConfig();pushConfigUndo();
-    if(sel.kind==="base"){var allowed=compatibleBaseTypes(sel.type);if(allowed.indexOf(t.dataset.configreplace)<0)return;state.config.baseSlots[sel.index]=t.dataset.configreplace}
-    else{var nx=t.dataset.configreplace,other=state.config.tallSlots.indexOf(nx);if(other>=0&&other!==sel.index){var old=state.config.tallSlots[sel.index];state.config.tallSlots[other]=old}state.config.tallSlots[sel.index]=nx;state.config.inspect=false}
+    if(sel.kind==="base"){var allowed=compatibleBaseTypes(sel.type);if(allowed.indexOf(t.dataset.configreplace)<0)return;state.config.baseSlots[sel.index]=t.dataset.configreplace;state.config.explicit.base[String(sel.index)]=true}
+    else{var nx=t.dataset.configreplace,other=state.config.tallSlots.indexOf(nx);if(other>=0&&other!==sel.index){var old=state.config.tallSlots[sel.index];state.config.tallSlots[other]=old;state.config.explicit.tall[String(other)]=true}state.config.tallSlots[sel.index]=nx;state.config.explicit.tall[String(sel.index)]=true;state.config.inspect=false}
     state.details.configSynced=false;invalidateVisual();renderDynamic();return
   }
-  if(t.dataset.interior){pushConfigUndo();state.config.pantryInterior=t.dataset.interior;invalidateVisual();renderDynamic();return}
+  if(t.dataset.interior){pushConfigUndo();state.config.pantryInterior=t.dataset.interior;state.config.explicit.pantryInterior=true;invalidateVisual();renderDynamic();return}
   if(t.id==="inspectUnit"){var pantry=(state.config.tallSlots||[]).indexOf("pantry");if(pantry<0)return;state.config.selected="tall:"+pantry;state.config.inspect=!state.config.inspect;invalidateVisual();renderDynamic();return}
   if(t.id==="undoConfig"){var last=runtime.configUndo.pop();if(!last){toast("لا يوجد تغيير للتراجع");return}restoreConfigSnapshot(last);renderDynamic();return}
   if(t.id==="resetConfig"){if(!window.confirm("العودة للتكوين المبدئي مع الاحتفاظ ببقية بيانات المشروع؟"))return;pushConfigUndo();var tab=state.config.activeTab;state.config=clone(defaults.config);state.config.activeTab=tab;ensureConfigurator(true);state.details.configSynced=false;invalidateVisual();renderDynamic();return}
-  if(t.dataset.cabinet){if(runtime.phase===2)pushConfigUndo();state.visual.cabinet=t.dataset.cabinet;invalidateVisual();stopAutoPresentation(runtime.hero);renderDynamic();return}
-  if(t.dataset.worktop){if(runtime.phase===2)pushConfigUndo();state.visual.worktop=t.dataset.worktop;invalidateVisual();stopAutoPresentation(runtime.hero);renderDynamic();return}
-  if(t.dataset.upper){if(runtime.phase===2)pushConfigUndo();state.visual.upper=t.dataset.upper;invalidateVisual();renderDynamic();return}
-  if(t.dataset.handle){if(runtime.phase===2)pushConfigUndo();state.visual.handle=t.dataset.handle;invalidateVisual();renderDynamic();return}
+  if(t.dataset.cabinet){if(runtime.phase===2)pushConfigUndo();state.visual.cabinet=t.dataset.cabinet;state.visual.explicit.cabinet=true;invalidateVisual();stopAutoPresentation(runtime.hero);renderDynamic();return}
+  if(t.dataset.worktop){if(runtime.phase===2)pushConfigUndo();state.visual.worktop=t.dataset.worktop;state.visual.explicit.worktop=true;invalidateVisual();stopAutoPresentation(runtime.hero);renderDynamic();return}
+  if(t.dataset.upper){if(runtime.phase===2)pushConfigUndo();state.visual.upper=t.dataset.upper;state.visual.explicit.upper=true;invalidateVisual();renderDynamic();return}
+  if(t.dataset.handle){if(runtime.phase===2)pushConfigUndo();state.visual.handle=t.dataset.handle;state.visual.explicit.handle=true;invalidateVisual();renderDynamic();return}
   if(t.dataset.cookingchoice){state.details.cooking=t.dataset.cookingchoice;invalidateDetails();renderDynamic();return}
   if(t.dataset.userchoice){state.details.users=t.dataset.userchoice;invalidateDetails();renderDynamic();return}
   if(t.dataset.sinkchoice){state.details.sink=t.dataset.sinkchoice;invalidateDetails();renderDynamic();return}
-  if(t.dataset.storage){var sk=t.dataset.storage;state.details.storageTouched=true;state.details.storage[sk]=!state.details.storage[sk];invalidateDetails();renderDynamic();return}
-  if(t.dataset.appliance){var ak=t.dataset.appliance;state.details.applianceTouched=true;state.details.appliances[ak]=!state.details.appliances[ak];invalidateDetails();renderDynamic();return}
-  if(t.dataset.editphase){goPhase(Number(t.dataset.editphase));return}
+  if(t.dataset.storage){var sk=t.dataset.storage;state.details.storageTouched=true;state.details.storageExplicit[sk]=true;state.details.storage[sk]=!state.details.storage[sk];invalidateDetails();renderDynamic();return}
+  if(t.dataset.appliance){var ak=t.dataset.appliance;state.details.applianceTouched=true;state.details.applianceExplicit[ak]=true;state.details.appliances[ak]=!state.details.appliances[ak];invalidateDetails();renderDynamic();return}
+  if(t.dataset.editphase){var ep=Number(t.dataset.editphase);goPhase(ep);if(t.dataset.editfield)setTimeout(function(){var el=document.getElementById(t.dataset.editfield);if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.focus()}},80);return}
   if(t.dataset.camera){cameraPreset(runtime.studio,t.dataset.camera);updateCameraControls();return}
+  if(t.id==="copyBrief"){copyProjectBrief();return}
   if(t.id==="shareProject"){copyShare();return}
   if(t.id==="waButton"){
     var earliest=0;if(!validatePhase(1,false))earliest=1;else if(!state.visual.saved)earliest=2;else if(!state.details.reviewed)earliest=3;else if(!state.review.confirmed)earliest=4;
@@ -383,7 +512,7 @@ function bind(){
   if(id==="city"){state.project.city=e.value.trim()}
   if(id==="roomLength"){var h1=state.config&&state.config.seeded&&runtime.maxPhase>1;state.room.length=Number(e.value)||state.room.length;resetConfiguratorForRoom();invalidateVisual();if(h1)toast("تغيّرت الأبعاد؛ حدّثنا التكوين المبدئي فقط.")}
   if(id==="roomWidth"){var h2=state.config&&state.config.seeded&&runtime.maxPhase>1;state.room.width=Number(e.value)||state.room.width;resetConfiguratorForRoom();invalidateVisual();if(h2)toast("تغيّرت الأبعاد؛ حدّثنا التكوين المبدئي فقط.")}
-  if(id==="roomHeight"){state.room.height=Number(e.value)||state.room.height;invalidateVisual()}
+  if(id==="roomHeight"){state.room.height=Number(e.value)||state.room.height;state.room.heightTouched=true;invalidateVisual()}
   if(e.dataset.markerpos){var m=state.room.markers.find(function(x){return x.id===e.dataset.markerpos});if(m)m.pos=Number(e.value);invalidateVisual()}
   if(id==="customerName")state.contact.name=e.value;
   if(id==="projectNote")state.project.note=e.value;
@@ -396,7 +525,8 @@ function bind(){
  });
  root.addEventListener("toggle",function(ev){var d=ev.target;if(!d.matches||!d.matches(".requirementGroup")||!d.open)return;root.querySelectorAll(".requirementGroup").forEach(function(x){if(x!==d)x.open=false})},true);
  document.getElementById("backBtn").addEventListener("click",previousPhase);document.getElementById("nextBtn").addEventListener("click",nextPhase);
- window.addEventListener("popstate",function(){var hm=location.hash.match(/^#phase-(\d)$/);if(hm){runtime.suspendHistory=true;goPhase(Math.min(runtime.maxPhase,Number(hm[1])),"replace")}})
+ function routeHashPhase(){var hm=location.hash.match(/^#phase-(\d)$/);if(hm){runtime.suspendHistory=true;goPhase(Math.min(runtime.maxPhase,Number(hm[1])),"replace")}}
+ window.addEventListener("popstate",routeHashPhase);window.addEventListener("hashchange",routeHashPhase)
 }
 function seededRand(seed){var x=Math.sin(seed*999.1)*43758.5453;return x-Math.floor(x)}
 function canvasTexture(kind,variant){
