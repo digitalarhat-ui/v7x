@@ -1,0 +1,140 @@
+name: Dakhakhni Lovable Fast Audit
+on:
+  push:
+    branches: [dakhakhni-lovable-fast-audit]
+    paths:
+      - '.github/workflows/dakhakhni-lovable-fast-audit.yml'
+permissions:
+  contents: read
+jobs:
+  audit:
+    strategy:
+      fail-fast: false
+      matrix:
+        vp:
+          - {name: desktop-1440, width: 1440, height: 1000}
+          - {name: mobile-430, width: 430, height: 900}
+          - {name: mobile-390, width: 390, height: 844}
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install --no-save playwright@1.55.0
+      - run: npx playwright install --with-deps chromium
+      - name: Live audit
+        env:
+          VP_NAME: \${{ matrix.vp.name }}
+          VP_WIDTH: \${{ matrix.vp.width }}
+          VP_HEIGHT: \${{ matrix.vp.height }}
+        run: |
+          cat > audit.mjs <<'EOF'
+          import {chromium} from 'playwright';
+          import fs from 'fs';
+          const name=process.env.VP_NAME, width=Number(process.env.VP_WIDTH), height=Number(process.env.VP_HEIGHT);
+          const url='https://dakhakhni-kitchen-demo.lovable.app/';
+          const expectedSha='c4457536fd1d974ea30d6e97179a890f9fb39145';
+          fs.mkdirSync('audit',{recursive:true});
+          const r={name,width,height,status:'PASS',blockers:[],errors:[]};
+          const b=await chromium.launch({headless:true,args:['--use-gl=swiftshader','--enable-webgl']});
+          const c=await b.newContext({viewport:{width,height},deviceScaleFactor:1,reducedMotion:'reduce'});
+          const p=await c.newPage(); p.setDefaultTimeout(15000);
+          p.on('pageerror',e=>r.errors.push('page:'+e.message));
+          p.on('console',m=>{if(m.type()==='error')r.errors.push('console:'+m.text())});
+          try{
+            await p.goto(url,{waitUntil:'domcontentloaded',timeout:45000});
+            await p.waitForSelector('#heroCanvas',{timeout:25000});
+            await p.waitForTimeout(1000);
+            const resources=await p.evaluate(()=>performance.getEntriesByType('resource').map(x=>x.name));
+            r.fingerprint={
+              core:resources.some(x=>x.includes(expectedSha+'/kitchen-engine-v5/core.js')),
+              css:resources.some(x=>x.includes(expectedSha+'/kitchen-engine-v5/core.css')),
+              config:resources.some(x=>x.includes(expectedSha+'/kitchen-engine-v5/configs/dakhakhni.js'))
+            };
+            r.hero=await p.evaluate(()=>({
+              title:document.title,dir:document.documentElement.dir,
+              sw:document.documentElement.scrollWidth,iw:innerWidth,
+              text:document.querySelector('.hero')?.innerText||'',
+              canvas:document.querySelector('#heroCanvas')?.getBoundingClientRect().toJSON(),
+              lovable:[...document.querySelectorAll('body *')].some(el=>((el.id||'').includes('lovable')||((el.textContent||'').trim()==='Edit with Lovable'))&&getComputedStyle(el).display!=='none')
+            }));
+            await p.screenshot({path:'audit/'+name+'-hero.png',fullPage:false});
+            await p.locator('.heroQuickControls [data-cabinet="oak"]').click({force:true});
+            await p.locator('.heroQuickControls [data-worktop="warm"]').click({force:true});
+            r.heroQuick=await p.evaluate(()=>({
+              oak:document.querySelector('.heroQuickControls [data-cabinet="oak"]')?.classList.contains('active')||false,
+              warm:document.querySelector('.heroQuickControls [data-worktop="warm"]')?.classList.contains('active')||false
+            }));
+
+            await p.locator('#heroStart').click({force:true});
+            await p.locator('[data-projecttype="new"]').click({force:true});
+            await p.locator('[data-layout="l"]').click({force:true});
+            await p.locator('[data-measuremode="known"]').click({force:true});
+            await p.locator('#roomLength').fill('420');
+            await p.locator('#roomWidth').fill('320');
+            await p.locator('#nextBtn').click({force:true});
+            await p.waitForSelector('.stage[data-stage="2"].active');
+            await p.waitForSelector('#studioCanvas');
+            await p.waitForTimeout(600);
+            r.phase2=await p.evaluate(()=>({
+              oak:document.querySelector('[data-cabinet="oak"]')?.classList.contains('active')||false,
+              warm:document.querySelector('[data-worktop="warm"]')?.classList.contains('active')||false,
+              viewer:document.querySelector('#studioCanvas')?.getBoundingClientRect().toJSON(),
+              sw:document.documentElement.scrollWidth,iw:innerWidth,
+              cameras:[...document.querySelectorAll('[data-camera]')].filter(x=>!x.hidden).map(x=>x.textContent.trim())
+            }));
+            await p.screenshot({path:'audit/'+name+'-phase2.png',fullPage:false});
+            await p.locator('#nextBtn').click({force:true});
+            await p.waitForSelector('.stage[data-stage="3"].active');
+            await p.locator('[data-cookingchoice="daily"]').click({force:true});
+            await p.locator('[data-userchoice="3-4"]').click({force:true});
+            await p.locator('#nextBtn').click({force:true});
+            await p.waitForSelector('.stage[data-stage="4"].active');
+            r.phase4Text=(await p.locator('.stage[data-stage="4"]').innerText()).slice(0,4000);
+            await p.locator('#nextBtn').click({force:true});
+            await p.waitForSelector('.stage[data-stage="5"].active');
+            await p.locator('#customerName').fill('عميل تجريبي');
+            await p.locator('#city').fill('ينبع');
+            await p.locator('#projectNote').fill('أولوية للتخزين ومساحة التحضير.');
+            await p.waitForTimeout(100);
+            r.wa=await p.locator('#waButton').getAttribute('href');
+            r.preview=await p.locator('#waPreview').innerText();
+            r.summary=(await p.locator('.briefDocument').innerText()).slice(0,5000);
+            r.final=await p.evaluate(()=>({
+              sw:document.documentElement.scrollWidth,iw:innerWidth,
+              minH:Math.min(...[...document.querySelectorAll('button,a,.choice,.toggle,.materialTile,.slot,.configOption,.heroSwatch')].filter(e=>e.offsetParent!==null).map(e=>e.getBoundingClientRect().height).filter(n=>n>0)),
+              contam:/FN Cadena|Makan Cars|Higher Class|Roaa|رؤى/i.test(document.body.innerText),
+              lovable:[...document.querySelectorAll('body *')].some(el=>((el.id||'').includes('lovable')||((el.textContent||'').trim()==='Edit with Lovable'))&&getComputedStyle(el).display!=='none')
+            }));
+            await p.screenshot({path:'audit/'+name+'-phase5.png',fullPage:false});
+
+            if(!r.fingerprint.core||!r.fingerprint.css||!r.fingerprint.config)r.blockers.push('wrong commit fingerprint');
+            if(r.hero.title!=='دخاخني | ابدأ مشروع مطبخك')r.blockers.push('wrong title');
+            if(r.hero.dir!=='rtl')r.blockers.push('RTL missing');
+            if(r.hero.sw>width+1||r.phase2.sw>width+1||r.final.sw>width+1)r.blockers.push('horizontal overflow');
+            if(r.hero.lovable||r.final.lovable)r.blockers.push('Lovable badge visible');
+            if(!r.heroQuick.oak||!r.heroQuick.warm)r.blockers.push('hero materials fail');
+            if(!r.phase2.oak||!r.phase2.warm)r.blockers.push('hero→studio continuity fail');
+            if(!r.wa?.startsWith('https://wa.me/966545246478?text='))r.blockers.push('WhatsApp route fail');
+            if(!r.preview.includes('طلب مطبخ مبدئي — دخاخني'))r.blockers.push('canonical brief missing');
+            if(r.preview.includes('slot_')||r.preview.includes('{'))r.blockers.push('internal data leaked');
+            if(!r.summary.includes('يحتاج تأكيداً'))r.blockers.push('confirmation section missing');
+            if(r.final.contam)r.blockers.push('cross-prospect contamination');
+            if(r.final.minH<44)r.blockers.push('touch height below 44px: '+r.final.minH);
+            if(r.errors.length)r.blockers.push('runtime console/page errors');
+            if(r.blockers.length)r.status='FAIL';
+          }catch(e){r.status='FAIL';r.blockers.push(String(e.stack||e))}
+          fs.writeFileSync('audit/'+name+'.json',JSON.stringify(r,null,2));
+          await b.close();
+          if(r.status!=='PASS')process.exitCode=1;
+          EOF
+          node audit.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: audit-\${{ matrix.vp.name }}
+          path: audit
+          if-no-files-found: error
+          retention-days: 2
