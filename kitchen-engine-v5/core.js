@@ -459,7 +459,7 @@ function updateCameraControls(){var hasIsland=hasPlausibleIsland();document.quer
  var vf=document.getElementById("viewerLabel");if(vf)vf.textContent=viewerStateLabel();var ss=document.getElementById("studioState");if(ss)ss.textContent=configLayoutLabel()+" · "+(knownMeasurements()?state.room.length+" × "+state.room.width+" سم":"قياسات غير مؤكدة");
  var ps=document.getElementById("phase2SavedState");if(ps)ps.textContent=state.visual.saved?"الاتجاه محفوظ":"";
  var brief=canonicalBrief(),quality=briefQuality(brief),kl=document.getElementById("knownList"),cl=document.getElementById("confirmList");if(kl)kl.innerHTML=brief.review.known.map(function(x){return"<li>"+safe(x)+"</li>"}).join("");if(cl)cl.innerHTML=brief.review.needsConfirmation.slice(0,6).map(function(x){return"<li>"+safe(x)+"</li>"}).join("");
- renderGroupCards("reviewGroups");summaryGroups();bindBriefEditButtons();var wp=document.getElementById("waPreview"),wb=document.getElementById("waButton");if(wp)wp.textContent=whatsappSummary();if(wb)wb.href=whatsappUrl();
+ renderGroupCards("reviewGroups");summaryGroups();var wp=document.getElementById("waPreview"),wb=document.getElementById("waButton");if(wp)wp.textContent=whatsappSummary();if(wb)wb.href=whatsappUrl();
  var rs=document.getElementById("reviewStatusText"),rn=document.getElementById("reviewStatusNote"),bq=document.getElementById("briefQualityLabel"),bqa=document.getElementById("briefQualityAside"),bqn=document.getElementById("briefQualityNote"),bnt=document.getElementById("briefNeedsText");if(rs)rs.textContent=quality.label;if(rn)rn.textContent=quality.note;if(bq)bq.textContent=quality.label;if(bqa)bqa.textContent=quality.label;if(bqn)bqn.textContent=quality.note;if(bnt)bnt.textContent=brief.review.needsConfirmation.join(" · ");
  var hl=document.getElementById("heroLayout"),hd=document.getElementById("heroDims"),hf=document.getElementById("heroFinish");if(hl)hl.textContent=configLayoutLabel();if(hd)hd.textContent=knownMeasurements()?state.room.length+" × "+state.room.width+" سم":"أدخل المقاسات أو تابع بدونها";if(hf)hf.textContent=cabinetLabels[state.visual.cabinet];
  syncVisualControls();syncRequirementControls();updateCameraControls();syncAll3D()
@@ -473,6 +473,11 @@ function invalidateVisual(){state.visual.saved=false;state.review.confirmed=fals
 function invalidateDetails(){state.details.reviewed=false;state.review.confirmed=false;runtime.maxPhase=Math.min(runtime.maxPhase,3);state.maxPhase=runtime.maxPhase}
 function open3DStudio(){runtime.maxPhase=Math.max(runtime.maxPhase,2);state.maxPhase=runtime.maxPhase;save();goPhase(2);setTimeout(function(){var studio=document.querySelector('[data-stage="2"] .studio');if(studio)studio.scrollIntoView({behavior:"smooth",block:"start"})},120)}
 function bind(){
+ document.addEventListener("click",function(ev){
+  var bt=ev.target&&ev.target.closest?ev.target.closest(".journeyGroups [data-editphase]"):null;if(!bt)return;
+  ev.preventDefault();ev.stopImmediatePropagation();var ep=Number(bt.dataset.editphase);goPhase(ep);
+  if(bt.dataset.editfield)setTimeout(function(){var el=document.getElementById(bt.dataset.editfield);if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.focus()}},90)
+ },true);
  root.addEventListener("click",function(ev){var t=ev.target.closest("button,a");if(!t)return;
   if(t.id==="headerStart"||t.id==="heroStart"){runtime.maxPhase=Math.max(runtime.maxPhase,1);goPhase(1);return}
   if(t.id==="hero3d"){open3DStudio();return}
