@@ -1,0 +1,297 @@
+name: Dakhakhni Lovable Final Audit
+on:
+  push:
+    branches: [dakhakhni-lovable-final-audit]
+    paths:
+      - '.github/workflows/dakhakhni-lovable-final-audit.yml'
+permissions:
+  contents: write
+concurrency:
+  group: dakhakhni-lovable-final-audit
+  cancel-in-progress: true
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install --no-save playwright@1.55.0
+      - run: npx playwright install --with-deps chromium
+      - name: Audit alternate live host
+        run: |
+          cat > live-audit.mjs <<'EOF'
+          import { chromium } from 'playwright';
+          import fs from 'fs';
+          import crypto from 'crypto';
+
+          const URL='https://dakhakhni-kitchen-demo.lovable.app/';
+          const EXPECTED_SHA='c4457536fd1d974ea30d6e97179a890f9fb39145';
+          const out='lovable-final-audit';
+          fs.mkdirSync(out,{recursive:true});
+          const result={status:'PASS',url:URL,expectedSha:EXPECTED_SHA,viewports:{},errors:[],releaseBlockers:[]};
+
+          const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
+          async function shot(page,name,full=false){await page.screenshot({path:`${out}/${name}.png`,fullPage:full});}
+          async function fill(page,sel,value){const l=page.locator(sel);await l.fill(String(value));await l.dispatchEvent('input');}
+          async function clickIf(page,sel){const l=page.locator(sel).first();if(await l.count()){await l.click({force:true});return true}return false;}
+
+          async function run(v){
+            const browser=await chromium.launch({headless:true,args:['--use-gl=swiftshader','--enable-webgl']});
+            const context=await browser.newContext({
+              viewport:{width:v.width,height:v.height},
+              deviceScaleFactor:1,
+              reducedMotion:'reduce',
+              permissions:['clipboard-read','clipboard-write']
+            });
+            const page=await context.newPage();
+            page.setDefaultTimeout(20000);
+            const errs=[];
+            const failed=[];
+            page.on('pageerror',e=>errs.push('page:'+e.message));
+            page.on('console',m=>{if(m.type()==='error')errs.push('console:'+m.text())});
+            page.on('requestfailed',req=>failed.push(req.url()+' :: '+(req.failure()?.errorText||'failed')));
+
+            await page.goto(URL,{waitUntil:'domcontentloaded',timeout:60000});
+            await page.evaluate(()=>{try{localStorage.clear();sessionStorage.clear()}catch(e){}});
+            await page.reload({waitUntil:'networkidle',timeout:60000});
+            await page.waitForSelector('#heroCanvas',{timeout:30000});
+            await page.waitForTimeout(1600);
+
+            const resources=await page.evaluate(()=>performance.getEntriesByType('resource').map(x=>x.name));
+            const resourceFingerprint={
+              exactCore:resources.some(x=>x.includes(EXPECTED_SHA+'/kitchen-engine-v5/core.js')),
+              exactCss:resources.some(x=>x.includes(EXPECTED_SHA+'/kitchen-engine-v5/core.css')),
+              exactConfig:resources.some(x=>x.includes(EXPECTED_SHA+'/kitchen-engine-v5/configs/dakhakhni.js')),
+              exactThree:resources.some(x=>x.includes(EXPECTED_SHA+'/vendor/three-r128.min.js')),
+              oldF19:resources.some(x=>x.includes('f19aae2')),
+              jsdelivr:resources.filter(x=>x.includes('cdn.jsdelivr.net/gh/digitalarhat-ui/v7x@')).slice(0,20)
+            };
+
+            const hero=await page.evaluate(()=>({
+              title:document.title,
+              dir:document.documentElement.dir,
+              lang:document.documentElement.lang,
+              width:innerWidth,
+              scrollWidth:document.documentElement.scrollWidth,
+              heroText:document.querySelector('.hero')?.innerText||'',
+              heroCanvas:document.querySelector('#heroCanvas')?.getBoundingClientRect().toJSON(),
+              heroTouch:getComputedStyle(document.querySelector('#heroCanvas')).touchAction,
+              phaseProgressH:document.querySelector('.phaseProgress')?.getBoundingClientRect().height||0,
+              lovableBadge:[...document.querySelectorAll('body *')].filter(el=>(el.id||'').includes('lovable')||((el.textContent||'').trim()==='Edit with Lovable')).filter(el=>getComputedStyle(el).display!=='none').map(el=>({id:el.id,tag:el.tagName,text:(el.textContent||'').trim().slice(0,80)})).slice(0,10),
+              bodyText:document.body.innerText
+            }));
+            await shot(page,`${v.name}-01-hero`);
+
+            // Hero visual interaction: material state and orbit pixels.
+            await page.locator('.heroQuickControls [data-cabinet="oak"]').click({force:true});
+            await page.locator('.heroQuickControls [data-worktop="warm"]').click({force:true});
+            await page.waitForTimeout(250);
+            const heroSelected=await page.evaluate(()=>({
+              cabinet:document.querySelector('.heroQuickControls [data-cabinet="oak"]')?.classList.contains('active')||false,
+              worktop:document.querySelector('.heroQuickControls [data-worktop="warm"]')?.classList.contains('active')||false,
+              finish:document.querySelector('#heroFinish')?.textContent||''
+            }));
+            const canvas=page.locator('#heroCanvas');
+            const before=sha(await canvas.screenshot());
+            const box=await canvas.boundingBox();
+            if(box){
+              await page.mouse.move(box.x+box.width*.68,box.y+box.height*.52);
+              await page.mouse.down();
+              await page.mouse.move(box.x+box.width*.35,box.y+box.height*.52,{steps:8});
+              await page.mouse.up();
+              await page.waitForTimeout(220);
+            }
+            const after=sha(await canvas.screenshot());
+            const orbitChanged=before!==after;
+
+            // Phase 1
+            await page.locator('#heroStart').click();
+            await page.locator('[data-projecttype="new"]').click({force:true});
+            await page.locator('[data-layout="l"]').click({force:true});
+            await page.locator('[data-measuremode="known"]').click({force:true});
+            await fill(page,'#roomLength',420);
+            await fill(page,'#roomWidth',320);
+            await shot(page,`${v.name}-02-phase1`);
+            await page.locator('#nextBtn').click({force:true});
+            await page.waitForSelector('.stage[data-stage="2"].active');
+
+            // Phase 2 continuity + configuration.
+            await page.waitForSelector('#studioCanvas');
+            await page.waitForTimeout(900);
+            const phase2Initial=await page.evaluate(()=>({
+              oak:document.querySelector('[data-cabinet="oak"]')?.classList.contains('active')||false,
+              warm:document.querySelector('[data-worktop="warm"]')?.classList.contains('active')||false,
+              state:document.querySelector('#studioState')?.textContent||'',
+              islandHidden:document.querySelector('[data-camera="island"]')?.hidden||false,
+              viewer:document.querySelector('#studioCanvas')?.getBoundingClientRect().toJSON()
+            }));
+            await shot(page,`${v.name}-03-phase2-initial`);
+
+            await page.locator('[data-configtab="cabinet"]').click({force:true});
+            await page.locator('#configPanel [data-cabinet="graphite"]').click({force:true});
+            await page.locator('[data-configtab="worktop"]').click({force:true});
+            await page.locator('#configPanel [data-worktop="veined"]').click({force:true});
+            await page.locator('[data-configtab="upper"]').click({force:true});
+            await page.locator('#configPanel [data-upper="glass"]').click({force:true});
+            await page.locator('[data-configtab="modules"]').click({force:true});
+            const baseSlots=await page.locator('[data-configslot^="base:"]').count();
+            let moduleChanged=false;
+            if(baseSlots){
+              await page.locator('[data-configslot^="base:"]').first().click({force:true});
+              const replacement=page.locator('#configPanel [data-configreplace]:not(.active):not([disabled])').first();
+              if(await replacement.count()){await replacement.click({force:true});moduleChanged=true;}
+            }
+            const tallSlots=await page.locator('[data-configslot^="tall:"]').count();
+            if(tallSlots){
+              await page.locator('[data-configslot^="tall:"]').first().click({force:true});
+              if(await page.locator('#configPanel [data-configreplace="pantry"]:not([disabled])').count()) await page.locator('#configPanel [data-configreplace="pantry"]').click({force:true});
+            }
+            await page.locator('[data-configtab="details"]').click({force:true});
+            if(await page.locator('#configPanel [data-handle="linear"]').count())await page.locator('#configPanel [data-handle="linear"]').click({force:true});
+            let inspection=false;
+            if(await page.locator('#configPanel [data-interior="internalDrawers"]').count()){
+              await page.locator('#configPanel [data-interior="internalDrawers"]').click({force:true});
+            }
+            if(await page.locator('#inspectUnit').count()){await page.locator('#inspectUnit').click({force:true});inspection=true;}
+            await shot(page,`${v.name}-04-phase2-configured`);
+            if(inspection)await shot(page,`${v.name}-05-pantry-inspection`);
+
+            // Camera presets should be available / island hidden for L room unless plausible.
+            const cameraReport={};
+            for(const c of ['hero','functional','elevation','wide']){
+              const loc=page.locator(`[data-camera="${c}"]`);
+              cameraReport[c]=!!(await loc.count());
+              if(cameraReport[c]){await loc.click({force:true});await page.waitForTimeout(100);}
+            }
+
+            await page.locator('#nextBtn').click({force:true});
+            await page.waitForSelector('.stage[data-stage="3"].active');
+
+            // Phase 3 progressive disclosure.
+            await page.locator('[data-cookingchoice="daily"]').click({force:true});
+            await page.locator('[data-userchoice="3-4"]').click({force:true});
+            const storageGroup=page.locator('.requirementGroup[data-reqgroup="storage"]');
+            if(!(await storageGroup.getAttribute('open')))await storageGroup.locator('summary').click({force:true});
+            if(await page.locator('[data-storage="deepDrawers"]').count() && !(await page.locator('[data-storage="deepDrawers"]').first().evaluate(e=>e.classList.contains('active'))))await page.locator('[data-storage="deepDrawers"]').first().click({force:true});
+            await shot(page,`${v.name}-06-phase3`);
+            await page.locator('#nextBtn').click({force:true});
+            await page.waitForSelector('.stage[data-stage="4"].active');
+            await shot(page,`${v.name}-07-phase4-review`);
+            const reviewText=await page.locator('.stage[data-stage="4"]').innerText();
+
+            await page.locator('#nextBtn').click({force:true});
+            await page.waitForSelector('.stage[data-stage="5"].active');
+            await fill(page,'#customerName','عميل تجريبي');
+            await fill(page,'#city','ينبع');
+            await fill(page,'#projectNote','أولوية للتخزين ومساحة التحضير.');
+            await page.waitForTimeout(150);
+            await shot(page,`${v.name}-08-phase5`);
+            const wa=await page.locator('#waButton').getAttribute('href');
+            const preview=await page.locator('#waPreview').innerText();
+            const summaryText=await page.locator('.briefDocument').innerText();
+            const projectCode=await page.locator('.projectCode').first().innerText();
+
+            // Explicit share/restore in clean context.
+            await page.locator('#shareProject').click({force:true});
+            await page.waitForTimeout(100);
+            const share=await page.evaluate(()=>navigator.clipboard.readText());
+            let restore={ok:false,url:'',code:'',text:''};
+            if(share&&share.includes('?project=')){
+              const ctx2=await browser.newContext({viewport:{width:v.width,height:v.height},deviceScaleFactor:1,reducedMotion:'reduce'});
+              const p2=await ctx2.newPage();
+              await p2.goto(share,{waitUntil:'networkidle',timeout:60000});
+              await p2.waitForSelector('#heroCanvas',{timeout:30000});
+              await p2.waitForTimeout(400);
+              restore={
+                ok:!p2.url().includes('?project='),
+                url:p2.url(),
+                code:await p2.locator('.projectCode').first().innerText().catch(()=> ''),
+                text:await p2.locator('body').innerText()
+              };
+              await ctx2.close();
+            }
+
+            const metrics=await page.evaluate(()=>({
+              scrollWidth:document.documentElement.scrollWidth,
+              innerWidth,
+              minTarget:Math.min(...[...document.querySelectorAll('button,a,.choice,.toggle,.materialTile,.slot,.configOption,.heroSwatch')].filter(e=>e.offsetParent!==null).map(e=>Math.min(e.getBoundingClientRect().width,e.getBoundingClientRect().height)).filter(n=>n>0)),
+              phase:Number(document.body.dataset.phase||0),
+              summaryGroups:document.querySelectorAll('#summaryGroups .journeyGroup,.briefDocument .journeyGroup').length,
+              lovableBadgeVisible:[...document.querySelectorAll('body *')].some(el=>((el.id||'').includes('lovable')||((el.textContent||'').trim()==='Edit with Lovable'))&&getComputedStyle(el).display!=='none'),
+              contamination:/FN Cadena|Makan Cars|Higher Class|Roaa|رؤى/i.test(document.body.innerText)
+            }));
+
+            const report={
+              hero,resourceFingerprint,heroSelected,orbitChanged,phase2Initial,moduleChanged,inspection,cameraReport,
+              reviewText:reviewText.slice(0,3000),summaryText:summaryText.slice(0,5000),
+              wa,waLines:preview.split(/\n/).filter(x=>x.trim()).length,preview:preview.slice(0,5000),projectCode,share,restore,metrics,
+              errors:errs,requestFailures:failed.slice(0,30)
+            };
+            result.viewports[v.name]=report;
+
+            const blockers=[];
+            if(hero.title!=='دخاخني | ابدأ مشروع مطبخك')blockers.push('title mismatch');
+            if(hero.dir!=='rtl')blockers.push('RTL missing');
+            if(hero.scrollWidth>v.width+1||metrics.scrollWidth>v.width+1)blockers.push('horizontal overflow');
+            if(!hero.heroText.includes('رتّب مشروع مطبخك'))blockers.push('hero value proposition missing');
+            if(!hero.heroCanvas||hero.heroCanvas.width<250||hero.heroCanvas.height<240)blockers.push('hero 3D too small');
+            if(hero.lovableBadge.length||metrics.lovableBadgeVisible)blockers.push('Lovable badge visible');
+            if(!resourceFingerprint.exactCore||!resourceFingerprint.exactCss||!resourceFingerprint.exactConfig)blockers.push('wrong source fingerprint');
+            if(resourceFingerprint.oldF19)blockers.push('old F19 artifact loaded');
+            if(!heroSelected.cabinet||!heroSelected.worktop)blockers.push('hero material selection failed');
+            if(!orbitChanged)blockers.push('hero orbit did not visibly change canvas');
+            if(!phase2Initial.oak||!phase2Initial.warm)blockers.push('hero to studio visual state continuity failed');
+            if(!wa?.startsWith('https://wa.me/966545246478?text='))blockers.push('WhatsApp route mismatch');
+            if(!preview.includes('طلب مطبخ مبدئي — دخاخني'))blockers.push('canonical WhatsApp brief missing');
+            if(preview.includes('slot_')||preview.includes('{')||preview.includes('"'))blockers.push('internal/serialized data leaked');
+            if(!summaryText.includes('يحتاج تأكيداً'))blockers.push('needs-confirmation section missing');
+            if(!restore.ok||restore.code!==projectCode)blockers.push('share restore/project code failed');
+            if(metrics.contamination)blockers.push('cross-prospect contamination');
+            if(metrics.minTarget<44)blockers.push('touch target below 44px: '+metrics.minTarget);
+            if(errs.length)blockers.push('runtime errors: '+errs.join(' | '));
+
+            if(blockers.length){
+              result.status='FAIL';
+              result.releaseBlockers.push({viewport:v.name,blockers});
+            }
+            await browser.close();
+          }
+
+          for(const v of [
+            {name:'desktop-1440',width:1440,height:1000},
+            {name:'mobile-430',width:430,height:900},
+            {name:'mobile-390',width:390,height:844}
+          ]){
+            try{await run(v)}catch(e){result.status='FAIL';result.errors.push(v.name+': '+(e.stack||String(e)));}
+          }
+
+          fs.writeFileSync(out+'/results.json',JSON.stringify(result,null,2));
+          if(result.status!=='PASS')process.exitCode=1;
+          EOF
+          node live-audit.mjs
+      - name: Store audit
+        if: always()
+        run: |
+          rm -rf lovable-final-audit-output
+          mkdir -p lovable-final-audit-output
+          cp lovable-final-audit/results.json lovable-final-audit-output/results.json || true
+          for f in lovable-final-audit/*.png; do
+            [ -e "$f" ] || continue
+            b="$(basename "$f" .png)"
+            base64 -w 0 "$f" > "lovable-final-audit-output/$b.b64"
+          done
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add lovable-final-audit-output
+          git commit -m "Store Lovable final audit captures" || true
+          git push origin HEAD:dakhakhni-lovable-final-audit
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dakhakhni-lovable-final-audit
+          path: lovable-final-audit
+          if-no-files-found: error
+          retention-days: 2
