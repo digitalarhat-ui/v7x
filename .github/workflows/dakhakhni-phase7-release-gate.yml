@@ -87,7 +87,8 @@ jobs:
           async function configFull(p,tag){
             const baseBefore=await st(p);if(baseBefore.visual.cabinet!=='oak'||baseBefore.visual.worktop!=='veined')throw new Error(tag+' hero/studio state mismatch');
             await shot(p,tag+'-03-phase2');
-            for(const tab of ['configuration','cabinet','worktop','upper','modules','details']){await click(p,'[data-configtab="'+tab+'"]');await p.waitForSelector('#configPanel',{state:'attached'});const tq=await st(p),panel=(await p.locator('#configPanel').innerText()).trim();if(tq.config.activeTab!==tab||panel.length<2)throw new Error(tag+' dead tab '+tab+' '+JSON.stringify({active:tq.config.activeTab,panel:panel.slice(0,80)}))}
+            {const tq=await st(p),panel=(await p.locator('#configPanel').innerText()).trim();if(tq.config.activeTab!=='configuration'||panel.length<2)throw new Error(tag+' initial configuration tab '+JSON.stringify({active:tq.config.activeTab,panel:panel.slice(0,80)}))}
+            for(const tab of ['cabinet','worktop','upper','modules','details','configuration']){await click(p,'[data-configtab="'+tab+'"]');await p.waitForSelector('#configPanel',{state:'attached'});const tq=await st(p),panel=(await p.locator('#configPanel').innerText()).trim();if(tq.config.activeTab!==tab||panel.length<2)throw new Error(tag+' dead tab '+tab+' '+JSON.stringify({active:tq.config.activeTab,panel:panel.slice(0,80)}))}
             await click(p,'[data-configtab="modules"]');
             const slots=await p.locator('[data-configslot^="base:"]').count();if(slots<3)throw new Error(tag+' insufficient base slots');
             const sinkIdx=await p.locator('[data-configslot^="base:"]', {hasText:'حوض'}).count().catch(()=>0);
