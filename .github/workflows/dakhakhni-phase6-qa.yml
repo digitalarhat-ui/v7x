@@ -1,0 +1,186 @@
+name: Dakhakhni Phase 6 QA
+on:
+  push:
+    branches: [dakhakhni-phase6-handoff]
+    paths:
+      - 'kitchen-engine-v5/**'
+      - 'dakhakhni-kitchen-v5/**'
+      - '.github/workflows/dakhakhni-phase6-qa.yml'
+permissions:
+  contents: read
+concurrency:
+  group: dakhakhni-phase6-qa
+  cancel-in-progress: true
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - name: Syntax check
+        run: node --check kitchen-engine-v5/core.js
+      - run: npm install --no-save playwright@1.55.0
+      - run: npx playwright install --with-deps chromium
+      - name: Start server
+        run: |
+          python3 -m http.server 4179 --bind 127.0.0.1 >/tmp/p6.log 2>&1 &
+          for i in $(seq 1 50); do
+            curl -fsS http://127.0.0.1:4179/dakhakhni-kitchen-v5/ >/dev/null && exit 0
+            sleep .2
+          done
+          cat /tmp/p6.log
+          exit 1
+      - name: Run Phase 6 canonical brief and regression QA
+        run: |
+          cat > phase6-qa.mjs <<'EOF'
+          import {chromium} from 'playwright';
+          import fs from 'fs';
+          import crypto from 'crypto';
+          const base='http://127.0.0.1:4179/dakhakhni-kitchen-v5/';
+          const out='qa-phase6';fs.mkdirSync(out,{recursive:true});
+          const result={status:'PASS',viewports:{},canonical:{},conflicts:{},defaultVsExplicit:{},share:{},upstream:{},errors:[],screenshots:[]};
+          const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+          const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
+          async function launch(width,height,clear=true){
+            const mobile=width<700,browser=await chromium.launch({headless:true,args:['--use-angle=swiftshader','--enable-webgl','--ignore-gpu-blocklist']});
+            const context=await browser.newContext({viewport:{width,height},deviceScaleFactor:1,reducedMotion:'reduce',hasTouch:mobile,isMobile:mobile,permissions:['clipboard-read','clipboard-write']});
+            const page=await context.newPage();page.setDefaultTimeout(22000);const errors=[];
+            page.on('pageerror',e=>errors.push('page:'+e.message));page.on('console',m=>{if(m.type()==='error')errors.push('console:'+m.text())});
+            if(clear)await page.addInitScript(()=>localStorage.clear());
+            await page.goto(base,{waitUntil:'domcontentloaded'});await page.waitForSelector('#heroCanvas');await sleep(700);
+            return{browser,context,page,mobile,errors}
+          }
+          async function st(p){return p.evaluate(()=>JSON.parse(localStorage.getItem('dakhakhni:v5:project')||'null'))}
+          async function shot(p,name){await p.screenshot({path:out+'/'+name+'.png',animations:'disabled'});result.screenshots.push(name+'.png')}
+          async function tap(p,sel){await p.locator(sel).click({force:true});await sleep(110)}
+          async function orbit(p,sel){
+            const box=await p.locator(sel).boundingBox();if(!box)throw new Error('no '+sel);const before=hash(await p.locator(sel).screenshot({animations:'disabled'})),x=box.x+box.width*.47,y=box.y+box.height*.48;
+            await p.evaluate(({sel,x,y})=>{const c=document.querySelector(sel);c.dispatchEvent(new PointerEvent('pointerdown',{pointerId:41,pointerType:'touch',clientX:x,clientY:y,bubbles:true}));c.dispatchEvent(new PointerEvent('pointermove',{pointerId:41,pointerType:'touch',clientX:x+88,clientY:y+4,bubbles:true}));c.dispatchEvent(new PointerEvent('pointerup',{pointerId:41,pointerType:'touch',clientX:x+88,clientY:y+4,bubbles:true}))},{sel,x,y});await sleep(240);
+            return before!==hash(await p.locator(sel).screenshot({animations:'disabled'}))
+          }
+          async function phase1(p,layout='l',dims=true,height=true){
+            await tap(p,'#heroStart');await tap(p,'[data-projecttype="new"]');await tap(p,'[data-layout="'+layout+'"]');await tap(p,'[data-measuremode="'+(dims?'known':'unknown')+'"]');
+            if(dims){
+              await p.locator('#roomLength').fill('421');await p.locator('#roomLength').dispatchEvent('input');await sleep(70);await p.locator('#roomLength').fill('420');await p.locator('#roomLength').dispatchEvent('input');
+              await p.locator('#roomWidth').fill('321');await p.locator('#roomWidth').dispatchEvent('input');await sleep(70);await p.locator('#roomWidth').fill('320');await p.locator('#roomWidth').dispatchEvent('input');
+              if(height){await p.locator('.optionalDetails summary').click();await sleep(80);await p.locator('#roomHeight').fill('285');await p.locator('#roomHeight').dispatchEvent('input');await sleep(70);await p.locator('#roomHeight').fill('280');await p.locator('#roomHeight').dispatchEvent('input')}
+            }
+            await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="2"].active')
+          }
+          async function configureExact(p){
+            await p.locator('[data-configtab="cabinet"]').click();await p.locator('.configPanel [data-cabinet="oak"]').click();
+            await p.locator('[data-configtab="worktop"]').click();await p.locator('.configPanel [data-worktop="veined"]').click();
+            await p.locator('[data-configtab="modules"]').click();await p.locator('[data-configslot="base:4"]').click();await p.locator('[data-configreplace="drawers"]').click();
+            await p.locator('[data-configtab="upper"]').click();await p.locator('.configPanel [data-upper="mixed"]').click();
+            await p.locator('[data-configtab="details"]').click();await p.locator('.configPanel [data-handle="integrated"]').click();
+            await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="3"].active')
+          }
+          async function phase3Exact(p){
+            const usage=p.locator('.requirementGroup[data-reqgroup="usage"]');if(!(await usage.evaluate(e=>e.open)))await usage.locator('summary').click();
+            await p.locator('[data-userchoice="3-4"]').click();await p.locator('[data-cookingchoice="daily"]').click();
+            const storage=p.locator('.requirementGroup[data-reqgroup="storage"]');if(!(await storage.evaluate(e=>e.open)))await storage.locator('summary').click();await p.locator('[data-storage="pantry"]').click();
+            const apps=p.locator('.requirementGroup[data-reqgroup="appliances"]');if(!(await apps.evaluate(e=>e.open)))await apps.locator('summary').click();
+            let state=await st(p);
+            if(!state.details.appliances.oven)await p.locator('[data-appliance="oven"]').click();
+            state=await st(p);if(!state.details.appliances.fridge)await p.locator('[data-appliance="fridge"]').click();
+          }
+          async function reachPhase5(p){
+            await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="4"].active');await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="5"].active')
+          }
+          async function full(width,height){
+            const tag=String(width),x=await launch(width,height),{page:p,browser,mobile,errors}=x;
+            if(!(await orbit(p,'#heroCanvas')))throw new Error(tag+' hero orbit');
+            await phase1(p,'l',true,true);
+            if(width<700){await p.locator('.stage[data-stage="1"]').count();}
+            await configureExact(p);
+            if(!(await orbit(p,'#studioCanvas')))throw new Error(tag+' studio orbit');
+            for(const cam of ['functional','elevation','wide']){await p.locator('[data-camera="'+cam+'"]').click();await sleep(80)}
+            await phase3Exact(p);
+            let state=await st(p),codeBefore=state.meta.projectCode;if(!codeBefore||!/^DK-[A-Z0-9]{6}$/.test(codeBefore))throw new Error(tag+' stable project code missing');
+            await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="4"].active');
+            if(width<700){await p.locator('.stage[data-stage="4"]').scrollIntoViewIfNeeded();await shot(p,tag+'-01-phase4-known-confirmation')}else{await shot(p,'1440-01-phase4-known-confirmation')}
+            const known=await p.locator('#knownList').innerText(),needs=await p.locator('#confirmList').innerText();
+            if(!known.includes('حرف L')||!known.includes('420 × 320 × 280'))throw new Error(tag+' known truth incomplete');
+            if(!needs.includes('القياس الموقعي النهائي')||!needs.includes('عرض السعر'))throw new Error(tag+' confirmation truth incomplete');
+            await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="5"].active');
+            await p.locator('#customerName').fill('عميل تجريبي');await p.locator('#city').fill('ينبع');await p.locator('#projectNote').fill('أولوية للتخزين ومساحة التحضير');await sleep(150);
+            state=await st(p);if(state.meta.projectCode!==codeBefore)throw new Error(tag+' project code changed after contact');
+            if(width<700){await p.locator('.summaryPaper').scrollIntoViewIfNeeded();await shot(p,tag+'-02-final-brief')}else{await shot(p,'1440-02-final-brief')}
+            const summary=await p.locator('#summaryGroups').innerText(),preview=(await p.locator('#waPreview').innerText()).trim(),lines=preview.split('\n').filter(Boolean),href=await p.locator('#waButton').getAttribute('href');
+            if(!summary.includes('التكوين المبدئي')||!summary.includes('بلوط دافئ')||!summary.includes('حجر فاتح بعروق')||!summary.includes('أولوية للتخزين ومساحة التحضير'))throw new Error(tag+' canonical UI summary incomplete');
+            if(!preview.includes('420 × 320 × 280 سم تقريباً')||!preview.includes('بلوط دافئ')||!preview.includes('حجر فاتح بعروق')||!preview.includes('3–4 أشخاص')||!preview.includes('طبخ يومي')||!preview.includes('فرن')||!preview.includes('ثلاجة')||!preview.includes('مؤن'))throw new Error(tag+' designer brief missing required truth');
+            if(/slot_|base_|module_|customer_selected|prototype_default|cabinet=|worktop=/i.test(preview+summary))throw new Error(tag+' internal IDs leaked');
+            if(/تصميم معتمد|خامة معتمدة|لون معتمد|سعر نهائي|مدة مضمونة/.test(preview+summary))throw new Error(tag+' false approval claim');
+            if(lines.length<10||lines.length>16)throw new Error(tag+' WhatsApp lines '+lines.length);
+            if(!href?.startsWith('https://wa.me/966545246478?text='))throw new Error(tag+' WhatsApp route');
+            if(href.length>5000)throw new Error(tag+' WhatsApp URL too long '+href.length);
+            if(width<700){await p.locator('.whatsappPanel').scrollIntoViewIfNeeded();await shot(p,tag+'-04-whatsapp-preview')}else{await p.locator('.whatsappPanel').scrollIntoViewIfNeeded();await shot(p,'1440-04-whatsapp-preview')}
+            await p.locator('#summaryGroups [data-editphase="2"]').first().click();await p.waitForSelector('.stage[data-stage="2"].active');if(width<700)await shot(p,tag+'-03-edit-link');else await shot(p,'1440-03-edit-link');
+            await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="3"].active');await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="4"].active');await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="5"].active');
+            await p.locator('#copyBrief').click();await sleep(100);if(!(await p.locator('#toast').evaluate(e=>e.classList.contains('show'))))throw new Error(tag+' copy feedback missing');if(width<700)await shot(p,tag+'-05-copy-feedback');else await shot(p,'1440-05-copy-feedback');
+            const copied=await p.evaluate(()=>navigator.clipboard.readText());if(!copied.includes('طلب مطبخ مبدئي — دخاخني')||copied.includes('{'))throw new Error(tag+' copied brief invalid');
+            await p.locator('#shareProject').click();await sleep(120);const share=await p.evaluate(()=>navigator.clipboard.readText());if(!share.includes('?project='))throw new Error(tag+' explicit share missing state');
+            const sharedCode=(await st(p)).meta.projectCode;
+            const clean=await browser.newContext({viewport:{width,height},deviceScaleFactor:1,reducedMotion:'reduce'});const q=await clean.newPage();await q.goto(share,{waitUntil:'domcontentloaded'});await q.waitForSelector('.stage.active');await sleep(650);const restored=await st(q),restoredSummary=await q.locator('#summaryGroups').innerText();
+            if(restored.meta.projectCode!==sharedCode||restored.room.layout!=='l'||restored.room.length!==420||restored.visual.cabinet!=='oak'||restored.details.users!=='3-4'||restored.contact.name!=='عميل تجريبي'||!restoredSummary.includes('بلوط دافئ'))throw new Error(tag+' share restore mismatch');
+            if(q.url().includes('?project='))throw new Error(tag+' shared URL not cleaned after restore');
+            if(width<700){await q.locator('.summaryPaper').scrollIntoViewIfNeeded();await shot(q,tag+'-07-share-restored')}else await shot(q,'1440-07-share-restored');
+            await clean.close();
+            const metrics=await p.evaluate(()=>({sw:document.documentElement.scrollWidth,iw:innerWidth,minTouch:Math.min(...[...document.querySelectorAll('button,.waButton,.shareButton')].filter(e=>e.offsetParent!==null).map(e=>e.getBoundingClientRect().height)),phases:document.querySelectorAll('.phaseProgress li').length}));
+            if(metrics.sw>metrics.iw+1||metrics.minTouch<44||metrics.phases!==5)throw new Error(tag+' accessibility/layout '+JSON.stringify(metrics));if(errors.length)throw new Error(tag+' runtime '+errors.join('|'));
+            result.viewports[tag]={whatsappLines:lines.length,whatsappUrlLength:href.length,minTouch:metrics.minTouch,scrollWidth:metrics.sw,projectCode:codeBefore,shareRestored:true};
+            await browser.close()
+          }
+          async function conflictTest(){
+            const x=await launch(390,844),p=x.page;await phase1(p);await tap(p,'#nextBtn'); // auto-save Phase2 default
+            await p.waitForSelector('.stage[data-stage="3"].active');
+            let state=await st(p);if(!state.details.appliances.dishwasher)throw new Error('default dishwasher did not inherit');
+            const apps=p.locator('.requirementGroup[data-reqgroup="appliances"]');if(!(await apps.evaluate(e=>e.open)))await apps.locator('summary').click();await p.locator('[data-appliance="dishwasher"]').click();
+            await reachPhase5(p);const prev=await p.locator('#waPreview').innerText(),summary=await p.locator('#summaryGroups').innerText();
+            if(prev.includes('غسالة صحون')||summary.includes('غسالة صحون'))throw new Error('default dishwasher conflict survived explicit requirement removal');
+            result.conflicts.dishwasher='PASS';
+            await x.browser.close()
+          }
+          async function defaultExplicitTest(){
+            const x=await launch(430,900),p=x.page;await phase1(p);await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="3"].active');await reachPhase5(p);
+            let state=await st(p),txt=await p.locator('#summaryGroups').innerText();
+            if(Object.values(state.config.explicit.base||{}).some(Boolean)||Object.values(state.config.explicit.tall||{}).some(Boolean))throw new Error('untouched defaults marked explicit');
+            if(!txt.includes('تكوين مبدئي مقترح')||txt.includes('اختيار العميل'))throw new Error('default configuration misrepresented');
+            result.defaultVsExplicit.untouched='PASS';
+            await p.locator('#summaryGroups [data-editphase="2"]').first().click();await p.waitForSelector('.stage[data-stage="2"].active');await p.locator('[data-configtab="modules"]').click();await p.locator('[data-configslot="base:4"]').click();await p.locator('[data-configreplace="drawers"]').click();await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="3"].active');await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="4"].active');await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="5"].active');
+            state=await st(p);txt=await p.locator('#summaryGroups').innerText();if(!state.config.explicit.base['4']||!txt.includes('تكوين مبدئي بعد تعديلاتك'))throw new Error('explicit module not preserved');
+            result.defaultVsExplicit.explicit='PASS';await x.browser.close()
+          }
+          async function missingInfoTest(){
+            const x=await launch(390,844),p=x.page;await phase1(p,'unsure',false,false);await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="3"].active');await reachPhase5(p);
+            const txt=await p.locator('.qualityCard').innerText(),wa=await p.locator('#waPreview').innerText();
+            if(!txt.includes('يمكن الإرسال الآن')||!txt.includes('إضافة شكل المطبخ'))throw new Error('missing-info quality state');
+            if(/420 × 320/.test(wa)||!wa.includes('القياسات النهائية غير متوفرة بعد'))throw new Error('fabricated default dimensions in missing-info brief');
+            await p.locator('.qualityCard').scrollIntoViewIfNeeded();await shot(p,'390-06-missing-information');
+            result.canonical.missingInformation='PASS';await x.browser.close()
+          }
+          async function upstreamTest(){
+            const x=await launch(430,900),p=x.page;await phase1(p);await configureExact(p);await phase3Exact(p);await reachPhase5(p);let state=await st(p),code=state.meta.projectCode,storage=JSON.stringify(state.details.storage),apps=JSON.stringify(state.details.appliances);
+            await p.locator('#summaryGroups [data-editphase="1"]').first().click();await p.waitForSelector('.stage[data-stage="1"].active');await p.locator('[data-layout="straight"]').click();await sleep(120);state=await st(p);
+            if(state.visual.cabinet!=='oak'||JSON.stringify(state.details.storage)!==storage||JSON.stringify(state.details.appliances)!==apps||state.meta.projectCode!==code)throw new Error('upstream edit destroyed unrelated decisions');
+            await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="2"].active');await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="3"].active');await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="4"].active');await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="5"].active');const txt=await p.locator('#waPreview').innerText();
+            if(!txt.includes('مستقيم')||txt.includes('حرف L'))throw new Error('stale L layout survived upstream edit');
+            result.upstream.currentTruth='PASS';await x.browser.close()
+          }
+          try{
+            for(const [w,h] of [[390,844],[430,900],[1440,1000]])await full(w,h);
+            await conflictTest();await defaultExplicitTest();await missingInfoTest();await upstreamTest();
+            result.canonical.status='PASS';result.share.status='PASS'
+          }catch(e){result.status='FAIL';result.errors.push(e.stack||String(e))}
+          fs.writeFileSync(out+'/results.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result,null,2));if(result.status!=='PASS')process.exit(1)
+          EOF
+          node phase6-qa.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dakhakhni-phase6-qa
+          path: qa-phase6
+          if-no-files-found: error
+          retention-days: 3
