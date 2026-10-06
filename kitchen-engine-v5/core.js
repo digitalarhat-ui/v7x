@@ -277,8 +277,8 @@ function customerGroups(){
 }
 function reviewStatusText(){return briefQuality(canonicalBrief()).label}
 function renderGroupCards(targetId){
- var e=document.getElementById(targetId);if(!e)return;e.innerHTML=customerGroups().map(function(g){var lines=g.lines.filter(Boolean),edit=g.phase===5?'<a class="journeyEdit" href="#customerName">تعديل</a>':'<a class="journeyEdit" href="#phase-'+g.phase+'" data-jump="'+g.phase+'">تعديل</a>';return'<article class="journeyGroup"><div><h4>'+safe(g.title)+'</h4>'+edit+'</div>'+lines.slice(0,3).map(function(x){return'<p>'+safe(x)+'</p>'}).join("")+'</article>'}).join("");
- e.querySelectorAll(".journeyEdit[data-jump]").forEach(function(link){link.addEventListener("click",function(ev){var n=Number(link.dataset.jump);if(n<=runtime.maxPhase){ev.preventDefault();ev.stopPropagation();goPhase(n)}})})
+ var e=document.getElementById(targetId);if(!e)return;e.innerHTML=customerGroups().map(function(g){var lines=g.lines.filter(Boolean),edit=g.phase===5?'<button type="button" class="journeyEdit" data-editfield="customerName">تعديل</button>':'<button type="button" class="journeyEdit" data-jump="'+g.phase+'">تعديل</button>';return'<article class="journeyGroup"><div><h4>'+safe(g.title)+'</h4>'+edit+'</div>'+lines.slice(0,3).map(function(x){return'<p>'+safe(x)+'</p>'}).join("")+'</article>'}).join("");
+ e.querySelectorAll(".journeyEdit").forEach(function(btn){btn.addEventListener("click",function(ev){ev.preventDefault();ev.stopPropagation();if(btn.dataset.jump){var n=Number(btn.dataset.jump);if(n<=runtime.maxPhase)goPhase(n)}else if(btn.dataset.editfield){var el=document.getElementById(btn.dataset.editfield);if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.focus()}}})})
 }
 
 
