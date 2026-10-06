@@ -61,7 +61,15 @@ jobs:
             return before!==hash(await p.locator(sel).screenshot({animations:'disabled'}))
           }
           async function phase1(p,layout='l',dims=true,height=true){
-            await tap(p,'#heroStart');await tap(p,'[data-projecttype="new"]');await tap(p,'[data-layout="'+layout+'"]');await tap(p,'[data-measuremode="'+(dims?'known':'unknown')+'"]');
+            await tap(p,'#heroStart');
+            for(let tries=0;tries<2;tries++){
+              let q=await st(p);
+              if(q?.project?.type!=='new')await tap(p,'[data-projecttype="new"]');
+              q=await st(p);if(q?.room?.layout!==layout)await tap(p,'[data-layout="'+layout+'"]');
+              q=await st(p);const mm=dims?'known':'unknown';if(q?.project?.measurementMode!==mm)await tap(p,'[data-measuremode="'+mm+'"]');
+              q=await st(p);if(q?.project?.type==='new'&&q?.room?.layout===layout&&q?.project?.measurementMode===mm)break
+            }
+            let ready=await st(p);if(ready.project?.type!=='new'||ready.room?.layout!==layout||ready.project?.measurementMode!==(dims?'known':'unknown'))throw new Error('Phase1 choice state '+JSON.stringify(ready));
             if(dims){
               await p.locator('#roomLength').fill('421');await p.locator('#roomLength').dispatchEvent('input');await sleep(70);await p.locator('#roomLength').fill('420');await p.locator('#roomLength').dispatchEvent('input');
               await p.locator('#roomWidth').fill('321');await p.locator('#roomWidth').dispatchEvent('input');await sleep(70);await p.locator('#roomWidth').fill('320');await p.locator('#roomWidth').dispatchEvent('input');
