@@ -277,7 +277,8 @@ function customerGroups(){
 }
 function reviewStatusText(){return briefQuality(canonicalBrief()).label}
 function renderGroupCards(targetId){
- var e=document.getElementById(targetId);if(!e)return;e.innerHTML=customerGroups().map(function(g){var lines=g.lines.filter(Boolean),field=g.phase===5?"customerName":"";return'<article class="journeyGroup"><div><h4>'+safe(g.title)+'</h4><button type="button" data-jump="'+g.phase+'" '+(field?'data-editfield="'+field+'" ':'')+'>تعديل</button></div>'+lines.slice(0,3).map(function(x){return'<p>'+safe(x)+'</p>'}).join("")+'</article>'}).join("")
+ var e=document.getElementById(targetId);if(!e)return;e.innerHTML=customerGroups().map(function(g){var lines=g.lines.filter(Boolean),field=g.phase===5?"customerName":"";return'<article class="journeyGroup"><div><h4>'+safe(g.title)+'</h4><button type="button" data-jump="'+g.phase+'" '+(field?'data-editfield="'+field+'" ':'')+'>تعديل</button></div>'+lines.slice(0,3).map(function(x){return'<p>'+safe(x)+'</p>'}).join("")+'</article>'}).join("");
+ e.querySelectorAll("[data-jump]").forEach(function(btn){btn.addEventListener("click",function(ev){ev.preventDefault();ev.stopPropagation();var n=Number(btn.dataset.jump);if(n<=runtime.maxPhase){goPhase(n);if(btn.dataset.editfield)setTimeout(function(){var el=document.getElementById(btn.dataset.editfield);if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.focus()}},90)}})})
 }
 function bindBriefEditButtons(){
  document.querySelectorAll(".journeyGroups [data-editphase]").forEach(function(btn){
