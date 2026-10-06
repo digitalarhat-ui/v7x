@@ -149,7 +149,6 @@ function storageConfigEvidence(key){
 function resolveAppliance(key){
  ensureBriefProvenance();var ev=applianceConfigEvidence(key),explicitReq=!!state.details.applianceExplicit[key];
  if(ev.explicitPresent)return{present:true,source:"customer_selected"};
- if(ev.explicitRemoved)return{present:false,source:"customer_selected"};
  if(explicitReq)return{present:!!state.details.appliances[key],source:"customer_selected"};
  if(ev.present)return{present:true,source:"prototype_default"};
  if(state.details.appliances[key])return{present:true,source:state.details.applianceTouched?"customer_selected":"derived_from_configuration"};
@@ -158,7 +157,6 @@ function resolveAppliance(key){
 function resolveStorage(key){
  ensureBriefProvenance();var ev=storageConfigEvidence(key),explicitReq=!!state.details.storageExplicit[key];
  if(ev.explicitPresent)return{present:true,source:"customer_selected"};
- if(ev.explicitRemoved)return{present:false,source:"customer_selected"};
  if(explicitReq)return{present:!!state.details.storage[key],source:"customer_selected"};
  if(ev.present)return{present:true,source:"prototype_default"};
  if(state.details.storage[key])return{present:true,source:state.details.storageTouched?"customer_selected":"derived_from_configuration"};
