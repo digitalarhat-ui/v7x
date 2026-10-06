@@ -129,7 +129,7 @@ jobs:
             if(q.url().includes('?project='))throw new Error(tag+' shared URL not cleaned after restore');
             if(width<700){await q.locator('.summaryPaper').scrollIntoViewIfNeeded();await shot(q,tag+'-07-share-restored')}else await shot(q,'1440-07-share-restored');
             await clean.close();
-            const metrics=await p.evaluate(()=>({sw:document.documentElement.scrollWidth,iw:innerWidth,minTouch:Math.min(...[...document.querySelectorAll('button,.waButton,.shareButton')].filter(e=>e.offsetParent!==null).map(e=>e.getBoundingClientRect().height)),phases:document.querySelectorAll('.phaseProgress li').length}));
+            const metrics=await p.evaluate(()=>({sw:document.documentElement.scrollWidth,iw:innerWidth,minTouch:Math.min(...[...document.querySelectorAll('button,.waButton,.shareButton,.journeyEdit')].filter(e=>e.offsetParent!==null).map(e=>e.getBoundingClientRect().height)),phases:document.querySelectorAll('.phaseProgress li').length}));
             if(metrics.sw>metrics.iw+1||metrics.minTouch<44||metrics.phases!==5)throw new Error(tag+' accessibility/layout '+JSON.stringify(metrics));if(errors.length)throw new Error(tag+' runtime '+errors.join('|'));
             result.viewports[tag]={whatsappLines:lines.length,whatsappUrlLength:href.length,minTouch:metrics.minTouch,scrollWidth:metrics.sw,projectCode:codeBefore,shareRestored:true};
             await browser.close()
