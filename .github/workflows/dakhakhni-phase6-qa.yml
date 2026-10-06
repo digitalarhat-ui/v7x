@@ -73,14 +73,15 @@ jobs:
             await p.locator('[data-configtab="cabinet"]').click();await p.locator('.configPanel [data-cabinet="oak"]').click();
             await p.locator('[data-configtab="worktop"]').click();await p.locator('.configPanel [data-worktop="veined"]').click();
             await p.locator('[data-configtab="modules"]').click();await p.locator('[data-configslot="base:4"]').click();await p.locator('[data-configreplace="drawers"]').click();
+            await p.locator('[data-configslot="tall:0"]').click();await p.locator('[data-configreplace="pantry"]').click();
             await p.locator('[data-configtab="upper"]').click();await p.locator('.configPanel [data-upper="mixed"]').click();
-            await p.locator('[data-configtab="details"]').click();await p.locator('.configPanel [data-handle="integrated"]').click();
+            await p.locator('[data-configtab="details"]').click();await p.locator('.configPanel [data-handle="integrated"]').click();await p.locator('[data-interior="internalDrawers"]').click();
             await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="3"].active')
           }
           async function phase3Exact(p){
             const usage=p.locator('.requirementGroup[data-reqgroup="usage"]');if(!(await usage.evaluate(e=>e.open)))await usage.locator('summary').click();
             await p.locator('[data-userchoice="3-4"]').click();await p.locator('[data-cookingchoice="daily"]').click();
-            const storage=p.locator('.requirementGroup[data-reqgroup="storage"]');if(!(await storage.evaluate(e=>e.open)))await storage.locator('summary').click();await p.locator('[data-storage="pantry"]').click();
+            const storage=p.locator('.requirementGroup[data-reqgroup="storage"]');if(!(await storage.evaluate(e=>e.open)))await storage.locator('summary').click();let ss=await st(p);if(!ss.details.storage.pantry)await p.locator('[data-storage="pantry"]').click();
             const apps=p.locator('.requirementGroup[data-reqgroup="appliances"]');if(!(await apps.evaluate(e=>e.open)))await apps.locator('summary').click();
             let state=await st(p);
             if(!state.details.appliances.oven)await p.locator('[data-appliance="oven"]').click();
@@ -110,7 +111,7 @@ jobs:
             if(width<700){await p.locator('.summaryPaper').scrollIntoViewIfNeeded();await shot(p,tag+'-02-final-brief')}else{await shot(p,'1440-02-final-brief')}
             const summary=await p.locator('#summaryGroups').innerText(),preview=(await p.locator('#waPreview').innerText()).trim(),lines=preview.split('\n').filter(Boolean),href=await p.locator('#waButton').getAttribute('href');
             if(!summary.includes('التكوين المبدئي')||!summary.includes('بلوط دافئ')||!summary.includes('حجر فاتح بعروق')||!summary.includes('أولوية للتخزين ومساحة التحضير'))throw new Error(tag+' canonical UI summary incomplete');
-            if(!preview.includes('420 × 320 × 280 سم تقريباً')||!preview.includes('بلوط دافئ')||!preview.includes('حجر فاتح بعروق')||!preview.includes('3–4 أشخاص')||!preview.includes('طبخ يومي')||!preview.includes('فرن')||!preview.includes('ثلاجة')||!preview.includes('مؤن'))throw new Error(tag+' designer brief missing required truth');
+            if(!preview.includes('420 × 320 × 280 سم تقريباً')||!preview.includes('بلوط دافئ')||!preview.includes('حجر فاتح بعروق')||!preview.includes('3–4 أشخاص')||!preview.includes('طبخ يومي')||!preview.includes('فرن')||!preview.includes('ثلاجة')||!preview.includes('تخزين طويل')||!preview.includes('أدراج داخلية')||!preview.includes('مؤن'))throw new Error(tag+' designer brief missing required truth');
             if(/slot_|base_|module_|customer_selected|prototype_default|cabinet=|worktop=/i.test(preview+summary))throw new Error(tag+' internal IDs leaked');
             if(/تصميم معتمد|خامة معتمدة|لون معتمد|سعر نهائي|مدة مضمونة/.test(preview+summary))throw new Error(tag+' false approval claim');
             if(lines.length<10||lines.length>16)throw new Error(tag+' WhatsApp lines '+lines.length);
