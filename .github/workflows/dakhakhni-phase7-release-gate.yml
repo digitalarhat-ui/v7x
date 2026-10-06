@@ -105,8 +105,8 @@ jobs:
             await click(p,'[data-configtab="details"]');for(const k of ['integrated','linear','classic']){await click(p,'[data-handle="'+k+'"]');q=await st(p);if(q.visual.handle!==k)throw new Error(tag+' handle '+k)}await click(p,'[data-handle="integrated"]');
             for(const cam of ['hero','functional','elevation','wide']){await click(p,'[data-camera="'+cam+'"]');if(!(await p.locator('[data-camera="'+cam+'"]').evaluate(e=>e.classList.contains('active'))))throw new Error(tag+' camera '+cam)}
             if(!(await orbit(p,'#studioCanvas')))throw new Error(tag+' studio orbit');
-            await click(p,'[data-configtab="cabinet"]');await click(p,'[data-cabinet="graphite"]');await click(p,'[data-configtab="worktop"]');await click(p,'[data-worktop="dark"]');await shot(p,tag+'-06-dark-config');
-            await click(p,'[data-cabinet="oak"]');await click(p,'[data-worktop="veined"]');
+            await click(p,'[data-configtab="cabinet"]');await click(p,'.configPanel [data-cabinet="graphite"]');await click(p,'[data-configtab="worktop"]');await click(p,'.configPanel [data-worktop="dark"]');await shot(p,tag+'-06-dark-config');
+            await click(p,'[data-configtab="cabinet"]');await click(p,'.configPanel [data-cabinet="oak"]');await click(p,'[data-configtab="worktop"]');await click(p,'.configPanel [data-worktop="veined"]');
             await click(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="3"].active')
           }
           async function phase3(p,tag,withFile=true){
