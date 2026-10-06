@@ -1,0 +1,9 @@
+{
+  "status": "FAIL",
+  "url": "https://dakhakhni-kitchen-demo.lovable.app/",
+  "expected": "c4457536fd1d974ea30d6e97179a890f9fb39145",
+  "viewports": {},
+  "errors": [
+    "Error: mobile-390 HTTP 404\n    at run (file:///home/runner/work/v7x/v7x/altqa.mjs:16:48)\n    at async file:///home/runner/work/v7x/v7x/altqa.mjs:86:3"
+  ]
+}
