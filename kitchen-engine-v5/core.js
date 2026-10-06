@@ -277,8 +277,7 @@ function customerGroups(){
 }
 function reviewStatusText(){return briefQuality(canonicalBrief()).label}
 function renderGroupCards(targetId){
- var e=document.getElementById(targetId);if(!e)return;e.innerHTML=customerGroups().map(function(g){var lines=g.lines.filter(Boolean),field=g.phase===5?"customerName":"";return'<article class="journeyGroup"><div><h4>'+safe(g.title)+'</h4><button type="button" data-jump="'+g.phase+'" '+(field?'data-editfield="'+field+'" ':'')+'>تعديل</button></div>'+lines.slice(0,3).map(function(x){return'<p>'+safe(x)+'</p>'}).join("")+'</article>'}).join("");
- e.querySelectorAll("[data-jump]").forEach(function(btn){btn.addEventListener("click",function(ev){ev.preventDefault();ev.stopPropagation();var n=Number(btn.dataset.jump);if(n<=runtime.maxPhase){goPhase(n);if(btn.dataset.editfield)setTimeout(function(){var el=document.getElementById(btn.dataset.editfield);if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.focus()}},90)}})})
+ var e=document.getElementById(targetId);if(!e)return;e.innerHTML=customerGroups().map(function(g){var lines=g.lines.filter(Boolean),edit=g.phase===5?'<a class="journeyEdit" href="#customerName">تعديل</a>':'<a class="journeyEdit" href="#phase-'+g.phase+'" data-jump="'+g.phase+'">تعديل</a>';return'<article class="journeyGroup"><div><h4>'+safe(g.title)+'</h4>'+edit+'</div>'+lines.slice(0,3).map(function(x){return'<p>'+safe(x)+'</p>'}).join("")+'</article>'}).join("")
 }
 function bindBriefEditButtons(){
  document.querySelectorAll(".journeyGroups [data-editphase]").forEach(function(btn){
@@ -534,7 +533,8 @@ function bind(){
  });
  root.addEventListener("toggle",function(ev){var d=ev.target;if(!d.matches||!d.matches(".requirementGroup")||!d.open)return;root.querySelectorAll(".requirementGroup").forEach(function(x){if(x!==d)x.open=false})},true);
  document.getElementById("backBtn").addEventListener("click",previousPhase);document.getElementById("nextBtn").addEventListener("click",nextPhase);
- window.addEventListener("popstate",function(){var hm=location.hash.match(/^#phase-(\d)$/);if(hm){runtime.suspendHistory=true;goPhase(Math.min(runtime.maxPhase,Number(hm[1])),"replace")}})
+ function routeHashPhase(){var hm=location.hash.match(/^#phase-(\d)$/);if(hm){runtime.suspendHistory=true;goPhase(Math.min(runtime.maxPhase,Number(hm[1])),"replace")}}
+ window.addEventListener("popstate",routeHashPhase);window.addEventListener("hashchange",routeHashPhase)
 }
 function seededRand(seed){var x=Math.sin(seed*999.1)*43758.5453;return x-Math.floor(x)}
 function canvasTexture(kind,variant){
