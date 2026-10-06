@@ -154,13 +154,13 @@ jobs:
             state=await st(p);txt=await p.locator('#summaryGroups').innerText();if(!state.config.explicit.base['4']||!txt.includes('تكوين مبدئي بعد تعديلاتك'))throw new Error('explicit module not preserved');
             result.defaultVsExplicit.explicit='PASS';await x.browser.close()
           }
-          async function missingInfoTest(){
-            const x=await launch(390,844),p=x.page;await phase1(p,'unsure',false,false);await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="3"].active');await reachPhase5(p);
+          async function missingInfoTest(width,height){
+            const tag=String(width),x=await launch(width,height),p=x.page;await phase1(p,'unsure',false,false);await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="3"].active');await reachPhase5(p);
             const txt=await p.locator('.qualityCard').innerText(),wa=await p.locator('#waPreview').innerText();
-            if(!txt.includes('يمكن الإرسال الآن')||!txt.includes('إضافة شكل المطبخ'))throw new Error('missing-info quality state');
-            if(/420 × 320/.test(wa)||!wa.includes('القياسات النهائية غير متوفرة بعد'))throw new Error('fabricated default dimensions in missing-info brief');
-            await p.locator('.qualityCard').scrollIntoViewIfNeeded();await shot(p,'390-06-missing-information');
-            result.canonical.missingInformation='PASS';await x.browser.close()
+            if(!txt.includes('يمكن الإرسال الآن')||!txt.includes('إضافة شكل المطبخ'))throw new Error(tag+' missing-info quality state');
+            if(/420 × 320/.test(wa)||!wa.includes('القياسات النهائية غير متوفرة بعد'))throw new Error(tag+' fabricated default dimensions in missing-info brief');
+            await p.locator('.qualityCard').scrollIntoViewIfNeeded();await shot(p,tag+'-06-missing-information');
+            result.canonical['missingInformation'+tag]='PASS';await x.browser.close()
           }
           async function upstreamTest(){
             const x=await launch(430,900),p=x.page;await phase1(p);await configureExact(p);await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="3"].active');await phase3Exact(p);await reachPhase5(p);let state=await st(p),code=state.meta.projectCode,storage=JSON.stringify(state.details.storage),apps=JSON.stringify(state.details.appliances);
@@ -172,7 +172,7 @@ jobs:
           }
           try{
             for(const [w,h] of [[390,844],[430,900],[1440,1000]])await full(w,h);
-            await conflictTest();await defaultExplicitTest();await missingInfoTest();await upstreamTest();
+            await conflictTest();await defaultExplicitTest();for(const [w,h] of [[390,844],[430,900],[1440,1000]])await missingInfoTest(w,h);await upstreamTest();
             result.canonical.status='PASS';result.share.status='PASS'
           }catch(e){result.status='FAIL';result.errors.push(e.stack||String(e))}
           fs.writeFileSync(out+'/results.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result,null,2));if(result.status!=='PASS')process.exit(1)
