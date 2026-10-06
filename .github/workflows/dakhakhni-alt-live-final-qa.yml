@@ -141,6 +141,7 @@ jobs:
             catch(e){ result.status='FAIL'; result.errors.push(v.name+': '+(e.stack||String(e))); }
           }
           fs.writeFileSync('alt-live-qa/results.json',JSON.stringify(result,null,2));
+          console.log('QA_RESULT_START'); console.log(JSON.stringify(result,null,2)); console.log('QA_RESULT_END');
           if(result.status!=='PASS')process.exitCode=1;
           EOF
           node live-final.mjs
