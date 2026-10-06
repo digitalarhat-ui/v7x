@@ -26,9 +26,9 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Live audit
         env:
-          VP_NAME: \${{ matrix.vp.name }}
-          VP_WIDTH: \${{ matrix.vp.width }}
-          VP_HEIGHT: \${{ matrix.vp.height }}
+          VP_NAME: ${{ matrix.vp.name }}
+          VP_WIDTH: ${{ matrix.vp.width }}
+          VP_HEIGHT: ${{ matrix.vp.height }}
         run: |
           cat > audit.mjs <<'EOF'
           import {chromium} from 'playwright';
@@ -134,7 +134,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: audit-\${{ matrix.vp.name }}
+          name: audit-${{ matrix.vp.name }}
           path: audit
           if-no-files-found: error
           retention-days: 2
