@@ -273,7 +273,7 @@ function customerGroups(){
 }
 function reviewStatusText(){return briefQuality(canonicalBrief()).label}
 function renderGroupCards(targetId){
- var e=document.getElementById(targetId);if(!e)return;e.innerHTML=customerGroups().map(function(g){var lines=g.lines.filter(Boolean),field=g.phase===5?"customerName":"";return'<article class="journeyGroup"><div><h4>'+safe(g.title)+'</h4><button type="button" data-editphase="'+g.phase+'" '+(field?'data-editfield="'+field+'" ':'')+'onclick="window.DAKH_EDIT_PHASE('+g.phase+(field?",\\'"+field+"\\'":"") +')">تعديل</button></div>'+lines.slice(0,3).map(function(x){return'<p>'+safe(x)+'</p>'}).join("")+'</article>'}).join("")
+ var e=document.getElementById(targetId);if(!e)return;e.innerHTML=customerGroups().map(function(g){var lines=g.lines.filter(Boolean),field=g.phase===5?"customerName":"";return'<article class="journeyGroup"><div><h4>'+safe(g.title)+'</h4><button type="button" data-jump="'+g.phase+'" '+(field?'data-editfield="'+field+'" ':'')+'>تعديل</button></div>'+lines.slice(0,3).map(function(x){return'<p>'+safe(x)+'</p>'}).join("")+'</article>'}).join("")
 }
 function bindBriefEditButtons(){
  document.querySelectorAll(".journeyGroups [data-editphase]").forEach(function(btn){
@@ -404,7 +404,6 @@ function goPhase(n,mode){
  if(n===2){initStudio();setTimeout(function(){syncAll3D();if(runtime.studio&&runtime.studio.cameraMode==="hero")cameraPreset(runtime.studio,"hero");updateCameraControls()},50)}
  document.getElementById("phaseProgress").scrollIntoView({behavior:"smooth",block:"start"});emit("phase",{phase:n,code:projectCode()})
 }
-window.DAKH_EDIT_PHASE=function(n,field){goPhase(Number(n));if(field)setTimeout(function(){var el=document.getElementById(field);if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.focus()}},90)};
 function nextPhase(){
  if(runtime.phase===2&&!state.visual.saved){state.visual.saved=true;runtime.maxPhase=Math.max(runtime.maxPhase,3)}
  if(runtime.phase===3){state.details.reviewed=true;runtime.maxPhase=Math.max(runtime.maxPhase,4)}
@@ -474,15 +473,10 @@ function invalidateVisual(){state.visual.saved=false;state.review.confirmed=fals
 function invalidateDetails(){state.details.reviewed=false;state.review.confirmed=false;runtime.maxPhase=Math.min(runtime.maxPhase,3);state.maxPhase=runtime.maxPhase}
 function open3DStudio(){runtime.maxPhase=Math.max(runtime.maxPhase,2);state.maxPhase=runtime.maxPhase;save();goPhase(2);setTimeout(function(){var studio=document.querySelector('[data-stage="2"] .studio');if(studio)studio.scrollIntoView({behavior:"smooth",block:"start"})},120)}
 function bind(){
- document.addEventListener("click",function(ev){
-  var bt=ev.target&&ev.target.closest?ev.target.closest(".journeyGroups [data-editphase]"):null;if(!bt)return;
-  ev.preventDefault();ev.stopImmediatePropagation();var ep=Number(bt.dataset.editphase);goPhase(ep);
-  if(bt.dataset.editfield)setTimeout(function(){var el=document.getElementById(bt.dataset.editfield);if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.focus()}},90)
- },true);
  root.addEventListener("click",function(ev){var t=ev.target.closest("button,a");if(!t)return;
   if(t.id==="headerStart"||t.id==="heroStart"){runtime.maxPhase=Math.max(runtime.maxPhase,1);goPhase(1);return}
   if(t.id==="hero3d"){open3DStudio();return}
-  if(t.dataset.jump){var n=Number(t.dataset.jump);if(n<=runtime.maxPhase)goPhase(n);return}
+  if(t.dataset.jump){var n=Number(t.dataset.jump);if(n<=runtime.maxPhase){goPhase(n);if(t.dataset.editfield)setTimeout(function(){var el=document.getElementById(t.dataset.editfield);if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.focus()}},90)}return}
   if(t.dataset.projecttype){state.project.type=t.dataset.projecttype;state.review.confirmed=false;renderDynamic();return}
   if(t.dataset.layout){var had=state.config&&state.config.seeded&&runtime.maxPhase>1;state.room.layout=t.dataset.layout;resetConfiguratorForRoom();invalidateVisual();renderDynamic();if(had)toast("تغيّر شكل المطبخ؛ حدّثنا التكوين المبدئي ليتوافق مع المساحة.");return}
   if(t.dataset.measuremode){var hm=state.config&&state.config.seeded&&runtime.maxPhase>1;state.project.measurementMode=t.dataset.measuremode;resetConfiguratorForRoom();invalidateVisual();renderDynamic();if(hm)toast("تغيّرت حالة القياس؛ حدّثنا التكوين المبدئي فقط.");return}
@@ -510,7 +504,6 @@ function bind(){
   if(t.dataset.sinkchoice){state.details.sink=t.dataset.sinkchoice;invalidateDetails();renderDynamic();return}
   if(t.dataset.storage){var sk=t.dataset.storage;state.details.storageTouched=true;state.details.storageExplicit[sk]=true;state.details.storage[sk]=!state.details.storage[sk];invalidateDetails();renderDynamic();return}
   if(t.dataset.appliance){var ak=t.dataset.appliance;state.details.applianceTouched=true;state.details.applianceExplicit[ak]=true;state.details.appliances[ak]=!state.details.appliances[ak];invalidateDetails();renderDynamic();return}
-  if(t.dataset.editphase){var ep=Number(t.dataset.editphase);goPhase(ep);if(t.dataset.editfield)setTimeout(function(){var el=document.getElementById(t.dataset.editfield);if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.focus()}},80);return}
   if(t.dataset.camera){cameraPreset(runtime.studio,t.dataset.camera);updateCameraControls();return}
   if(t.id==="copyBrief"){copyProjectBrief();return}
   if(t.id==="shareProject"){copyShare();return}
