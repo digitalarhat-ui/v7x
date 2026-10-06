@@ -193,7 +193,7 @@ body.planner-nav-ready .bottomNav{visibility:visible}
 .journeyGroups{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-right:1px solid var(--line);background:#fff}
 .journeyGroup{padding:13px 14px;border-left:1px solid var(--line);border-bottom:1px solid var(--line);min-height:108px}
 .journeyGroup>div{display:flex;align-items:center;justify-content:space-between;gap:8px}.journeyGroup h4{margin:0;color:var(--forest);font-size:11px}
-.journeyGroup button{min-height:36px;border:0;background:transparent;color:#92713e;font-size:8px;font-weight:900;padding:0 6px}
+.journeyGroup button{min-height:44px;border:0;background:transparent;color:#92713e;font-size:8px;font-weight:900;padding:0 6px}
 .journeyGroup p{margin:6px 0 0;color:var(--muted);font-size:8.5px;line-height:1.55}
 .compactReview{margin-top:14px}.compactReview .reviewBlock{padding:17px;min-height:0}.compactReview .reviewBlock h3{font-size:15px}.compactReview .reviewBlock ul{gap:6px;font-size:9px}
 .contactPaper{padding:16px 18px}.contactGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.contactPaper .field{padding:11px}.contactPaper .field label{display:flex;align-items:center;gap:7px}.contactPaper .noteField{margin-top:10px}.contactPaper textarea{min-height:84px;resize:vertical}
@@ -218,7 +218,7 @@ body.planner-nav-ready .bottomNav{visibility:visible}
 }
 @media(max-width:430px){
  .reqChoices{grid-template-columns:repeat(3,minmax(0,1fr))}
- .journeyGroups{grid-template-columns:1fr}
+ .journeyGroups{grid-template-columns:repeat(2,minmax(0,1fr))}
  .journeyGroup{min-height:0}
  .requirementGroup>summary small{max-width:220px}
 }
