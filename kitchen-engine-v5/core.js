@@ -10,7 +10,9 @@ var tallModuleLabels={pantry:"تخزين طويل",fridge:"ثلاجة",oven:"ب�
 var interiorLabels={shelves:"رفوف",internalDrawers:"أدراج داخلية"};
 var configTabLabels={configuration:"التكوين",cabinet:"الواجهات",worktop:"السطح",upper:"العلوية",modules:"الوحدات",details:"التفاصيل"};
 var worktopLabels={quartz:"كوارتز فاتح",veined:"حجر فاتح بعروق",warm:"حجر دافئ",dark:"حجر داكن"};
-var storageLabels={pantry:"مؤن",tall:"خزائن طويلة",deepDrawers:"أدراج عميقة",corner:"حل للزاوية",waste:"وحدة نفايات",coffee:"ركن قهوة"};
+var storageLabels={pantry:"مؤن",tall:"تخزين طويل",deepDrawers:"أدراج عميقة",corner:"حل للزاوية",waste:"نفايات وفرز",coffee:"منطقة أجهزة صغيرة"};
+var cookingLabels={light:"طبخ خفيف",daily:"طبخ يومي",heavy:"استخدام مكثف"};
+var userLabels={"1-2":"1–2","3-4":"3–4","5+":"5+"};
 var applianceLabels={fridge:"ثلاجة",oven:"فرن",dishwasher:"غسالة صحون",hob:"موقد",hood:"شفاط",microwave:"مايكرويف"};
 var handleLabels={integrated:"مخفي / مدمج",linear:"خطي بسيط",classic:"مقبض ظاهر"};
 var upperLabels={mixed:"مغلق + زجاج",closed:"مغلق",glass:"زجاج",open:"رفوف مفتوحة"};
@@ -23,7 +25,7 @@ var defaults={
  project:{type:"",city:"",measurementMode:"",note:""},
  room:{length:420,width:320,height:280,layout:"",markers:[]},
  visual:{cabinet:"ivory",worktop:"veined",upper:"mixed",handle:"integrated",saved:false},
- details:{storage:{pantry:false,tall:false,deepDrawers:false,corner:false,waste:false,coffee:false},appliances:{fridge:false,oven:false,dishwasher:false,hob:false,hood:false,microwave:false},sink:"unsure",users:"",cooking:"",reviewed:false},
+ details:{storage:{pantry:false,tall:false,deepDrawers:false,corner:false,waste:false,coffee:false},appliances:{fridge:false,oven:false,dishwasher:false,hob:false,hood:false,microwave:false},sink:"unsure",users:"",cooking:"",storageTouched:false,applianceTouched:false,configSynced:false,reviewed:false},
  review:{confirmed:false,followUp:"whatsapp"},
  contact:{name:""},
  config:{seeded:false,layout:"",baseSlots:[],tallSlots:[],selected:"base:0",pantryInterior:"shelves",inspect:false,activeTab:"configuration"},
@@ -54,7 +56,10 @@ function assetUrl(url){
  if(base&&url&&url.charAt(0)==="/")return base.replace(/\/$/,"")+url;
  return url
 }
-function projectCode(){var raw=JSON.stringify([state.project,state.room,state.visual,state.config,state.details]),h=2166136261;for(var i=0;i<raw.length;i++){h^=raw.charCodeAt(i);h+=(h<<1)+(h<<4)+(h<<7)+(h<<8)+(h<<24)}return"DK-"+((h>>>0).toString(36).toUpperCase()+"000000").slice(0,6)}
+function projectCode(){
+ var d={storage:state.details.storage,appliances:state.details.appliances,sink:state.details.sink,users:state.details.users,cooking:state.details.cooking},c={layout:state.config.layout,baseSlots:state.config.baseSlots,tallSlots:state.config.tallSlots,pantryInterior:state.config.pantryInterior},raw=JSON.stringify([state.project,state.room,state.visual,c,d]),h=2166136261;
+ for(var i=0;i<raw.length;i++){h^=raw.charCodeAt(i);h+=(h<<1)+(h<<4)+(h<<7)+(h<<8)+(h<<24)}return"DK-"+((h>>>0).toString(36).toUpperCase()+"000000").slice(0,6)
+}
 function knownMeasurements(){return state.project.measurementMode==="known"}
 function roomText(){return knownMeasurements()?state.room.length+" × "+state.room.width+" × "+state.room.height+" سم":"القياسات غير متوفرة حالياً"}
 function effectiveLayout(){return state.config&&state.config.layout?state.config.layout:(state.room.layout&&state.room.layout!=="unsure"?state.room.layout:"l")}
@@ -110,6 +115,46 @@ function configurationSummary(){
  ensureConfigurator();var b=(state.config.baseSlots||[]).map(function(k){return baseModuleLabels[k]||k}),t=(state.config.tallSlots||[]).map(function(k){return tallModuleLabels[k]||k});
  return{layout:configLayoutLabel(),base:b.join(" + "),tall:t.length?t.join(" + "):"بدون وحدة طويلة",interior:t.indexOf("pantry")>=0?interiorLabels[state.config.pantryInterior]:"—"}
 }
+function syncRequirementsFromConfig(){
+ if(state.details.configSynced)return;ensureConfigurator();var b=state.config.baseSlots||[],t=state.config.tallSlots||[];
+ if(!state.details.applianceTouched){
+  state.details.appliances.fridge=t.indexOf("fridge")>=0;
+  state.details.appliances.oven=t.indexOf("oven")>=0;
+  state.details.appliances.dishwasher=b.indexOf("dishwasher")>=0;
+  state.details.appliances.hob=b.indexOf("hob")>=0
+ }
+ if(!state.details.storageTouched){
+  state.details.storage.deepDrawers=b.indexOf("drawers")>=0;
+  state.details.storage.pantry=t.indexOf("pantry")>=0;
+  state.details.storage.tall=t.indexOf("pantry")>=0
+ }
+ state.details.configSynced=true
+}
+function selectedLabels(obj,labels){return activeKeys(obj).map(function(k){return labels[k]}).filter(Boolean)}
+function requirementSummary(kind){
+ if(kind==="usage"){var a=[];if(state.details.cooking)a.push(cookingLabels[state.details.cooking]);if(state.details.users)a.push(userLabels[state.details.users]+" مستخدمين");return a.length?a.join(" · "):"اختياري — يمكنك المتابعة بدون اختيار"}
+ if(kind==="storage"){var s=selectedLabels(state.details.storage,storageLabels);return s.length?s.join("، "):"لا توجد احتياجات إضافية محددة"}
+ if(kind==="appliances"){var ap=selectedLabels(state.details.appliances,applianceLabels);return ap.length?ap.join("، "):"لم تُحدد أجهزة إضافية"}
+ return sinkLabels[state.details.sink]||"غير متأكد"
+}
+function choiceCard(label,key,on,attr){return'<button type="button" class="reqChoice '+(on?"active":"")+'" data-'+attr+'="'+key+'"><span>'+safe(label)+'</span></button>'}
+function customerGroups(){
+ ensureConfigurator();var cs=configurationSummary(),st=selectedLabels(state.details.storage,storageLabels),ap=selectedLabels(state.details.appliances,applianceLabels),use=[];
+ if(state.details.users)use.push(userLabels[state.details.users]+" مستخدمين");if(state.details.cooking)use.push(cookingLabels[state.details.cooking]);if(state.details.sink!=="unsure")use.push(sinkLabels[state.details.sink]);
+ return[
+  {title:"المساحة",phase:1,lines:[roomText(),state.project.city||"الموقع يضاف عند التواصل"]},
+  {title:"الشكل والتكوين",phase:2,lines:[cs.layout,"الوحدات الرئيسية: "+cs.base,"الوحدات الطويلة: "+cs.tall]},
+  {title:"الخامات",phase:2,lines:[cabinetLabels[state.visual.cabinet]+" + "+worktopLabels[state.visual.worktop],"العلوية: "+upperLabels[state.visual.upper]+" · المقابض: "+handleLabels[state.visual.handle]]},
+  {title:"الخزائن",phase:3,lines:[st.length?st.join("، "):"لا توجد احتياجات إضافية محددة"]},
+  {title:"الأجهزة",phase:3,lines:[ap.length?ap.join("، "):"لم تُحدد أجهزة إضافية"]},
+  {title:"الاستخدام",phase:3,lines:[use.length?use.join(" · "):"لم تُضف تفضيلات استخدام — وهذا اختياري"]}
+ ]
+}
+function reviewStatusText(){return knownMeasurements()?"جاهز للمراجعة الأولية":"جاهز للمراجعة الأولية — القياس النهائي لاحقاً"}
+function renderGroupCards(targetId){
+ var e=document.getElementById(targetId);if(!e)return;e.innerHTML=customerGroups().map(function(g){return'<article class="journeyGroup"><div><h4>'+safe(g.title)+'</h4><button type="button" data-editphase="'+g.phase+'">تعديل</button></div>'+g.lines.slice(0,3).map(function(x){return'<p>'+safe(x)+'</p>'}).join("")+'</article>'}).join("")
+}
+
 function selectedConfig(){
  ensureConfigurator();var p=String(state.config.selected||"base:0").split(":"),kind=p[0],index=Math.max(0,Number(p[1])||0),list=kind==="tall"?state.config.tallSlots:state.config.baseSlots;
  if(index>=list.length)index=0;return{kind:kind,index:index,type:list[index],id:kind+":"+index}
@@ -169,69 +214,84 @@ function page(){
 }
 function stage1(){
  var layouts=["straight","l","u","parallel","island","unsure"],notes={straight:"جدار واحد",l:"جداران متصلان",u:"ثلاثة جوانب",parallel:"صفّان متقابلان",island:"جزيرة أو شبه جزيرة",unsure:"يحدده المصمم لاحقاً"};
- return'<section class="stage" data-stage="1"><div class="stageHead"><div><div class="stageEyebrow">01 — المساحة والتخطيط</div><h2>ثلاثة اختيارات، ثم شاهد الاتجاه في 3D.</h2></div><p>اختر نوع المشروع، شكل المطبخ، وهل لديك قياسات تقريبية. أي تفاصيل إضافية للمساحة يمكن إضافتها لاحقاً بدون إيقافك عن المعاينة.</p></div><div class="paper phaseOnePaper">'+
+ return'<section class="stage" data-stage="1"><div class="stageHead"><div><div class="stageEyebrow">01 — المساحة والتخطيط</div><h2>ثلاثة اختيارات ثم انتقل إلى 3D.</h2></div><p>حدد نقطة البداية، شكل المطبخ، وهل لديك قياسات تقريبية.</p></div><div class="paper phaseOnePaper">'+
  '<div class="section"><div class="sectionTitle"><b>نوع المشروع</b><span>ما نقطة البداية؟</span></div><div class="choiceGrid">'+choice(projectLabels.new,"new",state.project.type==="new","projecttype")+choice(projectLabels.renovation,"renovation",state.project.type==="renovation","projecttype")+choice(projectLabels.explore,"explore",state.project.type==="explore","projecttype")+'</div><div class="error" id="errProject"></div></div>'+
- '<div class="section"><div class="sectionTitle"><b>شكل المطبخ الأقرب</b><span>اختر «غير متأكد» إذا كنت تريد من المصمم تحديده لاحقاً.</span></div><div class="layoutGrid compactLayouts">'+layouts.map(function(k){return'<button class="layoutChoice '+(state.room.layout===k?"active":"")+'" type="button" data-layout="'+k+'">'+layoutSketch(k)+'<b>'+layoutLabels[k]+'</b><small>'+notes[k]+'</small></button>'}).join("")+'</div><div class="error" id="errLayout"></div></div>'+
- '<div class="section"><div class="sectionTitle"><b>القياسات التقريبية</b><span>'+safe(cfg.disclaimers.measurement)+'</span></div><div class="choiceGrid measureChoices"><button class="choice '+(state.project.measurementMode==="known"?"active":"")+'" type="button" data-measuremode="known">لدي قياسات تقريبية</button><button class="choice '+(state.project.measurementMode==="unknown"?"active":"")+'" type="button" data-measuremode="unknown">لا أعرف / أحتاج قياساً</button></div><div class="error" id="errMeasureMode"></div><div id="measurementPanel">'+measurementFields()+'</div></div>'+
- '<details class="optionalDetails"><summary><span><b>تفاصيل إضافية للمساحة</b><small>اختياري — المدينة، الارتفاع، الفتحات ونقاط الخدمات</small></span><i>+</i></summary><div class="optionalDetailsBody"><div class="section"><div class="sectionTitle"><b>المدينة / الحي</b><span>يمكن إضافتها الآن أو لاحقاً.</span></div><div class="field"><label>الموقع</label><input id="city" value="'+safe(state.project.city)+'" placeholder="مثال: ينبع — حي ..."></div></div><div class="section"><div class="sectionTitle"><b>ارتفاع السقف التقريبي</b><span>اختياري في هذه المرحلة.</span></div><div class="field"><label>الارتفاع بالسم</label><input id="roomHeight" type="number" min="220" max="450" step="5" value="'+state.room.height+'"></div></div><div class="section" id="markersSection"><div class="sectionTitle"><b>فتحات ونقاط مهمة</b><span>أضف فقط ما تعرفه؛ الباب والنافذة والخدمات ليست مطلوبة للوصول إلى 3D.</span></div><div class="choiceGrid markerChoices">'+Object.keys(markerLabels).map(function(k){return'<button class="choice" type="button" data-addmarker="'+k+'">+ '+markerLabels[k]+'</button>'}).join("")+'</div><div id="markerList" style="display:grid;gap:8px;margin-top:12px"></div></div></div></details>'+
- '</div></section>';
+ '<div class="section"><div class="sectionTitle"><b>شكل المطبخ الأقرب</b><span>اختر «غير متأكد» إذا أردت تأكيده لاحقاً.</span></div><div class="layoutGrid compactLayouts">'+layouts.map(function(k){return'<button class="layoutChoice '+(state.room.layout===k?"active":"")+'" type="button" data-layout="'+k+'">'+layoutSketch(k)+'<b>'+layoutLabels[k]+'</b><small>'+notes[k]+'</small></button>'}).join("")+'</div><div class="error" id="errLayout"></div></div>'+
+ '<div class="section"><div class="sectionTitle"><b>القياسات التقريبية</b><span>'+safe(cfg.disclaimers.measurement)+'</span></div><div class="choiceGrid measureChoices"><button class="choice '+(state.project.measurementMode==="known"?"active":"")+'" type="button" data-measuremode="known">لدي قياسات تقريبية</button><button class="choice '+(state.project.measurementMode==="unknown"?"active":"")+'" type="button" data-measuremode="unknown">غير متأكد / أحتاج قياساً</button></div><div class="error" id="errMeasureMode"></div><div id="measurementPanel">'+measurementFields()+'</div></div>'+
+ '<details class="optionalDetails"><summary><span><b>تفاصيل إضافية للمساحة</b><small>اختياري — الارتفاع، الفتحات ونقاط الخدمات</small></span><i>+</i></summary><div class="optionalDetailsBody"><div class="section"><div class="sectionTitle"><b>ارتفاع السقف التقريبي <small class="optionalTag">اختياري</small></b></div><div class="field"><label>الارتفاع بالسم</label><input id="roomHeight" type="number" inputmode="numeric" min="220" max="450" step="5" value="'+state.room.height+'"></div></div><div class="section" id="markersSection"><div class="sectionTitle"><b>فتحات ونقاط مهمة <small class="optionalTag">اختياري</small></b><span>أضف فقط ما تعرفه الآن.</span></div><div class="choiceGrid markerChoices">'+Object.keys(markerLabels).map(function(k){return'<button class="choice" type="button" data-addmarker="'+k+'">+ '+markerLabels[k]+'</button>'}).join("")+'</div><div id="markerList" style="display:grid;gap:8px;margin-top:12px"></div></div></div></details>'+
+ '</div></section>'
 }
 function measurementFields(){
- if(state.project.measurementMode==="unknown")return'<div class="notice" style="margin-top:12px">ممتاز — سنستخدم نموذجاً توضيحياً في المعاينة، لكن ملخصك سيبقى واضحاً بأن القياسات غير متوفرة حالياً.</div>';
+ if(state.project.measurementMode==="unknown")return'<div class="notice compactNotice" style="margin-top:12px">سنستخدم نموذجاً توضيحياً، ويؤكد فريق التصميم القياس لاحقاً.</div>';
  if(state.project.measurementMode!=="known")return"";
- return'<div class="fieldGrid coreMeasurements" style="margin-top:12px"><div class="field"><label>الطول التقريبي</label><input id="roomLength" type="number" min="200" max="1200" step="5" value="'+state.room.length+'"></div><div class="field"><label>العرض التقريبي</label><input id="roomWidth" type="number" min="180" max="1000" step="5" value="'+state.room.width+'"></div></div><div class="error" id="errDims"></div>';
+ return'<div class="fieldGrid coreMeasurements" style="margin-top:12px"><div class="field"><label>الطول التقريبي</label><input id="roomLength" type="number" inputmode="numeric" min="200" max="1200" step="5" value="'+state.room.length+'"></div><div class="field"><label>العرض التقريبي</label><input id="roomWidth" type="number" inputmode="numeric" min="180" max="1000" step="5" value="'+state.room.width+'"></div></div><div class="error" id="errDims"></div>'
 }
 function stage2(){
  ensureConfigurator();
- return'<section class="stage" data-stage="2"><div class="stageHead"><div><div class="stageEyebrow">02 — الشكل واللون</div><h2>كوّن اتجاه مطبخك قبل جلسة التصميم.</h2></div><p>ابدأ بالتكوين المبدئي، ثم غيّر الوحدات والخامات بما يناسب اتجاهك.</p></div>'+
+ return'<section class="stage" data-stage="2"><div class="stageHead"><div><div class="stageEyebrow">02 — الشكل واللون</div><h2>كوّن اتجاه مطبخك بصرياً.</h2></div><p>غيّر التكوين والخامات، ثم استخدم الاتجاه في طلبك.</p></div>'+
  '<div class="studio configuratorStudio"><div class="studioHead"><div><small>استوديو التكوين التفاعلي</small><h3>تكوين مبدئي لمشروعك</h3></div><span class="studioState" id="studioState">'+safe(configLayoutLabel())+'</span></div>'+
- '<div class="configuratorGrid"><div class="configViewerColumn"><div class="viewer" id="studioWrap"><canvas id="studioCanvas"></canvas><div class="viewerLabel" id="viewerLabel">نموذج توضيحي</div><div class="viewerHint">اسحب أفقياً للدوران</div><div class="viewerDisclaimer">الخيارات المعروضة تمهيدية لتوضيح اتجاه المشروع، ويعتمد المقاس والخامة والتفاصيل النهائية مع فريق التصميم.</div></div><div class="cameraBar" aria-label="زوايا المعاينة"><button class="active" data-camera="hero">منظور رئيسي</button><button data-camera="functional">منظور عملي</button><button data-camera="elevation">واجهة</button><button data-camera="island">الجزيرة</button><button data-camera="wide">المشهد الكامل</button></div></div>'+
+ '<div class="configuratorGrid"><div class="configViewerColumn"><div class="viewer" id="studioWrap"><canvas id="studioCanvas"></canvas><div class="viewerLabel" id="viewerLabel">نموذج توضيحي</div><div class="viewerHint">اسحب أفقياً للدوران</div><div class="viewerDisclaimer">خيارات تمهيدية؛ يعتمد القياس والخامة والتفاصيل النهائية مع فريق التصميم.</div></div><div class="cameraBar" aria-label="زوايا المعاينة"><button class="active" data-camera="hero">منظور رئيسي</button><button data-camera="functional">منظور عملي</button><button data-camera="elevation">واجهة</button><button data-camera="island">الجزيرة</button><button data-camera="wide">المشهد الكامل</button></div></div>'+
  '<aside class="configuratorControls"><div class="configToolbar"><span>خيارات تمهيدية لتوضيح الفكرة</span><div><button type="button" id="undoConfig">تراجع</button><button type="button" id="resetConfig">العودة للتكوين المقترح</button></div></div><div class="configTabs">'+configTabsHtml()+'</div><div class="configPanel" id="configPanel">'+configPanel()+'</div></aside></div>'+
- '<div class="studioSave"><button class="saveVisual '+(state.visual.saved?"saved":"")+'" id="saveVisual">'+(state.visual.saved?"تم حفظ التكوين ✓":"احفظ هذا الاتجاه")+'</button><small>هذا تكوين تمهيدي للمناقشة، وليس اعتماد تصنيع أو كتالوج مواد رسمي.</small><div class="error" id="errVisual"></div></div></div></section>'
+ '<div class="phase2Hint"><span>كل تغيير يظهر مباشرة في المعاينة.</span><b id="phase2SavedState">'+(state.visual.saved?"الاتجاه محفوظ":"")+'</b></div><div class="error phase2Error" id="errVisual"></div></div></section>'
 }
 function stage3(){
- return'<section class="stage" data-stage="3"><div class="stageHead"><div><div class="stageEyebrow">03 — الخزائن والتفاصيل</div><h2>أضف ما يغيّر استخدام المطبخ فعلاً.</h2></div><p>التفاصيل الوظيفية تظهر تدريجياً بدل نموذج طويل. نلتقط فقط ما يساعد المصمم على فهم الاستخدام قبل أن يبدأ.</p></div><div class="paper">'+
- '<div class="section"><div class="sectionTitle"><b>التخزين المطلوب</b><span>اختياري — اختر المهم فقط.</span></div><div class="toggleGrid">'+Object.keys(storageLabels).map(function(k){return toggle(storageLabels[k],k,state.details.storage[k],"storage")}).join("")+'</div></div>'+
- '<div class="section"><div class="sectionTitle"><b>الأجهزة المخطط لها</b><span>يؤثر وجودها على الوحدات والمساحات.</span></div><div class="toggleGrid">'+Object.keys(applianceLabels).map(function(k){return toggle(applianceLabels[k],k,state.details.appliances[k],"appliance")}).join("")+'</div></div>'+
- '<div class="section"><div class="sectionTitle"><b>طريقة الاستخدام</b><span>تُذكر في الملخص وليست التزاماً تنفيذياً.</span></div><div class="fieldGrid"><div class="field"><label>عدد المستخدمين</label><select id="users"><option value="">غير محدد</option><option>1-2</option><option>3-4</option><option>5+</option></select></div><div class="field"><label>كثافة الطبخ</label><select id="cooking"><option value="">غير محدد</option><option value="light">خفيف</option><option value="daily">يومي</option><option value="heavy">مكثف</option></select></div><div class="field"><label>الحوض</label><select id="sinkMode"><option value="unsure">غير متأكد</option><option value="existing">حوض موجود</option><option value="new">حوض جديد</option></select></div></div></div>'+
- '<div class="section"><div class="sectionTitle"><b>مرجع للمصمم <small style="font-weight:500;color:#8b8377">اختياري</small></b><span>يبقى الملف على جهازك؛ لا نرفعه في الخلفية. إذا أرسلته عبر واتساب فأرفقه يدوياً.</span></div><div class="refUpload"><input id="refFile" type="file" accept="image/jpeg,image/png,image/webp,application/pdf"><label for="refFile">اختر صورة أو PDF للمساحة / المخطط</label><small>JPG · PNG · WEBP · PDF</small><div id="filePreview"></div></div></div>'+
- '<div class="section"><button class="btnPrimary" style="background:#143c32;color:#fff;width:100%" id="detailsReviewed">'+(state.details.reviewed?"تمت مراجعة التفاصيل ✓":"تمت مراجعة التفاصيل — متابعة")+'</button><div class="error" id="errDetails"></div></div></div></section>';
+ return'<section class="stage" data-stage="3"><div class="stageHead"><div><div class="stageEyebrow">03 — الخزائن والتفاصيل</div><h2>أخبر المصمم بما يهمك في الاستخدام.</h2></div><p>كل ما هنا اختياري؛ افتح المجموعة التي تريد تعديلها فقط.</p></div><div class="paper requirementsPaper">'+
+ '<details class="requirementGroup" data-reqgroup="usage" open><summary><span><b>استخدام المطبخ</b><small>'+safe(requirementSummary("usage"))+'</small></span><i>تعديل</i></summary><div class="requirementBody"><div class="reqSub"><b>نمط الطبخ <small class="optionalTag">اختياري</small></b><div class="reqChoices">'+Object.keys(cookingLabels).map(function(k){return choiceCard(cookingLabels[k],k,state.details.cooking===k,"cookingchoice")}).join("")+'</div></div><div class="reqSub"><b>عدد المستخدمين <small class="optionalTag">اختياري</small></b><div class="reqChoices">'+Object.keys(userLabels).map(function(k){return choiceCard(userLabels[k],k,state.details.users===k,"userchoice")}).join("")+'</div></div></div></details>'+
+ '<details class="requirementGroup" data-reqgroup="storage"><summary><span><b>احتياجات التخزين</b><small>'+safe(requirementSummary("storage"))+'</small></span><i>تعديل</i></summary><div class="requirementBody"><p class="inheritNote">بدأنا بما ظهر في تكوينك؛ عدّل فقط إذا احتجت.</p><div class="toggleGrid">'+Object.keys(storageLabels).map(function(k){return toggle(storageLabels[k],k,state.details.storage[k],"storage")}).join("")+'</div></div></details>'+
+ '<details class="requirementGroup" data-reqgroup="appliances"><summary><span><b>الأجهزة</b><small>'+safe(requirementSummary("appliances"))+'</small></span><i>تعديل</i></summary><div class="requirementBody"><p class="inheritNote">الأجهزة الموجودة في التكوين محددة مسبقاً ويمكن تعديلها.</p><div class="toggleGrid">'+Object.keys(applianceLabels).map(function(k){return toggle(applianceLabels[k],k,state.details.appliances[k],"appliance")}).join("")+'</div></div></details>'+
+ '<details class="requirementGroup" data-reqgroup="extra"><summary><span><b>تفاصيل إضافية</b><small>الحوض أو صورة للمساحة — اختياري</small></span><i>تعديل</i></summary><div class="requirementBody"><div class="reqSub"><b>الحوض <small class="optionalTag">اختياري</small></b><div class="reqChoices">'+Object.keys(sinkLabels).map(function(k){return choiceCard(sinkLabels[k],k,state.details.sink===k,"sinkchoice")}).join("")+'</div></div><div class="reqSub"><b>عندك مخطط أو صورة للمساحة؟ <small class="optionalTag">اختياري</small></b><p class="inheritNote">أضفها للمراجعة. تبقى على جهازك؛ أرفقها يدوياً عند فتح واتساب.</p><div class="refUpload"><input id="refFile" type="file" accept="image/jpeg,image/png,image/webp,application/pdf"><label for="refFile">إضافة صورة أو PDF</label><small>JPG · PNG · WEBP · PDF</small><div id="filePreview"></div></div></div></div></details>'+
+ '</div><div class="error" id="errDetails"></div></section>'
 }
 function stage4(){
- return'<section class="stage" data-stage="4"><div class="stageHead"><div><div class="stageEyebrow">04 — المراجعة والخطوة التالية</div><h2>ما أصبح واضحاً، وما يحتاج فريق التصميم.</h2></div><p>السعر النهائي يعتمد على القياس والخامة والتفاصيل المعتمدة. هنا نرتب ما أصبح واضحاً في مشروعك وما يحتاج مراجعة فريق التصميم قبل عرض السعر.</p></div><div class="readiness"><div class="readinessTop"><div><small>جاهزية الملخص</small><b id="readinessText"></b></div><b id="readinessCode">'+projectCode()+'</b></div><div class="meter"><i id="readinessBar"></i></div></div><div class="reviewGrid"><article class="reviewBlock"><small>أصبح معروفاً</small><h3>سيصل مع طلبك</h3><ul id="knownList"></ul></article><article class="reviewBlock"><small>يحتاج تأكيداً</small><h3>يعتمده فريق دخاخني</h3><ul id="confirmList"></ul></article></div><div class="paper" style="margin-top:18px"><div class="section"><div class="sectionTitle"><b>الخطوة التالية</b><span>المسار المتاح هنا هو واتساب دخاخني الموثق.</span></div><div class="choiceGrid">'+choice(followLabels.whatsapp,"whatsapp",state.review.followUp==="whatsapp","follow")+choice(followLabels.later,"later",state.review.followUp==="later","follow")+'</div></div><div class="section"><button class="btnPrimary" style="background:#143c32;color:#fff;width:100%" id="reviewConfirmed">'+(state.review.confirmed?"تمت المراجعة ✓":"راجعت المشروع — متابعة للتواصل")+'</button><div class="error" id="errReview"></div></div></div></section>';
+ return'<section class="stage" data-stage="4"><div class="stageHead"><div><div class="stageEyebrow">04 — المراجعة والخطوة التالية</div><h2>راجع مشروعك قبل التواصل.</h2></div><p>ما اخترته واضح هنا، وما يحتاج تأكيداً يراجعه فريق دخاخني.</p></div>'+
+ '<div class="reviewStatus"><div><small>مشروعك حتى الآن</small><h3 id="reviewStatusText">'+safe(reviewStatusText())+'</h3><p>يحدد عرض السعر بعد مراجعة القياس والخامات والتفاصيل مع فريق دخاخني.</p></div><span class="projectCode">'+projectCode()+'</span></div>'+
+ '<div class="journeyGroups" id="reviewGroups"></div>'+
+ '<div class="reviewGrid compactReview"><article class="reviewBlock"><small>أصبح واضحاً</small><h3>جاهز للمصمم</h3><ul id="knownList"></ul></article><article class="reviewBlock"><small>يحتاج تأكيداً من فريق دخاخني</small><h3>يُحسم بعد المراجعة</h3><ul id="confirmList"></ul></article></div>'+
+ '<div class="error" id="errReview"></div></section>'
 }
 function stage5(){
- return'<section class="stage" data-stage="5"><div class="stageHead"><div><div class="stageEyebrow">05 — التواصل والمراجعة</div><h2>راجع كل مجموعة قبل فتح واتساب.</h2></div><p>المراجعة النهائية مجمعة، وكل قسم يمكن الرجوع إليه وتعديله. الرسالة لا تُرسل تلقائياً؛ أنت تراها أولاً ثم تفتح واتساب.</p></div><div class="finalGrid"><div><div class="paper"><div class="section"><div class="sectionTitle"><b>اسم العميل <small style="font-weight:500;color:#8b8377">اختياري</small></b><span>يمكنك إضافة الاسم فقط؛ المتابعة ستتم مباشرة من حساب واتساب الذي تفتح منه الرسالة.</span></div><div class="field"><label>الاسم</label><input id="customerName" value="'+safe(state.contact.name)+'" placeholder="الاسم"></div></div><div class="section"><div class="sectionTitle"><b>ملاحظة أخيرة <small style="font-weight:500;color:#8b8377">اختياري</small></b><span>شيء واحد تريد أن يعرفه المصمم من البداية.</span></div><div class="field"><textarea id="projectNote" placeholder="مثال: أولوية للتخزين أو سطح تحضير أكبر">'+safe(state.project.note)+'</textarea></div></div></div><div class="summaryPaper" style="margin-top:18px"><div class="summaryTop"><div><small>ملخص المشروع</small><h3>جاهز للمراجعة مع المصمم</h3></div><div class="projectCode">'+projectCode()+'</div></div><div class="summaryGroups" id="summaryGroups"></div></div></div><aside class="whatsappPanel"><div><small>المعاينة قبل الإرسال</small><h3>رسالة واتساب منظمة</h3><p>تعرض اختيارات مشروعك كما رتبتها في المراحل السابقة، ويمكنك مراجعة الرسالة كاملة قبل فتح واتساب.</p></div><pre class="waPreview" id="waPreview"></pre><a class="waButton" id="waButton" target="_blank" rel="noopener">فتح واتساب دخاخني ←</a><button class="shareButton" id="shareProject">نسخ رابط المشروع</button><a class="officialLink" href="'+safe(cfg.officialSite)+'" target="_blank" rel="noopener">الموقع الرسمي لدخاخني ↗</a></aside></div></section>';
+ return'<section class="stage" data-stage="5"><div class="stageHead"><div><div class="stageEyebrow">05 — التواصل والمراجعة</div><h2>راجع الملخص ثم افتح واتساب.</h2></div><p>يمكنك تعديل أي مجموعة قبل الإرسال.</p></div><div class="finalGrid"><div>'+
+ '<div class="paper contactPaper"><div class="contactGrid"><div class="field"><label>الاسم <small class="optionalTag">اختياري</small></label><input id="customerName" value="'+safe(state.contact.name)+'" placeholder="الاسم"></div><div class="field"><label>المدينة / الحي <small class="optionalTag">اختياري</small></label><input id="city" value="'+safe(state.project.city)+'" placeholder="مثال: الرياض — الياسمين"></div></div><div class="field noteField"><label>ملاحظة للمصمم <small class="optionalTag">اختياري</small></label><textarea id="projectNote" placeholder="مثال: أولوية للتخزين أو سطح تحضير أكبر">'+safe(state.project.note)+'</textarea></div></div>'+
+ '<div class="summaryPaper compactSummary" style="margin-top:14px"><div class="summaryTop"><div><small>ملخص المشروع</small><h3>جاهز للمراجعة مع المصمم</h3></div><div class="projectCode">'+projectCode()+'</div></div><div class="journeyGroups" id="summaryGroups"></div></div></div>'+
+ '<aside class="whatsappPanel"><div><small>المعاينة قبل الإرسال</small><h3>رسالة واتساب</h3><p>هذه هي الرسالة التي ستفتح في واتساب؛ لن تُرسل تلقائياً.</p></div><pre class="waPreview" id="waPreview"></pre><a class="waButton" id="waButton" target="_blank" rel="noopener">فتح واتساب دخاخني ←</a><button class="shareButton" id="shareProject">نسخ رابط المشروع</button><a class="officialLink" href="'+safe(cfg.officialSite)+'" target="_blank" rel="noopener">الموقع الرسمي لدخاخني ↗</a></aside></div></section>'
 }
 function validatePhase(n,show){
  var errors=[];
- if(n===1){if(!state.project.type)errors.push(["errProject","اختر نوع المشروع."]);if(!state.room.layout)errors.push(["errLayout","اختر شكل المطبخ أو «غير متأكد»."]);if(!state.project.measurementMode)errors.push(["errMeasureMode","حدد هل القياسات متوفرة الآن."]);if(state.project.measurementMode==="known"){if(!(state.room.length>=200&&state.room.length<=1200&&state.room.width>=180&&state.room.width<=1000))errors.push(["errDims","راجع الطول والعرض التقريبيين."])}}
- if(n===2&&!state.visual.saved)errors.push(["errVisual","احفظ اتجاهاً بصرياً واحداً قبل المتابعة."]);
- if(n===3&&!state.details.reviewed)errors.push(["errDetails","راجع التفاصيل ثم اضغط زر المتابعة."]);
- if(n===4&&!state.review.confirmed)errors.push(["errReview","راجع ما هو معروف وما يحتاج تأكيداً ثم تابع."]);
- if(show){["errProject","errLayout","errMeasureMode","errDims","errVisual","errDetails","errReview"].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent=""});errors.forEach(function(x){var e=document.getElementById(x[0]);if(e)e.textContent=x[1]});if(errors.length){var first=document.getElementById(errors[0][0]);if(first)first.scrollIntoView({behavior:"smooth",block:"center"})}}
- return errors.length===0;
+ if(n===1){
+  if(!state.project.type)errors.push(["errProject","اختر نوع المشروع للمتابعة."]);
+  else if(!state.room.layout)errors.push(["errLayout","اختر شكل المطبخ أو «غير متأكد»."]);
+  else if(!state.project.measurementMode)errors.push(["errMeasureMode","حدد هل لديك قياسات تقريبية."]);
+  else if(state.project.measurementMode==="known"&&!(state.room.length>=200&&state.room.length<=1200&&state.room.width>=180&&state.room.width<=1000))errors.push(["errDims","راجع الطول والعرض التقريبيين."])
+ }
+ if(n===2&&!state.visual.saved)errors.push(["errVisual","استخدم هذا الاتجاه في طلبك للمتابعة."]);
+ if(show){["errProject","errLayout","errMeasureMode","errDims","errVisual","errDetails","errReview"].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent=""});if(errors.length){var x=errors[0],e=document.getElementById(x[0]);if(e){e.textContent=x[1];e.scrollIntoView({behavior:"smooth",block:"center"})}}}
+ return errors.length===0
 }
 function goPhase(n,mode){
- n=Math.max(1,Math.min(5,n));if(n>runtime.maxPhase)return;runtime.phase=n;state.phase=n;save();renderDynamic();
+ n=Math.max(1,Math.min(5,n));if(n>runtime.maxPhase)return;if(n===3)syncRequirementsFromConfig();runtime.phase=n;state.phase=n;save();renderDynamic();
  if(!runtime.suspendHistory){var method=mode==="replace"?"replaceState":"pushState";history[method]({phase:n},"",location.pathname+"#phase-"+n)}runtime.suspendHistory=false;
  if(n===2){initStudio();setTimeout(function(){syncAll3D();if(runtime.studio&&runtime.studio.cameraMode==="hero")cameraPreset(runtime.studio,"hero");updateCameraControls()},50)}
- document.getElementById("phaseProgress").scrollIntoView({behavior:"smooth",block:"start"});emit("phase",{phase:n,code:projectCode()});
+ document.getElementById("phaseProgress").scrollIntoView({behavior:"smooth",block:"start"});emit("phase",{phase:n,code:projectCode()})
 }
-function nextPhase(){if(!validatePhase(runtime.phase,true))return;if(runtime.phase<5){runtime.maxPhase=Math.max(runtime.maxPhase,runtime.phase+1);state.maxPhase=runtime.maxPhase;save();goPhase(runtime.phase+1)}else{save();toast("تم حفظ المشروع على هذا الجهاز")}}
+function nextPhase(){
+ if(runtime.phase===2&&!state.visual.saved){state.visual.saved=true;runtime.maxPhase=Math.max(runtime.maxPhase,3)}
+ if(runtime.phase===3){state.details.reviewed=true;runtime.maxPhase=Math.max(runtime.maxPhase,4)}
+ if(runtime.phase===4){state.review.confirmed=true;state.review.followUp="whatsapp";runtime.maxPhase=Math.max(runtime.maxPhase,5)}
+ if(!validatePhase(runtime.phase,true)){renderDynamic();return}
+ if(runtime.phase<5){runtime.maxPhase=Math.max(runtime.maxPhase,runtime.phase+1);state.maxPhase=runtime.maxPhase;save();goPhase(runtime.phase+1)}else{save()}
+}
 function previousPhase(){if(runtime.phase>1)goPhase(runtime.phase-1)}
-function readiness(){
- var s=30;if(state.project.type)s+=8;if(state.project.city)s+=8;if(state.room.layout)s+=8;if(state.project.measurementMode)s+=8;if(knownMeasurements())s+=8;if(state.visual.saved)s+=12;if(state.details.reviewed)s+=8;if(activeKeys(state.details.storage).length)s+=4;if(activeKeys(state.details.appliances).length)s+=4;if(state.review.confirmed)s+=2;return Math.min(100,s);
-}
+function readiness(){return state.review.confirmed?100:(state.visual.saved?75:50)}
 function knownItems(){
- var a=[];if(state.project.type)a.push("نوع المشروع: "+projectLabels[state.project.type]);if(state.project.city)a.push("الموقع: "+state.project.city);if(state.room.layout)a.push("شكل المساحة: "+layoutLabels[state.room.layout]);a.push("القياسات: "+roomText());if(state.visual.saved)a.push("الاتجاه البصري: "+summaryVisual());ensureConfigurator();var cs=configurationSummary();a.push("التكوين المبدئي: "+cs.layout);a.push("وحدات الجدار الرئيسي: "+cs.base);if(cs.tall!=="بدون وحدة طويلة")a.push("الوحدات الطويلة: "+cs.tall);var st=activeKeys(state.details.storage);if(st.length)a.push("التخزين: "+st.map(function(k){return storageLabels[k]}).join("، "));var ap=activeKeys(state.details.appliances);if(ap.length)a.push("الأجهزة: "+ap.map(function(k){return applianceLabels[k]}).join("، "));return a
+ ensureConfigurator();var cs=configurationSummary(),a=[roomText(),"التكوين: "+cs.layout,"الاتجاه: "+cabinetLabels[state.visual.cabinet]+" + "+worktopLabels[state.visual.worktop]],st=selectedLabels(state.details.storage,storageLabels),ap=selectedLabels(state.details.appliances,applianceLabels);
+ if(st.length)a.push("التخزين: "+st.join("، "));if(ap.length)a.push("الأجهزة: "+ap.join("، "));return a.slice(0,5)
 }
-function confirmItems(){var a=["القياس الموقعي النهائي","الخامات والألوان من العينات المعتمدة","توزيع الكهرباء والمياه والأجهزة","تفاصيل التصنيع والإكسسوارات","عرض السعر النهائي"];if(!knownMeasurements())a.unshift("الأبعاد النهائية للمساحة");return a}
+function confirmItems(){var a=["القياس الموقعي النهائي","الخامات والتفاصيل النهائية","الخدمات وتفاصيل التصنيع","عرض السعر والمدة التنفيذية"];if(!knownMeasurements())a.unshift("أبعاد المساحة النهائية");return a.slice(0,5)}
 function whatsappSummary(){
- ensureConfigurator();var cs=configurationSummary();
- var rows=["طلب مطبخ مبدئي — دخاخني","رقم المشروع: "+projectCode(),"","نوع المشروع: "+(state.project.type?projectLabels[state.project.type]:"—"),"المدينة / الحي: "+(state.project.city||"—"),"شكل المطبخ: "+(state.room.layout?layoutLabels[state.room.layout]:"—"),"القياسات: "+roomText(),"التكوين المبدئي: "+cs.layout,"وحدات الجدار الرئيسي: "+cs.base,"الوحدات الطويلة: "+cs.tall,"الاتجاه البصري التجريبي: "+summaryVisual(),"المقابض: "+handleLabels[state.visual.handle],"الخزائن العلوية: "+upperLabels[state.visual.upper]];
- if(cs.interior!=="—")rows.push("تقسيم التخزين الطويل: "+cs.interior);
- var st=activeKeys(state.details.storage),ap=activeKeys(state.details.appliances);rows.push("التخزين: "+(st.length?st.map(function(k){return storageLabels[k]}).join("، "):"غير محدد"));rows.push("الأجهزة: "+(ap.length?ap.map(function(k){return applianceLabels[k]}).join("، "):"غير محدد"));rows.push("الحوض: "+sinkLabels[state.details.sink]);if(state.details.users)rows.push("عدد المستخدمين: "+state.details.users);if(state.details.cooking)rows.push("استخدام الطبخ: "+({light:"خفيف",daily:"يومي",heavy:"مكثف"}[state.details.cooking]||state.details.cooking));if(runtime.refFile)rows.push("مرجع مختار على جهاز العميل: "+runtime.refFile.name+" — يرجى إرفاقه يدوياً في واتساب.");if(state.contact.name.trim())rows.push("الاسم: "+state.contact.name.trim());if(state.project.note.trim())rows.push("ملاحظة: "+state.project.note.trim());rows.push("","هذه الخيارات تمهيدية لتوضيح اتجاه المشروع وليست اعتماد تصنيع أو خامات نهائية. القياس والخامات والتفاصيل النهائية مع فريق دخاخني.");return rows.join("\n")
+ ensureConfigurator();var cs=configurationSummary(),st=selectedLabels(state.details.storage,storageLabels),ap=selectedLabels(state.details.appliances,applianceLabels),use=[];
+ if(state.details.users)use.push(userLabels[state.details.users]+" مستخدمين");if(state.details.cooking)use.push(cookingLabels[state.details.cooking]);if(state.details.sink!=="unsure")use.push(sinkLabels[state.details.sink]);
+ var rows=["طلب مطبخ مبدئي — دخاخني","رقم المشروع: "+projectCode(),"","المساحة: "+configLayoutLabel()+" · "+roomText()+(state.project.city?" · "+state.project.city:""),"التكوين: "+cs.base+(cs.tall!=="بدون وحدة طويلة"?" | طويل: "+cs.tall:""),"الاتجاه: "+cabinetLabels[state.visual.cabinet]+" + "+worktopLabels[state.visual.worktop]+" | العلوية: "+upperLabels[state.visual.upper]+" | المقابض: "+handleLabels[state.visual.handle],"التخزين: "+(st.length?st.join("، "):"غير محدد"),"الأجهزة: "+(ap.length?ap.join("، "):"غير محدد")];
+ if(use.length)rows.push("الاستخدام: "+use.join(" · "));if(state.contact.name.trim())rows.push("الاسم: "+state.contact.name.trim());if(state.project.note.trim())rows.push("ملاحظة: "+state.project.note.trim());if(runtime.refFile)rows.push("مرجع للمراجعة: أرفقه العميل يدوياً في واتساب.");rows.push("","القياس والخامات والتفاصيل النهائية تعتمد مع فريق دخاخني.");return rows.join("\n")
 }
 function whatsappUrl(){return"https://wa.me/"+cfg.whatsapp+"?text="+encodeURIComponent(whatsappSummary())}
 function shareUrl(){var clean=clone(state);clean.phase=runtime.phase;clean.maxPhase=runtime.maxPhase;return location.origin+location.pathname+"?project="+encodeState(clean)+"#phase-"+runtime.phase}
@@ -241,42 +301,40 @@ function markerRows(){
  var e=document.getElementById("markerList");if(!e)return;if(!state.room.markers.length){e.innerHTML='<div class="notice">لم تضف أي فتحات أو نقاط خدمات — وهذا طبيعي إذا لم تكن تعرفها الآن.</div>';return}
  e.innerHTML=state.room.markers.map(function(m){return'<div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;align-items:center;border:1px solid #d8d3c9;background:#fff;padding:9px"><b style="font-size:9px;color:#143c32">'+markerLabels[m.type]+'</b><select data-markerwall="'+m.id+'" style="border:1px solid #d8d3c9;padding:7px;font-size:9px">'+Object.keys(wallLabels).map(function(w){return'<option value="'+w+'" '+(m.wall===w?"selected":"")+'>'+wallLabels[w]+'</option>'}).join("")+'</select><input type="range" min="5" max="95" value="'+m.pos+'" data-markerpos="'+m.id+'"><button type="button" data-delmarker="'+m.id+'" style="border:0;background:#eee7dc;padding:7px 10px">×</button></div>'}).join("");
 }
-function summaryGroups(){
- var e=document.getElementById("summaryGroups");if(!e)return;ensureConfigurator();var storage=activeKeys(state.details.storage).map(function(k){return storageLabels[k]}),apps=activeKeys(state.details.appliances).map(function(k){return applianceLabels[k]}),cs=configurationSummary();
- var groups=[
-  ["المساحة والتخطيط",1,[state.project.type?projectLabels[state.project.type]:"—",state.project.city||"—",state.room.layout?layoutLabels[state.room.layout]:"—",roomText()]],
-  ["الشكل والتكوين",2,[summaryVisual(),"التكوين: "+cs.layout,"الوحدات: "+cs.base,"الطويلة: "+cs.tall,"المقابض: "+handleLabels[state.visual.handle]]],
-  ["الخزائن والتفاصيل",3,[(storage.length?storage.join("، "):"لم تُحدد احتياجات تخزين"),(apps.length?apps.join("، "):"لم تُحدد أجهزة"),"الحوض: "+sinkLabels[state.details.sink]]],
-  ["المراجعة",4,["جاهزية الملخص: "+readiness()+"%","المتابعة: "+followLabels[state.review.followUp]]]
- ];
- e.innerHTML=groups.map(function(g){return'<div class="summaryGroup"><div class="summaryGroupHead"><h4>'+g[0]+'</h4><button type="button" data-editphase="'+g[1]+'">تعديل</button></div>'+g[2].map(function(x){return'<p>'+safe(x)+'</p>'}).join("")+'</div>'}).join("")
-}
+function summaryGroups(){renderGroupCards("summaryGroups")}
 function viewerStateLabel(){if(!state.room.layout||state.room.layout==="unsure")return"نموذج توضيحي — شكل المساحة يحتاج تأكيد المصمم";if(!knownMeasurements())return"نموذج توضيحي — القياسات غير متوفرة";return roomText()}
 function syncVisualControls(){document.querySelectorAll("[data-cabinet]").forEach(function(x){x.classList.toggle("active",x.dataset.cabinet===state.visual.cabinet)});document.querySelectorAll("[data-worktop]").forEach(function(x){x.classList.toggle("active",x.dataset.worktop===state.visual.worktop)});document.querySelectorAll("[data-upper]").forEach(function(x){x.classList.toggle("active",x.dataset.upper===state.visual.upper)});document.querySelectorAll("[data-handle]").forEach(function(x){x.classList.toggle("active",x.dataset.handle===state.visual.handle)})}
+function syncRequirementControls(){
+ document.querySelectorAll("[data-cookingchoice]").forEach(function(x){x.classList.toggle("active",x.dataset.cookingchoice===state.details.cooking)});
+ document.querySelectorAll("[data-userchoice]").forEach(function(x){x.classList.toggle("active",x.dataset.userchoice===state.details.users)});
+ document.querySelectorAll("[data-sinkchoice]").forEach(function(x){x.classList.toggle("active",x.dataset.sinkchoice===state.details.sink)});
+ document.querySelectorAll("[data-storage]").forEach(function(x){x.classList.toggle("active",!!state.details.storage[x.dataset.storage])});
+ document.querySelectorAll("[data-appliance]").forEach(function(x){x.classList.toggle("active",!!state.details.appliances[x.dataset.appliance])});
+ document.querySelectorAll(".requirementGroup").forEach(function(g){var sm=g.querySelector("summary small");if(sm)sm.textContent=g.dataset.reqgroup==="extra"?"الحوض أو صورة للمساحة — اختياري":requirementSummary(g.dataset.reqgroup)})
+}
+
 function updateCameraControls(){var hasIsland=hasPlausibleIsland();document.querySelectorAll("[data-camera]").forEach(function(x){var island=x.dataset.camera==="island";x.hidden=island&&!hasIsland;x.disabled=island&&!hasIsland;x.classList.toggle("active",!!runtime.studio&&runtime.studio.cameraMode===x.dataset.camera)})}function renderDynamic(){
  ensureConfigurator();save();
+ document.body.dataset.phase=String(runtime.phase);
  document.querySelectorAll(".stage").forEach(function(e){e.classList.toggle("active",Number(e.dataset.stage)===runtime.phase)});
  var names=["المساحة والتخطيط","الشكل واللون","الخزائن والتفاصيل","المراجعة والخطوة التالية","التواصل والمراجعة"];
  document.getElementById("phaseNumber").textContent=runtime.phase;document.getElementById("phaseTitle").textContent=names[runtime.phase-1];document.getElementById("progressText").textContent="المرحلة "+runtime.phase+" من 5";var pbf=document.getElementById("phaseBarFill");if(pbf)pbf.style.width=(runtime.phase*20)+"%";
  document.querySelectorAll(".phaseProgress li").forEach(function(li,i){li.dataset.active=(i+1===runtime.phase)?"true":"false";li.dataset.complete=(i+1<runtime.phase)?"true":"false";var b=li.querySelector("button");b.disabled=i+1>runtime.maxPhase});
- var next=["التالي: الشكل واللون","التالي: الخزائن والتفاصيل","التالي: المراجعة","التالي: التواصل","حفظ المشروع"];document.getElementById("nextBtn").textContent=next[runtime.phase-1];document.getElementById("backBtn").disabled=runtime.phase===1;document.getElementById("backBtn").style.opacity=runtime.phase===1?".45":"1";
+ var next=["التالي: الشكل واللون","استخدم هذا الاتجاه في طلبي","التالي: مراجعة المشروع","تابع للتواصل",""];var nb=document.getElementById("nextBtn");nb.textContent=next[runtime.phase-1];nb.hidden=runtime.phase===5;document.getElementById("backBtn").disabled=runtime.phase===1;document.getElementById("backBtn").style.opacity=runtime.phase===1?".45":"1";
  var mm=document.getElementById("measurementPanel");if(mm)mm.innerHTML=measurementFields();markerRows();
  var cp=document.getElementById("configPanel");if(cp)cp.innerHTML=configPanel();var tabs=document.querySelector(".configTabs");if(tabs)tabs.innerHTML=configTabsHtml();
- var users=document.getElementById("users"),cooking=document.getElementById("cooking"),sink=document.getElementById("sinkMode");if(users)users.value=state.details.users;if(cooking)cooking.value=state.details.cooking;if(sink)sink.value=state.details.sink;
  var vf=document.getElementById("viewerLabel");if(vf)vf.textContent=viewerStateLabel();var ss=document.getElementById("studioState");if(ss)ss.textContent=configLayoutLabel()+" · "+(knownMeasurements()?state.room.length+" × "+state.room.width+" سم":"قياسات غير مؤكدة");
- var sv=document.getElementById("saveVisual");if(sv){sv.textContent=state.visual.saved?"تم حفظ التكوين ✓":"احفظ هذا الاتجاه";sv.classList.toggle("saved",state.visual.saved)}
- var rd=document.getElementById("detailsReviewed");if(rd)rd.textContent=state.details.reviewed?"تمت مراجعة التفاصيل ✓":"تمت مراجعة التفاصيل — متابعة";
- var rc=document.getElementById("reviewConfirmed");if(rc)rc.textContent=state.review.confirmed?"تمت المراجعة ✓":"راجعت المشروع — متابعة للتواصل";
- var r=readiness(),rb=document.getElementById("readinessBar"),rt=document.getElementById("readinessText");if(rb)rb.style.width=r+"%";if(rt)rt.textContent=r+"%";var rcod=document.getElementById("readinessCode");if(rcod)rcod.textContent=projectCode();
+ var ps=document.getElementById("phase2SavedState");if(ps)ps.textContent=state.visual.saved?"الاتجاه محفوظ":"";
  var kl=document.getElementById("knownList"),cl=document.getElementById("confirmList");if(kl)kl.innerHTML=knownItems().map(function(x){return"<li>"+safe(x)+"</li>"}).join("");if(cl)cl.innerHTML=confirmItems().map(function(x){return"<li>"+safe(x)+"</li>"}).join("");
- summaryGroups();var wp=document.getElementById("waPreview"),wb=document.getElementById("waButton");if(wp)wp.textContent=whatsappSummary();if(wb)wb.href=whatsappUrl();
+ renderGroupCards("reviewGroups");summaryGroups();var wp=document.getElementById("waPreview"),wb=document.getElementById("waButton");if(wp)wp.textContent=whatsappSummary();if(wb)wb.href=whatsappUrl();
+ var rs=document.getElementById("reviewStatusText");if(rs)rs.textContent=reviewStatusText();
  var hl=document.getElementById("heroLayout"),hd=document.getElementById("heroDims"),hf=document.getElementById("heroFinish");if(hl)hl.textContent=configLayoutLabel();if(hd)hd.textContent=knownMeasurements()?state.room.length+" × "+state.room.width+" سم":"أدخل المقاسات أو تابع بدونها";if(hf)hf.textContent=cabinetLabels[state.visual.cabinet];
- syncVisualControls();updateCameraControls();syncAll3D()
+ syncVisualControls();syncRequirementControls();updateCameraControls();syncAll3D()
 }
 function handleFile(file){
  runtime.refFile=null;runtime.refData="";var box=document.getElementById("filePreview");if(!file){if(box)box.innerHTML="";return}
- var ok=/^(image\/jpeg|image\/png|image\/webp|application\/pdf)$/.test(file.type)&&file.size<=12*1024*1024;if(!ok){toast("الملف يجب أن يكون JPG / PNG / WEBP / PDF وبحجم حتى 12MB");var inp=document.getElementById("refFile");if(inp)inp.value="";return}
- runtime.refFile=file;if(file.type.indexOf("image/")===0){var r=new FileReader();r.onload=function(){runtime.refData=r.result;if(box)box.innerHTML='<div class="fileCard"><img src="'+r.result+'" alt=""><div><b>'+safe(file.name)+'</b><small>يبقى على جهازك — أرفقه يدوياً في واتساب</small></div></div>';renderDynamic()};r.readAsDataURL(file)}else if(box)box.innerHTML='<div class="fileCard"><div style="width:58px;height:58px;display:grid;place-items:center;background:#143c32;color:#fff;font-weight:900">PDF</div><div><b>'+safe(file.name)+'</b><small>يبقى على جهازك — أرفقه يدوياً في واتساب</small></div></div>';
+ var ok=/^(image\/jpeg|image\/png|image\/webp|application\/pdf)$/.test(file.type)&&file.size<=12*1024*1024;if(!ok){toast("استخدم JPG أو PNG أو WEBP أو PDF حتى 12MB.");var inp=document.getElementById("refFile");if(inp)inp.value="";return}
+ runtime.refFile=file;if(file.type.indexOf("image/")===0){var r=new FileReader();r.onload=function(){runtime.refData=r.result;if(box)box.innerHTML='<div class="fileCard"><img src="'+r.result+'" alt=""><div><b>'+safe(file.name)+'</b><small>أرفقه يدوياً عند فتح واتساب.</small></div></div>';renderDynamic()};r.readAsDataURL(file)}else if(box)box.innerHTML='<div class="fileCard"><div style="width:58px;height:58px;display:grid;place-items:center;background:#143c32;color:#fff;font-weight:900">PDF</div><div><b>'+safe(file.name)+'</b><small>أرفقه يدوياً عند فتح واتساب.</small></div></div>'
 }
 function invalidateVisual(){state.visual.saved=false;state.review.confirmed=false;runtime.maxPhase=Math.min(runtime.maxPhase,runtime.phase<=1?1:2);state.maxPhase=runtime.maxPhase}
 function invalidateDetails(){state.details.reviewed=false;state.review.confirmed=false;runtime.maxPhase=Math.min(runtime.maxPhase,3);state.maxPhase=runtime.maxPhase}
@@ -286,9 +344,9 @@ function bind(){
   if(t.id==="headerStart"||t.id==="heroStart"){runtime.maxPhase=Math.max(runtime.maxPhase,1);goPhase(1);return}
   if(t.id==="hero3d"){open3DStudio();return}
   if(t.dataset.jump){var n=Number(t.dataset.jump);if(n<=runtime.maxPhase)goPhase(n);return}
-  if(t.dataset.projecttype){state.project.type=t.dataset.projecttype;state.review.confirmed=false;document.querySelectorAll("[data-projecttype]").forEach(function(x){x.classList.toggle("active",x===t)});renderDynamic();return}
-  if(t.dataset.layout){state.room.layout=t.dataset.layout;resetConfiguratorForRoom();invalidateVisual();renderDynamic();return}
-  if(t.dataset.measuremode){state.project.measurementMode=t.dataset.measuremode;resetConfiguratorForRoom();invalidateVisual();renderDynamic();return}
+  if(t.dataset.projecttype){state.project.type=t.dataset.projecttype;state.review.confirmed=false;renderDynamic();return}
+  if(t.dataset.layout){var had=state.config&&state.config.seeded&&runtime.maxPhase>1;state.room.layout=t.dataset.layout;resetConfiguratorForRoom();invalidateVisual();renderDynamic();if(had)toast("تغيّر شكل المطبخ؛ حدّثنا التكوين المبدئي ليتوافق مع المساحة.");return}
+  if(t.dataset.measuremode){var hm=state.config&&state.config.seeded&&runtime.maxPhase>1;state.project.measurementMode=t.dataset.measuremode;resetConfiguratorForRoom();invalidateVisual();renderDynamic();if(hm)toast("تغيّرت حالة القياس؛ حدّثنا التكوين المبدئي فقط.");return}
   if(t.dataset.addmarker){state.room.markers.push({id:"m"+Date.now().toString(36),type:t.dataset.addmarker,wall:"north",pos:50});invalidateVisual();renderDynamic();return}
   if(t.dataset.delmarker){state.room.markers=state.room.markers.filter(function(m){return m.id!==t.dataset.delmarker});invalidateVisual();renderDynamic();return}
   if(t.dataset.configtab){state.config.activeTab=t.dataset.configtab;save();renderDynamic();return}
@@ -296,38 +354,23 @@ function bind(){
   if(t.dataset.configslot){state.config.selected=t.dataset.configslot;state.config.inspect=false;renderDynamic();return}
   if(t.dataset.configreplace){
     ensureConfigurator();var sel=selectedConfig();pushConfigUndo();
-    if(sel.kind==="base"){
-      var allowed=compatibleBaseTypes(sel.type);if(allowed.indexOf(t.dataset.configreplace)<0)return;
-      state.config.baseSlots[sel.index]=t.dataset.configreplace
-    }else{
-      var next=t.dataset.configreplace,other=state.config.tallSlots.indexOf(next);
-      if(other>=0&&other!==sel.index){var old=state.config.tallSlots[sel.index];state.config.tallSlots[other]=old}
-      state.config.tallSlots[sel.index]=next;state.config.inspect=false
-    }
-    invalidateVisual();renderDynamic();return
+    if(sel.kind==="base"){var allowed=compatibleBaseTypes(sel.type);if(allowed.indexOf(t.dataset.configreplace)<0)return;state.config.baseSlots[sel.index]=t.dataset.configreplace}
+    else{var nx=t.dataset.configreplace,other=state.config.tallSlots.indexOf(nx);if(other>=0&&other!==sel.index){var old=state.config.tallSlots[sel.index];state.config.tallSlots[other]=old}state.config.tallSlots[sel.index]=nx;state.config.inspect=false}
+    state.details.configSynced=false;invalidateVisual();renderDynamic();return
   }
   if(t.dataset.interior){pushConfigUndo();state.config.pantryInterior=t.dataset.interior;invalidateVisual();renderDynamic();return}
-  if(t.id==="inspectUnit"){
-    var pantry=(state.config.tallSlots||[]).indexOf("pantry");if(pantry<0)return;
-    state.config.selected="tall:"+pantry;state.config.inspect=!state.config.inspect;invalidateVisual();renderDynamic();return
-  }
-  if(t.id==="undoConfig"){
-    var last=runtime.configUndo.pop();if(!last){toast("لا يوجد تغيير للتراجع");return}restoreConfigSnapshot(last);renderDynamic();return
-  }
-  if(t.id==="resetConfig"){
-    if(!window.confirm("العودة للتكوين المبدئي المقترح مع الاحتفاظ ببيانات المشروع والخامات؟"))return;
-    pushConfigUndo();var tab=state.config.activeTab;state.config=clone(defaults.config);state.config.activeTab=tab;ensureConfigurator(true);invalidateVisual();renderDynamic();return
-  }
+  if(t.id==="inspectUnit"){var pantry=(state.config.tallSlots||[]).indexOf("pantry");if(pantry<0)return;state.config.selected="tall:"+pantry;state.config.inspect=!state.config.inspect;invalidateVisual();renderDynamic();return}
+  if(t.id==="undoConfig"){var last=runtime.configUndo.pop();if(!last){toast("لا يوجد تغيير للتراجع");return}restoreConfigSnapshot(last);renderDynamic();return}
+  if(t.id==="resetConfig"){if(!window.confirm("العودة للتكوين المبدئي مع الاحتفاظ ببقية بيانات المشروع؟"))return;pushConfigUndo();var tab=state.config.activeTab;state.config=clone(defaults.config);state.config.activeTab=tab;ensureConfigurator(true);state.details.configSynced=false;invalidateVisual();renderDynamic();return}
   if(t.dataset.cabinet){if(runtime.phase===2)pushConfigUndo();state.visual.cabinet=t.dataset.cabinet;invalidateVisual();stopAutoPresentation(runtime.hero);renderDynamic();return}
   if(t.dataset.worktop){if(runtime.phase===2)pushConfigUndo();state.visual.worktop=t.dataset.worktop;invalidateVisual();stopAutoPresentation(runtime.hero);renderDynamic();return}
   if(t.dataset.upper){if(runtime.phase===2)pushConfigUndo();state.visual.upper=t.dataset.upper;invalidateVisual();renderDynamic();return}
   if(t.dataset.handle){if(runtime.phase===2)pushConfigUndo();state.visual.handle=t.dataset.handle;invalidateVisual();renderDynamic();return}
-  if(t.id==="saveVisual"){state.visual.saved=true;runtime.maxPhase=Math.max(runtime.maxPhase,3);save();renderDynamic();toast("تم حفظ التكوين داخل المشروع ✓");return}
-  if(t.dataset.storage){var sk=t.dataset.storage;state.details.storage[sk]=!state.details.storage[sk];invalidateDetails();t.classList.toggle("active",state.details.storage[sk]);renderDynamic();return}
-  if(t.dataset.appliance){var ak=t.dataset.appliance;state.details.appliances[ak]=!state.details.appliances[ak];invalidateDetails();t.classList.toggle("active",state.details.appliances[ak]);renderDynamic();return}
-  if(t.id==="detailsReviewed"){state.details.reviewed=true;runtime.maxPhase=Math.max(runtime.maxPhase,4);save();renderDynamic();toast("تم حفظ تفاصيل المشروع");return}
-  if(t.dataset.follow){state.review.followUp=t.dataset.follow;state.review.confirmed=false;runtime.maxPhase=Math.min(runtime.maxPhase,4);state.maxPhase=runtime.maxPhase;document.querySelectorAll("[data-follow]").forEach(function(x){x.classList.toggle("active",x===t)});renderDynamic();return}
-  if(t.id==="reviewConfirmed"){state.review.confirmed=true;runtime.maxPhase=Math.max(runtime.maxPhase,5);save();renderDynamic();toast("تمت مراجعة المشروع");return}
+  if(t.dataset.cookingchoice){state.details.cooking=t.dataset.cookingchoice;invalidateDetails();renderDynamic();return}
+  if(t.dataset.userchoice){state.details.users=t.dataset.userchoice;invalidateDetails();renderDynamic();return}
+  if(t.dataset.sinkchoice){state.details.sink=t.dataset.sinkchoice;invalidateDetails();renderDynamic();return}
+  if(t.dataset.storage){var sk=t.dataset.storage;state.details.storageTouched=true;state.details.storage[sk]=!state.details.storage[sk];invalidateDetails();renderDynamic();return}
+  if(t.dataset.appliance){var ak=t.dataset.appliance;state.details.applianceTouched=true;state.details.appliances[ak]=!state.details.appliances[ak];invalidateDetails();renderDynamic();return}
   if(t.dataset.editphase){goPhase(Number(t.dataset.editphase));return}
   if(t.dataset.camera){cameraPreset(runtime.studio,t.dataset.camera);updateCameraControls();return}
   if(t.id==="shareProject"){copyShare();return}
@@ -337,9 +380,9 @@ function bind(){
   }
  });
  root.addEventListener("input",function(ev){var e=ev.target,id=e.id;
-  if(id==="city"){state.project.city=e.value.trim();state.review.confirmed=false}
-  if(id==="roomLength"){state.room.length=Number(e.value)||state.room.length;resetConfiguratorForRoom();invalidateVisual()}
-  if(id==="roomWidth"){state.room.width=Number(e.value)||state.room.width;resetConfiguratorForRoom();invalidateVisual()}
+  if(id==="city"){state.project.city=e.value.trim()}
+  if(id==="roomLength"){var h1=state.config&&state.config.seeded&&runtime.maxPhase>1;state.room.length=Number(e.value)||state.room.length;resetConfiguratorForRoom();invalidateVisual();if(h1)toast("تغيّرت الأبعاد؛ حدّثنا التكوين المبدئي فقط.")}
+  if(id==="roomWidth"){var h2=state.config&&state.config.seeded&&runtime.maxPhase>1;state.room.width=Number(e.value)||state.room.width;resetConfiguratorForRoom();invalidateVisual();if(h2)toast("تغيّرت الأبعاد؛ حدّثنا التكوين المبدئي فقط.")}
   if(id==="roomHeight"){state.room.height=Number(e.value)||state.room.height;invalidateVisual()}
   if(e.dataset.markerpos){var m=state.room.markers.find(function(x){return x.id===e.dataset.markerpos});if(m)m.pos=Number(e.value);invalidateVisual()}
   if(id==="customerName")state.contact.name=e.value;
@@ -348,12 +391,10 @@ function bind(){
  });
  root.addEventListener("change",function(ev){var e=ev.target,id=e.id;
   if(e.dataset.markerwall){var m=state.room.markers.find(function(x){return x.id===e.dataset.markerwall});if(m)m.wall=e.value;invalidateVisual();renderDynamic();return}
-  if(id==="users"){state.details.users=e.value;invalidateDetails()}
-  if(id==="cooking"){state.details.cooking=e.value;invalidateDetails()}
-  if(id==="sinkMode"){state.details.sink=e.value;invalidateDetails()}
   if(id==="refFile"){handleFile(e.files&&e.files[0]);return}
   renderDynamic()
  });
+ root.addEventListener("toggle",function(ev){var d=ev.target;if(!d.matches||!d.matches(".requirementGroup")||!d.open)return;root.querySelectorAll(".requirementGroup").forEach(function(x){if(x!==d)x.open=false})},true);
  document.getElementById("backBtn").addEventListener("click",previousPhase);document.getElementById("nextBtn").addEventListener("click",nextPhase);
  window.addEventListener("popstate",function(){var hm=location.hash.match(/^#phase-(\d)$/);if(hm){runtime.suspendHistory=true;goPhase(Math.min(runtime.maxPhase,Number(hm[1])),"replace")}})
 }
