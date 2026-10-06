@@ -277,7 +277,8 @@ function customerGroups(){
 }
 function reviewStatusText(){return briefQuality(canonicalBrief()).label}
 function renderGroupCards(targetId){
- var e=document.getElementById(targetId);if(!e)return;e.innerHTML=customerGroups().map(function(g){var lines=g.lines.filter(Boolean),edit=g.phase===5?'<a class="journeyEdit" href="#customerName">تعديل</a>':'<a class="journeyEdit" href="#phase-'+g.phase+'" data-jump="'+g.phase+'">تعديل</a>';return'<article class="journeyGroup"><div><h4>'+safe(g.title)+'</h4>'+edit+'</div>'+lines.slice(0,3).map(function(x){return'<p>'+safe(x)+'</p>'}).join("")+'</article>'}).join("")
+ var e=document.getElementById(targetId);if(!e)return;e.innerHTML=customerGroups().map(function(g){var lines=g.lines.filter(Boolean),edit=g.phase===5?'<a class="journeyEdit" href="#customerName">تعديل</a>':'<a class="journeyEdit" href="#phase-'+g.phase+'" data-jump="'+g.phase+'">تعديل</a>';return'<article class="journeyGroup"><div><h4>'+safe(g.title)+'</h4>'+edit+'</div>'+lines.slice(0,3).map(function(x){return'<p>'+safe(x)+'</p>'}).join("")+'</article>'}).join("");
+ e.querySelectorAll(".journeyEdit[data-jump]").forEach(function(link){link.addEventListener("touchend",function(ev){var n=Number(link.dataset.jump);if(n<=runtime.maxPhase){ev.preventDefault();goPhase(n)}},{passive:false})})
 }
 
 
