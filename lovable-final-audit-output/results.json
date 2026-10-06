@@ -1,0 +1,268 @@
+{
+  "status": "FAIL",
+  "url": "https://dakhakhni-kitchen-demo.lovable.app/",
+  "expectedSha": "c4457536fd1d974ea30d6e97179a890f9fb39145",
+  "viewports": {
+    "mobile-430": {
+      "hero": {
+        "title": "دخاخني | ابدأ مشروع مطبخك",
+        "dir": "rtl",
+        "lang": "ar",
+        "width": 430,
+        "scrollWidth": 430,
+        "heroText": "تجربة تمهيدية قبل التصميم\nرتّب مشروع مطبخك\nقبل جلسة التصميم.\n\nابدأ بالمساحة، شاهد اتجاهاً مبدئياً في 3D، حدّد الخزائن والأجهزة، ثم أرسل لفريق دخاخني ملخصاً واحداً واضحاً بدل الرسائل المتفرقة.\n\n01\nرتّب المساحة بسرعة\n02\nجرّب اتجاهاً في 3D\n03\nأرسل ملخصاً واحداً\nابدأ مشروعك\nجرّب 3D الآن\n\nالمعاينة ثلاثية الأبعاد اتجاه مبدئي للمناقشة وليست تصميم تصنيع أو اعتماداً نهائياً.\n\nاسحب أفقياً لتغيير الزاوية\n3D مباشر\nحرف L\nأدخل المقاسات أو تابع بدونها\nعاجي مطفي\nواجهات\nعاجي\nخشبي\nفحمي\nسطح\nفاتح\nدافئ\nداكن\n\nاتجاهات بصرية تجريبية فقط — وليست كتالوج خامات رسمي.",
+        "heroCanvas": {
+          "x": 13,
+          "y": 432.765625,
+          "width": 404,
+          "height": 286,
+          "top": 432.765625,
+          "right": 417,
+          "bottom": 718.765625,
+          "left": 13
+        },
+        "heroTouch": "pan-y",
+        "phaseProgressH": 52,
+        "lovableBadge": [
+          {
+            "id": "lovable-badge",
+            "tag": "ASIDE",
+            "text": "Edit with"
+          },
+          {
+            "id": "lovable-badge-text",
+            "tag": "SPAN",
+            "text": "Edit with"
+          },
+          {
+            "id": "lovable-badge-logo",
+            "tag": "SPAN",
+            "text": ""
+          },
+          {
+            "id": "lovable-badge-divider",
+            "tag": "SPAN",
+            "text": ""
+          },
+          {
+            "id": "lovable-badge-close",
+            "tag": "BUTTON",
+            "text": ""
+          }
+        ],
+        "bodyText": "AD\nدخاخني\nابدأ مشروعك\nتجربة تمهيدية قبل التصميم\nرتّب مشروع مطبخك\nقبل جلسة التصميم.\n\nابدأ بالمساحة، شاهد اتجاهاً مبدئياً في 3D، حدّد الخزائن والأجهزة، ثم أرسل لفريق دخاخني ملخصاً واحداً واضحاً بدل الرسائل المتفرقة.\n\n01\nرتّب المساحة بسرعة\n02\nجرّب اتجاهاً في 3D\n03\nأرسل ملخصاً واحداً\nابدأ مشروعك\nجرّب 3D الآن\n\nالمعاينة ثلاثية الأبعاد اتجاه مبدئي للمناقشة وليست تصميم تصنيع أو اعتماداً نهائياً.\n\nاسحب أفقياً لتغيير الزاوية\n3D مباشر\nحرف L\nأدخل المقاسات أو تابع بدونها\nعاجي مطفي\nواجهات\nعاجي\nخشبي\nفحمي\nسطح\nفاتح\nدافئ\nداكن\n\nاتجاهات بصرية تجريبية فقط — وليست كتالوج خامات رسمي.\n\n1\nابدأ بما تعرفه\n\nنوع المشروع، الشكل، والقياسات التقريبية فقط.\n\n2\nشاهد الاتجاه بصرياً\n\nانتقل سريعاً إلى معاينة 3D التفاعلية.\n\n3\nرتّب التفاصيل لاحقاً\n\nالخزائن والأجهزة تظهر بعد المكافأة البصرية.\n\n4\nملخص واحد للمصمم\n\nاختيارات المشروع تبقى مجمعة للمراجعة.\n\n1 / 5\nالمساحة والتخطيط\n01 — المساحة والتخطيط\nثلاثة اختيارات ثم انتقل إلى 3D.\n\nحدد نقطة البداية، شكل المطبخ، وهل لديك قياسات تقريبية.\n\nنوع المشروع\nما نقطة البداية؟\nمطبخ جديد\nتجديد مطبخ قائم\nاستكشاف أولي\nشكل المطبخ الأقرب\nاختر «غير متأكد» إذا أردت تأكيده لاحقاً.\nمستقيم\nجدار واحد\nحرف L\nجداران متصلان\nحرف U\nثلاثة جوانب\nمتوازي\nصفّان متقابلان\nجزيرة\nجزيرة أو شبه جزيرة\n?\nغير متأكد\nيحدده المصمم لاحقاً\nالقياسات التقريبية\nأدخل ما تعرفه فقط. القياس النهائي واعتماد التوزيع يتمان مع فريق دخاخني.\nلدي قياسات تقريبية\nغير متأكد / أحتاج قياساً\nتفاصيل إضافية للمساحة\nاختياري — الارتفاع، الفتحات ونقاط الخدمات\n+\nدخاخني — المعاينة ثلاثية الأبعاد اتجاه مبدئي للمناقشة وليست تصميم تصنيع أو اعتماداً نهائياً. الألوان والأسطح المعروضة اتجاهات تجريبية وليست كتالوج دخاخني الرسمي. الاعتماد النهائي على العينات والخامات المعتمدة من الفريق."
+      },
+      "resourceFingerprint": {
+        "exactCore": true,
+        "exactCss": true,
+        "exactConfig": true,
+        "exactThree": true,
+        "oldF19": false,
+        "jsdelivr": [
+          "https://cdn.jsdelivr.net/gh/digitalarhat-ui/v7x@c4457536fd1d974ea30d6e97179a890f9fb39145/kitchen-engine-v5/core.css",
+          "https://cdn.jsdelivr.net/gh/digitalarhat-ui/v7x@c4457536fd1d974ea30d6e97179a890f9fb39145/kitchen-engine-v5/configs/dakhakhni.js",
+          "https://cdn.jsdelivr.net/gh/digitalarhat-ui/v7x@c4457536fd1d974ea30d6e97179a890f9fb39145/vendor/three-r128.min.js",
+          "https://cdn.jsdelivr.net/gh/digitalarhat-ui/v7x@c4457536fd1d974ea30d6e97179a890f9fb39145/vendor/GLTFLoader-r128.js",
+          "https://cdn.jsdelivr.net/gh/digitalarhat-ui/v7x@c4457536fd1d974ea30d6e97179a890f9fb39145/vendor/RGBELoader-r128.js",
+          "https://cdn.jsdelivr.net/gh/digitalarhat-ui/v7x@c4457536fd1d974ea30d6e97179a890f9fb39145/kitchen-engine-v5/core.js",
+          "https://cdn.jsdelivr.net/gh/digitalarhat-ui/v7x@c4457536fd1d974ea30d6e97179a890f9fb39145/kitchen-engine-v5/assets/kiara_interior_1k.hdr",
+          "https://cdn.jsdelivr.net/gh/digitalarhat-ui/v7x@c4457536fd1d974ea30d6e97179a890f9fb39145/kitchen-engine-v5/assets/kitchen_tap.glb"
+        ]
+      },
+      "heroSelected": {
+        "cabinet": true,
+        "worktop": true,
+        "finish": "بلوط دافئ"
+      },
+      "orbitChanged": true,
+      "phase2Initial": {
+        "oak": true,
+        "warm": true,
+        "state": "حرف L · 420 × 320 سم",
+        "islandHidden": true,
+        "viewer": {
+          "x": 12,
+          "y": -119.671875,
+          "width": 406,
+          "height": 432,
+          "top": -119.671875,
+          "right": 418,
+          "bottom": 312.328125,
+          "left": 12
+        }
+      },
+      "moduleChanged": true,
+      "inspection": true,
+      "cameraReport": {
+        "hero": true,
+        "functional": true,
+        "elevation": true,
+        "wide": true
+      },
+      "reviewText": "04 — المراجعة والخطوة التالية\nراجع مشروعك قبل التواصل.\n\nما اخترته واضح هنا، وما يحتاج تأكيداً يراجعه فريق دخاخني.\n\nمشروعك حتى الآن\nجاهز للمراجعة الأولية\n\nالقياس والخامات والتفاصيل النهائية تعتمد مع فريق دخاخني.\n\nDK-CIDZL6\nالمساحة\nتعديل\n\nحرف L\n\n420 × 320 سم تقريباً\n\nالتكوين المبدئي\nتعديل\n\nتكوين مبدئي بعد تعديلاتك\n\nوحدة باب، وحدة حوض، غسالة صحون، وحدة موقد، وحدة باب\n\nطويلة: تخزين طويل · تقسيم المؤن: أدراج داخلية\n\nالاتجاه البصري\nتعديل\n\nفحمي · حجر فاتح بعروق\n\nالعلوية: زجاج · المقابض: خطي بسيط\n\nاحتياجات الاستخدام\nتعديل\n\n3–4 أشخاص · طبخ يومي\n\nالتخزين: مؤن، تخزين طويل، أدراج عميقة\n\nالأجهزة\nتعديل\n\nشفاط\n\nملاحظات العميل\nتعديل\n\nالاسم اختياري\n\nلا توجد ملاحظة إضافية\n\nأصبح واضحاً\nجاهز للمصمم\nشكل المطبخ: حرف L\nالقياسات التقريبية: 420 × 320 سم تقريباً\nالاتجاه البصري محفوظ للمراجعة\nالاستخدام: 3–4 أشخاص · طبخ يومي\nأولوية التخزين: مؤن، تخزين طويل، أدراج عميقة\nيحتاج تأكيداً مع فريق دخاخني\nيُحسم بعد المراجعة\nالقياس الموقعي النهائي\nمواقع الخدمات والفتحات\nالخامات والعينات النهائية\nتفاصيل التصنيع وتوافق الأجهزة\nعرض السعر\nمدة التنفيذ",
+      "summaryText": "ملخص المشروع\nجاهز للمراجعة الأولية\nDK-CIDZL6\nالمساحة\nتعديل\n\nحرف L\n\n420 × 320 سم تقريباً\n\nينبع\n\nالتكوين المبدئي\nتعديل\n\nتكوين مبدئي بعد تعديلاتك\n\nوحدة باب، وحدة حوض، غسالة صحون، وحدة موقد، وحدة باب\n\nطويلة: تخزين طويل · تقسيم المؤن: أدراج داخلية\n\nالاتجاه البصري\nتعديل\n\nفحمي · حجر فاتح بعروق\n\nالعلوية: زجاج · المقابض: خطي بسيط\n\nاحتياجات الاستخدام\nتعديل\n\n3–4 أشخاص · طبخ يومي\n\nالتخزين: مؤن، تخزين طويل، أدراج عميقة\n\nالأجهزة\nتعديل\n\nشفاط\n\nملاحظات العميل\nتعديل\n\nعميل تجريبي\n\nأولوية للتخزين ومساحة التحضير.\n\nيحتاج تأكيداً مع الفريق\n\nالقياس الموقعي النهائي · مواقع الخدمات والفتحات · الخامات والعينات النهائية · تفاصيل التصنيع وتوافق الأجهزة · عرض السعر · مدة التنفيذ",
+      "wa": "https://wa.me/966545246478?text=%D8%B7%D9%84%D8%A8%20%D9%85%D8%B7%D8%A8%D8%AE%20%D9%85%D8%A8%D8%AF%D8%A6%D9%8A%20%E2%80%94%20%D8%AF%D8%AE%D8%A7%D8%AE%D9%86%D9%8A%0A%D8%B1%D9%82%D9%85%20%D8%A7%D9%84%D9%85%D8%B4%D8%B1%D9%88%D8%B9%3A%20DK-CIDZL6%0A%0A%D8%A7%D9%84%D9%85%D8%B3%D8%A7%D8%AD%D8%A9%3A%20%D8%AD%D8%B1%D9%81%20L%20%C2%B7%20420%20%C3%97%20320%20%D8%B3%D9%85%20%D8%AA%D9%82%D8%B1%D9%8A%D8%A8%D8%A7%D9%8B%0A%D8%A7%D9%84%D9%85%D9%88%D9%82%D8%B9%3A%20%D9%8A%D9%86%D8%A8%D8%B9%0A%0A%D8%A7%D9%84%D8%AA%D9%83%D9%88%D9%8A%D9%86%3A%0A%D9%88%D8%AD%D8%AF%D8%A9%20%D8%A8%D8%A7%D8%A8%D8%8C%20%D9%88%D8%AD%D8%AF%D8%A9%20%D8%AD%D9%88%D8%B6%D8%8C%20%D8%BA%D8%B3%D8%A7%D9%84%D8%A9%20%D8%B5%D8%AD%D9%88%D9%86%D8%8C%20%D9%88%D8%AD%D8%AF%D8%A9%20%D9%85%D9%88%D9%82%D8%AF%D8%8C%20%D9%88%D8%AD%D8%AF%D8%A9%20%D8%A8%D8%A7%D8%A8%20%7C%20%D8%AA%D8%AE%D8%B2%D9%8A%D9%86%20%D8%B7%D9%88%D9%8A%D9%84%0A%D8%AA%D9%82%D8%B3%D9%8A%D9%85%20%D8%A7%D9%84%D9%85%D8%A4%D9%86%3A%20%D8%A3%D8%AF%D8%B1%D8%A7%D8%AC%20%D8%AF%D8%A7%D8%AE%D9%84%D9%8A%D8%A9%0A%0A%D8%A7%D9%84%D8%A7%D8%AA%D8%AC%D8%A7%D9%87%3A%20%D9%81%D8%AD%D9%85%D9%8A%20%C2%B7%20%D8%AD%D8%AC%D8%B1%20%D9%81%D8%A7%D8%AA%D8%AD%20%D8%A8%D8%B9%D8%B1%D9%88%D9%82%20%C2%B7%20%D8%B9%D9%84%D9%88%D9%8A%D8%A9%20%D8%B2%D8%AC%D8%A7%D8%AC%20%C2%B7%20%D8%AE%D8%B7%D9%8A%20%D8%A8%D8%B3%D9%8A%D8%B7%0A%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85%3A%203%E2%80%934%20%D8%A3%D8%B4%D8%AE%D8%A7%D8%B5%20%C2%B7%20%D8%B7%D8%A8%D8%AE%20%D9%8A%D9%88%D9%85%D9%8A%20%C2%B7%20%D8%AA%D8%AE%D8%B2%D9%8A%D9%86%3A%20%D9%85%D8%A4%D9%86%D8%8C%20%D8%AA%D8%AE%D8%B2%D9%8A%D9%86%20%D8%B7%D9%88%D9%8A%D9%84%D8%8C%20%D8%A3%D8%AF%D8%B1%D8%A7%D8%AC%20%D8%B9%D9%85%D9%8A%D9%82%D8%A9%0A%D8%A7%D9%84%D8%A3%D8%AC%D9%87%D8%B2%D8%A9%3A%20%D8%B4%D9%81%D8%A7%D8%B7%0A%D8%A7%D9%84%D8%B9%D9%85%D9%8A%D9%84%3A%20%D8%B9%D9%85%D9%8A%D9%84%20%D8%AA%D8%AC%D8%B1%D9%8A%D8%A8%D9%8A%0A%D9%85%D9%84%D8%A7%D8%AD%D8%B8%D8%A9%3A%20%D8%A3%D9%88%D9%84%D9%88%D9%8A%D8%A9%20%D9%84%D9%84%D8%AA%D8%AE%D8%B2%D9%8A%D9%86%20%D9%88%D9%85%D8%B3%D8%A7%D8%AD%D8%A9%20%D8%A7%D9%84%D8%AA%D8%AD%D8%B6%D9%8A%D8%B1.%0A%D9%8A%D8%AD%D8%AA%D8%A7%D8%AC%20%D8%AA%D8%A3%D9%83%D9%8A%D8%AF%D8%A7%D9%8B%3A%20%D8%A7%D9%84%D9%82%D9%8A%D8%A7%D8%B3%20%D8%A7%D9%84%D9%85%D9%88%D9%82%D8%B9%D9%8A%20%D8%A7%D9%84%D9%86%D9%87%D8%A7%D8%A6%D9%8A%20%C2%B7%20%D9%85%D9%88%D8%A7%D9%82%D8%B9%20%D8%A7%D9%84%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D9%88%D8%A7%D9%84%D9%81%D8%AA%D8%AD%D8%A7%D8%AA%20%C2%B7%20%D8%A7%D9%84%D8%AE%D8%A7%D9%85%D8%A7%D8%AA%20%D9%88%D8%A7%D9%84%D8%B9%D9%8A%D9%86%D8%A7%D8%AA%20%D8%A7%D9%84%D9%86%D9%87%D8%A7%D8%A6%D9%8A%D8%A9%20%C2%B7%20%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84%20%D8%A7%D9%84%D8%AA%D8%B5%D9%86%D9%8A%D8%B9%20%D9%88%D8%AA%D9%88%D8%A7%D9%81%D9%82%20%D8%A7%D9%84%D8%A3%D8%AC%D9%87%D8%B2%D8%A9%0A%D8%A7%D9%84%D9%82%D9%8A%D8%A7%D8%B3%20%D9%88%D8%A7%D9%84%D8%AE%D8%A7%D9%85%D8%A7%D8%AA%20%D9%88%D8%A7%D9%84%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84%20%D8%A7%D9%84%D9%86%D9%87%D8%A7%D8%A6%D9%8A%D8%A9%20%D8%AA%D8%B9%D8%AA%D9%85%D8%AF%20%D9%85%D8%B9%20%D9%81%D8%B1%D9%8A%D9%82%20%D8%AF%D8%AE%D8%A7%D8%AE%D9%86%D9%8A.",
+      "waLines": 14,
+      "preview": "طلب مطبخ مبدئي — دخاخني\nرقم المشروع: DK-CIDZL6\n\nالمساحة: حرف L · 420 × 320 سم تقريباً\nالموقع: ينبع\n\nالتكوين:\nوحدة باب، وحدة حوض، غسالة صحون، وحدة موقد، وحدة باب | تخزين طويل\nتقسيم المؤن: أدراج داخلية\n\nالاتجاه: فحمي · حجر فاتح بعروق · علوية زجاج · خطي بسيط\nالاستخدام: 3–4 أشخاص · طبخ يومي · تخزين: مؤن، تخزين طويل، أدراج عميقة\nالأجهزة: شفاط\nالعميل: عميل تجريبي\nملاحظة: أولوية للتخزين ومساحة التحضير.\nيحتاج تأكيداً: القياس الموقعي النهائي · مواقع الخدمات والفتحات · الخامات والعينات النهائية · تفاصيل التصنيع وتوافق الأجهزة\nالقياس والخامات والتفاصيل النهائية تعتمد مع فريق دخاخني.",
+      "projectCode": "DK-CIDZL6",
+      "share": "https://dakhakhni-kitchen-demo.lovable.app/?project=eyJ2ZXJzaW9uIjo1LCJwaGFzZSI6NSwibWF4UGhhc2UiOjUsInByb2plY3QiOnsidHlwZSI6Im5ldyIsImNpdHkiOiLZitmG2KjYuSIsIm1lYXN1cmVtZW50TW9kZSI6Imtub3duIiwibm90ZSI6Itij2YjZhNmI2YrYqSDZhNmE2KrYrtiy2YrZhiDZiNmF2LPYp9it2Kkg2KfZhNiq2K3YttmK2LEuIn0sInJvb20iOnsibGVuZ3RoIjo0MjAsIndpZHRoIjozMjAsImhlaWdodCI6MjgwLCJoZWlnaHRUb3VjaGVkIjpmYWxzZSwibGF5b3V0IjoibCIsIm1hcmtlcnMiOltdfSwidmlzdWFsIjp7ImNhYmluZXQiOiJncmFwaGl0ZSIsIndvcmt0b3AiOiJ2ZWluZWQiLCJ1cHBlciI6ImdsYXNzIiwiaGFuZGxlIjoibGluZWFyIiwic2F2ZWQiOnRydWUsImV4cGxpY2l0Ijp7ImNhYmluZXQiOnRydWUsIndvcmt0b3AiOnRydWUsInVwcGVyIjp0cnVlLCJoYW5kbGUiOnRydWV9fSwiZGV0YWlscyI6eyJzdG9yYWdlIjp7InBhbnRyeSI6dHJ1ZSwidGFsbCI6dHJ1ZSwiZGVlcERyYXdlcnMiOnRydWUsImNvcm5lciI6ZmFsc2UsIndhc3RlIjpmYWxzZSwiY29mZmVlIjpmYWxzZX0sImFwcGxpYW5jZXMiOnsiZnJpZGdlIjpmYWxzZSwib3ZlbiI6ZmFsc2UsImRpc2h3YXNoZXIiOnRydWUsImhvYiI6dHJ1ZSwiaG9vZCI6ZmFsc2UsIm1pY3Jvd2F2ZSI6ZmFsc2V9LCJzdG9yYWdlRXhwbGljaXQiOnsiZGVlcERyYXdlcnMiOnRydWV9LCJhcHBsaWFuY2VFeHBsaWNpdCI6e30sInNpbmsiOiJ1bnN1cmUiLCJ1c2VycyI6IjMtNCIsImNvb2tpbmciOiJkYWlseSIsInN0b3JhZ2VUb3VjaGVkIjp0cnVlLCJhcHBsaWFuY2VUb3VjaGVkIjpmYWxzZSwiY29uZmlnU3luY2VkIjp0cnVlLCJyZXZpZXdlZCI6dHJ1ZX0sInJldmlldyI6eyJjb25maXJtZWQiOnRydWUsImZvbGxvd1VwIjoid2hhdHNhcHAifSwiY29udGFjdCI6eyJuYW1lIjoi2LnZhdmK2YQg2KrYrNix2YrYqNmKIn0sImNvbmZpZyI6eyJzZWVkZWQiOnRydWUsImxheW91dCI6IiIsImJhc2VTbG90cyI6WyJkb29ycyIsInNpbmsiLCJkaXNod2FzaGVyIiwiaG9iIiwiZG9vcnMiXSwidGFsbFNsb3RzIjpbInBhbnRyeSJdLCJvcmlnaW5CYXNlU2xvdHMiOlsiZHJhd2VycyIsInNpbmsiLCJkaXNod2FzaGVyIiwiaG9iIiwiZG9vcnMiXSwib3JpZ2luVGFsbFNsb3RzIjpbImZyaWRnZSJdLCJleHBsaWNpdCI6eyJsYXlvdXQiOmZhbHNlLCJiYXNlIjp7IjAiOnRydWV9LCJ0YWxsIjp7IjAiOnRydWV9LCJwYW50cnlJbnRlcmlvciI6dHJ1ZX0sInNlbGVjdGVkIjoidGFsbDowIiwicGFudHJ5SW50ZXJpb3IiOiJpbnRlcm5hbERyYXdlcnMiLCJpbnNwZWN0Ijp0cnVlLCJhY3RpdmVUYWIiOiJkZXRhaWxzIn0sIm1ldGEiOnsiY3JlYXRlZEF0IjoxNzkxMjk0MzkwODAxLCJ1cGRhdGVkQXQiOjE3OTEyOTQ0Mzc2ODIsInByb2plY3RDb2RlIjoiREstQ0lEWkw2In19#phase-5",
+      "restore": {
+        "ok": true,
+        "url": "https://dakhakhni-kitchen-demo.lovable.app/#phase-5",
+        "code": "DK-CIDZL6",
+        "text": "AD\nدخاخني\nابدأ مشروعك\nتجربة تمهيدية قبل التصميم\nرتّب مشروع مطبخك\nقبل جلسة التصميم.\n\nابدأ بالمساحة، شاهد اتجاهاً مبدئياً في 3D، حدّد الخزائن والأجهزة، ثم أرسل لفريق دخاخني ملخصاً واحداً واضحاً بدل الرسائل المتفرقة.\n\n01\nرتّب المساحة بسرعة\n02\nجرّب اتجاهاً في 3D\n03\nأرسل ملخصاً واحداً\nابدأ مشروعك\nجرّب 3D الآن\n\nالمعاينة ثلاثية الأبعاد اتجاه مبدئي للمناقشة وليست تصميم تصنيع أو اعتماداً نهائياً.\n\nاسحب أفقياً لتغيير الزاوية\n3D مباشر\nحرف L\n420 × 320 سم\nفحمي\nواجهات\nعاجي\nخشبي\nفحمي\nسطح\nفاتح\nدافئ\nداكن\n\nاتجاهات بصرية تجريبية فقط — وليست كتالوج خامات رسمي.\n\n1\nابدأ بما تعرفه\n\nنوع المشروع، الشكل، والقياسات التقريبية فقط.\n\n2\nشاهد الاتجاه بصرياً\n\nانتقل سريعاً إلى معاينة 3D التفاعلية.\n\n3\nرتّب التفاصيل لاحقاً\n\nالخزائن والأجهزة تظهر بعد المكافأة البصرية.\n\n4\nملخص واحد للمصمم\n\nاختيارات المشروع تبقى مجمعة للمراجعة.\n\n5 / 5\nالتواصل والمراجعة\n05 — التواصل والمراجعة\nمشروعك جاهز للمراجعة الأولية.\n\nراجع الملخص، عدّل ما تحتاجه، ثم افتح واتساب.\n\nالاسم\nاختياري\nالمدينة / الحي\nاختياري\nملاحظة للمصمم\nاختياري\nملخص المشروع\nجاهز للمراجعة الأولية\nDK-CIDZL6\nالمساحة\nتعديل\n\nحرف L\n\n420 × 320 سم تقريباً\n\nينبع\n\nالتكوين المبدئي\nتعديل\n\nتكوين مبدئي بعد تعديلاتك\n\nوحدة باب، وحدة حوض، غسالة صحون، وحدة موقد، وحدة باب\n\nطويلة: تخزين طويل · تقسيم المؤن: أدراج داخلية\n\nالاتجاه البصري\nتعديل\n\nفحمي · حجر فاتح بعروق\n\nالعلوية: زجاج · المقابض: خطي بسيط\n\nاحتياجات الاستخدام\nتعديل\n\n3–4 أشخاص · طبخ يومي\n\nالتخزين: مؤن، تخزين طويل، أدراج عميقة\n\nالأجهزة\nتعديل\n\nشفاط\n\nملاحظات العميل\nتعديل\n\nعميل تجريبي\n\nأولوية للتخزين ومساحة التحضير.\n\nيحتاج تأكيداً مع الفريق\n\nالقياس الموقعي النهائي · مواقع الخدمات والفتحات · الخامات والعينات النهائية · تفاصيل التصنيع وتوافق الأجهزة · عرض السعر · مدة التنفيذ\n\nحالة الطلب\nجاهز للمراجعة الأولية\n\nالقياس والخامات والتفاصيل النهائية تعتمد مع فريق دخاخني.\n\nالمعاينة قبل الإرسال\nرسالة واتساب\n\nهذه الرسالة ستفتح في واتساب ولن تُرسل تلقائياً.\n\nطلب مطبخ مبدئي — دخاخني\nرقم المشروع: DK-CIDZL6\n\nالمساحة: حرف L · 420 × 320 سم تقريباً\nالموقع: ينبع\n\nالتكوين:\nوحدة باب، وحدة حوض، غسالة صحون، وحدة موقد، وحدة باب | تخزين طويل\nتقسيم المؤن: أدراج داخلية\n\nالاتجاه: فحمي · حجر فاتح بعروق · علوية زجاج · خطي بسيط\nالاستخدام: 3–4 أشخاص · طبخ يومي · تخزين: مؤن، تخزين طويل، أدراج عميقة\nالأجهزة: شفاط\nالعميل: عميل تجريبي\nملاحظة: أولوية للتخزين ومساحة التحضير.\nيحتاج تأكيداً: القياس الموقعي النهائي · مواقع الخدمات والفتحات · الخامات والعينات النهائية · تفاصيل التصنيع وتوافق الأجهزة\nالقياس والخامات والتفاصيل النهائية تعتمد مع فريق دخاخني.\nفتح واتساب دخاخني ←\nنسخ ملخص المشروع\nنسخ رابط المشروع\nالموقع الرسمي لدخاخني ↗\nالسابق\nدخاخني — المعاينة ثلاثية الأبعاد اتجاه مبدئي للمناقشة وليست تصميم تصنيع أو اعتماداً نهائياً. الألوان والأسطح المعروضة اتجاهات تجريبية وليست كتالوج دخاخني الرسمي. الاعتماد النهائي على العينات والخامات المعتمدة من الفريق."
+      },
+      "metrics": {
+        "scrollWidth": 430,
+        "innerWidth": 430,
+        "minTarget": 17,
+        "phase": 5,
+        "summaryGroups": 6,
+        "lovableBadgeVisible": true,
+        "contamination": false
+      },
+      "errors": [],
+      "requestFailures": []
+    },
+    "mobile-390": {
+      "hero": {
+        "title": "دخاخني | ابدأ مشروع مطبخك",
+        "dir": "rtl",
+        "lang": "ar",
+        "width": 390,
+        "scrollWidth": 390,
+        "heroText": "تجربة تمهيدية قبل التصميم\nرتّب مشروع مطبخك\nقبل جلسة التصميم.\n\nابدأ بالمساحة، شاهد اتجاهاً مبدئياً في 3D، حدّد الخزائن والأجهزة، ثم أرسل لفريق دخاخني ملخصاً واحداً واضحاً بدل الرسائل المتفرقة.\n\n01\nرتّب المساحة بسرعة\n02\nجرّب اتجاهاً في 3D\n03\nأرسل ملخصاً واحداً\nابدأ مشروعك\nجرّب 3D الآن\n\nالمعاينة ثلاثية الأبعاد اتجاه مبدئي للمناقشة وليست تصميم تصنيع أو اعتماداً نهائياً.\n\nاسحب أفقياً لتغيير الزاوية\n3D مباشر\nحرف L\nأدخل المقاسات أو تابع بدونها\nعاجي مطفي\nواجهات\nعاجي\nخشبي\nفحمي\nسطح\nفاتح\nدافئ\nداكن\n\nاتجاهات بصرية تجريبية فقط — وليست كتالوج خامات رسمي.",
+        "heroCanvas": {
+          "x": 13,
+          "y": 432.765625,
+          "width": 364,
+          "height": 286,
+          "top": 432.765625,
+          "right": 377,
+          "bottom": 718.765625,
+          "left": 13
+        },
+        "heroTouch": "pan-y",
+        "phaseProgressH": 52,
+        "lovableBadge": [
+          {
+            "id": "lovable-badge",
+            "tag": "ASIDE",
+            "text": "Edit with"
+          },
+          {
+            "id": "lovable-badge-text",
+            "tag": "SPAN",
+            "text": "Edit with"
+          },
+          {
+            "id": "lovable-badge-logo",
+            "tag": "SPAN",
+            "text": ""
+          },
+          {
+            "id": "lovable-badge-divider",
+            "tag": "SPAN",
+            "text": ""
+          },
+          {
+            "id": "lovable-badge-close",
+            "tag": "BUTTON",
+            "text": ""
+          }
+        ],
+        "bodyText": "AD\nدخاخني\nابدأ مشروعك\nتجربة تمهيدية قبل التصميم\nرتّب مشروع مطبخك\nقبل جلسة التصميم.\n\nابدأ بالمساحة، شاهد اتجاهاً مبدئياً في 3D، حدّد الخزائن والأجهزة، ثم أرسل لفريق دخاخني ملخصاً واحداً واضحاً بدل الرسائل المتفرقة.\n\n01\nرتّب المساحة بسرعة\n02\nجرّب اتجاهاً في 3D\n03\nأرسل ملخصاً واحداً\nابدأ مشروعك\nجرّب 3D الآن\n\nالمعاينة ثلاثية الأبعاد اتجاه مبدئي للمناقشة وليست تصميم تصنيع أو اعتماداً نهائياً.\n\nاسحب أفقياً لتغيير الزاوية\n3D مباشر\nحرف L\nأدخل المقاسات أو تابع بدونها\nعاجي مطفي\nواجهات\nعاجي\nخشبي\nفحمي\nسطح\nفاتح\nدافئ\nداكن\n\nاتجاهات بصرية تجريبية فقط — وليست كتالوج خامات رسمي.\n\n1\nابدأ بما تعرفه\n\nنوع المشروع، الشكل، والقياسات التقريبية فقط.\n\n2\nشاهد الاتجاه بصرياً\n\nانتقل سريعاً إلى معاينة 3D التفاعلية.\n\n3\nرتّب التفاصيل لاحقاً\n\nالخزائن والأجهزة تظهر بعد المكافأة البصرية.\n\n4\nملخص واحد للمصمم\n\nاختيارات المشروع تبقى مجمعة للمراجعة.\n\n1 / 5\nالمساحة والتخطيط\n01 — المساحة والتخطيط\nثلاثة اختيارات ثم انتقل إلى 3D.\n\nحدد نقطة البداية، شكل المطبخ، وهل لديك قياسات تقريبية.\n\nنوع المشروع\nما نقطة البداية؟\nمطبخ جديد\nتجديد مطبخ قائم\nاستكشاف أولي\nشكل المطبخ الأقرب\nاختر «غير متأكد» إذا أردت تأكيده لاحقاً.\nمستقيم\nجدار واحد\nحرف L\nجداران متصلان\nحرف U\nثلاثة جوانب\nمتوازي\nصفّان متقابلان\nجزيرة\nجزيرة أو شبه جزيرة\n?\nغير متأكد\nيحدده المصمم لاحقاً\nالقياسات التقريبية\nأدخل ما تعرفه فقط. القياس النهائي واعتماد التوزيع يتمان مع فريق دخاخني.\nلدي قياسات تقريبية\nغير متأكد / أحتاج قياساً\nتفاصيل إضافية للمساحة\nاختياري — الارتفاع، الفتحات ونقاط الخدمات\n+\nدخاخني — المعاينة ثلاثية الأبعاد اتجاه مبدئي للمناقشة وليست تصميم تصنيع أو اعتماداً نهائياً. الألوان والأسطح المعروضة اتجاهات تجريبية وليست كتالوج دخاخني الرسمي. الاعتماد النهائي على العينات والخامات المعتمدة من الفريق."
+      },
+      "resourceFingerprint": {
+        "exactCore": true,
+        "exactCss": true,
+        "exactConfig": true,
+        "exactThree": true,
+        "oldF19": false,
+        "jsdelivr": [
+          "https://cdn.jsdelivr.net/gh/digitalarhat-ui/v7x@c4457536fd1d974ea30d6e97179a890f9fb39145/kitchen-engine-v5/core.css",
+          "https://cdn.jsdelivr.net/gh/digitalarhat-ui/v7x@c4457536fd1d974ea30d6e97179a890f9fb39145/kitchen-engine-v5/configs/dakhakhni.js",
+          "https://cdn.jsdelivr.net/gh/digitalarhat-ui/v7x@c4457536fd1d974ea30d6e97179a890f9fb39145/vendor/three-r128.min.js",
+          "https://cdn.jsdelivr.net/gh/digitalarhat-ui/v7x@c4457536fd1d974ea30d6e97179a890f9fb39145/vendor/GLTFLoader-r128.js",
+          "https://cdn.jsdelivr.net/gh/digitalarhat-ui/v7x@c4457536fd1d974ea30d6e97179a890f9fb39145/vendor/RGBELoader-r128.js",
+          "https://cdn.jsdelivr.net/gh/digitalarhat-ui/v7x@c4457536fd1d974ea30d6e97179a890f9fb39145/kitchen-engine-v5/core.js",
+          "https://cdn.jsdelivr.net/gh/digitalarhat-ui/v7x@c4457536fd1d974ea30d6e97179a890f9fb39145/kitchen-engine-v5/assets/kiara_interior_1k.hdr",
+          "https://cdn.jsdelivr.net/gh/digitalarhat-ui/v7x@c4457536fd1d974ea30d6e97179a890f9fb39145/kitchen-engine-v5/assets/kitchen_tap.glb"
+        ]
+      },
+      "heroSelected": {
+        "cabinet": true,
+        "worktop": true,
+        "finish": "بلوط دافئ"
+      },
+      "orbitChanged": true,
+      "phase2Initial": {
+        "oak": true,
+        "warm": true,
+        "state": "حرف L · 420 × 320 سم",
+        "islandHidden": true,
+        "viewer": {
+          "x": 12,
+          "y": -189.671875,
+          "width": 366,
+          "height": 405.109375,
+          "top": -189.671875,
+          "right": 378,
+          "bottom": 215.4375,
+          "left": 12
+        }
+      },
+      "moduleChanged": true,
+      "inspection": true,
+      "cameraReport": {
+        "hero": true,
+        "functional": true,
+        "elevation": true,
+        "wide": true
+      },
+      "reviewText": "04 — المراجعة والخطوة التالية\nراجع مشروعك قبل التواصل.\n\nما اخترته واضح هنا، وما يحتاج تأكيداً يراجعه فريق دخاخني.\n\nمشروعك حتى الآن\nجاهز للمراجعة الأولية\n\nالقياس والخامات والتفاصيل النهائية تعتمد مع فريق دخاخني.\n\nDK-W02YFB\nالمساحة\nتعديل\n\nحرف L\n\n420 × 320 سم تقريباً\n\nالتكوين المبدئي\nتعديل\n\nتكوين مبدئي بعد تعديلاتك\n\nوحدة باب، وحدة حوض، غسالة صحون، وحدة موقد، وحدة باب\n\nطويلة: تخزين طويل · تقسيم المؤن: أدراج داخلية\n\nالاتجاه البصري\nتعديل\n\nفحمي · حجر فاتح بعروق\n\nالعلوية: زجاج · المقابض: خطي بسيط\n\nاحتياجات الاستخدام\nتعديل\n\n3–4 أشخاص · طبخ يومي\n\nالتخزين: مؤن، تخزين طويل، أدراج عميقة\n\nالأجهزة\nتعديل\n\nشفاط\n\nملاحظات العميل\nتعديل\n\nالاسم اختياري\n\nلا توجد ملاحظة إضافية\n\nأصبح واضحاً\nجاهز للمصمم\nشكل المطبخ: حرف L\nالقياسات التقريبية: 420 × 320 سم تقريباً\nالاتجاه البصري محفوظ للمراجعة\nالاستخدام: 3–4 أشخاص · طبخ يومي\nأولوية التخزين: مؤن، تخزين طويل، أدراج عميقة\nيحتاج تأكيداً مع فريق دخاخني\nيُحسم بعد المراجعة\nالقياس الموقعي النهائي\nمواقع الخدمات والفتحات\nالخامات والعينات النهائية\nتفاصيل التصنيع وتوافق الأجهزة\nعرض السعر\nمدة التنفيذ",
+      "summaryText": "ملخص المشروع\nجاهز للمراجعة الأولية\nDK-W02YFB\nالمساحة\nتعديل\n\nحرف L\n\n420 × 320 سم تقريباً\n\nينبع\n\nالتكوين المبدئي\nتعديل\n\nتكوين مبدئي بعد تعديلاتك\n\nوحدة باب، وحدة حوض، غسالة صحون، وحدة موقد، وحدة باب\n\nطويلة: تخزين طويل · تقسيم المؤن: أدراج داخلية\n\nالاتجاه البصري\nتعديل\n\nفحمي · حجر فاتح بعروق\n\nالعلوية: زجاج · المقابض: خطي بسيط\n\nاحتياجات الاستخدام\nتعديل\n\n3–4 أشخاص · طبخ يومي\n\nالتخزين: مؤن، تخزين طويل، أدراج عميقة\n\nالأجهزة\nتعديل\n\nشفاط\n\nملاحظات العميل\nتعديل\n\nعميل تجريبي\n\nأولوية للتخزين ومساحة التحضير.\n\nيحتاج تأكيداً مع الفريق\n\nالقياس الموقعي النهائي · مواقع الخدمات والفتحات · الخامات والعينات النهائية · تفاصيل التصنيع وتوافق الأجهزة · عرض السعر · مدة التنفيذ",
+      "wa": "https://wa.me/966545246478?text=%D8%B7%D9%84%D8%A8%20%D9%85%D8%B7%D8%A8%D8%AE%20%D9%85%D8%A8%D8%AF%D8%A6%D9%8A%20%E2%80%94%20%D8%AF%D8%AE%D8%A7%D8%AE%D9%86%D9%8A%0A%D8%B1%D9%82%D9%85%20%D8%A7%D9%84%D9%85%D8%B4%D8%B1%D9%88%D8%B9%3A%20DK-W02YFB%0A%0A%D8%A7%D9%84%D9%85%D8%B3%D8%A7%D8%AD%D8%A9%3A%20%D8%AD%D8%B1%D9%81%20L%20%C2%B7%20420%20%C3%97%20320%20%D8%B3%D9%85%20%D8%AA%D9%82%D8%B1%D9%8A%D8%A8%D8%A7%D9%8B%0A%D8%A7%D9%84%D9%85%D9%88%D9%82%D8%B9%3A%20%D9%8A%D9%86%D8%A8%D8%B9%0A%0A%D8%A7%D9%84%D8%AA%D9%83%D9%88%D9%8A%D9%86%3A%0A%D9%88%D8%AD%D8%AF%D8%A9%20%D8%A8%D8%A7%D8%A8%D8%8C%20%D9%88%D8%AD%D8%AF%D8%A9%20%D8%AD%D9%88%D8%B6%D8%8C%20%D8%BA%D8%B3%D8%A7%D9%84%D8%A9%20%D8%B5%D8%AD%D9%88%D9%86%D8%8C%20%D9%88%D8%AD%D8%AF%D8%A9%20%D9%85%D9%88%D9%82%D8%AF%D8%8C%20%D9%88%D8%AD%D8%AF%D8%A9%20%D8%A8%D8%A7%D8%A8%20%7C%20%D8%AA%D8%AE%D8%B2%D9%8A%D9%86%20%D8%B7%D9%88%D9%8A%D9%84%0A%D8%AA%D9%82%D8%B3%D9%8A%D9%85%20%D8%A7%D9%84%D9%85%D8%A4%D9%86%3A%20%D8%A3%D8%AF%D8%B1%D8%A7%D8%AC%20%D8%AF%D8%A7%D8%AE%D9%84%D9%8A%D8%A9%0A%0A%D8%A7%D9%84%D8%A7%D8%AA%D8%AC%D8%A7%D9%87%3A%20%D9%81%D8%AD%D9%85%D9%8A%20%C2%B7%20%D8%AD%D8%AC%D8%B1%20%D9%81%D8%A7%D8%AA%D8%AD%20%D8%A8%D8%B9%D8%B1%D9%88%D9%82%20%C2%B7%20%D8%B9%D9%84%D9%88%D9%8A%D8%A9%20%D8%B2%D8%AC%D8%A7%D8%AC%20%C2%B7%20%D8%AE%D8%B7%D9%8A%20%D8%A8%D8%B3%D9%8A%D8%B7%0A%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85%3A%203%E2%80%934%20%D8%A3%D8%B4%D8%AE%D8%A7%D8%B5%20%C2%B7%20%D8%B7%D8%A8%D8%AE%20%D9%8A%D9%88%D9%85%D9%8A%20%C2%B7%20%D8%AA%D8%AE%D8%B2%D9%8A%D9%86%3A%20%D9%85%D8%A4%D9%86%D8%8C%20%D8%AA%D8%AE%D8%B2%D9%8A%D9%86%20%D8%B7%D9%88%D9%8A%D9%84%D8%8C%20%D8%A3%D8%AF%D8%B1%D8%A7%D8%AC%20%D8%B9%D9%85%D9%8A%D9%82%D8%A9%0A%D8%A7%D9%84%D8%A3%D8%AC%D9%87%D8%B2%D8%A9%3A%20%D8%B4%D9%81%D8%A7%D8%B7%0A%D8%A7%D9%84%D8%B9%D9%85%D9%8A%D9%84%3A%20%D8%B9%D9%85%D9%8A%D9%84%20%D8%AA%D8%AC%D8%B1%D9%8A%D8%A8%D9%8A%0A%D9%85%D9%84%D8%A7%D8%AD%D8%B8%D8%A9%3A%20%D8%A3%D9%88%D9%84%D9%88%D9%8A%D8%A9%20%D9%84%D9%84%D8%AA%D8%AE%D8%B2%D9%8A%D9%86%20%D9%88%D9%85%D8%B3%D8%A7%D8%AD%D8%A9%20%D8%A7%D9%84%D8%AA%D8%AD%D8%B6%D9%8A%D8%B1.%0A%D9%8A%D8%AD%D8%AA%D8%A7%D8%AC%20%D8%AA%D8%A3%D9%83%D9%8A%D8%AF%D8%A7%D9%8B%3A%20%D8%A7%D9%84%D9%82%D9%8A%D8%A7%D8%B3%20%D8%A7%D9%84%D9%85%D9%88%D9%82%D8%B9%D9%8A%20%D8%A7%D9%84%D9%86%D9%87%D8%A7%D8%A6%D9%8A%20%C2%B7%20%D9%85%D9%88%D8%A7%D9%82%D8%B9%20%D8%A7%D9%84%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D9%88%D8%A7%D9%84%D9%81%D8%AA%D8%AD%D8%A7%D8%AA%20%C2%B7%20%D8%A7%D9%84%D8%AE%D8%A7%D9%85%D8%A7%D8%AA%20%D9%88%D8%A7%D9%84%D8%B9%D9%8A%D9%86%D8%A7%D8%AA%20%D8%A7%D9%84%D9%86%D9%87%D8%A7%D8%A6%D9%8A%D8%A9%20%C2%B7%20%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84%20%D8%A7%D9%84%D8%AA%D8%B5%D9%86%D9%8A%D8%B9%20%D9%88%D8%AA%D9%88%D8%A7%D9%81%D9%82%20%D8%A7%D9%84%D8%A3%D8%AC%D9%87%D8%B2%D8%A9%0A%D8%A7%D9%84%D9%82%D9%8A%D8%A7%D8%B3%20%D9%88%D8%A7%D9%84%D8%AE%D8%A7%D9%85%D8%A7%D8%AA%20%D9%88%D8%A7%D9%84%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84%20%D8%A7%D9%84%D9%86%D9%87%D8%A7%D8%A6%D9%8A%D8%A9%20%D8%AA%D8%B9%D8%AA%D9%85%D8%AF%20%D9%85%D8%B9%20%D9%81%D8%B1%D9%8A%D9%82%20%D8%AF%D8%AE%D8%A7%D8%AE%D9%86%D9%8A.",
+      "waLines": 14,
+      "preview": "طلب مطبخ مبدئي — دخاخني\nرقم المشروع: DK-W02YFB\n\nالمساحة: حرف L · 420 × 320 سم تقريباً\nالموقع: ينبع\n\nالتكوين:\nوحدة باب، وحدة حوض، غسالة صحون، وحدة موقد، وحدة باب | تخزين طويل\nتقسيم المؤن: أدراج داخلية\n\nالاتجاه: فحمي · حجر فاتح بعروق · علوية زجاج · خطي بسيط\nالاستخدام: 3–4 أشخاص · طبخ يومي · تخزين: مؤن، تخزين طويل، أدراج عميقة\nالأجهزة: شفاط\nالعميل: عميل تجريبي\nملاحظة: أولوية للتخزين ومساحة التحضير.\nيحتاج تأكيداً: القياس الموقعي النهائي · مواقع الخدمات والفتحات · الخامات والعينات النهائية · تفاصيل التصنيع وتوافق الأجهزة\nالقياس والخامات والتفاصيل النهائية تعتمد مع فريق دخاخني.",
+      "projectCode": "DK-W02YFB",
+      "share": "https://dakhakhni-kitchen-demo.lovable.app/?project=eyJ2ZXJzaW9uIjo1LCJwaGFzZSI6NSwibWF4UGhhc2UiOjUsInByb2plY3QiOnsidHlwZSI6Im5ldyIsImNpdHkiOiLZitmG2KjYuSIsIm1lYXN1cmVtZW50TW9kZSI6Imtub3duIiwibm90ZSI6Itij2YjZhNmI2YrYqSDZhNmE2KrYrtiy2YrZhiDZiNmF2LPYp9it2Kkg2KfZhNiq2K3YttmK2LEuIn0sInJvb20iOnsibGVuZ3RoIjo0MjAsIndpZHRoIjozMjAsImhlaWdodCI6MjgwLCJoZWlnaHRUb3VjaGVkIjpmYWxzZSwibGF5b3V0IjoibCIsIm1hcmtlcnMiOltdfSwidmlzdWFsIjp7ImNhYmluZXQiOiJncmFwaGl0ZSIsIndvcmt0b3AiOiJ2ZWluZWQiLCJ1cHBlciI6ImdsYXNzIiwiaGFuZGxlIjoibGluZWFyIiwic2F2ZWQiOnRydWUsImV4cGxpY2l0Ijp7ImNhYmluZXQiOnRydWUsIndvcmt0b3AiOnRydWUsInVwcGVyIjp0cnVlLCJoYW5kbGUiOnRydWV9fSwiZGV0YWlscyI6eyJzdG9yYWdlIjp7InBhbnRyeSI6dHJ1ZSwidGFsbCI6dHJ1ZSwiZGVlcERyYXdlcnMiOnRydWUsImNvcm5lciI6ZmFsc2UsIndhc3RlIjpmYWxzZSwiY29mZmVlIjpmYWxzZX0sImFwcGxpYW5jZXMiOnsiZnJpZGdlIjpmYWxzZSwib3ZlbiI6ZmFsc2UsImRpc2h3YXNoZXIiOnRydWUsImhvYiI6dHJ1ZSwiaG9vZCI6ZmFsc2UsIm1pY3Jvd2F2ZSI6ZmFsc2V9LCJzdG9yYWdlRXhwbGljaXQiOnsiZGVlcERyYXdlcnMiOnRydWV9LCJhcHBsaWFuY2VFeHBsaWNpdCI6e30sInNpbmsiOiJ1bnN1cmUiLCJ1c2VycyI6IjMtNCIsImNvb2tpbmciOiJkYWlseSIsInN0b3JhZ2VUb3VjaGVkIjp0cnVlLCJhcHBsaWFuY2VUb3VjaGVkIjpmYWxzZSwiY29uZmlnU3luY2VkIjp0cnVlLCJyZXZpZXdlZCI6dHJ1ZX0sInJldmlldyI6eyJjb25maXJtZWQiOnRydWUsImZvbGxvd1VwIjoid2hhdHNhcHAifSwiY29udGFjdCI6eyJuYW1lIjoi2LnZhdmK2YQg2KrYrNix2YrYqNmKIn0sImNvbmZpZyI6eyJzZWVkZWQiOnRydWUsImxheW91dCI6IiIsImJhc2VTbG90cyI6WyJkb29ycyIsInNpbmsiLCJkaXNod2FzaGVyIiwiaG9iIiwiZG9vcnMiXSwidGFsbFNsb3RzIjpbInBhbnRyeSJdLCJvcmlnaW5CYXNlU2xvdHMiOlsiZHJhd2VycyIsInNpbmsiLCJkaXNod2FzaGVyIiwiaG9iIiwiZG9vcnMiXSwib3JpZ2luVGFsbFNsb3RzIjpbImZyaWRnZSJdLCJleHBsaWNpdCI6eyJsYXlvdXQiOmZhbHNlLCJiYXNlIjp7IjAiOnRydWV9LCJ0YWxsIjp7IjAiOnRydWV9LCJwYW50cnlJbnRlcmlvciI6dHJ1ZX0sInNlbGVjdGVkIjoidGFsbDowIiwicGFudHJ5SW50ZXJpb3IiOiJpbnRlcm5hbERyYXdlcnMiLCJpbnNwZWN0Ijp0cnVlLCJhY3RpdmVUYWIiOiJkZXRhaWxzIn0sIm1ldGEiOnsiY3JlYXRlZEF0IjoxNzkxMjk0NDQzNDk4LCJ1cGRhdGVkQXQiOjE3OTEyOTQ0ODc1MDYsInByb2plY3RDb2RlIjoiREstVzAyWUZCIn19#phase-5",
+      "restore": {
+        "ok": true,
+        "url": "https://dakhakhni-kitchen-demo.lovable.app/#phase-5",
+        "code": "DK-W02YFB",
+        "text": "AD\nدخاخني\nابدأ مشروعك\nتجربة تمهيدية قبل التصميم\nرتّب مشروع مطبخك\nقبل جلسة التصميم.\n\nابدأ بالمساحة، شاهد اتجاهاً مبدئياً في 3D، حدّد الخزائن والأجهزة، ثم أرسل لفريق دخاخني ملخصاً واحداً واضحاً بدل الرسائل المتفرقة.\n\n01\nرتّب المساحة بسرعة\n02\nجرّب اتجاهاً في 3D\n03\nأرسل ملخصاً واحداً\nابدأ مشروعك\nجرّب 3D الآن\n\nالمعاينة ثلاثية الأبعاد اتجاه مبدئي للمناقشة وليست تصميم تصنيع أو اعتماداً نهائياً.\n\nاسحب أفقياً لتغيير الزاوية\n3D مباشر\nحرف L\n420 × 320 سم\nفحمي\nواجهات\nعاجي\nخشبي\nفحمي\nسطح\nفاتح\nدافئ\nداكن\n\nاتجاهات بصرية تجريبية فقط — وليست كتالوج خامات رسمي.\n\n1\nابدأ بما تعرفه\n\nنوع المشروع، الشكل، والقياسات التقريبية فقط.\n\n2\nشاهد الاتجاه بصرياً\n\nانتقل سريعاً إلى معاينة 3D التفاعلية.\n\n3\nرتّب التفاصيل لاحقاً\n\nالخزائن والأجهزة تظهر بعد المكافأة البصرية.\n\n4\nملخص واحد للمصمم\n\nاختيارات المشروع تبقى مجمعة للمراجعة.\n\n5 / 5\nالتواصل والمراجعة\n05 — التواصل والمراجعة\nمشروعك جاهز للمراجعة الأولية.\n\nراجع الملخص، عدّل ما تحتاجه، ثم افتح واتساب.\n\nالاسم\nاختياري\nالمدينة / الحي\nاختياري\nملاحظة للمصمم\nاختياري\nملخص المشروع\nجاهز للمراجعة الأولية\nDK-W02YFB\nالمساحة\nتعديل\n\nحرف L\n\n420 × 320 سم تقريباً\n\nينبع\n\nالتكوين المبدئي\nتعديل\n\nتكوين مبدئي بعد تعديلاتك\n\nوحدة باب، وحدة حوض، غسالة صحون، وحدة موقد، وحدة باب\n\nطويلة: تخزين طويل · تقسيم المؤن: أدراج داخلية\n\nالاتجاه البصري\nتعديل\n\nفحمي · حجر فاتح بعروق\n\nالعلوية: زجاج · المقابض: خطي بسيط\n\nاحتياجات الاستخدام\nتعديل\n\n3–4 أشخاص · طبخ يومي\n\nالتخزين: مؤن، تخزين طويل، أدراج عميقة\n\nالأجهزة\nتعديل\n\nشفاط\n\nملاحظات العميل\nتعديل\n\nعميل تجريبي\n\nأولوية للتخزين ومساحة التحضير.\n\nيحتاج تأكيداً مع الفريق\n\nالقياس الموقعي النهائي · مواقع الخدمات والفتحات · الخامات والعينات النهائية · تفاصيل التصنيع وتوافق الأجهزة · عرض السعر · مدة التنفيذ\n\nحالة الطلب\nجاهز للمراجعة الأولية\n\nالقياس والخامات والتفاصيل النهائية تعتمد مع فريق دخاخني.\n\nالمعاينة قبل الإرسال\nرسالة واتساب\n\nهذه الرسالة ستفتح في واتساب ولن تُرسل تلقائياً.\n\nطلب مطبخ مبدئي — دخاخني\nرقم المشروع: DK-W02YFB\n\nالمساحة: حرف L · 420 × 320 سم تقريباً\nالموقع: ينبع\n\nالتكوين:\nوحدة باب، وحدة حوض، غسالة صحون، وحدة موقد، وحدة باب | تخزين طويل\nتقسيم المؤن: أدراج داخلية\n\nالاتجاه: فحمي · حجر فاتح بعروق · علوية زجاج · خطي بسيط\nالاستخدام: 3–4 أشخاص · طبخ يومي · تخزين: مؤن، تخزين طويل، أدراج عميقة\nالأجهزة: شفاط\nالعميل: عميل تجريبي\nملاحظة: أولوية للتخزين ومساحة التحضير.\nيحتاج تأكيداً: القياس الموقعي النهائي · مواقع الخدمات والفتحات · الخامات والعينات النهائية · تفاصيل التصنيع وتوافق الأجهزة\nالقياس والخامات والتفاصيل النهائية تعتمد مع فريق دخاخني.\nفتح واتساب دخاخني ←\nنسخ ملخص المشروع\nنسخ رابط المشروع\nالموقع الرسمي لدخاخني ↗\nالسابق\nدخاخني — المعاينة ثلاثية الأبعاد اتجاه مبدئي للمناقشة وليست تصميم تصنيع أو اعتماداً نهائياً. الألوان والأسطح المعروضة اتجاهات تجريبية وليست كتالوج دخاخني الرسمي. الاعتماد النهائي على العينات والخامات المعتمدة من الفريق."
+      },
+      "metrics": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "minTarget": 17,
+        "phase": 5,
+        "summaryGroups": 6,
+        "lovableBadgeVisible": true,
+        "contamination": false
+      },
+      "errors": [],
+      "requestFailures": []
+    }
+  },
+  "errors": [
+    "desktop-1440: locator.click: Timeout 20000ms exceeded.\nCall log:\n  - waiting for locator('#configPanel [data-cabinet=\"graphite\"]')\n\n    at run (/home/runner/work/v7x/v7x/live-audit.mjs:109:64)\n    at async file:///home/runner/work/v7x/v7x/live-audit.mjs:243:7"
+  ],
+  "releaseBlockers": [
+    {
+      "viewport": "mobile-430",
+      "blockers": [
+        "Lovable badge visible",
+        "touch target below 44px: 17"
+      ]
+    },
+    {
+      "viewport": "mobile-390",
+      "blockers": [
+        "Lovable badge visible",
+        "touch target below 44px: 17"
+      ]
+    }
+  ]
+}
