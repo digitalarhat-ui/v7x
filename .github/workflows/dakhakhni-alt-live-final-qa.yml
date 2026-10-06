@@ -23,7 +23,7 @@ jobs:
           import { chromium } from 'playwright';
           import fs from 'fs';
           fs.mkdirSync('alt-live-qa',{recursive:true});
-          const url='https://dakhakhni-kitchen-demo.lovable.app/';
+          const url='https://dakhakhni-kitchen-studio.lovable.app/';
           const result={status:'PASS',url,viewports:{},errors:[]};
           async function setVal(page,sel,v){const l=page.locator(sel);await l.fill(String(v));await l.dispatchEvent('input');}
           async function run(name,width,height){
