@@ -187,6 +187,10 @@ function briefKnown(brief){
 function briefNeedsConfirmation(){
  var a=["القياس الموقعي النهائي"];if(!(state.room.markers||[]).length)a.push("مواقع الخدمات والفتحات");a.push("الخامات والعينات النهائية","تفاصيل التصنيع وتوافق الأجهزة","عرض السعر","مدة التنفيذ");return a
 }
+function briefExtraAppliances(brief){
+ var represented={};brief.configuration.mainUnits.concat(brief.configuration.tallUnits).forEach(function(x){if(["fridge","oven","dishwasher","hob"].indexOf(x.type)>=0)represented[x.type]=true});
+ return brief.usage.appliances.filter(function(x){return !represented[x.key]})
+}
 function canonicalBrief(){
  ensureConfigurator();ensureBriefProvenance();
  var mainUnits=configurationUnits("base"),tallUnits=configurationUnits("tall"),storage=[],appliances=[];
@@ -219,7 +223,7 @@ function canonicalBriefText(){
  lines.push("العلوية والمقابض: "+b.configuration.upperDirection.label+" · "+b.configuration.handleDirection.label,"","الاتجاه البصري: "+b.visual.cabinetDirection.label+" · "+b.visual.worktopDirection.label);
  var use=[];if(b.usage.users.label)use.push(b.usage.users.label);if(b.usage.cooking.label)use.push(b.usage.cooking.label);if(use.length)lines.push("الاستخدام: "+use.join(" · "));
  if(b.usage.storageNeeds.length)lines.push("التخزين: "+b.usage.storageNeeds.map(function(x){return x.label}).join("، "));
- if(b.usage.appliances.length)lines.push("الأجهزة: "+b.usage.appliances.map(function(x){return x.label}).join("، "));
+ var extraApps=briefExtraAppliances(b);if(extraApps.length)lines.push("الأجهزة الإضافية: "+extraApps.map(function(x){return x.label}).join("، "));
  if(b.customer.name)lines.push("الاسم: "+b.customer.name);if(b.customer.note)lines.push("ملاحظة: "+b.customer.note);if(b.customer.fileReference)lines.push("مرجع للمراجعة: لدي مخطط/صورة للمساحة وسيتم إرفاقها يدوياً.");
  lines.push("","يحتاج تأكيداً: "+b.review.needsConfirmation.slice(0,4).join(" · "),q.note);return lines.join("\n")
 }
@@ -260,14 +264,14 @@ function requirementSummary(kind){
 }
 function choiceCard(label,key,on,attr){return'<button type="button" class="reqChoice '+(on?"active":"")+'" data-'+attr+'="'+key+'"><span>'+safe(label)+'</span></button>'}
 function customerGroups(){
- var b=canonicalBrief(),use=[],storage=b.usage.storageNeeds.map(function(x){return x.label}),apps=b.usage.appliances.map(function(x){return x.label});
+ var b=canonicalBrief(),use=[],storage=b.usage.storageNeeds.map(function(x){return x.label}),apps=briefExtraAppliances(b).map(function(x){return x.label});
  if(b.usage.users.label)use.push(b.usage.users.label);if(b.usage.cooking.label)use.push(b.usage.cooking.label);
  return[
   {title:"المساحة",phase:1,lines:[b.space.layout.label,b.space.dimensions.label].concat(b.customer.city?[b.customer.city]:[])},
   {title:"التكوين المبدئي",phase:2,lines:[b.configuration.status,b.configuration.mainUnits.length?b.configuration.mainUnits.map(function(x){return x.label}).join("، "):"يحتاج تأكيد الوحدات",b.configuration.tallUnits.length?"طويلة: "+b.configuration.tallUnits.map(function(x){return x.label}).join("، ")+(b.configuration.tallUnits.some(function(x){return x.type==="pantry"})?" · تقسيم المؤن: "+b.configuration.pantryInterior.label:""):""]},
   {title:"الاتجاه البصري",phase:2,lines:[b.visual.cabinetDirection.label+" · "+b.visual.worktopDirection.label,"العلوية: "+b.configuration.upperDirection.label+" · المقابض: "+b.configuration.handleDirection.label]},
   {title:"احتياجات الاستخدام",phase:3,lines:[use.length?use.join(" · "):"لم تُضف تفضيلات استخدام",storage.length?"التخزين: "+storage.join("، "):""]},
-  {title:"الأجهزة",phase:3,lines:[apps.length?apps.join("، "):"لم تُحدد أجهزة"]},
+  {title:"الأجهزة",phase:3,lines:[apps.length?apps.join("، "):"الأجهزة المطلوبة ممثلة في التكوين"]},
   {title:"ملاحظات العميل",phase:5,lines:[b.customer.name?b.customer.name:"الاسم اختياري",b.customer.note?b.customer.note:"لا توجد ملاحظة إضافية"]}
  ]
 }
@@ -422,7 +426,7 @@ function whatsappSummary(){
  if(config.length){lines.push("","التكوين:");lines.push(config.join(" | "));if(b.configuration.tallUnits.some(function(x){return x.type==="pantry"}))lines.push("تقسيم المؤن: "+b.configuration.pantryInterior.label)}
  lines.push("","الاتجاه: "+b.visual.cabinetDirection.label+" · "+b.visual.worktopDirection.label+" · علوية "+b.configuration.upperDirection.label+" · "+b.configuration.handleDirection.label);
  var use=[];if(b.usage.users.label)use.push(b.usage.users.label);if(b.usage.cooking.label)use.push(b.usage.cooking.label);if(b.usage.storageNeeds.length)use.push("تخزين: "+b.usage.storageNeeds.map(function(x){return x.label}).join("، "));if(use.length)lines.push("الاستخدام: "+use.join(" · "));
- if(b.usage.appliances.length)lines.push("الأجهزة: "+b.usage.appliances.map(function(x){return x.label}).join("، "));
+ var extraApps=briefExtraAppliances(b);if(extraApps.length)lines.push("الأجهزة: "+extraApps.map(function(x){return x.label}).join("، "));
  if(b.customer.name)lines.push("العميل: "+b.customer.name);if(b.customer.note)lines.push("ملاحظة: "+b.customer.note);if(b.customer.fileReference)lines.push("مرجع: لدي مخطط/صورة للمساحة وسيتم إرفاقها يدوياً.");
  lines.push("يحتاج تأكيداً: "+b.review.needsConfirmation.slice(0,4).join(" · "),q.note);return lines.join("\n")
 }
