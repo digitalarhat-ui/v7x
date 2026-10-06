@@ -19,13 +19,13 @@ jobs:
           node-version: '20'
       - run: npm install --no-save playwright@1.55.0
       - run: npx playwright install --with-deps chromium
-      - name: Verify Lovable production host
+      - name: Verify Wix alternate production host
         run: |
           cat > altqa.mjs <<'EOF'
           import { chromium } from 'playwright';
           import fs from 'fs';
           fs.mkdirSync('alt-host-qa',{recursive:true});
-          const url='https://dakhakhni-kitchen-demo.lovable.app/';
+          const url='https://headless-hcvqlgycuzi-digitalarhat-140c.wix-site-host.com/';
           const expected='c4457536fd1d974ea30d6e97179a890f9fb39145';
           const result={status:'PASS',url,expected,viewports:{},errors:[]};
           async function run(name,width,height){
@@ -50,7 +50,7 @@ jobs:
               canvas:document.querySelector('#heroCanvas')?.getBoundingClientRect().toJSON(),
               coreResources:performance.getEntriesByType('resource').map(x=>x.name).filter(x=>x.includes('kitchen-engine-v5/core.')||x.includes('/configs/dakhakhni.js')),
               hasExpectedAsset:[...performance.getEntriesByType('resource')].some(x=>x.name.includes('@'+expected+'/kitchen-engine-v5/core.js')),
-              lovableBadge:[...document.querySelectorAll('body *')].filter(el=>((el.textContent||'').trim()==='Edit with Lovable')||((el.getAttribute&&el.getAttribute('href'))||'').includes('lovable.dev')).filter(el=>getComputedStyle(el).display!=='none'&&getComputedStyle(el).visibility!=='hidden').map(el=>el.outerHTML.slice(0,300))
+              hostContamination:[...document.querySelectorAll('body *')].filter(el=>/lovable|replit|netlify/i.test(((el.textContent||'')+' '+((el.getAttribute&&el.getAttribute('href'))||'')))).filter(el=>getComputedStyle(el).display!=='none'&&getComputedStyle(el).visibility!=='hidden').map(el=>el.outerHTML.slice(0,300))
             }),expected);
             if(initial.title!=='دخاخني | ابدأ مشروع مطبخك') throw new Error(name+' title mismatch');
             if(initial.dir!=='rtl') throw new Error(name+' RTL missing');
@@ -58,7 +58,7 @@ jobs:
             if(!initial.heroText.includes('رتّب مشروع مطبخك')) throw new Error(name+' hero copy missing');
             if(!initial.canvas||initial.canvas.width<250||initial.canvas.height<220) throw new Error(name+' hero canvas too small');
             if(!initial.hasExpectedAsset) throw new Error(name+' exact source SHA core.js not loaded');
-            if(initial.lovableBadge.length) throw new Error(name+' visible Lovable badge');
+            if(initial.hostContamination.length) throw new Error(name+' visible host-platform contamination');
 
             await page.screenshot({path:'alt-host-qa/'+name+'-hero.png',fullPage:false});
 
