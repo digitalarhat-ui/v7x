@@ -6,7 +6,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: dakhakhni-phase7-release-gate
+  group: dakhakhni-phase7-final-gate
   cancel-in-progress: true
 jobs:
   qa:
