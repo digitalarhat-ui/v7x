@@ -9,7 +9,7 @@ permissions:
 jobs:
   live:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 6
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v4
@@ -28,6 +28,7 @@ jobs:
           async function setVal(page,sel,v){const l=page.locator(sel);await l.fill(String(v));await l.dispatchEvent('input');}
           async function run(name,width,height){
             const browser=await chromium.launch({headless:true});
+            try {
             const context=await browser.newContext({
               viewport:{width,height},
               deviceScaleFactor:1,
@@ -127,17 +128,17 @@ jobs:
             if(badResponses.length)throw new Error(name+' failed resources: '+badResponses.join(' | '));
 
             result.viewports[name]={first,p2,final,errors,badResponses};
-            await browser.close();
+            } finally {
+              await browser.close();
+            }
           }
-          try{
-            for(const v of [
-              {name:'mobile-390',width:390,height:844},
-              {name:'mobile-430',width:430,height:900},
-              {name:'desktop-1440',width:1440,height:1000}
-            ]) await run(v.name,v.width,v.height);
-          }catch(e){
-            result.status='FAIL';
-            result.errors.push(e.stack||String(e));
+          for(const v of [
+            {name:'mobile-390',width:390,height:844},
+            {name:'mobile-430',width:430,height:900},
+            {name:'desktop-1440',width:1440,height:1000}
+          ]){
+            try{ await run(v.name,v.width,v.height); }
+            catch(e){ result.status='FAIL'; result.errors.push(v.name+': '+(e.stack||String(e))); }
           }
           fs.writeFileSync('alt-live-qa/results.json',JSON.stringify(result,null,2));
           if(result.status!=='PASS')process.exitCode=1;
