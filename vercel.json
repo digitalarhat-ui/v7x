@@ -274,6 +274,32 @@
           "value": "public, max-age=0, must-revalidate"
         }
       ]
+    },
+    {
+      "source": "/lamasat-alkhaleejoun-kitchen-studio-v20",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/lamasat-alkhaleejoun-kitchen-studio-v20/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
     }
   ],
   "alias": [
@@ -311,7 +337,8 @@
     "fleet-parts-memory.vercel.app",
     "modern-sector-decision-twin.vercel.app",
     "wasaam-alsarya-kitchens.vercel.app",
-    "urbanfurniva-kitchen-studio.vercel.app"
+    "urbanfurniva-kitchen-studio.vercel.app",
+    "lamasat-alkhaleejoun.vercel.app"
   ],
   "redirects": [
     {
@@ -696,6 +723,17 @@
         {
           "type": "host",
           "value": "urbanfurniva-kitchen-studio.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/lamasat-alkhaleejoun-kitchen-studio-v20",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "lamasat-alkhaleejoun.vercel.app"
         }
       ]
     }
