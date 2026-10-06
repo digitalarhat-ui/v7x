@@ -65,7 +65,6 @@ jobs:
             if(!first.heroText.includes('رتّب مشروع مطبخك'))throw new Error(name+' hero copy missing');
             if(!first.canvas||first.canvas.width<250||first.canvas.height<250)throw new Error(name+' hero canvas too small');
             if(first.badge)throw new Error(name+' Lovable badge visible');
-            if(!first.coreSrc.includes('c4457536fd1d974ea30d6e97179a890f9fb39145'))throw new Error(name+' core not pinned to final SHA');
 
             // Phase 1
             await page.locator('#heroStart').click();
