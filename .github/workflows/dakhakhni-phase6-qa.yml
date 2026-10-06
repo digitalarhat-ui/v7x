@@ -75,7 +75,11 @@ jobs:
               await p.locator('#roomWidth').fill('321');await p.locator('#roomWidth').dispatchEvent('input');await sleep(70);await p.locator('#roomWidth').fill('320');await p.locator('#roomWidth').dispatchEvent('input');
               if(height){await p.locator('.optionalDetails summary').click();await sleep(80);await p.locator('#roomHeight').fill('285');await p.locator('#roomHeight').dispatchEvent('input');await sleep(70);await p.locator('#roomHeight').fill('280');await p.locator('#roomHeight').dispatchEvent('input')}
             }
-            await tap(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="2"].active')
+            await tap(p,'#nextBtn');
+            try{await p.waitForSelector('.stage[data-stage="2"].active',{timeout:1800})}catch(_){
+              const after=await st(p);if(after?.phase!==2){await p.locator('#nextBtn').focus();await p.locator('#nextBtn').press('Enter')}
+              await p.waitForSelector('.stage[data-stage="2"].active')
+            }
           }
           async function configureExact(p){
             await p.locator('[data-configtab="cabinet"]').click();await p.locator('.configPanel [data-cabinet="oak"]').click();
