@@ -52,7 +52,7 @@ jobs:
             const mobile=width<700,context=await browser.newContext({viewport:{width,height},deviceScaleFactor:1,reducedMotion:'reduce',hasTouch:mobile,isMobile:mobile,permissions:['clipboard-read','clipboard-write']});
             const page=await context.newPage();page.setDefaultTimeout(18000);const errors=[],warnings=[];
             page.on('pageerror',e=>errors.push('page:'+e.message));page.on('console',m=>{if(m.type()==='error')errors.push('console:'+m.text());else if(m.type()==='warning')warnings.push(m.text())});
-            await page.addInitScript(()=>localStorage.clear());await page.goto(base,{waitUntil:'domcontentloaded'});await page.waitForSelector('#heroCanvas');await sleep(650);
+            await page.goto(base,{waitUntil:'domcontentloaded'});await page.waitForSelector('#heroCanvas');await sleep(650);
             return{browser,context,page,mobile,errors,warnings}
           }
           async function st(p){return p.evaluate(()=>JSON.parse(localStorage.getItem('dakhakhni:v5:project')||'null'))}
