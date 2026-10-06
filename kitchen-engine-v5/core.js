@@ -497,7 +497,8 @@ function bind(){
   if(t.dataset.appliance){var ak=t.dataset.appliance;state.details.applianceTouched=true;state.details.applianceExplicit[ak]=true;state.details.appliances[ak]=!state.details.appliances[ak];invalidateDetails();renderDynamic();return}
   if(t.dataset.editphase){var ep=Number(t.dataset.editphase);goPhase(ep);if(t.dataset.editfield)setTimeout(function(){var el=document.getElementById(t.dataset.editfield);if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.focus()}},80);return}
   if(t.dataset.camera){cameraPreset(runtime.studio,t.dataset.camera);updateCameraControls();return}
-  if(t.id==="copyBrief"){copyProjectBrief();return}\n  if(t.id==="shareProject"){copyShare();return}
+  if(t.id==="copyBrief"){copyProjectBrief();return}
+  if(t.id==="shareProject"){copyShare();return}
   if(t.id==="waButton"){
     var earliest=0;if(!validatePhase(1,false))earliest=1;else if(!state.visual.saved)earliest=2;else if(!state.details.reviewed)earliest=3;else if(!state.review.confirmed)earliest=4;
     if(earliest){ev.preventDefault();runtime.maxPhase=Math.max(runtime.maxPhase,earliest);state.maxPhase=runtime.maxPhase;goPhase(earliest);toast("راجع هذه المرحلة قبل فتح واتساب");return}
