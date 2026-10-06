@@ -275,6 +275,16 @@ function reviewStatusText(){return briefQuality(canonicalBrief()).label}
 function renderGroupCards(targetId){
  var e=document.getElementById(targetId);if(!e)return;e.innerHTML=customerGroups().map(function(g){var lines=g.lines.filter(Boolean);return'<article class="journeyGroup"><div><h4>'+safe(g.title)+'</h4><button type="button" data-editphase="'+g.phase+'" '+(g.phase===5?'data-editfield="customerName"':'')+'>تعديل</button></div>'+lines.slice(0,3).map(function(x){return'<p>'+safe(x)+'</p>'}).join("")+'</article>'}).join("")
 }
+function bindBriefEditButtons(){
+ document.querySelectorAll(".journeyGroups [data-editphase]").forEach(function(btn){
+  if(btn.dataset.briefEditBound==="1")return;btn.dataset.briefEditBound="1";
+  btn.addEventListener("click",function(ev){
+   ev.preventDefault();ev.stopPropagation();var ep=Number(btn.dataset.editphase);goPhase(ep);
+   if(btn.dataset.editfield)setTimeout(function(){var el=document.getElementById(btn.dataset.editfield);if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.focus()}},90)
+  })
+ })
+}
+
 
 function selectedConfig(){
  ensureConfigurator();var p=String(state.config.selected||"base:0").split(":"),kind=p[0],index=Math.max(0,Number(p[1])||0),list=kind==="tall"?state.config.tallSlots:state.config.baseSlots;
@@ -449,7 +459,7 @@ function updateCameraControls(){var hasIsland=hasPlausibleIsland();document.quer
  var vf=document.getElementById("viewerLabel");if(vf)vf.textContent=viewerStateLabel();var ss=document.getElementById("studioState");if(ss)ss.textContent=configLayoutLabel()+" · "+(knownMeasurements()?state.room.length+" × "+state.room.width+" سم":"قياسات غير مؤكدة");
  var ps=document.getElementById("phase2SavedState");if(ps)ps.textContent=state.visual.saved?"الاتجاه محفوظ":"";
  var brief=canonicalBrief(),quality=briefQuality(brief),kl=document.getElementById("knownList"),cl=document.getElementById("confirmList");if(kl)kl.innerHTML=brief.review.known.map(function(x){return"<li>"+safe(x)+"</li>"}).join("");if(cl)cl.innerHTML=brief.review.needsConfirmation.slice(0,6).map(function(x){return"<li>"+safe(x)+"</li>"}).join("");
- renderGroupCards("reviewGroups");summaryGroups();var wp=document.getElementById("waPreview"),wb=document.getElementById("waButton");if(wp)wp.textContent=whatsappSummary();if(wb)wb.href=whatsappUrl();
+ renderGroupCards("reviewGroups");summaryGroups();bindBriefEditButtons();var wp=document.getElementById("waPreview"),wb=document.getElementById("waButton");if(wp)wp.textContent=whatsappSummary();if(wb)wb.href=whatsappUrl();
  var rs=document.getElementById("reviewStatusText"),rn=document.getElementById("reviewStatusNote"),bq=document.getElementById("briefQualityLabel"),bqa=document.getElementById("briefQualityAside"),bqn=document.getElementById("briefQualityNote"),bnt=document.getElementById("briefNeedsText");if(rs)rs.textContent=quality.label;if(rn)rn.textContent=quality.note;if(bq)bq.textContent=quality.label;if(bqa)bqa.textContent=quality.label;if(bqn)bqn.textContent=quality.note;if(bnt)bnt.textContent=brief.review.needsConfirmation.join(" · ");
  var hl=document.getElementById("heroLayout"),hd=document.getElementById("heroDims"),hf=document.getElementById("heroFinish");if(hl)hl.textContent=configLayoutLabel();if(hd)hd.textContent=knownMeasurements()?state.room.length+" × "+state.room.width+" سم":"أدخل المقاسات أو تابع بدونها";if(hf)hf.textContent=cabinetLabels[state.visual.cabinet];
  syncVisualControls();syncRequirementControls();updateCameraControls();syncAll3D()
