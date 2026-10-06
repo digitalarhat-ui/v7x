@@ -21,7 +21,8 @@ jobs:
         with: { node-version: '20' }
       - name: Source integrity
         run: |
-          test "$(git rev-parse HEAD~1)" = "c4457536fd1d974ea30d6e97179a890f9fb39145"
+          git fetch origin c4457536fd1d974ea30d6e97179a890f9fb39145 --depth=1
+          git diff --quiet c4457536fd1d974ea30d6e97179a890f9fb39145 HEAD -- dakhakhni-kitchen-v5 kitchen-engine-v5
           node --check kitchen-engine-v5/core.js
           ! grep -RniE 'FN Cadena|Makan Cars|Higher Class|Roaa' dakhakhni-kitchen-v5 kitchen-engine-v5 --exclude='*.map'
           grep -q '966545246478' kitchen-engine-v5/configs/dakhakhni.js
