@@ -256,5 +256,5 @@ body.planner-nav-ready .bottomNav{visibility:visible}
  .briefDocument .journeyGroup{min-height:0}
 }
 
-.journeyEdit{min-height:44px;display:inline-flex;align-items:center;justify-content:center;border:0;background:transparent;color:#92713e;font-size:8px;font-weight:900;padding:0 6px;text-decoration:none}
+.journeyEdit{min-height:44px;min-width:64px;display:inline-flex;align-items:center;justify-content:center;position:relative;z-index:2;pointer-events:auto;touch-action:manipulation;border:0;background:transparent;color:#92713e;font-size:8px;font-weight:900;padding:0 10px;text-decoration:none}
 .journeyEdit:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
