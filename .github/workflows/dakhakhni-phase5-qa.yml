@@ -133,7 +133,7 @@ jobs:
             if(JSON.stringify(st.details.storage)!==intentBefore.storage||JSON.stringify(st.details.appliances)!==intentBefore.appliances)throw new Error(tag+' Phase3 intent overwritten after upstream edit');
 
             const metrics=await page.evaluate(()=>({sw:document.documentElement.scrollWidth,iw:innerWidth,phaseCount:document.querySelectorAll('.phaseProgress li').length,minTouch:Math.min(...[...document.querySelectorAll('button,.waButton,.shareButton')].filter(e=>e.offsetParent!==null).map(e=>e.getBoundingClientRect().height)),contamination:/FN\s*Cadena|Makan\s*Cars/i.test(document.body.innerText)}));
-            if(metrics.sw>metrics.iw+1)throw new Error(tag+' overflow');if(metrics.phaseCount!==5)throw new Error(tag+' phase count');if(mobile&&metrics.minTouch<44)throw new Error(tag+' touch '+metrics.minTouch);if(metrics.contamination)throw new Error(tag+' contamination');if(errors.length)throw new Error(tag+' runtime '+errors.join(' | '));
+            if(metrics.sw>metrics.iw+1)throw new Error(tag+' overflow');if(metrics.phaseCount!==5)throw new Error(tag+' phase count');if(metrics.minTouch<44)throw new Error(tag+' touch '+metrics.minTouch);if(metrics.contamination)throw new Error(tag+' contamination');if(errors.length)throw new Error(tag+' runtime '+errors.join(' | '));
             const js=await (await fetch('http://127.0.0.1:4178/kitchen-engine-v5/core.js')).text();if(!js.includes('PMREMGenerator')||!js.includes('hasPlausibleIsland')||!js.includes('configPanel'))throw new Error(tag+' locked engine markers missing');
             result.viewports[tag]={heroOrbit,vertical,whatsappLines:lines.length,minTouch:metrics.minTouch,scrollWidth:metrics.sw,phaseCount:metrics.phaseCount,errors};
             await browser.close()
