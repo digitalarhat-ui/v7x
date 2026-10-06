@@ -58,6 +58,7 @@ jobs:
           async function st(p){return p.evaluate(()=>JSON.parse(localStorage.getItem('dakhakhni:v5:project')||'null'))}
           async function shot(p,name,full=false){await p.screenshot({path:out+'/'+name+'.png',animations:'disabled',fullPage:full});result.screenshots.push(name+'.png')}
           async function click(p,sel){await p.locator(sel).click({force:true});await sleep(90)}
+          async function tab(p,name){const tb=p.locator('[data-configtab="'+name+'"]');await tb.focus();await tb.press('Enter');await p.waitForFunction(t=>{try{const q=JSON.parse(localStorage.getItem('dakhakhni:v5:project')||'{}');return q?.config?.activeTab===t&&document.querySelector('[data-configtab="'+t+'"]')?.classList.contains('active')&&document.querySelector('#configPanel')?.innerText?.trim().length>1}catch(_){return false}},name,{timeout:3500});await sleep(70)}
           async function orbit(p,sel){
             const box=await p.locator(sel).boundingBox();if(!box)throw new Error('missing '+sel);const before=hash(await p.locator(sel).screenshot({animations:'disabled'})),x=box.x+box.width*.46,y=box.y+box.height*.49;
             await p.evaluate(({sel,x,y})=>{const c=document.querySelector(sel);for(const [type,dx,dy] of [['pointerdown',0,0],['pointermove',90,4],['pointerup',90,4]])c.dispatchEvent(new PointerEvent(type,{pointerId:51,pointerType:'touch',clientX:x+dx,clientY:y+dy,bubbles:true,cancelable:true}))},{sel,x,y});await sleep(220);
@@ -88,8 +89,8 @@ jobs:
             const baseBefore=await st(p);if(baseBefore.visual.cabinet!=='oak'||baseBefore.visual.worktop!=='veined')throw new Error(tag+' hero/studio state mismatch');
             await shot(p,tag+'-03-phase2');
             {const tq=await st(p),panel=(await p.locator('#configPanel').innerText()).trim();if(tq.config.activeTab!=='configuration'||panel.length<2)throw new Error(tag+' initial configuration tab '+JSON.stringify({active:tq.config.activeTab,panel:panel.slice(0,80)}))}
-            for(const tab of ['cabinet','worktop','upper','modules','details','configuration']){const tb=p.locator('[data-configtab="'+tab+'"]');await tb.focus();await tb.press('Enter');await p.waitForFunction(t=>{try{const q=JSON.parse(localStorage.getItem('dakhakhni:v5:project')||'{}');return q?.config?.activeTab===t&&document.querySelector('[data-configtab="'+t+'"]')?.classList.contains('active')&&document.querySelector('#configPanel')?.innerText?.trim().length>1}catch(_){return false}},tab,{timeout:3500});const tq=await st(p),panel=(await p.locator('#configPanel').innerText()).trim();if(tq.config.activeTab!==tab||panel.length<2)throw new Error(tag+' dead tab '+tab+' '+JSON.stringify({active:tq.config.activeTab,panel:panel.slice(0,80)}))}
-            await click(p,'[data-configtab="modules"]');
+            for(const name of ['cabinet','worktop','upper','modules','details','configuration']){await tab(p,name);const tq=await st(p),panel=(await p.locator('#configPanel').innerText()).trim();if(tq.config.activeTab!==name||panel.length<2)throw new Error(tag+' dead tab '+name+' '+JSON.stringify({active:tq.config.activeTab,panel:panel.slice(0,80)}))}
+            await tab(p,'modules');
             const slots=await p.locator('[data-configslot^="base:"]').count();if(slots<3)throw new Error(tag+' insufficient base slots');
             const sinkIdx=await p.locator('[data-configslot^="base:"]', {hasText:'حوض'}).count().catch(()=>0);
             await click(p,'[data-configslot="base:0"]');const before=await st(p),orig=before.config.baseSlots[0];
@@ -99,15 +100,15 @@ jobs:
             const tallCount=await p.locator('[data-configslot^="tall:"]').count();if(!tallCount)throw new Error(tag+' no tall slot');
             await click(p,'[data-configslot="tall:0"]');
             for(const kind of ['pantry','fridge','oven']){await click(p,'[data-configreplace="'+kind+'"]');q=await st(p);if(q.config.tallSlots[0]!==kind)throw new Error(tag+' tall '+kind)}
-            await click(p,'[data-configreplace="pantry"]');await click(p,'[data-configtab="details"]');await click(p,'[data-interior="internalDrawers"]');await click(p,'#inspectUnit');q=await st(p);if(!q.config.inspect||q.config.pantryInterior!=='internalDrawers')throw new Error(tag+' pantry inspection');
+            await click(p,'[data-configreplace="pantry"]');await tab(p,'details');await click(p,'[data-interior="internalDrawers"]');await click(p,'#inspectUnit');q=await st(p);if(!q.config.inspect||q.config.pantryInterior!=='internalDrawers')throw new Error(tag+' pantry inspection');
             await shot(p,tag+'-05-pantry-inspection');
-            await click(p,'[data-configtab="modules"]');await click(p,'[data-configslot="base:0"]');await shot(p,tag+'-04-selected-module');
-            await click(p,'[data-configtab="upper"]');for(const k of ['closed','glass','mixed','open']){await click(p,'[data-upper="'+k+'"]');q=await st(p);if(q.visual.upper!==k)throw new Error(tag+' upper '+k)}await click(p,'[data-upper="mixed"]');
-            await click(p,'[data-configtab="details"]');for(const k of ['integrated','linear','classic']){await click(p,'[data-handle="'+k+'"]');q=await st(p);if(q.visual.handle!==k)throw new Error(tag+' handle '+k)}await click(p,'[data-handle="integrated"]');
+            await tab(p,'modules');await click(p,'[data-configslot="base:0"]');await shot(p,tag+'-04-selected-module');
+            await tab(p,'upper');for(const k of ['closed','glass','mixed','open']){await click(p,'[data-upper="'+k+'"]');q=await st(p);if(q.visual.upper!==k)throw new Error(tag+' upper '+k)}await click(p,'[data-upper="mixed"]');
+            await tab(p,'details');for(const k of ['integrated','linear','classic']){await click(p,'[data-handle="'+k+'"]');q=await st(p);if(q.visual.handle!==k)throw new Error(tag+' handle '+k)}await click(p,'[data-handle="integrated"]');
             for(const cam of ['hero','functional','elevation','wide']){await click(p,'[data-camera="'+cam+'"]');if(!(await p.locator('[data-camera="'+cam+'"]').evaluate(e=>e.classList.contains('active'))))throw new Error(tag+' camera '+cam)}
             if(!(await orbit(p,'#studioCanvas')))throw new Error(tag+' studio orbit');
-            await click(p,'[data-configtab="cabinet"]');await click(p,'.configPanel [data-cabinet="graphite"]');await click(p,'[data-configtab="worktop"]');await click(p,'.configPanel [data-worktop="dark"]');await shot(p,tag+'-06-dark-config');
-            await click(p,'[data-configtab="cabinet"]');await click(p,'.configPanel [data-cabinet="oak"]');await click(p,'[data-configtab="worktop"]');await click(p,'.configPanel [data-worktop="veined"]');
+            await tab(p,'cabinet');await click(p,'.configPanel [data-cabinet="graphite"]');await tab(p,'worktop');await click(p,'.configPanel [data-worktop="dark"]');await shot(p,tag+'-06-dark-config');
+            await tab(p,'cabinet');await click(p,'.configPanel [data-cabinet="oak"]');await tab(p,'worktop');await click(p,'.configPanel [data-worktop="veined"]');
             await click(p,'#nextBtn');await p.waitForSelector('.stage[data-stage="3"].active')
           }
           async function phase3(p,tag,withFile=true){
