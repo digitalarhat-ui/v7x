@@ -223,3 +223,38 @@ body.planner-nav-ready .bottomNav{visibility:visible}
  .journeyGroup{min-height:0}
  .requirementGroup>summary small{max-width:220px}
 }
+
+
+/* DAKHAKHNI V5 — Phase 6 canonical designer handoff */
+.briefGrid{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(300px,.95fr);gap:18px;align-items:start}
+.handoffAside{display:grid;gap:12px;position:sticky;top:126px}
+.qualityCard{background:#f3eee5;border:1px solid var(--line);padding:16px 18px}
+.qualityCard small{display:block;color:#92713e;font-size:8px;font-weight:900}
+.qualityCard h3{margin:5px 0 6px;color:var(--forest);font-size:17px}
+.qualityCard p{margin:0;color:var(--muted);font-size:8.5px;line-height:1.65}
+.briefDocument{background:#fbf8f2}
+.briefTruth{margin-top:14px;padding:13px 14px;border-inline-start:3px solid var(--brass);background:#f3eee5}
+.briefTruth h4{margin:0 0 5px;color:var(--forest);font-size:10px}
+.briefTruth p{margin:0;color:var(--muted);font-size:8.5px;line-height:1.7}
+.handoffAside .whatsappPanel{position:static}
+.handoffAside .shareButton{min-height:44px}
+#copyBrief{border-color:rgba(255,255,255,.34);background:rgba(255,255,255,.07)}
+.journeyGroup p{word-break:normal}
+@media(max-width:900px){
+ .briefGrid{grid-template-columns:1fr}
+ .handoffAside{position:static;grid-template-columns:1fr}
+}
+@media(max-width:700px){
+ .briefGrid{gap:10px}
+ .qualityCard{padding:13px 14px}
+ .qualityCard h3{font-size:15px}
+ .briefTruth{padding:11px 12px}
+ .briefDocument .journeyGroups{grid-template-columns:1fr 1fr}
+}
+@media(max-width:390px){
+ .briefDocument .journeyGroups{grid-template-columns:1fr}
+ .briefDocument .journeyGroup{min-height:0}
+}
+
+.journeyEdit{min-height:44px;min-width:64px;display:inline-flex;align-items:center;justify-content:center;position:relative;z-index:2;pointer-events:auto;touch-action:manipulation;border:0;background:transparent;color:#92713e;font-size:8px;font-weight:900;padding:0 10px;text-decoration:none}
+.journeyEdit:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
