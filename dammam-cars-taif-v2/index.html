@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a0d0e">
+<title>معرض الدمام للسيارات الطائف — تصور رقمي</title>
+<meta name="description" content="تصور رقمي مخصص لمعرض الدمام للسيارات الطائف مبني على مخزون وصور المعرض الحالية في حراج.">
+<link rel="preconnect" href="https://postcdn.haraj.com.sa">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header><div class="wrap nav">
+<a class="wordmark" href="/" id="homeLink"><span class="mark">د</span><span><b id="brandName">معرض الدمام للسيارات</b><small id="brandSub">الطائف · مخزون حقيقي من حراج</small></span></a>
+<div class="nav-actions"><button onclick="scrollToId('inventory')" id="navInv">المخزون</button><button onclick="openFinder()" id="navFind">ابحث عن سيارتك</button><button class="dark" onclick="toggleLang()" id="langBtn">EN</button></div>
+</div></header>
+
+<main>
+<section class="hero"><div class="wrap">
+<div class="hero-top"><div><div class="eyebrow">AUTOMOTIVE V2 · REAL INVENTORY</div><h1 id="heroH1">مخزونك الحالي.<br>واضح. سريع. باسمك.</h1></div><p id="heroP">تصور مخصص لمعرض الدمام للسيارات بالطائف، مبني على سيارات وصور المعرض الحقيقية المنشورة حالياً في حراج — مع مقارنة وتفاصيل عميقة واتصال مرتبط بالسيارة نفسها.</p></div>
+<div class="slider-shell" id="sliderShell"><div class="track" id="heroTrack"></div></div>
+<div class="slider-controls"><div class="dots" id="heroDots"></div><div class="arrows"><button class="arrow" onclick="goSlide(currentSlide-1)">‹</button><button class="arrow" onclick="goSlide(currentSlide+1)">›</button></div></div>
+<div class="proof"><div><b>659</b><span id="p1">متابعة على حراج وقت إعداد التصور</span></div><div><b>7</b><span id="p2">سنوات دفع عمولة على حراج</span></div><div><b>الآن</b><span id="p3">آخر ظهور بالحساب وقت التحقق</span></div><div><b>5</b><span id="p4">سيارات حقيقية داخل هذا التصور</span></div></div>
+</div></section>
+
+<section class="section" id="inventory"><div class="wrap">
+<div class="head"><div><div class="eyebrow" id="invEye">CURRENT INVENTORY</div><h2 id="invTitle">ابدأ من السيارة، مو من رسالة عامة.</h2></div><p id="invText">كل بطاقة هنا مربوطة بإعلان حراج حقيقي للمعرض، وصور المعرض نفسها، ومواصفات الإعلان نفسها. لا سيارات وهمية ولا صور ستوك.</p></div>
+<div class="toolbar"><input class="search" id="search" placeholder="ابحث: كامري، يارس، لكزس..." oninput="renderInventory()"><div class="filters"><button class="filter on" onclick="setFilter('all',this)" id="fAll">الكل</button><button class="filter" onclick="setFilter('2020plus',this)" id="fNew">2020+</button><button class="filter" onclick="setFilter('auto',this)" id="fAuto">أوتوماتيك</button><button class="filter" onclick="setFilter('toyota',this)" id="fToyota">تويوتا</button></div></div>
+<div class="inventory" id="inventoryGrid"></div>
+</div></section>
+
+<section class="section"><div class="wrap"><div class="owner-layer"><div><div class="eyebrow gold" id="layerEye">OWNED INVENTORY LAYER</div><h2 id="layerTitle">حراج يجلب الزائر. الموقع يجمع القرار.</h2><p id="layerText">الفكرة لا تستبدل حراج. تبقي حراج كقناة اكتساب، ثم تعطي العميل طبقة مملوكة للمعرض تجمع السيارات الحالية، المقارنة، التفاصيل، وحالة السيارة قبل الاتصال.</p></div><div class="owner-flow"><div><b>01</b><span id="flow1">مخزون موحد بدل فتح عدة إعلانات</span></div><div><b>02</b><span id="flow2">تفاصيل وصور عميقة لكل سيارة</span></div><div><b>03</b><span id="flow3">مقارنة حتى 3 سيارات جنباً إلى جنب</span></div><div><b>04</b><span id="flow4">اتصال مرتبط بالسيارة المختارة</span></div></div></div></div></section>
+
+<section class="section"><div class="wrap"><div class="finder"><div><div class="eyebrow" id="findEye">FIND MY CAR</div><h2 id="findTitle">خل العميل يفلتر قبل ما يتصل.</h2><p id="findText">ثلاث خطوات قصيرة: سنة السيارة، القير، والماركة. بعدها تظهر له السيارات المطابقة من نفس مخزون المعرض الحالي.</p><button class="launch" onclick="openFinder()" id="findBtn">ابدأ الاختيار</button></div><div class="finder-points"><div><b>01</b><span id="ff1">السنة المناسبة</span></div><div><b>02</b><span id="ff2">نوع القير</span></div><div><b>03</b><span id="ff3">الماركة</span></div><div><b>04</b><span id="ff4">فتح السيارة والتواصل</span></div></div></div></div></section>
+
+<section class="section"><div class="wrap"><div class="head"><div><div class="eyebrow" id="contactEye">CONTACT TRUTH</div><h2 id="contactTitle">التواصل كما هو منشور في الإعلانات.</h2></div><p id="contactText">ما افترضنا واتساب ولا تمويل ولا وعود غير منشورة. الإعلانات الحالية تنشر أرقام اتصال مباشرة؛ لذلك الديمو يحافظ على نفس الحقيقة.</p></div><div class="contact"><div class="contact-card"><h3>معرض الدمام للسيارات الطائف</h3><p id="contactP">الطائف · حساب حراج @ab2636. الأرقام المتكررة في الإعلانات الحالية: 0555706026 و 0554316700.</p><div class="contact-buttons"><a href="tel:0555706026">0555706026</a><a href="tel:0554316700">0554316700</a><a class="alt" href="https://haraj.com.sa/users/%D9%85%D8%B9%D8%B1%D8%B6%20%D8%A7%D9%84%D8%AF%D9%85%D8%A7%D9%85%20%D9%84%D9%84%D8%B3%D9%8A%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B7%D8%A7%D8%A6%D9%81/" target="_blank" rel="noopener" id="harajProfile">حساب حراج</a></div></div><div class="contact-card"><h3 id="truthTitle">الحقيقة قبل الزينة</h3><p id="truthP">السعر غير ظاهر في الإعلانات الخمسة المختارة، لذلك الموقع لا يخترع سعراً. أي معلومة غير مثبتة تُترك للفريق عند الاتصال.</p></div></div></div></section>
+</main>
+
+<div class="comparebar" id="comparebar"><div><b id="compareCount">0</b> <span id="compareLabel">للمقارنة</span><br><small id="compareSmall">حتى 3 سيارات</small></div><button class="go" onclick="openCompare()" id="compareGo">قارن</button><button class="clear" onclick="clearCompare()">×</button></div>
+<div class="mobile-dock"><button onclick="scrollToId('inventory')" id="dockInv">المخزون</button><button class="main" onclick="openFinder()" id="dockFind">ابحث عن سيارة</button><a href="tel:0555706026" id="dockCall">اتصال</a></div>
+
+<div class="modal" id="carModal" onclick="backdrop(event,'carModal')"><div class="sheet"><div class="sheet-head"><b id="detailLabel">تفاصيل السيارة</b><button class="close" onclick="closeCar()">×</button></div><div class="detail" id="carDetail"></div></div></div>
+<div class="modal" id="compareModal" onclick="backdrop(event,'compareModal')"><div class="sheet"><div class="sheet-head"><b id="compareTitle">مقارنة السيارات</b><button class="close" onclick="closeModal('compareModal')">×</button></div><div class="detail" id="compareDetail"></div></div></div>
+<div class="modal" id="finderModal" onclick="backdrop(event,'finderModal')"><div class="sheet"><div class="sheet-head"><b>Find My Car</b><button class="close" onclick="closeModal('finderModal')">×</button></div><div class="finder-modal">
+<div class="steps"><i class="on"></i><i></i><i></i><i></i></div>
+<div class="screen on" data-step="1"><h3 id="w1">أي سنة أقرب لك؟</h3><div class="choice-grid"><button class="choice" data-year="2020plus" onclick="pick(this,'year')" id="wy1">2020 وأحدث</button><button class="choice" data-year="any" onclick="pick(this,'year')" id="wy2">أي سنة</button></div><div class="wiznav"><span></span><button class="next" onclick="wizNext()" id="next1">التالي</button></div></div>
+<div class="screen" data-step="2"><h3 id="w2">نوع القير؟</h3><div class="choice-grid"><button class="choice" data-gear="auto" onclick="pick(this,'gear')" id="wg1">أوتوماتيك</button><button class="choice" data-gear="any" onclick="pick(this,'gear')" id="wg2">أي نوع</button></div><div class="wiznav"><button class="back" onclick="wizBack()" id="back2">السابق</button><button class="next" onclick="wizNext()" id="next2">التالي</button></div></div>
+<div class="screen" data-step="3"><h3 id="w3">ماركة معينة؟</h3><div class="choice-grid"><button class="choice" data-brand="toyota" onclick="pick(this,'brand')" id="wb1">تويوتا</button><button class="choice" data-brand="lexus" onclick="pick(this,'brand')" id="wb2">لكزس</button><button class="choice" data-brand="hyundai" onclick="pick(this,'brand')" id="wb3">هيونداي</button><button class="choice" data-brand="any" onclick="pick(this,'brand')" id="wb4">أي ماركة</button></div><div class="wiznav"><button class="back" onclick="wizBack()" id="back3">السابق</button><button class="next" onclick="showMatches()" id="showM">عرض النتائج</button></div></div>
+<div class="screen" data-step="4"><h3 id="w4">النتائج من المخزون الحالي</h3><div class="results" id="finderResults"></div><div class="wiznav"><button class="back" onclick="wizBack()" id="back4">تعديل الاختيار</button><span></span></div></div>
+</div></div></div>
+
+<footer><div class="wrap" id="footerText">تصور غير رسمي مخصص للعرض، مبني على بيانات وصور معرض الدمام للسيارات الطائف المنشورة علناً في حراج وقت الإعداد. لا يمثل موقعاً رسمياً للمعرض بعد.</div></footer>
+<script src="/data.js"></script><script src="/app.js"></script>
+</body></html>
