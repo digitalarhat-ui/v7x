@@ -1,0 +1,39 @@
+{
+  "system": "DIGITALARHAT-V8X-LEADS",
+  "version": "1.0",
+  "dedupeMode": "fail-closed",
+  "reserveOnSeriousResearch": true,
+  "researchedUsedRegardlessOfOutcome": true,
+  "identityKeys": [
+    "businessNameArabic",
+    "businessNameEnglish",
+    "phone",
+    "whatsapp",
+    "domain",
+    "socialHandles",
+    "branches",
+    "sameEconomicIdentity"
+  ],
+  "releaseRules": {
+    "oneFinalSurvivorMax": true,
+    "outreachReadyMustBeEarned": true,
+    "offerReadySeparate": true,
+    "authenticAssetsOnly": true,
+    "verifiedContactOnly": true,
+    "noInventedPain": true,
+    "noInventedROI": true,
+    "arabicFirstOutreach": true,
+    "demoOnlyAfterQualification": true
+  },
+  "currentReserved": [
+    {
+      "businessNameArabic": "مؤسسة فهد الزاهر للمطابخ",
+      "businessNameEnglish": "Fahd Al Zaher Kitchens Establishment",
+      "region": "Al Baha / Al Aqiq",
+      "status": "RESEARCHED_USED_RESERVED",
+      "demoSlug": "fahd-al-zaher-kitchens",
+      "directWhatsAppVerified": false,
+      "verifiedPublicRoute": "Haraj"
+    }
+  ]
+}
