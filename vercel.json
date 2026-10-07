@@ -404,6 +404,32 @@
           "value": "public, max-age=0, must-revalidate"
         }
       ]
+    },
+    {
+      "source": "/lamset-manar-project-studio-v1",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/lamset-manar-project-studio-v1/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
     }
   ],
   "alias": [
@@ -445,7 +471,8 @@
     "lamasat-alkhaleejoun.vercel.app",
     "tafseel-matabekh-riyadh.vercel.app",
     "abu-ala-kitchens-riyadh.vercel.app",
-    "fahd-al-zaher-kitchens.vercel.app"
+    "fahd-al-zaher-kitchens.vercel.app",
+    "lamset-manar-studio.vercel.app"
   ],
   "redirects": [
     {
@@ -874,6 +901,17 @@
         {
           "type": "host",
           "value": "fahd-al-zaher-kitchens.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/lamset-manar-project-studio-v1",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "lamset-manar-studio.vercel.app"
         }
       ]
     }
