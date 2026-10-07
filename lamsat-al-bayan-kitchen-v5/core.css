@@ -46,7 +46,7 @@ body.planner-nav-ready .bottomNav{visibility:visible}
 }
 
 
-/* DAKHAKHNI V5 — Phase 1 journey architecture fixes */
+/* LAMSAT AL BAYAN V5 — Phase 1 journey architecture fixes */
 .phaseCount{direction:ltr;unicode-bidi:isolate}.phaseTrack{display:none;width:84px;height:3px;background:rgba(20,60,50,.13);overflow:hidden;flex:0 0 auto}.phaseTrack i{display:block;height:100%;width:20%;background:var(--brass);transition:width .2s ease}
 .heroVisual{cursor:grab}.heroVisual:active{cursor:grabbing}.heroVisual:focus-visible{outline:2px solid var(--brass2);outline-offset:-4px}.heroVisual canvas{touch-action:pan-y}
 .studio{scroll-margin-top:150px}.viewer canvas{touch-action:pan-y}
@@ -83,7 +83,7 @@ body.planner-nav-ready .bottomNav{visibility:visible}
 }
 
 
-/* DAKHAKHNI V5 — Phase 2 interactive 3D engine */
+/* LAMSAT AL BAYAN V5 — Phase 2 interactive 3D engine */
 .hero3dBlock{display:grid;gap:10px}.heroQuickControls{background:rgba(247,243,235,.96);border:1px solid rgba(20,60,50,.10);padding:11px 12px;display:grid;grid-template-columns:1fr 1fr;gap:10px 16px}.heroQuickGroup{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:8px}.heroQuickGroup>b{font-size:8px;color:var(--muted)}.heroQuickGroup>div{display:flex;gap:5px}.heroSwatch{min-height:44px;border:1px solid rgba(20,60,50,.13);background:#fff;color:var(--forest);display:flex;align-items:center;gap:5px;padding:0 8px;font-size:7.5px;font-weight:800}.heroSwatch i{width:16px;height:16px;border-radius:50%;background:var(--sw);border:1px solid rgba(20,60,50,.16)}.heroSwatch.active{border-color:var(--brass);box-shadow:inset 0 0 0 1px var(--brass);background:#fffdf8}.heroQuickControls>p{grid-column:1/-1;margin:0;color:var(--muted);font-size:7px;line-height:1.6}
 .studioHead{padding:16px 20px}.studioState{font-size:8px;color:#65736d;background:#fff;border:1px solid var(--line);padding:7px 9px}.viewer{height:min(66svh,690px);min-height:520px}.viewerHint{position:absolute;left:14px;top:14px;background:rgba(246,241,232,.92);color:var(--forest);padding:7px 10px;border-radius:999px;font-size:8px;font-weight:900;pointer-events:none}.viewer canvas{cursor:grab;touch-action:pan-y}.viewer canvas:active{cursor:grabbing}.cameraBar{border-top:1px solid rgba(255,255,255,.10);border-bottom:1px solid rgba(255,255,255,.10)}.cameraBar button[hidden]{display:none}.finishBar{border-top:0}.advancedVisual{background:#f8f4ec;color:var(--forest);display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}.advancedVisual>div{padding:16px}.advancedVisual>div+div{border-inline-start:1px solid var(--line)}.advancedVisual>b,.advancedVisual div>b{display:block;font-size:10px}.advancedVisual div>span{display:block;font-size:8px;color:var(--muted);margin:3px 0 10px}.advancedVisual .choiceGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.advancedVisual .choice{min-height:44px;text-align:center;font-size:8px;padding:8px}.studioSave{background:#f6f1e8;color:var(--forest);padding:14px 16px 16px;display:grid;grid-template-columns:minmax(220px,340px) 1fr;gap:8px 16px;align-items:center;border-top:1px solid var(--line)}.studioSave .saveVisual{width:100%}.studioSave>small{font-size:7.5px;color:var(--muted);line-height:1.6}.studioSave .error{grid-column:1/-1;margin:0}.threeFallback{position:absolute;inset:0;z-index:8;background:#e9e4da;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px;color:var(--forest)}.threeFallback b{font-size:15px}.threeFallback span{font-size:10px;color:var(--muted);line-height:1.8;max-width:420px;margin-top:8px}
 @media(max-width:700px){
@@ -98,7 +98,7 @@ body.planner-nav-ready .bottomNav{visibility:visible}
 @media(max-width:430px){.viewer{min-height:340px;height:50svh}.heroQuickControls{margin-top:-1px}.studioHead small{font-size:7px}.studioState{font-size:7px}.advancedVisual .choice{font-size:7.5px}}
 
 
-/* DAKHAKHNI V5 — Phase 4 bounded kitchen configurator */
+/* LAMSAT AL BAYAN V5 — Phase 4 bounded kitchen configurator */
 .configuratorStudio{overflow:hidden}
 .configuratorGrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,360px);direction:ltr;border-top:1px solid rgba(255,255,255,.08)}
 .configViewerColumn,.configuratorControls{min-width:0;direction:rtl}
@@ -163,7 +163,7 @@ body.planner-nav-ready .bottomNav{visibility:visible}
 }
 
 
-/* DAKHAKHNI V5 — Phase 5 customer-flow simplification */
+/* LAMSAT AL BAYAN V5 — Phase 5 customer-flow simplification */
 .topCta{min-height:44px}
 .optionalTag{font-size:7px!important;font-weight:700!important;color:#92713e!important;white-space:nowrap}
 .compactNotice{padding:10px 11px;font-size:8px;line-height:1.6}
@@ -225,7 +225,7 @@ body.planner-nav-ready .bottomNav{visibility:visible}
 }
 
 
-/* DAKHAKHNI V5 — Phase 6 canonical designer handoff */
+/* LAMSAT AL BAYAN V5 — Phase 6 canonical designer handoff */
 .briefGrid{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(300px,.95fr);gap:18px;align-items:start}
 .handoffAside{display:grid;gap:12px;position:sticky;top:126px}
 .qualityCard{background:#f3eee5;border:1px solid var(--line);padding:16px 18px}
@@ -278,4 +278,26 @@ body.planner-nav-ready .bottomNav{visibility:visible}
   .lamsatRealRail{display:flex;gap:9px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
   .lamsatRealRail::-webkit-scrollbar{display:none}
   .lamsatRealRail figure,.lamsatRealRail figure:nth-child(2){flex:0 0 82%;height:74vw;min-height:280px;max-height:390px;margin-top:0;scroll-snap-align:start}
+}
+
+
+/* LAMSAT AL BAYAN — mobile completion navigation release fix */
+@media(max-width:700px){
+  body.planner-nav-ready .bottomNav,
+  body[data-phase="2"] .bottomNav,
+  body[data-phase="3"] .bottomNav,
+  body[data-phase="4"] .bottomNav{
+    position:fixed!important;
+    left:0!important;
+    right:0!important;
+    bottom:0!important;
+    visibility:visible!important;
+    opacity:1!important;
+    transform:none!important;
+    pointer-events:auto!important;
+    z-index:80!important;
+  }
+  body[data-phase="2"] .planner,
+  body[data-phase="3"] .planner,
+  body[data-phase="4"] .planner{padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))!important}
 }
