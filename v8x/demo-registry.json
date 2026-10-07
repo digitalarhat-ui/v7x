@@ -1,7 +1,7 @@
 {
   "system": "DIGITALARHAT-V8X",
   "version": "1.0",
-  "deployMode": "single-release-commit-to-main",
+  "deployMode": "manual-production-only",
   "previewDeployments": false,
   "rules": {
     "oneLeadOneRelease": true,
@@ -21,6 +21,6 @@
     "contactRoute": "verified-public-Haraj-route",
     "directWhatsAppVerified": false,
     "sourceStatus": "corrected-ready",
-    "publicReleaseStatus": "release-triggered-via-v8x-git-integration"
+    "publicReleaseStatus": "blocked-by-current-vercel-daily-deployment-quota"
   }
 }
