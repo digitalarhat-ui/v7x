@@ -1,0 +1,84 @@
+name: Lamsat Al Bayan V5 Fast QA
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/lamsat-al-bayan-v5-fast-qa.yml'
+permissions:
+  contents: read
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: npm install --no-save playwright@1.55.0
+      - run: npx playwright install --with-deps chromium
+      - name: Fast live production gate
+        run: |
+          cat > fast.mjs <<'EOF'
+          import { chromium } from 'playwright';
+          const url='https://headless-ckkxrasdkwe-digitalarhat-140c.wix-site-host.com/';
+          const browser=await chromium.launch({headless:true});
+          async function open(width,height,mobile=false){
+            const ctx=await browser.newContext({viewport:{width,height},isMobile:mobile,hasTouch:mobile,reducedMotion:'reduce'});
+            const p=await ctx.newPage(); p.setDefaultTimeout(25000);
+            const errors=[]; p.on('pageerror',e=>errors.push(e.message));
+            await p.goto(url,{waitUntil:'domcontentloaded',timeout:45000});
+            await p.waitForSelector('#lamsatAlBayanV5 .hero',{timeout:35000});
+            await p.waitForSelector('#heroCanvas',{timeout:35000});
+            await p.waitForTimeout(1200);
+            const x=await p.evaluate(()=>({
+              title:document.title,
+              dir:document.documentElement.dir,
+              three:!!window.THREE,
+              stages:document.querySelectorAll('[data-stage]').length,
+              layouts:[...document.querySelectorAll('[data-layout]')].map(e=>e.dataset.layout),
+              gallery:document.querySelectorAll('.lamsatRealWork img').length,
+              width:innerWidth,
+              scrollWidth:document.documentElement.scrollWidth,
+              hero:(document.querySelector('.hero')?.innerText||''),
+              canvas:document.querySelector('#heroCanvas')?.getBoundingClientRect().toJSON(),
+              foreign:(document.body.innerText||'').includes('دخاخني')
+            }));
+            if(x.title!=='لمسة البيان | استوديو مشروع المطبخ') throw Error('title '+x.title);
+            if(x.dir!=='rtl'||!x.three||x.stages!==5||x.gallery!==3||x.foreign) throw Error('base '+JSON.stringify(x));
+            for(const k of ['l','u','parallel','island']) if(!x.layouts.includes(k)) throw Error('layout '+k);
+            if(x.scrollWidth>width+1) throw Error('overflow '+width);
+            if(!x.hero.includes('مطبخك يبدأ من رؤيتك')||!x.canvas||x.canvas.width<250) throw Error('hero '+width);
+            await ctx.close(); return x;
+          }
+          const out={desktop:await open(1440,900,false),m430:await open(430,932,true),m390:await open(390,844,true)};
+          const ctx=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,reducedMotion:'reduce'});
+          const p=await ctx.newPage(); p.setDefaultTimeout(25000);
+          await p.goto(url,{waitUntil:'domcontentloaded',timeout:45000});
+          await p.waitForSelector('#heroStart');
+          await p.click('#heroStart');
+          await p.click('[data-projecttype="new"]');
+          await p.click('[data-layout="l"]');
+          await p.click('[data-measuremode="known"]');
+          await p.fill('#roomLength','420'); await p.fill('#roomWidth','320');
+          await p.click('#nextBtn');
+          await p.waitForFunction(()=>document.body.dataset.phase==='2');
+          await p.waitForSelector('#studioCanvas');
+          await p.waitForTimeout(800);
+          await p.click('#nextBtn');
+          await p.waitForFunction(()=>document.body.dataset.phase==='3');
+          await p.click('#nextBtn');
+          await p.waitForFunction(()=>document.body.dataset.phase==='4');
+          await p.click('#nextBtn');
+          await p.waitForFunction(()=>document.body.dataset.phase==='5');
+          const final=await p.evaluate(()=>({
+            phase:document.body.dataset.phase,
+            wa:document.querySelector('#waButton')?.href||'',
+            preview:document.querySelector('#waPreview')?.textContent||'',
+            overflow:document.documentElement.scrollWidth>innerWidth+1,
+            foreign:(document.body.innerText||'').includes('دخاخني')
+          }));
+          if(final.phase!=='5'||!final.wa.includes('966541537978')||!final.preview.includes('حرف L')||!final.preview.includes('لمسة البيان')||final.overflow||final.foreign) throw Error('journey '+JSON.stringify(final));
+          console.log(JSON.stringify({PASS:true,out,final},null,2));
+          await browser.close();
+          EOF
+          node fast.mjs
