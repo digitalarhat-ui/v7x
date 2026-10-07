@@ -378,6 +378,32 @@
           "value": "public, max-age=0, must-revalidate"
         }
       ]
+    },
+    {
+      "source": "/fahd-al-zaher-kitchen-v5",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/fahd-al-zaher-kitchen-v5/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
     }
   ],
   "alias": [
@@ -842,7 +868,7 @@
     },
     {
       "source": "/",
-      "destination": "/fahd-al-zaher-kitchen-studio-v20",
+      "destination": "/fahd-al-zaher-kitchen-v5",
       "permanent": false,
       "has": [
         {
