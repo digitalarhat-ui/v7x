@@ -2,7 +2,7 @@ import http.server
 import os
 from urllib.parse import urlparse
 
-TARGET = "/tafseel-matabekh-riyadh-v21/"
+TARGET = os.environ.get("TARGET_PATH", "/tafseel-matabekh-riyadh-v21/")
 
 class Handler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
