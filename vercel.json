@@ -365,7 +365,8 @@
     "wasaam-alsarya-kitchens.vercel.app",
     "urbanfurniva-kitchen-studio.vercel.app",
     "lamasat-alkhaleejoun.vercel.app",
-    "tafseel-matabekh-riyadh.vercel.app"
+    "tafseel-matabekh-riyadh.vercel.app",
+    "abu-ala-kitchens-riyadh.vercel.app"
   ],
   "redirects": [
     {
@@ -772,6 +773,17 @@
         {
           "type": "host",
           "value": "tafseel-matabekh-riyadh.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/tafseel-matabekh-riyadh-v20",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "abu-ala-kitchens-riyadh.vercel.app"
         }
       ]
     }
