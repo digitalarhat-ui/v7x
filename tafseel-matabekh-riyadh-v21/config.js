@@ -1,12 +1,12 @@
 window.KITCHEN_V5_CONFIG=Object.freeze({
   id:"tafseel-matabekh-riyadh",
-  version:"5.1",
+  version:"5.2",
   brand:"تفصيل مطابخ",
   legalName:"",
   phone:"966597565573",
   whatsapp:"",
   officialSite:"",
-  city:"الرياض",
+  city:"الرياض — حي الياسمين",
   verifiedFacts:{
     customKitchen:true,
     countertopStore:true,
@@ -21,7 +21,7 @@ window.KITCHEN_V5_CONFIG=Object.freeze({
   },
   disclaimers:{
     visual:"المعاينة ثلاثية الأبعاد أداة تجريبية لدعم القرار البصري فقط، وليست تصميم تصنيع أو اعتماداً نهائياً.",
-    materials:"الألوان والأسطح المعروضة اتجاهات تجريبية وليست كتالوجاً رسمياً للمنشأة. الاعتماد النهائي يكون مباشرة مع الفريق.",
+    materials:"الألوان والأسطح المعروضة اتجاهات بصرية تجريبية للمقارنة فقط، وليست مواد أو كتالوجاً معتمداً من المنشأة. الاعتماد النهائي يكون مباشرة مع الفريق.",
     measurement:"أدخل ما تعرفه فقط. القياسات والتوزيع والتنفيذ النهائي تحتاج مراجعة واعتماداً مباشراً من الفريق."
   },
   cc0Assets:{
