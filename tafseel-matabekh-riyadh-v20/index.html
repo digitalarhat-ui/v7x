@@ -173,7 +173,7 @@
         <div class="brand-mark">ع</div>
         <div><strong>تفصيل مطابخ أبو علا</strong><small>الرياض · حراج بن قاسم الجديد</small></div>
       </div>
-      <div class="nav-note">الرياض · حراج بن قاسم الجديد · 0597565573</div>
+      <div class="nav-note">الرياض · حراج بن قاسم الجديد · واتساب أعمال</div>
     </div>
   </header>
 
@@ -339,11 +339,12 @@
             <aside class="handoff">
               <div>
                 <small>الخطوة التالية</small>
-                <h3>انسخ الملخص ثم تواصل مع الفريق.</h3>
-                <p>رقم التواصل المنشور لنفس النشاط هو +966 59 756 5573. لم نتحقق من أن الرقم يعمل كواتساب، لذلك لا نعرض رابط واتساب في هذه النسخة. النموذج لا يحدد سعراً ولا يعتمد المقاسات أو الخامات أو التنفيذ.</p>
+                <h3>أرسل الملخص إلى واتساب أبو علا.</h3>
+                <p>الرقم المنشور +966 59 756 5573 يفتح حساب واتساب أعمال باسم «ابو علا». ينتقل ملخص الاختيارات والسياق الذي أدخله العميل كما هو، بدون تسعير آلي أو ادعاء اعتماد المقاسات أو الخامات.</p>
               </div>
               <div class="handoff-actions">
-                <button class="handoff-action" id="copySummary" type="button">نسخ ملخص المشروع</button>
+                <a class="handoff-action" id="whatsappLink" href="https://wa.me/966597565573" target="_blank" rel="noopener">إرسال الملخص عبر واتساب</a>
+                <button class="handoff-action secondary" id="copySummary" type="button">نسخ ملخص المشروع</button>
                 <a class="handoff-action secondary" href="tel:+966597565573">اتصال بالرقم المنشور</a>
               </div>
             </aside>
@@ -414,6 +415,8 @@
         if(state.note)lines.push("ملاحظة للفريق: "+state.note);
         lines.push("الاتجاهات البصرية تجريبية وليست كتالوج تفصيل مطابخ أبو علا الرسمي؛ الاعتماد النهائي مع فريق المطابخ.");
         window.__projectSummary=lines.join("\n");
+        document.getElementById("whatsappLink").href="https://wa.me/966597565573?text="+encodeURIComponent(window.__projectSummary);
+        document.getElementById("whatsappLink").href="https://wa.me/966597565573?text="+encodeURIComponent(window.__projectSummary);
       }
       try{var saved=JSON.parse(localStorage.getItem("abu-ala-kitchen-v20-state")||"null");if(saved&&typeof saved==="object")Object.keys(state).forEach(function(k){if(saved[k]!==undefined)state[k]=saved[k]});}catch(_){}
       var fq=new URLSearchParams(location.search);
