@@ -326,6 +326,32 @@
           "value": "public, max-age=0, must-revalidate"
         }
       ]
+    },
+    {
+      "source": "/tafseel-matabekh-riyadh-v21",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/tafseel-matabekh-riyadh-v21/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
     }
   ],
   "alias": [
@@ -767,7 +793,7 @@
     },
     {
       "source": "/",
-      "destination": "/tafseel-matabekh-riyadh-v20",
+      "destination": "/tafseel-matabekh-riyadh-v21",
       "permanent": false,
       "has": [
         {
