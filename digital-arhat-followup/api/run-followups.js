@@ -1,7 +1,7 @@
 import {listJson,writeJson} from '../lib/store.js';
 import {getAllMessagesForConversation,listTemplates,sendTemplate} from '../lib/vgraple.js';
 import {inspectConversation,detectNiche} from '../lib/followup.js';
-import {exactContextPhrase} from '../lib/groq.js';
+import {exactContextPhrase,getGroqApiKey} from '../lib/groq.js';
 
 function cronAuthorized(req){const secret=process.env.CRON_SECRET||'';return !!secret&&String(req.headers.authorization||'')==='Bearer '+secret}
 async function mark(lead,patch){Object.assign(lead,patch,{updatedAt:new Date().toISOString()});const safe=encodeURIComponent(String(lead.id)).replace(/%/g,'_');await writeJson('leads/'+safe+'.json',lead)}
@@ -13,7 +13,7 @@ export default async function handler(req,res){
   const enabled=process.env.AUTO_SEND_ENABLED==='true';
   const templateName=process.env.VGRAPLE_FOLLOWUP_TEMPLATE||'';
   const hasApi=!!process.env.VGRAPLE_API_KEY;
-  const hasGroq=!!process.env.GROQ_API_KEY;
+  const hasGroq=!!(await getGroqApiKey());
   const leads=await listJson('leads/'),now=Date.now();
   const due=leads.filter(l=>l.waitingSince&&now-new Date(l.waitingSince).getTime()>=48*3600e3&&l.followupSentForOutboundAt!==l.lastOutboundAt);
   const result={checked:due.length,sent:0,review:0,skipped:0,enabled,templateName};
@@ -29,6 +29,7 @@ export default async function handler(req,res){
   const generic=vc===0;
   if(!contextual&&!generic)return res.status(200).json({ok:true,...result,armed:false,reason:'unsafe_template_shape'});
   if(contextual&&!hasGroq)return res.status(200).json({ok:true,...result,armed:false,reason:'context_template_requires_groq'});
+  const language=String(tpl.language||tpl.language_code||'ar');
 
   for(const lead of due.slice(0,25)){
     try{
@@ -60,7 +61,7 @@ export default async function handler(req,res){
         lead.contextConfidence=ctx.confidence;
       }
 
-      const send=await sendTemplate({to:lead.phone,template:templateName,variables});
+      const send=await sendTemplate({to:lead.phone,template:templateName,language,variables});
       if(send.contact_id&&String(send.contact_id)!==String(lead.id)){
         await mark(lead,{autoStatus:'critical_review',autoReason:'send_contact_id_mismatch',lastContextFingerprint:audit.fingerprint,niche});
         result.review++;continue;
@@ -79,5 +80,5 @@ export default async function handler(req,res){
       result.review++;
     }
   }
-  return res.status(200).json({ok:true,...result,armed:true,contextual});
+  return res.status(200).json({ok:true,...result,armed:true,contextual,language});
 }

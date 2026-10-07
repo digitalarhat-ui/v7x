@@ -53,7 +53,7 @@ export default async function handler(req,res){
   const kind=eventKind(body),contact=getContact(body,kind),ts=getTimestamp(body),preview=getPreview(body);
   const envelopeEventId=getEventId(body);
   const deliveryId=String(req.headers['x-delivery-id']||'').trim();
-  const dedupId=deliveryId||envelopeEventId;
+  const dedupId=envelopeEventId||deliveryId;
   const waMessageId=String(pick(body,['data.message.wa_message_id','message.wa_message_id','wa_message_id','data.message.id','message.id'])||envelopeEventId||'');
   const health=await readJson('meta/health.json',{accepted:0,rejected:0,unknown:0});
   Object.assign(health,{lastDeliveryAt:new Date().toISOString(),lastEventType:kind,accepted:(health.accepted||0)+1,lastVerifiedWith:hmac===true?'hmac':'fallback'});
