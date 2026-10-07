@@ -416,6 +416,7 @@
         lines.push("الاتجاهات البصرية تجريبية وليست كتالوج تفصيل مطابخ أبو علا الرسمي؛ الاعتماد النهائي مع فريق المطابخ.");
         window.__projectSummary=lines.join("\n");
         document.getElementById("whatsappLink").href="https://wa.me/966597565573?text="+encodeURIComponent(window.__projectSummary);
+      document.getElementById("whatsappLink").href="https://wa.me/966597565573?text="+encodeURIComponent(window.__projectSummary);
         document.getElementById("whatsappLink").href="https://wa.me/966597565573?text="+encodeURIComponent(window.__projectSummary);
       }
       try{var saved=JSON.parse(localStorage.getItem("abu-ala-kitchen-v20-state")||"null");if(saved&&typeof saved==="object")Object.keys(state).forEach(function(k){if(saved[k]!==undefined)state[k]=saved[k]});}catch(_){}
@@ -815,9 +816,9 @@
 
     // Subtle contact-shadow strips deepen joinery without fake outlines.
     var contactMat=new THREE.MeshBasicMaterial({color:0x242520,transparent:true,opacity:.18});
-    addBox(5.92,.018,.024,.72,.116,-1.93,contactMat,kitchen,false);
-    addBox(2.28,.018,.68,.15,.108,.20,contactMat,kitchen,false);
-    addBox(5.40,.014,.020,.78,1.692,-2.135,contactMat,kitchen,false);
+    addBox(5.92,.018,.024,contactMat,.72,.116,-1.93,kitchen,false);
+    addBox(2.28,.018,.68,contactMat,.15,.108,.20,kitchen,false);
+    addBox(5.40,.014,.020,contactMat,.78,1.692,-2.135,kitchen,false);
 
     // Physically quieter daylight. Realism comes from broad contrast, not neon intensity.
     var hemi=new THREE.HemisphereLight(0xfffcf5,0x504b45,.38);scene.add(hemi);
