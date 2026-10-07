@@ -300,6 +300,32 @@
           "value": "public, max-age=0, must-revalidate"
         }
       ]
+    },
+    {
+      "source": "/tafseel-matabekh-riyadh-v20",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/tafseel-matabekh-riyadh-v20/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
     }
   ],
   "alias": [
@@ -338,7 +364,8 @@
     "modern-sector-decision-twin.vercel.app",
     "wasaam-alsarya-kitchens.vercel.app",
     "urbanfurniva-kitchen-studio.vercel.app",
-    "lamasat-alkhaleejoun.vercel.app"
+    "lamasat-alkhaleejoun.vercel.app",
+    "tafseel-matabekh-riyadh.vercel.app"
   ],
   "redirects": [
     {
@@ -734,6 +761,17 @@
         {
           "type": "host",
           "value": "lamasat-alkhaleejoun.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/tafseel-matabekh-riyadh-v20",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "tafseel-matabekh-riyadh.vercel.app"
         }
       ]
     }
