@@ -21,6 +21,7 @@
     "contactRoute": "verified-public-Haraj-route",
     "directWhatsAppVerified": false,
     "sourceStatus": "corrected-ready",
-    "publicReleaseStatus": "blocked-by-current-vercel-daily-deployment-quota"
+    "publicReleaseStatus": "release-triggered-via-v8x-git-integration",
+    "releasePolicy": "single-main-commit-manual-production"
   }
 }
