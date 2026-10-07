@@ -4,12 +4,12 @@ var cfg=window.KITCHEN_V5_CONFIG,root=document.getElementById("tafseelKitchenV5"
 var STORAGE="tafseel-matabekh-riyadh:v5:project";
 var layoutLabels={straight:"مستقيم",l:"حرف L",u:"حرف U",parallel:"متوازي",island:"جزيرة",unsure:"غير متأكد"};
 var projectLabels={new:"مطبخ جديد",renovation:"تجديد مطبخ قائم",explore:"استكشاف أولي"};
-var cabinetLabels={ivory:"عاجي مطفي",oak:"بلوط دافئ",walnut:"جوز داكن",sage:"رمادي هادئ",graphite:"فحمي",white:"ساتان فاتح"};
+var cabinetLabels={ivory:"فاتح مطفي",oak:"خشبي فاتح",walnut:"خشبي داكن",sage:"محايد هادئ",graphite:"فحمي",white:"فاتح ساتان"};
 var baseModuleLabels={doors:"وحدة باب",drawers:"وحدة أدراج",sink:"وحدة حوض",hob:"وحدة موقد",dishwasher:"غسالة صحون"};
 var tallModuleLabels={pantry:"تخزين طويل",fridge:"ثلاجة",oven:"برج فرن"};
 var interiorLabels={shelves:"رفوف",internalDrawers:"أدراج داخلية"};
 var configTabLabels={configuration:"التكوين",cabinet:"الواجهات",worktop:"السطح",upper:"العلوية",modules:"الوحدات",details:"التفاصيل"};
-var worktopLabels={quartz:"كوارتز فاتح",veined:"حجر فاتح بعروق",warm:"حجر دافئ",dark:"حجر داكن"};
+var worktopLabels={quartz:"سطح فاتح",veined:"فاتح بعروق",warm:"اتجاه دافئ",dark:"اتجاه داكن"};
 var storageLabels={pantry:"مؤن",tall:"تخزين طويل",deepDrawers:"أدراج عميقة",corner:"حل للزاوية",waste:"نفايات وفرز",coffee:"منطقة أجهزة صغيرة"};
 var cookingLabels={light:"طبخ خفيف",daily:"طبخ يومي",heavy:"استخدام مكثف"};
 var userLabels={"1-2":"1–2","3-4":"3–4","5+":"5+"};
@@ -293,7 +293,7 @@ function configPanel(){
   var layouts=["straight","l","u","parallel","island"];html='<div class="configPanelHead"><b>تكوين مبدئي</b><span>ابدأ بالاتجاه الحالي ثم عدّل ما يفيد جلسة التصميم.</span></div><div class="configChoices">'+layouts.map(function(k){var blocked=k==="island"&&!roomCanSupportIsland();return configOption(layoutLabels[k],k,effectiveLayout()===k,"configlayout",blocked)}).join("")+'</div>';
   if(state.room.layout==="unsure"&&!state.config.layout)html+='<p class="configNote">تم عرض حرف L كتكوين توضيحي فقط لأن الشكل النهائي غير محدد.</p>'
  }else if(tab==="cabinet"){
-  html='<div class="configPanelHead"><b>واجهات الخزائن</b><span>اتجاهات بصرية تمهيدية وليست كتالوج تفصيل مطابخ الرسمي.</span></div><div class="configMaterialGrid">'+Object.keys(cabinetLabels).map(function(k){return'<button type="button" class="materialTile '+(state.visual.cabinet===k?"active":"")+'" data-cabinet="'+k+'"><i style="--sw:'+({ivory:"#d9d1c4",oak:"#a47d56",walnut:"#594033",sage:"#858881",graphite:"#3b3f3b",white:"#efeee8"}[k])+'"></i><span>'+safe(cabinetLabels[k])+'</span></button>'}).join("")+'</div>'
+  html='<div class="configPanelHead"><b>واجهات الخزائن</b><span>اتجاهات بصرية تجريبية للمقارنة فقط، وليست مواد أو كتالوجاً معتمداً من المنشأة.</span></div><div class="configMaterialGrid">'+Object.keys(cabinetLabels).map(function(k){return'<button type="button" class="materialTile '+(state.visual.cabinet===k?"active":"")+'" data-cabinet="'+k+'"><i style="--sw:'+({ivory:"#d9d1c4",oak:"#a47d56",walnut:"#594033",sage:"#858881",graphite:"#3b3f3b",white:"#efeee8"}[k])+'"></i><span>'+safe(cabinetLabels[k])+'</span></button>'}).join("")+'</div>'
  }else if(tab==="worktop"){
   html='<div class="configPanelHead"><b>سطح العمل</b><span>اختيار بصري أولي للمراجعة مع المصمم.</span></div><div class="configMaterialGrid">'+Object.keys(worktopLabels).map(function(k){return'<button type="button" class="materialTile '+(state.visual.worktop===k?"active":"")+'" data-worktop="'+k+'"><i style="--sw:'+({quartz:"#e4e0d7",veined:"#ece8df",warm:"#aa9c87",dark:"#4d4c48"}[k])+'"></i><span>'+safe(worktopLabels[k])+'</span></button>'}).join("")+'</div>'
  }else if(tab==="upper"){
@@ -421,7 +421,7 @@ function whatsappSummary(){
  if(b.customer.name)lines.push("العميل: "+b.customer.name);if(b.customer.note)lines.push("ملاحظة: "+b.customer.note);if(b.customer.fileReference)lines.push("مرجع: لدي مخطط/صورة للمساحة وسيتم إرفاقها يدوياً.");
  lines.push("يحتاج تأكيداً: "+b.review.needsConfirmation.slice(0,4).join(" · "),q.note);return lines.join("\n")
 }
-function whatsappUrl(){return"tel:+966597565573"}
+function whatsappUrl(){return"tel:+"+cfg.phone}
 function shareUrl(){var clean=clone(state);clean.phase=runtime.phase;clean.maxPhase=runtime.maxPhase;return location.origin+location.pathname+"?project="+encodeState(clean)+"#phase-"+runtime.phase}
 function copyShare(){copyText(shareUrl(),"تم نسخ رابط المشروع")}
 function fallbackCopy(u){fallbackCopyText(u,"تم نسخ رابط المشروع")}
