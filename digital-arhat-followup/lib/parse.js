@@ -21,17 +21,27 @@ export function normalizePhone(v) {
 
 export function getContact(body, kind) {
   const id = pick(body, [
-    'contact.id','contactId','contact_id','data.contact.id','data.contactId',
+    'contact.id','contactId','contact_id','data.contact.id','data.contactId','data.contact_id',
     'payload.contact.id','conversation.contactId','data.conversation.contactId',
     'message.contactId','data.message.contactId'
   ]);
-  const contactPhone = pick(body, ['contact.phone','data.contact.phone','payload.contact.phone','contact.phoneNumber','data.contact.phoneNumber','wa_id','data.wa_id']);
+  const contactPhone = pick(body, [
+    'contact.phone','data.contact.phone','payload.contact.phone',
+    'contact.phoneNumber','data.contact.phoneNumber','wa_id','data.wa_id','data.contact.wa_id'
+  ]);
   const directionalPhone = kind === 'sent'
     ? pick(body, ['to','data.to','message.to','data.message.to'])
     : pick(body, ['from','data.from','message.from','data.message.from']);
   const phone = normalizePhone(contactPhone || directionalPhone);
-  const name = pick(body, ['contact.name','data.contact.name','payload.contact.name','contact.fullName','data.contact.fullName','profile.name','data.profile.name']) || 'Unknown lead';
-  const conversationId = pick(body, ['conversation.id','conversationId','conversation_id','data.conversation.id','payload.conversation.id']);
+  const name = pick(body, [
+    'contact.name','data.contact.name','payload.contact.name',
+    'contact.fullName','data.contact.fullName','profile.name','data.profile.name'
+  ]) || 'Unknown lead';
+  const conversationId = pick(body, [
+    'conversation.id','conversationId','conversation_id',
+    'data.conversation.id','data.conversationId','data.conversation_id',
+    'payload.conversation.id','payload.conversation_id'
+  ]);
   return {
     id: String(id || conversationId || phone || 'unknown'),
     name: String(name),
@@ -41,17 +51,29 @@ export function getContact(body, kind) {
 }
 
 export function getTimestamp(body) {
-  const v = pick(body, ['timestamp','createdAt','created_at','data.timestamp','data.createdAt','payload.timestamp','message.timestamp','data.message.timestamp']);
+  const v = pick(body, [
+    'data.message.wa_timestamp','data.message.created_at','message.wa_timestamp','message.created_at',
+    'timestamp','created','createdAt','created_at','data.timestamp','data.createdAt',
+    'payload.timestamp','message.timestamp','data.message.timestamp'
+  ]);
   if (!v) return new Date().toISOString();
-  const d = new Date(typeof v === 'number' && v < 1e12 ? v * 1000 : v);
+  const n=Number(v);
+  const value=Number.isFinite(n)&&String(v).trim()!=='' ? (n < 1e12 ? n * 1000 : n) : v;
+  const d = new Date(value);
   return Number.isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();
 }
 
 export function getPreview(body) {
-  const v = pick(body, ['message.text','text','body','data.message.text','data.text','payload.message.text','message.body','data.message.body','content.text']);
+  const v = pick(body, [
+    'message.text','text','body','data.message.text','data.text','payload.message.text',
+    'message.body','data.message.body','content.text'
+  ]);
   return v ? String(v).replace(/\s+/g,' ').slice(0,180) : '';
 }
 
 export function getEventId(body) {
-  return String(pick(body, ['event_id','eventId','id','data.id','payload.id','message.id','data.message.id','payload.message.id']) || '');
+  return String(pick(body, [
+    'event_id','eventId','id','data.id','payload.id',
+    'message.id','data.message.id','payload.message.id'
+  ]) || '');
 }
