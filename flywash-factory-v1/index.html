@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b2325">
+<title>Fly Wash — Factory Demo</title>
+<meta name="description" content="Fly Wash Jeddah — premium service discovery and structured WhatsApp handoff demo.">
+<style>
+:root{
+ --petrol:#0b2325;--petrol2:#143638;--ivory:#f6f1e7;--ivory2:#fffaf1;--champ:#c7a36b;
+ --ink:#112124;--muted:#6a7878;--line:#ddd4c3;--white:#fff;--shadow:0 22px 70px rgba(8,30,31,.18);
+ --r:28px;--max:1220px
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--ivory)}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Tajawal",Arial,sans-serif;color:var(--ink);background:
+radial-gradient(circle at 10% 0%,rgba(199,163,107,.12),transparent 24%),
+linear-gradient(180deg,#fbf8f1 0,#f4efe4 100%);overflow-x:hidden}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+.hidden{display:none!important}
+.wrap{max-width:var(--max);margin:auto;padding-inline:22px}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(246,241,231,.88);backdrop-filter:blur(18px);border-bottom:1px solid rgba(11,35,37,.08)}
+.topin{height:74px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.brand img{width:48px;height:48px;border-radius:15px;object-fit:contain;background:white;padding:4px;border:1px solid rgba(11,35,37,.08)}
+.brand strong{display:block;font-size:18px;line-height:1.1}.brand span{font-size:11px;color:var(--muted);display:block;margin-top:3px}
+.nav{display:flex;align-items:center;gap:8px}.nav button{border:0;background:transparent;color:var(--ink);padding:10px 12px;border-radius:999px;font-weight:700}
+.nav .lang{border:1px solid rgba(11,35,37,.15);background:rgba(255,255,255,.55)}
+.nav .wa{background:var(--petrol);color:white;padding-inline:16px}
+.hero{padding:28px 0 14px}
+.hero-frame{position:relative;height:min(650px,72svh);min-height:520px;border-radius:36px;overflow:hidden;background:linear-gradient(135deg,#0a2022,#13383a 65%,#1a4a49);box-shadow:var(--shadow);touch-action:pan-y}
+.hero-track{display:flex;height:100%;transition:transform .55s cubic-bezier(.2,.72,.2,1);will-change:transform}
+.slide{min-width:100%;height:100%;position:relative;padding:62px 64px;color:white;display:grid;grid-template-columns:1.02fr .98fr;align-items:end;overflow:hidden}
+.slide:before{content:"";position:absolute;inset:auto -120px -170px auto;width:520px;height:520px;border:1px solid rgba(199,163,107,.32);border-radius:50%}
+.slide:after{content:"";position:absolute;width:360px;height:360px;border-radius:50%;background:rgba(199,163,107,.06);right:-120px;top:-120px}
+.hero-copy{position:relative;z-index:3;align-self:center;max-width:680px}
+.kicker{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);padding:8px 12px;border-radius:999px;font-size:12px;font-weight:800;color:#e9dbc5}
+.kicker i{width:7px;height:7px;border-radius:50%;background:var(--champ);box-shadow:0 0 0 6px rgba(199,163,107,.12)}
+.hero h1{font-size:clamp(44px,6vw,82px);line-height:.99;letter-spacing:-2.5px;margin:18px 0 18px;max-width:780px}
+.hero p{font-size:18px;line-height:1.85;color:#d9e5e3;max-width:650px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.btn{border:0;border-radius:16px;padding:14px 18px;font-weight:800}
+.btn.primary{background:var(--champ);color:#142628}
+.btn.ghost{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:white}
+.hero-art{position:relative;z-index:2;height:100%;min-height:320px;display:flex;align-items:center;justify-content:center}
+.car-stage{width:min(500px,100%);height:300px;position:relative;filter:drop-shadow(0 28px 35px rgba(0,0,0,.22))}
+.car-body{position:absolute;left:5%;right:5%;bottom:68px;height:112px;border:2px solid rgba(255,255,255,.84);border-radius:120px 140px 40px 46px;transform:skewX(-6deg)}
+.car-body:before{content:"";position:absolute;left:23%;right:24%;top:-62px;height:78px;border:2px solid rgba(255,255,255,.62);border-bottom:0;border-radius:90px 110px 0 0}
+.car-body:after{content:"";position:absolute;left:16%;right:10%;top:35px;height:1px;background:linear-gradient(90deg,transparent,#c7a36b,transparent)}
+.wheel{position:absolute;width:68px;height:68px;border-radius:50%;border:6px solid var(--ivory);bottom:34px;background:#0b2325;box-shadow:inset 0 0 0 9px #2b4c4d}.wheel.r{right:16%}.wheel.l{left:16%}
+.spark{position:absolute;width:110px;height:110px;border-radius:50%;border:1px solid rgba(199,163,107,.5);top:38px;left:8%;box-shadow:0 0 0 22px rgba(199,163,107,.05),0 0 0 48px rgba(199,163,107,.03)}
+.spark:before,.spark:after{content:"";position:absolute;background:var(--champ);border-radius:99px}.spark:before{width:2px;height:48px;left:54px;top:31px}.spark:after{height:2px;width:48px;top:54px;left:31px}
+.hero-dots{position:absolute;z-index:9;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
+.hero-dots button{width:26px;height:4px;border-radius:99px;border:0;background:rgba(255,255,255,.28);padding:0;transition:.25s}.hero-dots button.on{width:50px;background:var(--champ)}
+.peek{position:absolute;z-index:8;left:18px;top:50%;transform:translateY(-50%);font-size:11px;color:#e2d2b7;writing-mode:vertical-rl;letter-spacing:2px}
+.section{padding:70px 0}
+.head{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:26px}
+.eyebrow{color:#8f7046;font-size:12px;font-weight:900;letter-spacing:.8px;text-transform:uppercase}
+h2{font-size:clamp(32px,4.3vw,54px);margin:7px 0 0;letter-spacing:-1.5px;line-height:1.08}
+.head p{max-width:540px;color:var(--muted);line-height:1.8;margin:0}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+.chip{border:1px solid var(--line);background:rgba(255,255,255,.6);padding:10px 13px;border-radius:999px;font-weight:700;color:#435455}.chip.on{background:var(--petrol);color:#fff;border-color:var(--petrol)}
+.service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:rgba(255,255,255,.7);border:1px solid rgba(11,35,37,.09);border-radius:28px;overflow:hidden;box-shadow:0 12px 34px rgba(11,35,37,.06);transition:.24s;position:relative}
+.card:hover{transform:translateY(-5px);box-shadow:0 22px 44px rgba(11,35,37,.1)}
+.card-visual{height:210px;background:linear-gradient(145deg,#102d2f,#173f40);position:relative;overflow:hidden}
+.card-visual .ring{position:absolute;width:180px;height:180px;border:1px solid rgba(199,163,107,.35);border-radius:50%;right:-45px;top:-40px}
+.card-visual .mini-car{position:absolute;left:12%;right:12%;bottom:48px;height:70px;border:1.6px solid rgba(255,255,255,.7);border-radius:80px 90px 28px 30px}
+.card-visual .mini-car:before{content:"";position:absolute;left:24%;right:25%;top:-34px;height:40px;border:1.6px solid rgba(255,255,255,.55);border-bottom:0;border-radius:60px 70px 0 0}
+.card-visual .glyph{position:absolute;left:22px;top:18px;color:var(--champ);font-size:28px}
+.card-body{padding:20px}
+.card-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.card h3{margin:0;font-size:22px}.small{font-size:12px;color:var(--muted);line-height:1.6}
+.card p{color:#5d6d6d;line-height:1.7;margin:10px 0 16px}
+.card-actions{display:flex;gap:8px}
+.card-actions button{flex:1;border:1px solid var(--line);background:#fff;padding:11px 10px;border-radius:13px;font-weight:800}.card-actions .detail{background:var(--petrol);color:white;border-color:var(--petrol)}
+.compare-toggle{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.94);border:0;border-radius:999px;padding:8px 10px;font-size:12px;font-weight:900;color:var(--petrol)}
+.compare-toggle.active{background:var(--champ)}
+.decision{display:grid;grid-template-columns:.85fr 1.15fr;gap:18px}
+.decision-copy{background:var(--petrol);color:white;border-radius:32px;padding:34px;position:relative;overflow:hidden}
+.decision-copy:after{content:"";position:absolute;width:280px;height:280px;border:1px solid rgba(199,163,107,.25);border-radius:50%;left:-120px;bottom:-100px}
+.decision-copy p{color:#cbd9d7;line-height:1.85}
+.decision-copy ul{list-style:none;padding:0;margin:28px 0 0;display:grid;gap:12px}
+.decision-copy li{display:flex;gap:10px;align-items:center}.decision-copy li i{width:28px;height:28px;border-radius:9px;background:rgba(199,163,107,.16);color:var(--champ);display:grid;place-items:center;font-style:normal}
+.finder{background:rgba(255,255,255,.72);border:1px solid rgba(11,35,37,.1);border-radius:32px;padding:28px;min-height:470px;display:flex;flex-direction:column}
+.progress{display:flex;gap:7px;margin-bottom:22px}.progress i{height:5px;flex:1;border-radius:99px;background:#e2d9c9}.progress i.on{background:var(--champ)}
+.q{display:none}.q.active{display:block;animation:rise .25s ease}@keyframes rise{from{opacity:.2;transform:translateY(5px)}to{opacity:1;transform:none}}
+.q h3{font-size:30px;margin:0 0 8px}.q>p{color:var(--muted);line-height:1.7;margin:0 0 20px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.option{border:1px solid var(--line);background:#fff;border-radius:18px;padding:16px;text-align:right;font-weight:800;color:var(--ink)}.option span{display:block;font-size:11px;color:var(--muted);font-weight:500;margin-top:5px}.option.active{border-color:var(--champ);box-shadow:0 0 0 3px rgba(199,163,107,.12)}
+.field{margin:12px 0}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:7px;color:#536364}
+.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);background:#fff;border-radius:14px;padding:13px;color:var(--ink);outline:none}.field textarea{resize:vertical}
+.find-nav{margin-top:auto;padding-top:20px;display:flex;justify-content:space-between;gap:8px}
+.find-nav button{border:0;border-radius:14px;padding:12px 16px;font-weight:900}.back{background:#e8e1d3}.next{background:var(--petrol);color:white}
+.find-result{background:#f5f0e6;border:1px solid var(--line);border-radius:18px;padding:16px;margin-top:12px;white-space:pre-line;line-height:1.85}
+.compare-bar{position:fixed;left:50%;bottom:18px;transform:translate(-50%,120px);z-index:70;background:var(--petrol);color:white;display:flex;align-items:center;gap:12px;border-radius:20px;padding:10px 12px 10px 16px;box-shadow:0 20px 50px rgba(0,0,0,.24);transition:.3s;max-width:calc(100vw - 28px)}
+.compare-bar.show{transform:translate(-50%,0)}.compare-bar small{color:#cbd9d7}.compare-bar button{border:0;border-radius:12px;padding:10px 13px;font-weight:900}.compare-bar .open{background:var(--champ);color:#142628}.compare-bar .clear{background:transparent;color:white;border:1px solid rgba(255,255,255,.18)}
+.sheet{position:fixed;inset:0;z-index:100;background:rgba(4,18,19,.66);backdrop-filter:blur(7px);display:none;align-items:flex-end;justify-content:center;padding:14px}
+.sheet.open{display:flex}.sheet-panel{width:min(850px,100%);max-height:92svh;overflow:auto;background:var(--ivory2);border-radius:30px;padding:26px;box-shadow:0 30px 90px rgba(0,0,0,.3)}
+.sheet-head{display:flex;justify-content:space-between;gap:14px;align-items:start}.sheet-head h3{font-size:32px;margin:0}.x{border:0;background:#e9e1d3;width:40px;height:40px;border-radius:50%;font-size:20px}
+.specs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}.spec{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}.spec span{display:block;color:var(--muted);font-size:11px}.spec b{display:block;margin-top:4px}
+.sheet-cta{width:100%;border:0;background:var(--petrol);color:white;border-radius:15px;padding:14px;font-weight:900}
+.compare-table{width:100%;border-collapse:separate;border-spacing:0 8px}.compare-table th,.compare-table td{padding:12px;text-align:right;background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.compare-table th:first-child,.compare-table td:first-child{border-right:1px solid var(--line);border-radius:0 12px 12px 0}.compare-table th:last-child,.compare-table td:last-child{border-left:1px solid var(--line);border-radius:12px 0 0 12px}
+.bottom-dock{display:none}
+footer{padding:36px 0 100px;border-top:1px solid rgba(11,35,37,.08);color:var(--muted)}.foot{display:flex;justify-content:space-between;gap:20px;align-items:center}.foot b{color:var(--ink)}
+@media(max-width:900px){
+ .slide{grid-template-columns:1fr;padding:44px 28px 78px}.hero-art{position:absolute;inset:auto -40px -70px auto;width:58%;opacity:.38}.hero-copy{align-self:start}.service-grid{grid-template-columns:1fr 1fr}.decision{grid-template-columns:1fr}.head{align-items:start;flex-direction:column}.nav button:not(.lang):not(.wa){display:none}
+}
+@media(max-width:620px){
+ .wrap{padding-inline:14px}.topin{height:66px}.brand img{width:42px;height:42px}.brand strong{font-size:16px}.brand span{display:none}.nav .wa{display:none!important}
+ .hero{padding-top:14px}.hero-frame{min-height:590px;height:74svh;border-radius:28px}.slide{padding:38px 22px 82px}.hero h1{font-size:48px;letter-spacing:-1.7px}.hero p{font-size:16px}.hero-art{width:80%;right:-72px;bottom:-46px}.peek{display:none}
+ .section{padding:48px 0}.service-grid{grid-template-columns:1fr}.card-visual{height:180px}.opts{grid-template-columns:1fr}.finder{padding:20px;border-radius:26px}.q h3{font-size:26px}.decision-copy{padding:26px}.specs{grid-template-columns:1fr}.sheet-panel{padding:20px;border-radius:24px}
+ .bottom-dock{position:fixed;z-index:60;display:grid;grid-template-columns:repeat(3,1fr);left:10px;right:10px;bottom:max(10px,env(safe-area-inset-bottom));background:rgba(11,35,37,.95);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.08);padding:7px;border-radius:20px;box-shadow:0 18px 48px rgba(0,0,0,.28)}
+ .bottom-dock button{border:0;background:transparent;color:#d9e5e3;padding:9px 4px;border-radius:13px;font-size:11px;font-weight:800}.bottom-dock button.main{background:var(--champ);color:#132426}
+ footer{padding-bottom:120px}.foot{flex-direction:column;align-items:start}.compare-bar{bottom:86px;width:calc(100vw - 26px);justify-content:space-between}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+ <div class="wrap topin">
+  <div class="brand">
+   <img src="https://ugc.production.linktr.ee/255c9066-bab2-438e-b8e3-771464f3e4a5_flywash-logo-cropped.png?io=true&size=avatar-v3_0" alt="Fly Wash">
+   <div><strong data-ar="فلاي واش" data-en="Fly Wash">فلاي واش</strong><span data-ar="جدة · عناية سيارات متنقلة" data-en="Jeddah · Mobile car care">جدة · عناية سيارات متنقلة</span></div>
+  </div>
+  <nav class="nav">
+   <button onclick="scrollToId('services')" data-ar="الخدمات" data-en="Services">الخدمات</button>
+   <button onclick="scrollToId('finder')" data-ar="اختر خدمتك" data-en="Find my service">اختر خدمتك</button>
+   <button class="lang" id="langBtn" onclick="toggleLang()">EN</button>
+   <button class="wa" onclick="generalWA()" data-ar="واتساب" data-en="WhatsApp">واتساب</button>
+  </nav>
+ </div>
+</header>
+
+<main>
+<section class="hero">
+ <div class="wrap">
+  <div class="hero-frame" id="heroFrame">
+   <div class="hero-track" id="heroTrack">
+    <article class="slide">
+     <div class="hero-copy">
+      <span class="kicker"><i></i><span data-ar="تجربة عناية تبدأ بوضوح" data-en="A clearer way to start">تجربة عناية تبدأ بوضوح</span></span>
+      <h1 data-ar="اختر الخدمة.<br>جهّز التفاصيل.<br>ابدأ واتساب بوضوح." data-en="Choose the service.<br>Prepare the details.<br>Start WhatsApp clearly.">اختر الخدمة.<br>جهّز التفاصيل.<br>ابدأ واتساب بوضوح.</h1>
+      <p data-ar="نفس فكرة معرض السيارات: اكتشاف، مقارنة، تفاصيل عميقة، ثم تواصل مخصص — لكن مطبقة على خدمات فلاي واش." data-en="The same showroom decision architecture: discover, compare, inspect details, then start a contextual WhatsApp conversation — adapted to Fly Wash services.">نفس فكرة معرض السيارات: اكتشاف، مقارنة، تفاصيل عميقة، ثم تواصل مخصص — لكن مطبقة على خدمات فلاي واش.</p>
+      <div class="actions"><button class="btn primary" onclick="scrollToId('services')" data-ar="استكشف الخدمات" data-en="Explore services">استكشف الخدمات</button><button class="btn ghost" onclick="scrollToId('finder')" data-ar="ساعدني أختار" data-en="Help me choose">ساعدني أختار</button></div>
+     </div>
+     <div class="hero-art"><div class="car-stage"><div class="spark"></div><div class="car-body"></div><div class="wheel r"></div><div class="wheel l"></div></div></div>
+    </article>
+    <article class="slide">
+     <div class="hero-copy">
+      <span class="kicker"><i></i><span data-ar="تفاصيل قبل المحادثة" data-en="Context before chat">تفاصيل قبل المحادثة</span></span>
+      <h1 data-ar="سيارتك وموقعك<br>وحالتها — في طلب واحد." data-en="Your car, location<br>and condition — one request.">سيارتك وموقعك<br>وحالتها — في طلب واحد.</h1>
+      <p data-ar="لا أسعار مفترضة ولا حجز وهمي. فقط المعلومات التي تساعد الفريق على فهم الطلب قبل فتح المحادثة." data-en="No invented pricing and no fake booking. Only the context that helps the team understand the request before chat starts.">لا أسعار مفترضة ولا حجز وهمي. فقط المعلومات التي تساعد الفريق على فهم الطلب قبل فتح المحادثة.</p>
+      <div class="actions"><button class="btn primary" onclick="openService('polish')" data-ar="شاهد تجربة التلميع" data-en="Explore polishing">شاهد تجربة التلميع</button></div>
+     </div>
+     <div class="hero-art"><div class="car-stage"><div class="spark" style="left:auto;right:8%"></div><div class="car-body"></div><div class="wheel r"></div><div class="wheel l"></div></div></div>
+    </article>
+    <article class="slide">
+     <div class="hero-copy">
+      <span class="kicker"><i></i><span data-ar="واتساب يبقى نقطة الإغلاق" data-en="WhatsApp remains the handoff">واتساب يبقى نقطة الإغلاق</span></span>
+      <h1 data-ar="من استفسار عام<br>إلى ملخص قابل للتصرف." data-en="From a vague inquiry<br>to an actionable summary.">من استفسار عام<br>إلى ملخص قابل للتصرف.</h1>
+      <p data-ar="بعد اختيار الخدمة، يتم تجهيز رسالة عربية منظمة مرتبطة بالخدمة نفسها وإرسالها للفريق عبر واتساب." data-en="After choosing a service, the experience prepares a structured service-specific message and hands it off to the team on WhatsApp.">بعد اختيار الخدمة، يتم تجهيز رسالة عربية منظمة مرتبطة بالخدمة نفسها وإرسالها للفريق عبر واتساب.</p>
+      <div class="actions"><button class="btn primary" onclick="scrollToId('finder')" data-ar="ابدأ المسار" data-en="Start the flow">ابدأ المسار</button></div>
+     </div>
+     <div class="hero-art"><div class="car-stage"><div class="car-body"></div><div class="wheel r"></div><div class="wheel l"></div></div></div>
+    </article>
+   </div>
+   <div class="hero-dots" id="heroDots"></div>
+   <div class="peek" data-ar="اسحب للتنقل" data-en="SWIPE TO EXPLORE">اسحب للتنقل</div>
+  </div>
+ </div>
+</section>
+
+<section class="section" id="services">
+ <div class="wrap">
+  <div class="head">
+   <div><div class="eyebrow" data-ar="اكتشاف الخدمة" data-en="SERVICE DISCOVERY">اكتشاف الخدمة</div><h2 data-ar="كل خدمة لها مسارها." data-en="Every service has its own path.">كل خدمة لها مسارها.</h2></div>
+   <p data-ar="تصفّح كما تتصفح مخزون معرض سيارات: افتح التفاصيل، قارن حتى 3 خيارات، أو دع المسار يساعدك على اختيار الأنسب." data-en="Browse like a premium showroom inventory: inspect details, compare up to 3 options, or use the guided finder.">تصفّح كما تتصفح مخزون معرض سيارات: افتح التفاصيل، قارن حتى 3 خيارات، أو دع المسار يساعدك على اختيار الأنسب.</p>
+  </div>
+  <div class="toolbar" id="filters">
+   <button class="chip on" data-filter="all" data-ar="الكل" data-en="All">الكل</button>
+   <button class="chip" data-filter="clean" data-ar="تنظيف" data-en="Cleaning">تنظيف</button>
+   <button class="chip" data-filter="finish" data-ar="لمعان ومظهر" data-en="Finish & shine">لمعان ومظهر</button>
+   <button class="chip" data-filter="heat" data-ar="حرارة وزجاج" data-en="Heat & glass">حرارة وزجاج</button>
+  </div>
+  <div class="service-grid" id="serviceGrid"></div>
+ </div>
+</section>
+
+<section class="section" id="finder">
+ <div class="wrap">
+  <div class="decision">
+   <div class="decision-copy">
+    <div class="eyebrow" style="color:#d8bf96" data-ar="ساعدني أختار" data-en="FIND MY SERVICE">ساعدني أختار</div>
+    <h2 style="color:white;margin-top:8px" data-ar="لا تعرف من أين تبدأ؟" data-en="Not sure where to start?">لا تعرف من أين تبدأ؟</h2>
+    <p data-ar="أربع خطوات قصيرة تحول نيتك إلى طلب مفهوم: الهدف، السيارة، الموقع، والوقت." data-en="Four short steps turn your intent into a clear request: goal, vehicle, location, and timing.">أربع خطوات قصيرة تحول نيتك إلى طلب مفهوم: الهدف، السيارة، الموقع، والوقت.</p>
+    <ul>
+     <li><i>01</i><span data-ar="ما الذي تريد تحسينه؟" data-en="What do you want to improve?">ما الذي تريد تحسينه؟</span></li>
+     <li><i>02</i><span data-ar="ما سيارتك؟" data-en="What is your vehicle?">ما سيارتك؟</span></li>
+     <li><i>03</i><span data-ar="أين تحتاج الخدمة؟" data-en="Where do you need service?">أين تحتاج الخدمة؟</span></li>
+     <li><i>04</i><span data-ar="متى يناسبك التواصل؟" data-en="When should the team follow up?">متى يناسبك التواصل؟</span></li>
+    </ul>
+   </div>
+   <div class="finder">
+    <div class="progress" id="finderProgress"><i class="on"></i><i></i><i></i><i></i></div>
+    <div class="q active" data-q="1">
+     <h3 data-ar="ما هدفك الأساسي؟" data-en="What is your main goal?">ما هدفك الأساسي؟</h3>
+     <p data-ar="اختر الأقرب لحالتك. هذا لا يحدد سعراً ولا يعد بنتيجة." data-en="Choose the closest match. This does not set a price or promise an outcome.">اختر الأقرب لحالتك. هذا لا يحدد سعراً ولا يعد بنتيجة.</p>
+     <div class="opts" id="goalOpts">
+      <button class="option" data-val="تنظيف السيارة" data-rec="wash" data-ar="تنظيف السيارة|غسيل متنقل" data-en="Clean the car|Mobile wash"></button>
+      <button class="option" data-val="تحسين اللمعة والمظهر" data-rec="polish" data-ar="تحسين اللمعة والمظهر|تلميع متنقل" data-en="Improve shine and finish|Mobile polishing"></button>
+      <button class="option" data-val="تقليل الحرارة عبر الزجاج" data-rec="tint" data-ar="تقليل الحرارة عبر الزجاج|عازل حراري" data-en="Reduce heat through glass|Heat insulation"></button>
+      <button class="option" data-val="غير متأكد" data-rec="unsure" data-ar="غير متأكد|أحتاج توجيه الفريق" data-en="Not sure|I need the team's guidance"></button>
+     </div>
+    </div>
+    <div class="q" data-q="2">
+     <h3 data-ar="ما سيارتك؟" data-en="What is your vehicle?">ما سيارتك؟</h3>
+     <p data-ar="معلومة السيارة تنتقل مع الطلب للفريق." data-en="Vehicle context travels with the request.">معلومة السيارة تنتقل مع الطلب للفريق.</p>
+     <div class="field"><label data-ar="الماركة والموديل" data-en="Make & model">الماركة والموديل</label><input id="car" data-ph-ar="مثال: لكزس ES" data-ph-en="Example: Lexus ES" placeholder="مثال: لكزس ES"></div>
+     <div class="field"><label data-ar="سنة الصنع — اختياري" data-en="Model year — optional">سنة الصنع — اختياري</label><input id="year" inputmode="numeric" data-ph-ar="2024" data-ph-en="2024" placeholder="2024"></div>
+    </div>
+    <div class="q" data-q="3">
+     <h3 data-ar="أين تحتاج الخدمة؟" data-en="Where do you need service?">أين تحتاج الخدمة؟</h3>
+     <p data-ar="اكتب الحي أو وصفاً مختصراً للموقع في جدة." data-en="Enter the district or a short location description in Jeddah.">اكتب الحي أو وصفاً مختصراً للموقع في جدة.</p>
+     <div class="field"><label data-ar="الحي / الموقع" data-en="District / location">الحي / الموقع</label><input id="location" data-ph-ar="مثال: الشاطئ — قرب طريق حراء" data-ph-en="Example: Al Shati — near Hira Road" placeholder="مثال: الشاطئ — قرب طريق حراء"></div>
+    </div>
+    <div class="q" data-q="4">
+     <h3 data-ar="آخر خطوة." data-en="Last step.">آخر خطوة.</h3>
+     <p data-ar="حدد الوقت المفضل وأضف أي ملاحظة تريد أن يراها الفريق قبل الرد." data-en="Choose a preferred time and add any note you want the team to see before replying.">حدد الوقت المفضل وأضف أي ملاحظة تريد أن يراها الفريق قبل الرد.</p>
+     <div class="field"><label data-ar="الوقت / الفترة المفضلة" data-en="Preferred time / period">الوقت / الفترة المفضلة</label><input id="time" data-ph-ar="مثال: غداً بعد 5 مساءً" data-ph-en="Example: Tomorrow after 5 PM" placeholder="مثال: غداً بعد 5 مساءً"></div>
+     <div class="field"><label data-ar="ملاحظة — اختياري" data-en="Note — optional">ملاحظة — اختياري</label><textarea id="notes" rows="3" data-ph-ar="وصف مختصر للحالة أو ما يهمك" data-ph-en="Short condition note or what matters to you" placeholder="وصف مختصر للحالة أو ما يهمك"></textarea></div>
+     <div class="find-result hidden" id="finderResult"></div>
+    </div>
+    <div class="find-nav"><button class="back" id="backBtn" onclick="finderBack()" data-ar="السابق" data-en="Back">السابق</button><button class="next" id="nextBtn" onclick="finderNext()" data-ar="التالي" data-en="Next">التالي</button></div>
+   </div>
+  </div>
+ </div>
+</section>
+</main>
+
+<div class="compare-bar" id="compareBar">
+ <div><b id="compareCount">0</b> <span data-ar="مختارة للمقارنة" data-en="selected to compare">مختارة للمقارنة</span><br><small data-ar="الحد الأقصى 3" data-en="Maximum 3">الحد الأقصى 3</small></div>
+ <button class="clear" onclick="clearCompare()" data-ar="مسح" data-en="Clear">مسح</button>
+ <button class="open" onclick="openCompare()" data-ar="قارن" data-en="Compare">قارن</button>
+</div>
+
+<div class="sheet" id="detailSheet" onclick="overlayClose(event,'detailSheet')">
+ <div class="sheet-panel">
+  <div class="sheet-head"><div><div class="eyebrow" data-ar="تفاصيل الخدمة" data-en="SERVICE DETAIL">تفاصيل الخدمة</div><h3 id="detailTitle"></h3></div><button class="x" onclick="closeSheet('detailSheet')">×</button></div>
+  <p id="detailDesc" style="color:var(--muted);line-height:1.8"></p>
+  <div class="specs" id="detailSpecs"></div>
+  <div class="field"><label data-ar="معلومة إضافية قبل واتساب — اختياري" data-en="Extra context before WhatsApp — optional">معلومة إضافية قبل واتساب — اختياري</label><textarea id="detailNote" rows="3" data-ph-ar="مثال: آثار سطحية على الكبوت" data-ph-en="Example: light marks on the hood" placeholder="مثال: آثار سطحية على الكبوت"></textarea></div>
+  <button class="sheet-cta" onclick="serviceWA()" data-ar="استفسر عن هذه الخدمة على واتساب" data-en="Ask about this service on WhatsApp">استفسر عن هذه الخدمة على واتساب</button>
+ </div>
+</div>
+
+<div class="sheet" id="compareSheet" onclick="overlayClose(event,'compareSheet')">
+ <div class="sheet-panel">
+  <div class="sheet-head"><div><div class="eyebrow" data-ar="مقارنة" data-en="COMPARE">مقارنة</div><h3 data-ar="قارن الخدمات" data-en="Compare services">قارن الخدمات</h3></div><button class="x" onclick="closeSheet('compareSheet')">×</button></div>
+  <div style="overflow:auto"><table class="compare-table" id="compareTable"></table></div>
+ </div>
+</div>
+
+<div class="bottom-dock">
+ <button onclick="scrollToId('services')" data-ar="الخدمات" data-en="Services">الخدمات</button>
+ <button class="main" onclick="scrollToId('finder')" data-ar="ساعدني أختار" data-en="Find service">ساعدني أختار</button>
+ <button onclick="generalWA()" data-ar="واتساب" data-en="WhatsApp">واتساب</button>
+</div>
+
+<footer>
+ <div class="wrap foot">
+  <div><b data-ar="Fly Wash — Concept Factory Demo" data-en="Fly Wash — Concept Factory Demo">Fly Wash — Concept Factory Demo</b><div class="small" data-ar="تجربة غير رسمية لشرح مسار اكتشاف الخدمة وتجهيز الطلب قبل واتساب." data-en="Unofficial concept demo showing service discovery and structured pre-WhatsApp handoff.">تجربة غير رسمية لشرح مسار اكتشاف الخدمة وتجهيز الطلب قبل واتساب.</div></div>
+  <div class="small" data-ar="لا تتضمن أسعاراً أو توافراً أو وعوداً تشغيلية غير معتمدة." data-en="No unapproved pricing, availability or operational promises are shown.">لا تتضمن أسعاراً أو توافراً أو وعوداً تشغيلية غير معتمدة.</div>
+ </div>
+</footer>
+
+<script>
+const WA='966560390116';
+let lang=(new URLSearchParams(location.search).get('lang')==='en')?'en':'ar';
+const services=[
+ {id:'wash',cat:'clean',icon:'◌',ar:{name:'غسيل متنقل',desc:'مسار سريع لمن يريد تنظيف السيارة في موقعه مع تجهيز بيانات السيارة والموقع قبل التواصل.',focus:'التنظيف',context:'السيارة + الموقع',handoff:'طلب سريع'},en:{name:'Mobile wash',desc:'A fast path for customers who want the car cleaned at their location, with vehicle and location context prepared before chat.',focus:'Cleaning',context:'Vehicle + location',handoff:'Fast request'}},
+ {id:'polish',cat:'finish',icon:'✦',ar:{name:'تلميع متنقل',desc:'مسار يضيف وصف حالة الطلاء والهدف من التلميع قبل انتقال الطلب إلى واتساب.',focus:'اللمعة والمظهر',context:'الحالة + السيارة',handoff:'طلب بحالة واضحة'},en:{name:'Mobile polishing',desc:'Adds paint-condition context and the customer’s polishing goal before the WhatsApp handoff.',focus:'Finish & shine',context:'Condition + vehicle',handoff:'Condition-led request'}},
+ {id:'tint',cat:'heat',icon:'◐',ar:{name:'عازل حراري',desc:'مسار يركز على السيارة والجزء المطلوب من الزجاج والسياق الذي يحتاجه الفريق قبل مناقشة الخيار المناسب.',focus:'الحرارة والزجاج',context:'السيارة + الزجاج',handoff:'طلب مواصفات'},en:{name:'Heat insulation',desc:'Focuses on the vehicle, requested glass area and the context the team needs before discussing the suitable option.',focus:'Heat & glass',context:'Vehicle + glass',handoff:'Specification-led request'}},
+ {id:'unsure',cat:'all',icon:'?',ar:{name:'غير متأكد',desc:'مسار موجه لمن يعرف النتيجة التي يريدها لكنه لا يعرف اسم الخدمة المناسبة بعد.',focus:'توجيه الفريق',context:'الهدف + السيارة',handoff:'طلب توجيه'},en:{name:'Not sure',desc:'A guided route for someone who knows the outcome they want but not which service fits yet.',focus:'Team guidance',context:'Goal + vehicle',handoff:'Guided request'}}
+];
+let currentHero=0, startX=0, dx=0, compare=[], currentService='wash', finderStep=1, finder={goal:'',rec:'unsure'};
+function t(obj){return obj[lang]}
+function applyLang(){
+ document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';
+ document.getElementById('langBtn').textContent=lang==='ar'?'EN':'AR';
+ document.querySelectorAll('[data-ar]').forEach(el=>{
+   const val=el.dataset[lang]; if(!val)return;
+   if(el.classList.contains('option') && val.includes('|')){const [a,b]=val.split('|');el.innerHTML='<b>'+a+'</b><span>'+b+'</span>'}
+   else if(el.tagName==='H1') el.innerHTML=val;
+   else el.textContent=val;
+ });
+ document.querySelectorAll('[data-ph-ar]').forEach(el=>el.placeholder=el.dataset['ph'+(lang==='ar'?'Ar':'En')]);
+ renderServices(); updateCompare();
+}
+function toggleLang(){lang=lang==='ar'?'en':'ar';const u=new URL(location.href);if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');history.replaceState({},'',u);applyLang()}
+function scrollToId(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'})}
+function setupHero(){
+ const dots=document.getElementById('heroDots');dots.innerHTML='';
+ for(let i=0;i<3;i++){const b=document.createElement('button');b.onclick=()=>setHero(i);dots.appendChild(b)}
+ setHero(0);
+ const frame=document.getElementById('heroFrame');
+ frame.addEventListener('pointerdown',e=>{startX=e.clientX;dx=0;frame.setPointerCapture(e.pointerId)});
+ frame.addEventListener('pointermove',e=>{if(!startX)return;dx=e.clientX-startX});
+ frame.addEventListener('pointerup',()=>{if(Math.abs(dx)>55)setHero(currentHero+(dx<0?1:-1));startX=0;dx=0});
+}
+function setHero(i){currentHero=(i+3)%3;document.getElementById('heroTrack').style.transform='translateX('+(-100*currentHero)+'%)';document.querySelectorAll('#heroDots button').forEach((b,j)=>b.classList.toggle('on',j===currentHero))}
+function renderServices(filter='all'){
+ const g=document.getElementById('serviceGrid');g.innerHTML='';
+ services.filter(s=>filter==='all'||s.cat===filter||s.id==='unsure').forEach(s=>{
+  const d=t(s);const el=document.createElement('article');el.className='card';
+  el.innerHTML=`<div class="card-visual"><div class="ring"></div><div class="glyph">${s.icon}</div><div class="mini-car"></div><button class="compare-toggle ${compare.includes(s.id)?'active':''}" onclick="toggleCompare('${s.id}',event)">${lang==='ar'?'مقارنة':'Compare'}</button></div>
+  <div class="card-body"><div class="card-top"><div><h3>${d.name}</h3><div class="small">${d.focus}</div></div></div><p>${d.desc}</p><div class="card-actions"><button class="detail" onclick="openService('${s.id}')">${lang==='ar'?'التفاصيل':'Details'}</button><button onclick="serviceQuickWA('${s.id}')">${lang==='ar'?'واتساب':'WhatsApp'}</button></div></div>`;
+  g.appendChild(el)
+ })
+}
+document.getElementById('filters').addEventListener('click',e=>{const b=e.target.closest('[data-filter]');if(!b)return;document.querySelectorAll('#filters .chip').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderServices(b.dataset.filter)})
+function openService(id){currentService=id;const s=services.find(x=>x.id===id),d=t(s);document.getElementById('detailTitle').textContent=d.name;document.getElementById('detailDesc').textContent=d.desc;document.getElementById('detailSpecs').innerHTML=[[lang==='ar'?'الهدف':'Focus',d.focus],[lang==='ar'?'السياق قبل التواصل':'Context before chat',d.context],[lang==='ar'?'نوع التسليم':'Handoff',d.handoff]].map(x=>`<div class="spec"><span>${x[0]}</span><b>${x[1]}</b></div>`).join('');document.getElementById('detailSheet').classList.add('open');history.replaceState({},'','#service='+id)}
+function closeSheet(id){document.getElementById(id).classList.remove('open');if(id==='detailSheet')history.replaceState({},' ',location.pathname+location.search)}
+function overlayClose(e,id){if(e.target.id===id)closeSheet(id)}
+function toggleCompare(id,e){e&&e.stopPropagation();if(compare.includes(id))compare=compare.filter(x=>x!==id);else{if(compare.length>=3)return;compare.push(id)}updateCompare();const activeFilter=document.querySelector('#filters .chip.on')?.dataset.filter||'all';renderServices(activeFilter)}
+function updateCompare(){document.getElementById('compareCount').textContent=compare.length;document.getElementById('compareBar').classList.toggle('show',compare.length>0)}
+function clearCompare(){compare=[];updateCompare();renderServices(document.querySelector('#filters .chip.on')?.dataset.filter||'all')}
+function openCompare(){if(!compare.length)return;const ss=compare.map(id=>services.find(s=>s.id===id));let html='<tr><th>'+(lang==='ar'?'الخدمة':'Service')+'</th>'+ss.map(s=>'<th>'+t(s).name+'</th>').join('')+'</tr>';[['focus',lang==='ar'?'الهدف':'Focus'],['context',lang==='ar'?'السياق المطلوب':'Required context'],['handoff',lang==='ar'?'نوع التسليم':'Handoff']].forEach(([k,l])=>html+='<tr><td><b>'+l+'</b></td>'+ss.map(s=>'<td>'+t(s)[k]+'</td>').join('')+'</tr>');document.getElementById('compareTable').innerHTML=html;document.getElementById('compareSheet').classList.add('open')}
+function waText(serviceName,extra=''){const ar=`السلام عليكم، لدي استفسار عن ${serviceName} عبر تجربة فلاي واش.${extra?'\n\n'+extra:''}\n\nأرجو إفادتي بالخطوة المناسبة.`;const en=`Hello, I have an enquiry about ${serviceName} through the Fly Wash demo.${extra?'\n\n'+extra:''}\n\nPlease advise on the appropriate next step.`;return lang==='ar'?ar:en}
+function openWA(msg){window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank','noopener')}
+function generalWA(){openWA(lang==='ar'?'السلام عليكم، لدي استفسار عن خدمات فلاي واش.':'Hello, I have an enquiry about Fly Wash services.')}
+function serviceQuickWA(id){const s=services.find(x=>x.id===id);openWA(waText(t(s).name))}
+function serviceWA(){const s=services.find(x=>x.id===currentService),note=document.getElementById('detailNote').value.trim();openWA(waText(t(s).name,note))}
+function finderNext(){
+ if(finderStep===1 && !finder.goal)return;
+ if(finderStep===2 && !document.getElementById('car').value.trim())return document.getElementById('car').focus();
+ if(finderStep===3 && !document.getElementById('location').value.trim())return document.getElementById('location').focus();
+ if(finderStep<4){finderStep++;showFinder();return}
+ finishFinder()
+}
+function finderBack(){if(finderStep>1){finderStep--;showFinder()}}
+function showFinder(){
+ document.querySelectorAll('.q').forEach(q=>q.classList.toggle('active',+q.dataset.q===finderStep));
+ document.querySelectorAll('#finderProgress i').forEach((x,i)=>x.classList.toggle('on',i<finderStep));
+ document.getElementById('backBtn').style.visibility=finderStep===1?'hidden':'visible';
+ document.getElementById('nextBtn').textContent=finderStep===4?(lang==='ar'?'جهّز الملخص':'Prepare summary'):(lang==='ar'?'التالي':'Next');
+}
+document.getElementById('goalOpts').addEventListener('click',e=>{const b=e.target.closest('.option');if(!b)return;document.querySelectorAll('#goalOpts .option').forEach(x=>x.classList.remove('active'));b.classList.add('active');finder.goal=b.dataset.val;finder.rec=b.dataset.rec})
+function finishFinder(){
+ const s=services.find(x=>x.id===finder.rec)||services[3], car=document.getElementById('car').value.trim(),year=document.getElementById('year').value.trim(),loc=document.getElementById('location').value.trim(),time=document.getElementById('time').value.trim(),notes=document.getElementById('notes').value.trim();
+ const name=t(s).name;
+ const lines=lang==='ar'
+ ?[`الخدمة المقترحة كبداية: ${name}`,`السيارة: ${car}${year?' · '+year:''}`,`الموقع: ${loc}`,`الوقت المفضل: ${time||'غير محدد'}`,`ملاحظة: ${notes||'لا توجد'}`]
+ :[`Suggested starting service: ${name}`,`Vehicle: ${car}${year?' · '+year:''}`,`Location: ${loc}`,`Preferred time: ${time||'Not specified'}`,`Note: ${notes||'None'}`];
+ const box=document.getElementById('finderResult');box.textContent=lines.join('\n');box.classList.remove('hidden');
+ document.getElementById('nextBtn').textContent=lang==='ar'?'فتح واتساب':'Open WhatsApp';
+ document.getElementById('nextBtn').onclick=()=>{const msg=lang==='ar'?`السلام عليكم، جهزت طلبي عبر تجربة فلاي واش:\n\n• الهدف: ${finder.goal}\n• الخدمة كبداية: ${name}\n• السيارة: ${car}${year?' · '+year:''}\n• الموقع: ${loc}\n• الوقت المفضل: ${time||'غير محدد'}\n• ملاحظة: ${notes||'لا توجد'}\n\nأرجو مراجعة الطلب وإفادتي بالخطوة المناسبة.`:`Hello, I prepared my request through the Fly Wash demo:\n\n• Goal: ${finder.goal}\n• Starting service: ${name}\n• Vehicle: ${car}${year?' · '+year:''}\n• Location: ${loc}\n• Preferred time: ${time||'Not specified'}\n• Note: ${notes||'None'}\n\nPlease review and advise on the appropriate next step.`;openWA(msg)}
+}
+function loadHash(){const m=location.hash.match(/service=(wash|polish|tint|unsure)/);if(m)openService(m[1])}
+setupHero();applyLang();showFinder();loadHash();
+</script>
+</body>
+</html>
