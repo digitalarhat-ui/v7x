@@ -1,7 +1,13 @@
+import {getStoredSecret} from './secrets.js';
+
 function normalize(s){return String(s||'').toLowerCase().replace(/\s+/g,' ').trim()}
 
+export async function getGroqApiKey(){
+  return (await getStoredSecret('GROQ_API_KEY')) || process.env.GROQ_API_KEY || '';
+}
+
 export async function exactContextPhrase(transcript){
-  const apiKey=process.env.GROQ_API_KEY||'';
+  const apiKey=await getGroqApiKey();
   if(!apiKey)throw new Error('GROQ_API_KEY_MISSING');
   const outbound=transcript.filter(x=>x.direction==='outbound'&&x.text).map(x=>x.text);
   const allText=transcript.map(x=>`[${x.direction}] ${x.text}`).join('\n');

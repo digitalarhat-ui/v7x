@@ -1,9 +1,10 @@
 import {testAuth} from '../lib/vgraple.js';
+import {getGroqApiKey} from '../lib/groq.js';
 
 function authorized(req){const key=String(req.query?.key||req.headers['x-dashboard-key']||'');return !!key&&key===process.env.DASHBOARD_KEY}
 
 async function testGroq(){
-  const key=process.env.GROQ_API_KEY||'';
+  const key=await getGroqApiKey();
   if(!key)return {ok:false,error:'missing'};
   try{
     const r=await fetch('https://api.groq.com/openai/v1/models',{headers:{Authorization:'Bearer '+key},cache:'no-store'});
