@@ -85,4 +85,5 @@ document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click'
 function briefText(){return 'السلام عليكم، أود طلب عرض سعر/معاينة لقاعة الوردة البيضاء بناءً على هذا الموجز:\n• المناسبة: '+state.event+'\n• التاريخ المفضل: '+(document.getElementById('date').value||'يُحدد لاحقاً')+'\n• عدد الضيوف المتوقع: '+(document.getElementById('guests').value||'غير محدد')+'\n• اتجاه الأجواء: '+state.mood+'\n• أولوية التوزيع: '+state.layout+'\n\nهذا التصور مبدئي وأرغب بمعرفة الخيارات الفعلية المتاحة لدى القاعة.'}
 document.getElementById('copyBrief').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(briefText());showToast('تم نسخ الموجز — جاهز للإرسال')}catch(e){showToast('الموجز جاهز؛ استخدم النسخ من المتصفح')}});function showToast(t){const x=document.getElementById('toast');x.textContent=t;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),2200)}refresh();
 </script>
+<!-- phase1-publish-trigger -->
 </body></html>
