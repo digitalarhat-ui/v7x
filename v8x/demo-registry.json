@@ -1,0 +1,26 @@
+{
+  "system": "DIGITALARHAT-V8X",
+  "version": "1.0",
+  "deployMode": "manual-production-only",
+  "previewDeployments": false,
+  "rules": {
+    "oneLeadOneRelease": true,
+    "failClosedDedupe": true,
+    "authenticAssetsOnly": true,
+    "verifiedContactOnly": true,
+    "contaminationAuditRequired": true,
+    "mobileQARequired": true,
+    "stableProspectAliasRequired": true
+  },
+  "active": {
+    "slug": "fahd-al-zaher-kitchens",
+    "businessAr": "مؤسسة فهد الزاهر للمطابخ",
+    "businessEn": "Fahd Al Zaher Kitchens Establishment",
+    "region": "Al Baha / Al Aqiq",
+    "sourcePath": "demos/fahd-al-zaher/index.html",
+    "contactRoute": "verified-public-Haraj-route",
+    "directWhatsAppVerified": false,
+    "sourceStatus": "corrected-ready",
+    "publicReleaseStatus": "blocked-by-current-vercel-daily-deployment-quota"
+  }
+}
