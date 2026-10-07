@@ -65,8 +65,14 @@ jobs:
             }));
             if(!studio.rect||studio.rect.width<250||studio.rect.height<220||studio.overflow||!studio.nextVisible) throw Error(name+' studio '+JSON.stringify(studio));
 
-            const oak=p.locator('[data-cabinet="oak"]').last(); if(await oak.count()) await oak.click();
-            const warm=p.locator('[data-worktop="warm"]').last(); if(await warm.count()) await warm.click();
+            await p.click('[data-configtab="cabinet"]');
+            await p.waitForSelector('#configPanel [data-cabinet="oak"]');
+            await p.click('#configPanel [data-cabinet="oak"]');
+            await p.click('[data-configtab="worktop"]');
+            await p.waitForSelector('#configPanel [data-worktop="warm"]');
+            await p.click('#configPanel [data-worktop="warm"]');
+            const navAfterMaterials=await p.evaluate(()=>{const e=document.querySelector('#nextBtn'),r=e?.getBoundingClientRect(),s=e?getComputedStyle(e):null;return {phase:document.body.dataset.phase,visible:!!e&&!!r&&r.width>0&&r.height>0&&s.visibility!=='hidden'&&s.display!=='none'&&Number(s.opacity)>0,rect:r?.toJSON?.()||null}});
+            if(!navAfterMaterials.visible) throw Error(name+' nav after phase2 materials '+JSON.stringify(navAfterMaterials));
             await p.click('#nextBtn'); await p.waitForFunction(()=>document.body.dataset.phase==='3');
             await p.click('#nextBtn'); await p.waitForFunction(()=>document.body.dataset.phase==='4');
             await p.click('#nextBtn'); await p.waitForFunction(()=>document.body.dataset.phase==='5');
