@@ -352,6 +352,32 @@
           "value": "public, max-age=0, must-revalidate"
         }
       ]
+    },
+    {
+      "source": "/fahd-al-zaher-kitchen-studio-v20",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/fahd-al-zaher-kitchen-studio-v20/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
     }
   ],
   "alias": [
@@ -392,7 +418,8 @@
     "urbanfurniva-kitchen-studio.vercel.app",
     "lamasat-alkhaleejoun.vercel.app",
     "tafseel-matabekh-riyadh.vercel.app",
-    "abu-ala-kitchens-riyadh.vercel.app"
+    "abu-ala-kitchens-riyadh.vercel.app",
+    "fahd-al-zaher-kitchens.vercel.app"
   ],
   "redirects": [
     {
@@ -810,6 +837,17 @@
         {
           "type": "host",
           "value": "abu-ala-kitchens-riyadh.vercel.app"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "destination": "/fahd-al-zaher-kitchen-studio-v20",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "fahd-al-zaher-kitchens.vercel.app"
         }
       ]
     }
