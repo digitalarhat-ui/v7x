@@ -1,1 +1,0 @@
-{"rewrites":[{"source":"/en","destination":"/index.html"},{"source":"/en/","destination":"/index.html"},{"source":"/cars/:slug","destination":"/index.html"},{"source":"/cars/:slug/","destination":"/index.html"},{"source":"/en/cars/:slug","destination":"/index.html"},{"source":"/en/cars/:slug/","destination":"/index.html"}]}
