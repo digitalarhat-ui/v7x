@@ -1,0 +1,8 @@
+[build]
+  command = "mkdir -p dist && tar -xzf source.tar.gz -C dist"
+  publish = "dist"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
