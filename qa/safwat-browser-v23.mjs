@@ -58,7 +58,22 @@ for (const width of widths){
         await page.locator('#notesInput').fill('اختبار مخطط المناسبة');
         await assertion(width,route,'live_event_summary',(await page.locator('#briefEvent').innerText()).includes('زفاف'));
         await assertion(width,route,'live_guest_summary',(await page.locator('#briefGuests').innerText()).includes('175'));
+        // Golden journey gate: confirm atmosphere/palette/lighting/detail/focus,
+        // generate three directions, select a preferred direction, THEN open Phase 4.
+        for (const sel of [
+          '#atmosphereChips .p2-choice',
+          '#palettePreferenceChips .p2-choice',
+          '#detailChips .p2-choice',
+          '#lightingChips .p2-choice',
+          '#focusChips .p2-choice'
+        ]) await page.locator(sel).first().click();
+        await assertion(width,route,'directions_ready',await page.locator('#generateDirectionsBtn').isEnabled());
+        await page.locator('#generateDirectionsBtn').click();
+        await assertion(width,route,'directions_generated',await page.locator('#p3Stage').isVisible());
+        await page.locator('#directionCards .p3-select').first().click();
+        await assertion(width,route,'final_entry_ready',await page.locator('#p4Entry').isVisible());
         await page.locator('#openFinalReview').click();
+        await assertion(width,route,'final_review_visible',await page.locator('#phase4Review').isVisible());
         await assertion(width,route,'final_review_route_in_page',(await page.locator('#p4Contact').count())===1);
         await page.screenshot({path:'safwat-screens/customer-'+width+'-ar.png',fullPage:true});
         await langEnglish(page,width,route);
@@ -78,6 +93,7 @@ for (const width of widths){
         await page.locator('#next').click();
         await assertion(width,route,'review_result_generated',await page.locator('#results').isVisible(),(await page.locator('#resultTitle').innerText()).slice(0,130));
         await page.locator('#copyFeedback').click();
+        await page.waitForFunction(()=>document.getElementById('copyStatus')?.innerText.trim().length>0,null,{timeout:10000});
         await assertion(width,route,'review_copy_feedback',(await page.locator('#copyStatus').innerText()).length>0);
         await page.screenshot({path:'safwat-screens/review-'+width+'-ar.png',fullPage:true});
         await langEnglish(page,width,route);
