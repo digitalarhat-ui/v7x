@@ -56,6 +56,13 @@ for (const width of widths){
         await page.locator('#styleChips .chip[data-value="فاخر"]').click();
         await page.locator('#hospitalityInput').fill('اختبار تقديم الضيافة');
         await page.locator('#notesInput').fill('اختبار مخطط المناسبة');
+        const refResp=await page.request.get(BASE+'/assets/safwat-gallery.jpg');
+        await assertion(width,route,'upload_fixture_download',refResp.status()===200);
+        if(refResp.status()===200){
+          await page.locator('#inspirationInput').setInputFiles({name:'safwat-first-party-ref.jpg',mimeType:'image/jpeg',buffer:await refResp.body()});
+          await page.waitForTimeout(650);
+          await assertion(width,route,'inspiration_upload_accepted',await page.locator('#p2Uploaded').isVisible(),(await page.locator('#uploadTitle').innerText()).slice(0,90));
+        }
         await assertion(width,route,'live_event_summary',(await page.locator('#briefEvent').innerText()).includes('زفاف'));
         await assertion(width,route,'live_guest_summary',(await page.locator('#briefGuests').innerText()).includes('175'));
         // Golden journey gate: confirm atmosphere/palette/lighting/detail/focus,
@@ -75,6 +82,13 @@ for (const width of widths){
         await page.locator('#openFinalReview').click();
         await assertion(width,route,'final_review_visible',await page.locator('#phase4Review').isVisible());
         await assertion(width,route,'final_review_route_in_page',(await page.locator('#p4Contact').count())===1);
+        await page.locator('#p4CustomerConfirmation').check();
+        await assertion(width,route,'customer_confirms_brief',await page.locator('#p4CustomerConfirmation').isChecked());
+        await page.locator('#p4Copy').click();
+        await page.waitForFunction(()=>document.getElementById('p4ActionStatus')?.innerText.trim().length>0,null,{timeout:12000});
+        await assertion(width,route,'customer_brief_copy_feedback',(await page.locator('#p4ActionStatus').innerText()).length>0);
+        await page.locator('#p4Edit').click();
+        await assertion(width,route,'edit_preserves_customer_state',(await page.locator('#briefGuests').innerText()).includes('175'));
         await page.screenshot({path:'safwat-screens/customer-'+width+'-ar.png',fullPage:true});
         await langEnglish(page,width,route);
         await page.screenshot({path:'safwat-screens/customer-'+width+'-en.png',fullPage:true});
