@@ -1,0 +1,4 @@
+LEAD_LOCK_ID=SA-3F-20261010-SARAYA-ALAHSA
+GOLDEN_SOURCE=WHITE_ROSE_EVENT_VENUE; recovered from the original owner-authorized deployment and adapted to Al Saraya, Al Ahsa.
+This is an independent unofficial concept; it is not endorsed by the venue. Photos linked from actual September 2026 event reporting at wahhnews.com. Owner-attributed permission asserted, photographer rightsholder permissions not independently verified; no local copies.
+NO commercial live bookings, payment, venue availability or backend integration. Contact route public landline only. Preserve source identity isolation and do not send without QA.
