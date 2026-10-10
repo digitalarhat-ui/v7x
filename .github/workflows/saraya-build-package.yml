@@ -1,0 +1,58 @@
+name: One-time Al Saraya Vercel quota-safe source package
+on:
+  push:
+    branches:
+      - qa/saraya-al-ahsa-20261010
+    paths:
+      - .github/workflows/saraya-build-package.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - name: Recover verified served Al Saraya Vercel files (no new deployment)
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/saraya-build/review
+          base='https://saraya-al-ahsa-visual-planner.vercel.app'
+          curl -fLsS --retry 2 "$base/" -o /tmp/saraya-build/index.html
+          curl -fLsS --retry 2 "$base/review/" -o /tmp/saraya-build/review/index.html
+          curl -fLsS --retry 2 "$base/wr-bilingual.js" -o /tmp/saraya-build/wr-bilingual.js
+          curl -fLsS --retry 2 "$base/wr-bilingual.css" -o /tmp/saraya-build/wr-bilingual.css
+          test "$(wc -c </tmp/saraya-build/index.html)" -gt 100000
+          test "$(wc -c </tmp/saraya-build/review/index.html)" -gt 25000
+      - name: Replace blocked venue images with visually browser-tested real 2026 Saraya event photographs
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('/tmp/saraya-build/index.html')
+          s=p.read_text()
+          replacements=[
+          ('https://venuewise.com/upload/venue/gallery/2025/08/04/2025_08_04_07_56_46_68903d3a12064.jpg','https://wahhnews.com/wp-content/uploads/2026/09/5ea7eab3-605e-4ed9-bdbb-2d2bfb19a45a.jpg'),
+          ('https://venuewise.com/upload/venue/gallery/2025/08/04/2025_08_04_07_50_11_68903cc7a806f.jpg','https://wahhnews.com/wp-content/uploads/2026/09/55f0bd46-4067-4f45-a92d-1c40c3ccdff2.jpg')]
+          for before,after in replacements:
+            n=s.count(before)
+            assert n > 0,(before,n)
+            s=s.replace(before,after)
+            print('Replaced references:',n)
+          assert 'venuewise.com/upload/' not in s
+          assert 'الوردة البيضاء' not in s and 'White Rose' not in s
+          assert 'السرايا' in s
+          p.write_text(s)
+          Path('/tmp/saraya-build/robots.txt').write_text('User-agent: *\nDisallow: /\n')
+          Path('/tmp/saraya-build/vercel.json').write_text('{"version":2,"headers":[{"source":"/(.*)","headers":[{"key":"X-Robots-Tag","value":"noindex, nofollow, noarchive"}]}]}')
+          Path('/tmp/saraya-build/BUILD-MANIFEST.txt').write_text('LEAD_LOCK_ID=SA-3F-20261010-SARAYA-ALAHSA\nGolden White Rose original unchanged. Source is compiled served-page recovery of Al Saraya deployment dpl_BSv5AZUKJhRufsL6mMVKVB8Ed4ut, modified with two documented genuine event photo hotlinks. Do not claim independent photographer rights. This ZIP is a HOLD package for future no-cost deployment after provider quota reset; not client-ready until live browser QA on final deployment.\n')
+          PY
+          cd /tmp/saraya-build
+          sha256sum index.html review/index.html wr-bilingual.js wr-bilingual.css | tee SHA256SUMS.txt
+      - name: Archive authenticated-source recovery and edited static build
+        uses: actions/upload-artifact@v4
+        with:
+          name: saraya-al-ahsa-patched-source-for-redeploy
+          path: /tmp/saraya-build/
+          retention-days: 30
+          if-no-files-found: error
