@@ -1,0 +1,30 @@
+name: One-time Al Saraya genuine media preflight
+on:
+  push:
+    branches:
+      - qa/saraya-al-ahsa-20261010
+    paths:
+      - .github/workflows/saraya-media-preflight.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  media-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser
+        run: |
+          mkdir -p /tmp/saraya-image-preflight && cd /tmp/saraya-image-preflight
+          npm init -y
+          npm install playwright@1.56.1 --no-save
+          npx playwright install chromium
+      - name: Validate original unproxied media sources
+        run: |
+          cp qa/saraya-al-ahsa-20261010/media-check.mjs /tmp/saraya-image-preflight/media-check.mjs
+          cd /tmp/saraya-image-preflight
+          node media-check.mjs
