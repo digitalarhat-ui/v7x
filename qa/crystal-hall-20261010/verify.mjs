@@ -25,8 +25,55 @@ for(const width of widths){for(const path of ['/','/review/']){
   if(record.hasEnSwitch){await toggle.click();await page.waitForTimeout(300);record.langEnglish=await page.locator('html').getAttribute('lang');record.dirEnglish=await page.locator('html').getAttribute('dir');await page.locator('#wrLanguage button[data-lang="ar"]').click()}
   if(path==='/'){
    record.contact=await page.locator('a[href="tel:+966535550081"]').count();
-   try{await page.locator('#startPlanning').click({timeout:5000});const btn=page.locator('#eventChips button[data-value="زفاف"]');await btn.click({timeout:5000});await page.locator('#guestInput').fill('180');record.plannerEvent=await btn.getAttribute('aria-pressed');record.plannerGuests=await page.locator('#guestInput').inputValue()}catch(e){record.plannerError=String(e).slice(0,200)}
-  }else{record.reviewForm=await page.locator('#reviewForm').count();record.reviewNext=await page.locator('#next').count()}
+   try{await page.locator('#startPlanning').click({timeout:5000});const btn=page.locator('#eventChips button[data-value="زفاف"]');await btn.click({timeout:5000});await page.locator('#guestInput').fill('180');record.plannerEvent=await btn.getAttribute('aria-pressed');record.plannerGuests=await page.locator('#guestInput').inputValue();
+    await page.locator('#dateInput').fill('2026-12-10');
+    await page.locator('#styleChips button[data-value="فاخر"]').click();
+    record.phase2Visible=await page.locator('#phase2Flow').isVisible();
+    for(const [id,val] of [['atmosphereChips','فاخرة'],['palettePreferenceChips','أبيض وذهبي'],['detailChips','متوازن'],['lightingChips','دافئة'],['focusChips','الإضاءة']]){
+      await page.locator('#'+id+' button[data-value="'+val+'"]').click({timeout:5000});
+    }
+    record.phase3Enabled=await page.locator('#generateDirectionsBtn').isEnabled();
+    if(record.phase3Enabled){
+      await page.locator('#generateDirectionsBtn').click();
+      record.directionCount=await page.locator('#directionCards .direction-card').count();
+      if(record.directionCount){
+        await page.locator('#directionCards .p3-select').first().click({timeout:7000});
+        record.preferredDirection=await page.locator('#briefP3Preferred').innerText();
+        record.phase4Entry=await page.locator('#p4Entry').isVisible();
+        if(record.phase4Entry){
+          await page.locator('#openFinalReview').click({timeout:6000});
+          record.phase4Visible=await page.locator('#phase4Review').isVisible();
+          record.summary=await page.locator('#p4Summary').innerText().then(s=>s.slice(0,350));
+          await page.locator('#p4CustomerConfirmation').check();
+          await page.locator('#p4Copy').click();
+          record.copyStatus=await page.locator('#p4ActionStatus').innerText();
+        }
+      }
+    }
+  }catch(e){record.plannerError=String(e).slice(0,400)}
+  }else{
+    record.reviewForm=await page.locator('#reviewForm').count();record.reviewNext=await page.locator('#next').count();
+    try {
+      await page.locator('input[name="benefit"][value="yes"]').check();
+      await page.locator('input[name="useful"][value="brief"]').check();
+      await page.locator('#next').click();record.step2Visible=await page.locator('#step2').isVisible();
+      await page.locator('input[name="fit"][value="partial"]').check();
+      await page.locator('input[name="standard"][value="partial"]').check();
+      await page.locator('#needed').fill('Guest count, preferred date, and desired section');
+      await page.locator('#next').click();record.step3Visible=await page.locator('#step3').isVisible();
+      await page.locator('input[name="data"][value="unclear"]').check();
+      await page.locator('input[name="interest"][value="adjust"]').check();
+      await page.locator('#next').click();
+      record.reviewResults=await page.locator('#results').isVisible();
+      record.reviewTitle=await page.locator('#resultTitle').innerText();
+      await page.locator('#copyFeedback').click();
+      record.reviewCopyStatus=await page.locator('#copyStatus').innerText();
+    }catch(e){record.reviewError=String(e).slice(0,350)}
+  }
+  // Scroll through actual viewport to trigger source IntersectionObserver reveals before full-page visual snapshot.
+  await page.evaluate(async()=>{for(let y=0;y<document.documentElement.scrollHeight;y+=Math.max(330,innerHeight*.75)){scrollTo(0,y);await new Promise(r=>setTimeout(r,75))}scrollTo(0,0)});
+  await page.waitForTimeout(650);
+  record.invisibleReveals=await page.locator('.ux-reveal:not(.ux-visible)').count();
   await page.screenshot({path:'qa-output/'+label+'-'+width+'.jpg',type:'jpeg',quality:72,fullPage:true,timeout:20000});
   record.errors=errors.slice(0,12);
  }catch(e){record.fatal=String(e).slice(0,450);failures.push(label+' '+width+' '+record.fatal)}
@@ -37,6 +84,8 @@ for(const width of widths){for(const path of ['/','/review/']){
  if(record.langEnglish!=='en'||record.dirEnglish!=='ltr')failures.push(label+' '+width+' English toggle');
  if(path==='/' && (record.plannerEvent!=='true'||record.plannerGuests!=='180'))failures.push(label+' '+width+' planner');
  if(path==='/' && record.photoResults?.some(x=>!x.ok))failures.push(label+' '+width+' venue photo failed');
+ if(path==='/' && (!record.phase2Visible||!record.phase3Enabled||!record.directionCount||!record.phase4Entry||!record.phase4Visible||record.plannerError))failures.push(label+' '+width+' full planner phases incomplete: '+(record.plannerError||'missing status'));
+ if(path==='/review/' && (!record.step2Visible||!record.step3Visible||!record.reviewResults||record.reviewError))failures.push(label+' '+width+' review decision workflow incomplete: '+(record.reviewError||'missing results'));
  if(errors.some(x=>x.startsWith('pageerror:')))failures.push(label+' '+width+' JS pageerror');
 }}
 await browser.close();
