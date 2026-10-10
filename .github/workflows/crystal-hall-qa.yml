@@ -1,0 +1,39 @@
+name: One-time Crystal Hall Riyadh browser QA
+on:
+  push:
+    branches:
+      - qa/crystal-hall-riyadh-20261010
+    paths:
+      - .github/workflows/crystal-hall-qa.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install standard Chromium test dependency
+        run: |
+          mkdir -p /tmp/crystal-venue-qa
+          cd /tmp/crystal-venue-qa
+          npm init -y
+          npm install playwright@1.56.1 --no-save
+          npx playwright install chromium
+      - name: Test production page, venue images, Arabic English planner and review
+        run: |
+          cp qa/crystal-hall-20261010/verify.mjs /tmp/crystal-venue-qa/verify.mjs
+          cd /tmp/crystal-venue-qa
+          node verify.mjs
+      - name: Archive visual screenshots and diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: crystal-hall-real-browser-qa
+          path: /tmp/crystal-venue-qa/qa-output/
+          retention-days: 1
+          if-no-files-found: ignore
