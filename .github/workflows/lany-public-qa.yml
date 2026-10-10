@@ -1,0 +1,40 @@
+name: One-time Lany Hall Jeddah live Chromium QA
+on:
+  push:
+    branches:
+      - demo/lany-hall-jeddah-20261010
+    paths:
+      - 'qa/lany-hall-20261010/**'
+      - '.github/workflows/lany-public-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install headless Chromium
+        run: |
+          mkdir -p /tmp/lany-venue-qa
+          cd /tmp/lany-venue-qa
+          npm init -y
+          npm install playwright@1.56.1 --no-save
+          npx playwright install chromium
+      - name: Exercise hosted original Golden website end-to-end
+        run: |
+          cp qa/lany-hall-20261010/verify.mjs /tmp/lany-venue-qa/verify.mjs
+          cd /tmp/lany-venue-qa
+          node verify.mjs
+      - name: Archive screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lany-hall-browser-proof
+          path: /tmp/lany-venue-qa/qa-output/
+          retention-days: 1
+          if-no-files-found: ignore
