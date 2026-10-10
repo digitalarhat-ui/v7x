@@ -1,0 +1,42 @@
+name: One-time Al Saraya corrected full browser QA (local static build)
+on:
+  push:
+    branches:
+      - qa/saraya-al-ahsa-20261010
+    paths:
+      - .github/workflows/saraya-corrected-qa.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright Chromium
+        run: |
+          mkdir -p /tmp/saraya-corrected-qa
+          cd /tmp/saraya-corrected-qa
+          npm init -y
+          npm install playwright@1.56.1 --no-save
+          npx playwright install chromium
+      - name: Test corrected full original Golden customer and review pages
+        run: |
+          set -euo pipefail
+          (cd saraya-static && python3 -m http.server 8123 --bind 127.0.0.1 >/tmp/saraya-server.log 2>&1 &)
+          for i in 1 2 3 4 5 6 7 8 9 10; do curl -fsS http://127.0.0.1:8123/ >/dev/null && break || sleep 1; done
+          cp qa/saraya-al-ahsa-20261010/verify-corrected-local.mjs /tmp/saraya-corrected-qa/verify.mjs
+          cd /tmp/saraya-corrected-qa
+          node verify.mjs
+      - name: Preserve browser screenshots and results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saraya-corrected-static-browser-qa
+          path: /tmp/saraya-corrected-qa/qa-output/
+          retention-days: 7
+          if-no-files-found: ignore
