@@ -1,0 +1,41 @@
+name: One-time Al Saraya Hall Al Ahsa browser QA
+on:
+  push:
+    branches:
+      - qa/saraya-al-ahsa-20261010
+    paths:
+      - .github/workflows/saraya-al-ahsa-qa.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install standard Chromium test dependency
+        run: |
+          mkdir -p /tmp/saraya-venue-qa
+          cd /tmp/saraya-venue-qa
+          npm init -y
+          npm install playwright@1.56.1 --no-save
+          npx playwright install chromium
+      - name: Test production page, venue images, Arabic English planner and review
+        run: |
+          cp qa/saraya-al-ahsa-20261010/verify.mjs /tmp/saraya-venue-qa/verify.mjs
+          cd /tmp/saraya-venue-qa
+          node verify.mjs
+      - name: Archive visual screenshots and diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saraya-al-ahsa-real-browser-qa
+          path: /tmp/saraya-venue-qa/qa-output/
+          retention-days: 1
+          if-no-files-found: ignore
+
+# One-time followup: deep planner and full viewport reveal verification.
