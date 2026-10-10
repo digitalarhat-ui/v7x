@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#181611">
+<title>عرض الفكرة للإدارة — كريستال</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--dark:#1d1a15;--ink:#28241e;--muted:#746b5d;--paper:#f9f6f0;--ivory:#f2ebe0;--stroke:#dfd5c7;--gold:#bca278}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans Arabic",Tahoma,sans-serif;font-size:14px;overflow-x:hidden}button,textarea,input{font:inherit}button{cursor:pointer}a{color:inherit}
+.wrap{width:min(100% - 32px,1090px);margin:auto}
+header{padding:17px 0;border-bottom:1px solid var(--stroke)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:15px}
+.brand{display:flex;align-items:center;gap:10px}.mark{width:36px;height:36px;display:grid;place-items:center;border:1px solid #ad9871;border-radius:50%;font-family:serif;color:#806b46}.brand b{font-size:11.5px;display:block}.brand small{font-size:9px;color:#867b6b;display:block;margin-top:2px}
+.top a{font-size:10.5px;border:1px solid var(--stroke);padding:9px 12px;border-radius:999px;text-decoration:none;white-space:nowrap}
+main{padding-bottom:76px}
+.intro{padding:39px 0 26px}.eyebrow{font-size:10px;color:#967a51;margin-bottom:7px;display:block}.intro h1{font-family:"Noto Kufi Arabic";font-size:clamp(24px,5.2vw,39px);line-height:1.55;font-weight:600;margin:0 0 9px}.intro p{font-size:12px;line-height:1.9;color:var(--muted);max-width:710px;margin:0}
+.truth-map{padding:18px;border-radius:24px;background:var(--dark);color:#fff8ed;display:grid;gap:10px}
+.truth-step{padding:10px 13px;border:1px solid rgba(255,255,255,.13);border-radius:16px;display:flex;justify-content:space-between;align-items:center;gap:14px}
+.truth-step span{font-size:9px;color:#dbc49c;white-space:nowrap}.truth-step b{font-size:11.5px;font-weight:600;text-align:left;line-height:1.75}
+.truth-note{font-size:10px;line-height:1.85;color:#d0bfa6;margin:2px 2px 0}
+.demo-bridge{margin:18px 0 27px;background:#eee7db;border:1px solid var(--stroke);border-radius:17px;padding:14px;display:flex;justify-content:space-between;gap:14px;align-items:center}
+.demo-bridge p{font-size:10.5px;line-height:1.7;margin:0;color:#655b4f}
+.demo-bridge a{white-space:nowrap;text-decoration:none;background:#fffaf1;border:1px solid var(--stroke);padding:10px 14px;border-radius:999px;font-size:10px}
+.sectionhead{margin-bottom:15px}.sectionhead small{font-size:10px;color:#a18356}.sectionhead h2{font-family:"Noto Kufi Arabic";font-size:22px;font-weight:600;line-height:1.55;margin:4px 0}.sectionhead p{font-size:10px;color:var(--muted);line-height:1.8;margin:0}
+.stage-track{display:flex;gap:7px;margin:0 0 15px}
+.track-pill{height:4px;background:#e0d8ca;border-radius:999px;flex:1}.track-pill.active{background:#8d7653}
+.form-panel{background:#fffdfa;border:1px solid var(--stroke);border-radius:23px;padding:19px;box-shadow:0 15px 38px rgba(34,26,15,.035);min-width:0}
+.step[hidden],.field[hidden],.results[hidden],.data-prompt[hidden]{display:none}
+.step h3{font-family:"Noto Kufi Arabic";font-size:16px;margin:0 0 6px;font-weight:600}
+.step .step-intro{font-size:10px;line-height:1.85;color:#827566;margin:0 0 15px}
+.field{margin:17px 0 23px}.field:last-child{margin-bottom:0}
+.legend{font-size:12px;line-height:1.75;font-weight:700;margin-bottom:10px}
+.hint{font-size:9.5px;color:#8a7d6d;line-height:1.8;margin:0 0 9px}
+.choices{display:grid;gap:8px}
+.choice{border:1px solid var(--stroke);border-radius:15px;padding:11px 12px;display:flex;align-items:center;gap:11px;background:#fffefb;min-height:48px;cursor:pointer}
+.choice:has(input:checked){background:#eee7da;border-color:#9e865f;box-shadow:inset 0 0 0 1px rgba(158,134,95,.15)}
+.choice input{width:17px;height:17px;accent-color:#5c4b33;flex:0 0 17px;margin:0}
+.choice span{font-size:11px;line-height:1.7}
+textarea{width:100%;min-height:87px;border:1px solid var(--stroke);border-radius:15px;background:#fffefb;color:var(--ink);padding:13px;resize:vertical;font-size:11px;line-height:1.9;outline:0}
+textarea:focus{border-color:#a98e63;box-shadow:0 0 0 3px rgba(169,142,99,.1)}
+.actions{border-top:1px solid var(--stroke);padding-top:15px;margin-top:18px;display:flex;flex-wrap:wrap;gap:9px}
+.primary,.secondary{min-height:46px;border-radius:999px;padding:11px 18px;font-size:11px;font-weight:700}
+.primary{border:0;background:var(--dark);color:#fff8ed;flex:1}.secondary{border:1px solid var(--stroke);background:transparent;color:#4e4437}.primary:disabled{opacity:.5;cursor:not-allowed}
+.statusline{font-size:10px;line-height:1.7;color:#8c7b62;margin-top:9px;min-height:18px}
+.qgate{margin-top:15px;background:#f2ebde;padding:13px;border-radius:15px;font-size:10px;color:#6a5c48;line-height:1.9}
+.qgate strong{font-weight:700}
+.results{margin-top:23px}
+.verdict{background:var(--dark);color:#fbf4e9;border-radius:21px;padding:18px}
+.verdict small{display:block;font-size:9px;color:#d3bb94;margin-bottom:6px}
+.verdict h3{font-family:"Noto Kufi Arabic";font-size:21px;margin:0 0 5px;direction:ltr;text-align:right;letter-spacing:.06em}
+.verdict p{font-size:10.5px;color:#e1d3c0;line-height:1.9;margin:0}
+.result-panels{display:grid;gap:11px;margin-top:12px}
+.result-panel{background:#fffdfa;border:1px solid var(--stroke);border-radius:18px;padding:15px}
+.result-panel h4{font-family:"Noto Kufi Arabic";font-size:13px;font-weight:600;margin:0 0 8px}
+.result-panel p{font-size:10.5px;line-height:1.9;margin:0;white-space:pre-wrap}
+.statuses{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.statusitem{border:1px solid var(--stroke);border-radius:12px;padding:9px;min-width:0}
+.statusitem b{font-size:8.5px;display:block;overflow-wrap:anywhere;direction:ltr;text-align:left;font-weight:600}
+.statusitem span{font-size:10px;color:#786a58;display:block;margin-top:4px}
+.localwarn{margin-top:11px;border:1px solid #e4d6bd;background:#f3eada;padding:12px;border-radius:13px;color:#7b674b;font-size:9.5px;line-height:1.85}
+.copy-feedback{width:100%;min-height:48px;margin-top:14px;border:0;border-radius:999px;background:#2a241d;color:#fff6e9;font-size:11px;font-weight:700}
+.requestitems{margin:9px 0 0;padding:0 19px 0 0;font-size:10.5px;line-height:1.85}
+footer{font-size:10px;color:#85796a;border-top:1px solid var(--stroke);padding:18px 0 28px;line-height:1.7}
+@media(min-width:800px){.shell{display:grid;grid-template-columns:minmax(270px,.82fr) minmax(0,1fr);align-items:start;gap:26px}.sticky{position:sticky;top:20px}.intro{padding-top:51px}.form-panel{padding:26px}.choices{grid-template-columns:1fr 1fr}.statuses{grid-template-columns:repeat(3,1fr)}.truth-map{padding:22px}.result-panels{grid-template-columns:1fr 1fr}.results{grid-column:1/-1}}
+@media(max-width:390px){.wrap{width:calc(100% - 26px)}.form-panel{padding:15px}.demo-bridge{align-items:flex-start;flex-direction:column}.truth-step{padding:9px 10px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"><style id="crystal-hall-review-editorial-overhaul">
+html,body{background:#0C0C0C!important}body{color:#f3f3ef!important;overflow-x:clip!important}header{background:rgba(12,12,12,.76)!important;border-bottom-color:rgba(255,255,255,.1)!important;backdrop-filter:blur(18px);position:sticky;top:0;z-index:30}.wrap{width:min(calc(100% - 32px),1180px)!important}.mark{border-color:rgba(255,255,255,.3)!important;color:#e0cda7!important}.brand b{color:white!important}.brand small{color:#aaa!important}.shell{padding-top:56px!important;padding-bottom:100px!important}.intro{padding:42px 0 52px!important}.eyebrow{font-family:'Kanit',"Noto Sans Arabic",sans-serif!important;text-transform:uppercase;letter-spacing:.12em;color:#ddc9a6!important}.intro h1{font-size:clamp(42px,7vw,104px)!important;line-height:1.15!important;letter-spacing:-.05em!important;font-weight:800!important;background:linear-gradient(180deg,#f7f8fa 0%,#c9d1d8 48%,#858d96 100%);-webkit-background-clip:text;background-clip:text;color:transparent!important;max-width:1050px!important}.intro p{font-size:clamp(14px,1.3vw,18px)!important;line-height:1.9!important;color:#b8b5af!important;max-width:760px!important}.truth-map{gap:12px!important;margin-top:30px!important}.truth-step{background:rgba(255,255,255,.055)!important;border-color:rgba(255,255,255,.12)!important;border-radius:24px!important;color:white!important;backdrop-filter:blur(16px)}.truth-step b{color:#eee!important}.truth-step p,.truth-note{color:#aaa59e!important}.demo-bridge{border-radius:26px!important;background:linear-gradient(120deg,rgba(132,45,102,.13),rgba(201,173,124,.09))!important;border-color:rgba(255,255,255,.1)!important}.validation{margin-top:40px!important;background:linear-gradient(180deg,#f7f4ee,#ece8e1)!important;color:#161514!important;border-radius:46px!important;padding:clamp(22px,4vw,52px)!important;box-shadow:0 32px 90px rgba(0,0,0,.34)!important}.sectionhead h2{font-size:clamp(28px,4.5vw,58px)!important;line-height:1.2!important;letter-spacing:-.035em!important}.sectionhead p{color:#716b63!important}.form-panel,.result-panel{border-radius:28px!important;background:rgba(255,255,255,.78)!important;border-color:rgba(12,12,12,.1)!important;box-shadow:0 18px 50px rgba(31,25,18,.07)!important}.choice{border-radius:17px!important;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}.choice:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(31,25,18,.07)}.choice[aria-pressed="true"],.choice.selected{background:#111!important;color:white!important;border-color:#111!important}.primary{background:linear-gradient(123deg,#26101f 3%,#a02a7f 36%,#7553a4 72%,#bd6d36 100%)!important;color:#fff!important;border:1px solid rgba(255,255,255,.2)!important;border-radius:999px!important;box-shadow:0 14px 38px rgba(132,45,102,.2)!important}.secondary,.copy-feedback{border-radius:999px!important}.results{margin-top:24px!important}.verdict{border-radius:24px!important}.localwarn{border-radius:20px!important}.ux-reveal{opacity:0;transform:translateY(30px);transition:opacity .75s cubic-bezier(.22,1,.36,1),transform .75s cubic-bezier(.22,1,.36,1)}.ux-reveal.ux-visible{opacity:1;transform:none}
+@media(max-width:640px){.shell{padding-top:26px!important}.intro{padding-top:26px!important}.intro h1{font-size:clamp(38px,12vw,56px)!important}.validation{border-radius:30px!important;padding:18px!important}.truth-map{grid-template-columns:1fr!important}}
+@media(prefers-reduced-motion:reduce){.ux-reveal{opacity:1!important;transform:none!important}*{transition-duration:.001ms!important}}
+</style><link rel="stylesheet" href="/wr-bilingual.css"></head>
+<body>
+<header><div class="wrap top"><div class="brand"><div class="mark">ك</div><div><b>قاعة كريستال للاحتفالات والمناسبات · الرياض — حي نمار</b><small>عرض الفكرة للإدارة — نموذج غير رسمي</small></div></div><a href="/">تجربة العميل ←</a></div></header>
+<main class="wrap">
+  <div class="shell">
+    <div class="sticky">
+      <section class="intro">
+        <small class="eyebrow">للمناقشة والتحقق — وليس نظام إدارة</small>
+        <h1>هل تناسب الفكرة طريقة عمل كريستال؟</h1>
+        <p>التجربة الحالية توضح رغبة العميل قبل التواصل. هذا العرض يساعدكم في تحديد ما إذا كان لها دور فعلي في عمل القاعة، وما الذي لا يعكس الواقع.</p>
+      </section>
+      <div class="truth-map" aria-label="حدود الفكرة">
+        <div class="truth-step"><span>العميل</span><b>يحدد ما يريده</b></div>
+        <div class="truth-step"><span>النموذج</span><b>ينظم رغبته في تصور وملخص واضح</b></div>
+        <div class="truth-step"><span>كريستال</span><b>تراجع ما يمكن توفيره وتنفيذه فعلياً</b></div>
+        <p class="truth-note">لا يتحقق النموذج من السعة أو التوفر أو الخيارات الفعلية أو الأسعار أو قابلية التنفيذ. لا يرسل بيانات إلى القاعة.</p>
+      </div>
+      <div class="demo-bridge"><p>تجربة العميل الأساسية لم تتغير. يُفضّل عرضها أولاً ثم مناقشة هذه الأسئلة.</p><a href="/" target="_blank" rel="noopener">افتح تجربة العميل ↗</a></div>
+    </div>
+    <section class="validation" aria-labelledby="heading">
+      <div class="sectionhead"><small>تحقق إداري · إجابات محلية فقط</small><h2 id="heading">ما الذي نحتاج تأكيده منكم؟</h2><p>ثلاث مجموعات قصيرة. يمكن تعديل الإجابات في أي وقت، ولن تُحفظ أو تُرسل تلقائياً.</p></div>
+      <div class="stage-track" aria-hidden="true"><span class="track-pill active"></span><span class="track-pill"></span><span class="track-pill"></span></div>
+      <form class="form-panel" id="reviewForm" novalidate>
+        <div class="step" id="step1">
+          <h3>١ — الفائدة ذات الصلة</h3><p class="step-intro">نبدأ بما قد يكون مناسباً، وليس بمدى جمال العرض.</p>
+          <div class="field"><div class="legend">١. هل ترون فائدة في أن يصل العميل بهذه الصورة المنظمة قبل مناقشة التفاصيل الفعلية؟</div>
+            <div class="choices" data-group="benefit">
+              <label class="choice"><input type="radio" name="benefit" value="yes"><span>نعم</span></label>
+              <label class="choice"><input type="radio" name="benefit" value="partial"><span>جزئياً</span></label>
+              <label class="choice"><input type="radio" name="benefit" value="no"><span>لا</span></label>
+            </div>
+          </div>
+          <div class="field"><div class="legend">٢. أي جزء من التجربة أقرب لواقع عملكم؟</div>
+            <div class="choices" data-group="useful">
+              <label class="choice"><input type="radio" name="useful" value="intent"><span>توضيح رغبة العميل</span></label>
+              <label class="choice"><input type="radio" name="useful" value="inspiration"><span>الإلهام البصري</span></label>
+              <label class="choice"><input type="radio" name="useful" value="direction"><span>اختيار الاتجاه</span></label>
+              <label class="choice"><input type="radio" name="useful" value="brief"><span>ملخص المراجعة</span></label>
+              <label class="choice"><input type="radio" name="useful" value="none"><span>لا شيء مما سبق</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="step" id="step2" hidden>
+          <h3>٢ — ملاءمة الواقع</h3><p class="step-intro">المطلوب تصحيح افتراضاتنا، حتى لو كانت الإجابات سلبية.</p>
+          <div class="field">
+            <div class="legend">٣. أي جزء لا يعكس طريقة عملكم الحالية؟</div>
+            <p class="hint">كيف تصفون مدى ملاءمة المسار المقترح؟</p>
+            <div class="choices" data-group="fit">
+              <label class="choice"><input type="radio" name="fit" value="yes"><span>يتوافق مع عملنا</span></label>
+              <label class="choice"><input type="radio" name="fit" value="partial"><span>يتوافق جزئياً</span></label>
+              <label class="choice"><input type="radio" name="fit" value="no"><span>لا يتوافق</span></label>
+              <label class="choice"><input type="radio" name="fit" value="unknown"><span>لا يمكن الحكم حالياً</span></label>
+            </div>
+            <p class="hint" style="margin-top:10px">ما الذي لا يطابق الواقع؟</p>
+            <textarea name="mismatch" id="mismatch" placeholder="اشرحوا الفرق إن وجد، دون افتراض إجراءات معينة…"></textarea>
+          </div>
+          <div class="field"><div class="legend">٤. ما المعلومات التي يحتاجها فريقكم عادةً قبل مناقشة التفاصيل مع العميل؟</div>
+            <textarea name="needed" id="needed" placeholder="اكتبوا المعلومات الفعلية المستخدمة لديكم…"></textarea>
+          </div>
+          <div class="field"><div class="legend">٥. هل الخيارات البصرية لديكم قابلة للتوحيد جزئياً، أم أن كل مناسبة تُعالج بشكل مختلف؟</div>
+            <div class="choices" data-group="standard">
+              <label class="choice"><input type="radio" name="standard" value="partial"><span>يمكن توحيد جزء منها</span></label>
+              <label class="choice"><input type="radio" name="standard" value="unique"><span>تختلف غالباً</span></label>
+              <label class="choice"><input type="radio" name="standard" value="vendors"><span>تعتمد على الموردين</span></label>
+              <label class="choice"><input type="radio" name="standard" value="unclear"><span>يحتاج توضيح</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="step" id="step3" hidden>
+          <h3>٣ — البيانات والجدوى التجارية</h3><p class="step-intro">الرغبة في متابعة النقاش لا تعني بعدُ استعداداً للدفع.</p>
+          <div class="field"><div class="legend">٦. هل توجد بيانات يمكن مناقشة مشاركتها لبناء نموذج أدق عند الحاجة؟</div>
+            <p class="hint">قد تشمل، حسب النطاق الذي تختارونه لاحقاً، مخطط القاعة أو الأبعاد أو الخيارات الفعلية أو سياسات السعة أو التسعير أو التوفر.</p>
+            <div class="choices" data-group="data">
+              <label class="choice"><input type="radio" name="data" value="yes"><span>يمكن مناقشة بعض البيانات</span></label>
+              <label class="choice"><input type="radio" name="data" value="unclear"><span>يحتاج تحديد النطاق أولاً</span></label>
+              <label class="choice"><input type="radio" name="data" value="no"><span>لا تتوفر / لا يمكن مشاركتها حالياً</span></label>
+            </div>
+          </div>
+          <div class="field"><div class="legend">٧. إذا ثبت أن التجربة تناسب طريقة عملكم، هل ترون مبرراً لتطبيقها فعلياً للقاعة؟</div>
+            <div class="choices" data-group="interest">
+              <label class="choice"><input type="radio" name="interest" value="discussion"><span>نعم، نريد مناقشة التطبيق</span></label>
+              <label class="choice"><input type="radio" name="interest" value="adjust"><span>نحتاج تعديلات قبل الحكم</span></label>
+              <label class="choice"><input type="radio" name="interest" value="useful_no"><span>مفيدة لكن لا نحتاج تطبيقها</span></label>
+              <label class="choice"><input type="radio" name="interest" value="no"><span>لا نرى حاجة لها حالياً</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="actions"><button type="button" class="secondary" id="back" hidden>السابق</button><button type="button" class="primary" id="next">التالي</button></div>
+        <div class="statusline" id="formStatus" role="status" aria-live="polite"></div>
+        <div class="qgate"><strong>حد الإثبات:</strong> الإجابات هنا مسودة محلية فقط. تأكيد الجاهزية التجارية يتطلب محادثة حقيقية مع إدارة كريستال ومناقشة نطاق التطبيق.</div>
+      </form>
+      <section class="results" id="results" aria-labelledby="resultTitle" hidden>
+        <div class="verdict"><small>قراءة أولية من الإجابات المسجلة محلياً</small><h3 id="resultTitle">—</h3><p id="resultReason"></p></div>
+        <div class="result-panels">
+          <div class="result-panel"><h4>ملخص الملاحظات</h4><p id="feedbackSummary"></p></div>
+          <div class="result-panel"><h4>حالات التحقق — مؤشرات محلية فقط</h4><div class="statuses" id="statusGrid"></div></div>
+          <div class="result-panel data-prompt" id="dataPrompt" hidden><h4>بيانات محددة للنقاش إذا اختارت الإدارة المتابعة</h4><p>قائمة استرشادية غير مرسلة، يحدد نطاقها ما ذكرتم أنه مفيد.</p><ul class="requestitems" id="dataList"></ul></div>
+          <div class="result-panel"><h4>الحد التجاري</h4><p>DEMO_REACTION ليست PAID_VALIDATED. ولا تثبت هذه الواجهة وجود ميزانية أو موافقة أو نية دفع. OFFER_READY = NO إلى حين تحقق ذلك مع الإدارة فعلياً.</p></div>
+        </div>
+        <div class="localwarn">الملاحظات لا تُرسل إلى كريستال أو Digital Arhat ولا تُحفظ في CRM. هذا ملخص داخل المتصفح للمراجعة والنسخ اليدوي فقط.</div>
+        <button type="button" class="copy-feedback" id="copyFeedback">نسخ ملخص الملاحظات</button><div class="statusline" id="copyStatus" role="status" aria-live="polite"></div>
+      </section>
+    </section>
+  </div>
+</main>
+<footer><div class="wrap">تصور مستقل غير رسمي خاصة بقصر/قاعة كريستال للاحتفالات والمناسبات — الرياض — حي نمار. لا تمثل بوابة موظفين أو تكاملاً مع أنظمة القاعة. لا يتم حفظ أي رد خارج صفحة المتصفح.</div></footer>
+<script>
+(function(){
+  "use strict";
+  const label={
+    benefit:{yes:"نعم",partial:"جزئياً",no:"لا"},
+    useful:{intent:"توضيح رغبة العميل",inspiration:"الإلهام البصري",direction:"اختيار الاتجاه",brief:"ملخص المراجعة",none:"لا شيء مما سبق"},
+    fit:{yes:"يتوافق مع عملنا",partial:"يتوافق جزئياً",no:"لا يتوافق",unknown:"لا يمكن الحكم حالياً"},
+    standard:{partial:"يمكن توحيد جزء منها",unique:"تختلف غالباً",vendors:"تعتمد على الموردين",unclear:"يحتاج توضيح"},
+    data:{yes:"يمكن مناقشة بعض البيانات",unclear:"يحتاج تحديد النطاق أولاً",no:"لا تتوفر / لا يمكن مشاركتها حالياً"},
+    interest:{discussion:"نريد مناقشة التطبيق",adjust:"نحتاج تعديلات قبل الحكم",useful_no:"الفكرة مفيدة لكن لا نحتاج تطبيقها",no:"لا نرى حاجة لها حالياً"}
+  };
+  const state={step:0};const keys=["benefit","useful","fit","standard","data","interest"];
+  const get=name=>document.querySelector('input[name="'+name+'"]:checked')?.value||"";
+  const textv=id=>document.getElementById(id).value.trim();
+  const mapped=k=>get(k)?label[k][get(k)]:"لم يُجب بعد";
+  const status=id=>document.getElementById(id);
+  function complete(){
+    return keys.every(k=>!!get(k));
+  }
+  function verdict(){
+    if(!complete())return {name:"لم يكتمل التقييم",reason:"أكملوا الإجابات الأساسية قبل استنتاج قرار تجاري."};
+    const benefit=get("benefit"),useful=get("useful"),fit=get("fit"),data=get("data"),interest=get("interest");
+    if(interest==="no"||(benefit==="no"&&useful==="none")||(fit==="no"&&(interest==="no"||interest==="useful_no")))
+      return {name:"STOP",reason:"الإجابات لا تدعم متابعة هذه الفكرة بصيغتها الحالية. لا ينبغي فرض مشروع مدفوع."};
+    if((benefit==="yes"||benefit==="partial")&&useful!=="none"&&fit==="yes"&&data==="yes"&&interest==="discussion")
+      return {name:"CONTINUE",reason:"الإجابات المدخلة تشير إلى صلة محددة وملاءمة للعمل وإمكانية مناقشة البيانات والتطبيق. هذا يبرر محادثة تحقق إضافية فقط، وليس عرض سعر أو جاهزية بيع."};
+    return {name:"NARROW",reason:"هناك عدم يقين أو ملاءمة جزئية أو غياب نية تطبيق واضحة. اختبروا نطاقاً أصغر أو صححوا الفرضية قبل أي تطوير إضافي."};
+  }
+  function buildSummary(){
+    const lines=[
+      "ملخص مناقشة الفكرة — كريستال (إجابات محلية غير مرسلة)",
+      "الفائدة المتصورة: "+mapped("benefit"),
+      "الجزء الأكثر صلة: "+mapped("useful"),
+      "ملاءمة طريقة العمل: "+mapped("fit")
+    ];
+    if(textv("mismatch")) lines.push("ما لا يعكس الواقع: "+textv("mismatch"));
+    if(textv("needed"))lines.push("المعلومات المطلوبة فعلياً: "+textv("needed"));
+    lines.push("توحيد الخيارات: "+mapped("standard"));
+    lines.push("إمكانية مناقشة البيانات: "+mapped("data"));
+    lines.push("الرغبة في التطبيق: "+mapped("interest"));
+    lines.push("القرار الاستدلالي المحلي: "+verdict().name);
+    lines.push("OFFER_READY: NO — لا توجد من هذا النموذج وحده موافقة مدفوعة أو نطاق متفق عليه.");
+    return lines.join("\n");
+  }
+  function render(){
+    const v=verdict();
+    status("resultTitle").textContent=v.name;status("resultReason").textContent=v.reason;
+    status("feedbackSummary").textContent=buildSummary();
+    const cases=[
+      ["DEMO_SHOWN","غير متحقق داخل هذه الواجهة"],
+      ["RELEVANCE_CONFIRMED",(get("benefit")==="yes"||get("benefit")==="partial")&&get("useful")!=="none"&&get("useful")?"إشارة من إجابة محلية":"غير مؤكد"],
+      ["PROCESS_FIT_CONFIRMED",get("fit")==="yes"?"إشارة من إجابة محلية":"غير مؤكد"],
+      ["DATA_ACCESS_POSSIBLE",get("data")==="yes"?"أُشير لإمكانية النقاش":"غير مؤكد"],
+      ["IMPLEMENTATION_INTEREST",get("interest")==="discussion"?"أُبدِي اهتمام في الإجابات":"غير مؤكد"],
+      ["PAID_DISCUSSION","لم تُناقش تجارياً"],
+      ["OFFER_READY","NO"]
+    ];
+    const grid=status("statusGrid");grid.replaceChildren();
+    for(const [name,value] of cases){
+      const box=document.createElement("div");box.className="statusitem";
+      const b=document.createElement("b");b.textContent=name;
+      const s=document.createElement("span");s.textContent=value;
+      box.append(b,s);grid.appendChild(box);
+    }
+    const panel=status("dataPrompt");
+    panel.hidden=!(get("interest")==="discussion"&&get("data")==="yes"&&get("useful")!=="none");
+    const list=status("dataList");list.replaceChildren();
+    if(!panel.hidden){
+      const dataItems={
+        intent:["مثال للمدخلات التي يطلبها فريق القاعة فعلياً من العملاء","قناة التواصل التي توافقون على استخدامها"],
+        inspiration:["أمثلة للصور أو المواد التي تسمح القاعة باستخدامها","الحدود البصرية لما يصح عرضه باعتباره مرجعاً"],
+        direction:["الخيارات البصرية الفعلية التي تودون مراجعة عرضها، دون افتراض توفرها","تمييز ما يعود للقاعة مما يتبع الموردين عند الحاجة"],
+        brief:["الحقول التي تفيد الفريق فعلاً في موجز المراجعة","طريقة مشاركة الموجز التي توافق عليها الإدارة"]
+      }[get("useful")]||[];
+      for(const value of dataItems){
+        const li=document.createElement("li");li.textContent=value;list.appendChild(li);
+      }
+    }
+  }
+  function showStep(i){
+    state.step=Math.max(0,Math.min(2,i));
+    [1,2,3].forEach((n,k)=>{status("step"+n).hidden=k!==state.step;document.querySelectorAll(".track-pill")[k].classList.toggle("active",k<=state.step)});
+    status("back").hidden=state.step===0;
+    status("next").textContent=state.step===2?"عرض التقييم":"التالي";
+    status("formStatus").textContent="";
+    status("results").hidden=true;
+  }
+  status("next").addEventListener("click",()=>{
+    if(state.step<2){showStep(state.step+1);return}
+    if(!complete()){status("formStatus").textContent="لا يمكن إصدار قرار من إجابات ناقصة. يرجى إكمال الاختيارات الأساسية.";return}
+    render();status("results").hidden=false;
+    status("results").scrollIntoView({block:"start",behavior:"smooth"});
+  });
+  status("back").addEventListener("click",()=>showStep(state.step-1));
+  status("reviewForm").addEventListener("change",()=>{if(!status("results").hidden)render()});
+  status("reviewForm").addEventListener("input",()=>{if(!status("results").hidden)render()});
+  async function copy(t){
+    try{await navigator.clipboard.writeText(t);return true}catch(e){}
+    try{
+      const input=document.createElement("textarea");input.value=t;input.style.cssText="position:fixed;left:-10000px;opacity:0";
+      document.body.appendChild(input);input.select();
+      const ok=document.execCommand("copy");input.remove();return ok;
+    }catch(e){return false}
+  }
+  status("copyFeedback").addEventListener("click",async()=>{
+    const worked=await copy(buildSummary());
+    status("copyStatus").textContent=worked?"تم نسخ الملاحظات محلياً. لم يُرسل شيء إلى أي جهة.":"تعذر النسخ في هذا المتصفح؛ يمكن تحديد النص ونسخه يدوياً.";
+  });
+  showStep(0);
+})();
+</script>
+<script id="crystal-hall-review-motion">(()=>{const start=()=>{const els=[...document.querySelectorAll('.truth-step,.demo-bridge,.validation,.form-panel,.result-panel,.sectionhead')];els.forEach(x=>x.classList.add('ux-reveal'));const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('ux-visible');io.unobserve(e.target)}}),{threshold:.08,rootMargin:'40px'});els.forEach(x=>io.observe(x))};document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start):start()})();</script><script src="/wr-bilingual.js" defer></script></body>
+</html>
