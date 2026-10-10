@@ -1,0 +1,39 @@
+
+.wr-language-toggle{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  gap:3px!important;direction:ltr!important;flex:0 0 auto!important;
+  height:37px!important;min-width:78px!important;
+  background:rgba(27,24,19,.48)!important;
+  border:1px solid rgba(255,250,237,.38)!important;
+  border-radius:999px!important;padding:3px!important;
+  color:#fffaf2!important;z-index:25!important;
+  backdrop-filter:blur(10px)!important;-webkit-backdrop-filter:blur(10px)!important;
+  font-family:Arial,sans-serif!important;
+}
+.wr-language-toggle button{font:600 11px/1 Arial,sans-serif!important;background:transparent!important;border:0!important;color:#f8f1e6!important;border-radius:999px!important;min-width:30px!important;min-height:29px!important;cursor:pointer!important;padding:4px!important}
+.wr-language-toggle button[aria-pressed="true"]{background:#fff6e9!important;color:#262019!important}
+.wr-language-toggle span{font-size:9px;opacity:.55}
+html[lang="en"] body{font-family:Arial,"Helvetica Neue",sans-serif}
+html[lang="en"] .hero h1,html[lang="en"] h1,html[lang="en"] h2,html[lang="en"] h3,html[lang="en"] h4{font-family:Georgia,"Times New Roman",serif!important;letter-spacing:-.02em!important}
+html[lang="en"] .wr-proof .wr-head h2{line-height:1.25!important}
+html[lang="en"] .hero .hero-main #hero-title{font-family:Georgia,serif!important;font-weight:400!important;line-height:1.2!important;letter-spacing:-.03em!important}
+html[lang="en"] .hero .hero-main .lead{font-family:Arial,sans-serif!important}
+html[lang="en"] #briefDate,html[lang="en"] #briefGuests{direction:ltr}
+html[lang="en"] .brief .phone-ltr,html[lang="en"] a[href^="tel:"]{direction:ltr;unicode-bidi:isolate}
+html[lang="en"] .wr-options,html[lang="en"] .chips{direction:ltr}
+html[lang="en"] [dir="rtl"]:not(input):not(textarea){direction:ltr}
+header .wr-language-toggle{position:relative;z-index:60}
+header .top .wr-language-toggle{background:#332e26!important}
+@media(max-width:640px){
+ .hero .topbar{gap:5px!important}
+ .hero .topbar .brand{min-width:0!important;flex:1 1 auto!important}
+ .hero .topbar .brand b{font-size:9.7px!important}
+ .hero .topbar .brand small{font-size:7.3px!important}
+ .hero .topbar .place{font-size:9px!important;padding:8px!important;flex-shrink:0!important}
+ .hero .topbar .wr-language-toggle{min-width:70px!important;height:35px!important}
+ .hero .topbar .wr-language-toggle button{min-width:27px!important}
+ html[lang="en"] .hero .hero-main #hero-title{font-size:clamp(31px,7.65vw,35px)!important;max-width:360px!important;line-height:1.2!important}
+ html[lang="en"] .hero .hero-main .lead{font-size:12.5px!important}
+ header .top .wr-language-toggle{margin:6px auto!important}
+}
+
