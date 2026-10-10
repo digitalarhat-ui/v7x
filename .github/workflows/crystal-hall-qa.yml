@@ -37,3 +37,5 @@ jobs:
           path: /tmp/crystal-venue-qa/qa-output/
           retention-days: 1
           if-no-files-found: ignore
+
+# One-time followup: deep planner and full viewport reveal verification.
