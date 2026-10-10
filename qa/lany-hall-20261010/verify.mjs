@@ -1,6 +1,6 @@
 import { chromium } from 'playwright';
 import fs from 'node:fs/promises';
-const base='https://rawcdn.githack.com/digitalarhat-ui/v7x/31068360f716503aa1984a15bb38412047b3a835/lany-hall-jeddah';
+const base=process.env.BASE_URL||'https://rawcdn.githack.com/digitalarhat-ui/v7x/31068360f716503aa1984a15bb38412047b3a835/lany-hall-jeddah';
 const photos=[
  'https://i.saudi-arabia.zafaf.net/gallery/49554/preview_k-aa-l-ny_9tjr3xWZ.jpeg',
  'https://i.saudi-arabia.zafaf.net/gallery/49554/preview_k-aa-l-ny_dBG3DjyQ.jpeg'
