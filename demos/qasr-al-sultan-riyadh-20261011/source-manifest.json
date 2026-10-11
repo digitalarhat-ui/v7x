@@ -1,0 +1,25 @@
+{
+  "lead_lock_id": "SA-3F-20261011-QASRALSULTAN-RIYADH",
+  "factory": "WHITE_ROSE_EVENT_VENUE_GOLDEN",
+  "date": "2026-10-11",
+  "unofficial": true,
+  "verified_contact": "+966555573141",
+  "whatsapp": "NOT_VERIFIED",
+  "photo_sources": [
+    {
+      "url": "https://www.arabiaweddings.com/sites/default/files/styles/max980/public/listing/2020/01/23/qsr_lsltn_llhtflt_wlmwtmrt.jpg?itok=pU-HdqVS",
+      "source": "https://www.arabiaweddings.com/ar/riyadh/vendors/venues/qasr-al-sultan-for-banqueting-and-conferences",
+      "kind": "historical venue photo",
+      "production_delivery": "NOT_YET_VERIFIED"
+    },
+    {
+      "url": "https://qa3ti.com/uploads/album/600_album_420.jpg",
+      "source": "https://qa3ti.com/details.php?id=103",
+      "kind": "attributed venue photo",
+      "production_delivery": "NOT_YET_VERIFIED"
+    }
+  ],
+  "rights": "Owner-attested permission, original rightsholders not independently confirmed",
+  "data_handling": "local prototype, no real booking or CRM",
+  "original_golden_provenance": "Recovered Golden-derived four-file source qa/saraya-al-ahsa-20261010; original White Rose deployment untouched"
+}
