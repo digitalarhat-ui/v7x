@@ -98,7 +98,8 @@ jobs:
                     rv=await rev.goto(__import__('urllib.parse',fromlist=['urljoin']).urljoin(pg.url,link),wait_until="domcontentloaded",timeout=25000)
                     await rev.wait_for_timeout(1250)
                     q["review_http"]=rv.status
-                    q["review_propagates"]=all(t in await rev.locator("#hly-summary").inner_text() for t in ["Badrah","150","180","2026-12-05"])
+                    review_text=await rev.locator("#hly-summary").inner_text()
+                    q["review_propagates"]=all(t in review_text for t in ["Badrah","150","180","2026-12-05"])
                     q["review_guard"]=await rev.locator("#hlaylati-concept-notice").count()==1
                     q["review_overflow"]=await rev.evaluate("()=>Math.max(0,document.documentElement.scrollWidth-innerWidth)")
                     await rev.screenshot(path=f"{OUT}/cdn-shots/review-390.png",full_page=True,animations="disabled")
