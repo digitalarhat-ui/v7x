@@ -23,7 +23,7 @@ jobs:
             const browser=await chromium.launch({headless:true});
             const reports=[];
             for(const [width,lang,path] of [[390,'ar','index.html'],[430,'ar','index.html'],[768,'en','en.html'],[1440,'en','en.html']]){
-              const page=await browser.newPage({viewport:{width,height:900}});
+              const page=await browser.newPage({viewport:{width,height:900}});await page.context().addCookies([{name:'__Http-phish',value:'1',domain:'raw.githack.com',path:'/digitalarhat-ui/v7x/',httpOnly:true,secure:true,sameSite:'Lax'}]);
               let errors=[];page.setDefaultTimeout(12000);page.on('pageerror',e=>errors.push(String(e)));await page.route(/fonts\\.googleapis\\.com|fonts\\.gstatic\\.com/,route=>route.abort());
               const res=await page.goto(base+path,{waitUntil:'domcontentloaded',timeout:20000});
               await page.waitForSelector('.hero',{timeout:15000});await page.waitForTimeout(250);
