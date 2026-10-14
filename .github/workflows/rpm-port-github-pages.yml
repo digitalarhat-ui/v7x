@@ -1,0 +1,53 @@
+name: RPM PORT GitHub Pages no-spend release (requires owner-enabled Pages)
+on:
+  push:
+    branches: [rpm-port-makan-v4-review-20261014]
+    paths: ['.github/workflows/rpm-port-github-pages.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build isolated RPM PORT artifact with repository base path
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          cp -R rpm-port-riyadh-makan-v4-review/. _site/
+          touch _site/.nojekyll
+          python3 - <<'PY'
+          from pathlib import Path
+          for p in [Path('_site/index.html'),Path('_site/en/index.html')]:
+              s=p.read_text()
+              s=s.replace('href="/assets/','href="/v7x/assets/').replace('src="/assets/','src="/v7x/assets/')
+              s=s.replace('href="/en/"','href="/v7x/en/"').replace('href="/"','href="/v7x/"')
+              p.write_text(s)
+          for p in [Path('_site/assets/showroom.js'),Path('_site/assets/showroom-en.js')]:
+              s=p.read_text().replace('"/assets/rpm-','"/v7x/assets/rpm-')
+              p.write_text(s)
+          PY
+          python3 - <<'PY'
+          from pathlib import Path
+          for path in ['index.html','en/index.html','assets/showroom.js','assets/showroom-en.js','assets/rpm-defender.webp','assets/rpm-range.webp']:
+            p=Path('_site')/path
+            assert p.exists() and p.stat().st_size>20,path
+          print('RPM_PORT_PAGES_ARTIFACT_VERIFIED')
+          PY
+      - name: Configure Pages (must already be enabled by repository owner)
+        uses: actions/configure-pages@v5
+      - name: Upload only the isolated site
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
