@@ -1,0 +1,155 @@
+name: Al-Hudhudi Luxury V5 Material and Scene QA
+on:
+  push:
+    branches: [alhudhudi-luxury-photoreal-v5-20261014]
+    paths:
+      - 'alhudhudi-rabigh-review/**'
+      - '.github/workflows/alhudhudi-luxury-v5-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  premium-public:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - name: Source and integrity
+        run: |
+          set -e
+          node --check alhudhudi-rabigh-review/premium-v4.js
+          node --check alhudhudi-rabigh-review/venue-3d.js
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('alhudhudi-rabigh-review')
+          for f in ('index.html','review/index.html'):
+            text=(p/f).read_text('utf8')
+            assert text.count('premium-v4.js')==1
+            assert text.count('venue-3d.js')==1
+            assert 'experience-v2.js' not in text
+            assert 'wr-bilingual.js' not in text
+            assert 'alhudhudi-layer.js' not in text
+          for f in ('index.html','review/index.html','premium-v4.css','premium-v4.js','venue-3d.js'):
+            text=(p/f).read_text('utf8')
+            for c in ('H Laylati','هذه ليلتي','Badrah','بدرة','my.matterport.com','White Rose','الوردة البيضاء'):
+              assert c not in text,(f,c)
+          print('PREMIUM_SOURCE_PASS')
+          PY
+      - name: Immutable public routes
+        run: |
+          echo "URL=https://cdn.githubraw.com/digitalarhat-ui/v7x/$GITHUB_SHA/alhudhudi-rabigh-review/index.html" >> "$GITHUB_ENV"
+          python - <<'PY'
+          import os,time,urllib.request
+          base='https://cdn.githubraw.com/digitalarhat-ui/v7x/'+os.environ['GITHUB_SHA']+'/alhudhudi-rabigh-review/'
+          for f in ('index.html','review/index.html','premium-v4.js','premium-v4.css','venue-3d.js','venue-3d.css'):
+            for n in range(10):
+              try:
+                with urllib.request.urlopen(urllib.request.Request(base+f,headers={'User-Agent':'Mozilla/5.0'}),timeout=30) as r:
+                  assert r.status==200
+                  assert len(r.read())>300
+                  print('HTTP200',f)
+                  break
+              except Exception as e:
+                if n==9:raise
+                time.sleep(6)
+          PY
+      - name: Headless browser graphics test
+        run: |
+          pip install -q playwright==1.55.0 pillow
+          python -m playwright install --with-deps chromium
+      - name: Real scene, screenshots and review journey
+        run: |
+          mkdir -p qa-output/alhudhudi-v5
+          cat > /tmp/qa_v5.py <<'PY'
+          import asyncio,os,json,base64,io
+          from PIL import Image
+          from playwright.async_api import async_playwright
+          url=os.environ['URL'];report={'url':url,'sha':os.environ['GITHUB_SHA'],'status':'OWNER_REVIEW_ONLY','real_property_3d_scan':False,'results':{}}
+          def screenshot_log(label,raw):
+            im=Image.open(io.BytesIO(raw)).convert('RGB')
+            w=650;h=round(im.height*w/im.width);im=im.resize((w,h))
+            out=io.BytesIO();im.save(out,format='JPEG',quality=57,optimize=True)
+            print('SCREEN_BASE64_'+label+'_BEGIN'+base64.b64encode(out.getvalue()).decode('ascii')+'SCREEN_BASE64_'+label+'_END')
+          async def main():
+            async with async_playwright() as p:
+              browser=await p.chromium.launch(headless=True,args=['--no-sandbox','--enable-webgl','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
+              for width in [390,430,768,1440]:
+                ctx=await browser.new_context(viewport={'width':width,'height':900},is_mobile=width<768,has_touch=width<768)
+                page=await ctx.new_page()
+                errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+                r=await page.goto(url,wait_until='domcontentloaded',timeout=50000)
+                assert r.status==200
+                await page.wait_for_function('window.alhudhudi3D?.status()?.ready===true',timeout=50000)
+                await page.wait_for_function('window.alhudhudi3D?.status()?.frames>=1',timeout=15000)
+                assert await page.locator('#ah3d-experience').count()==1
+                assert await page.locator('#ahx-v2 .lux-opening').count()==1
+                stat=await page.evaluate('window.alhudhudi3D.status()')
+                assert stat['triangles']>50000,stat
+                assert await page.evaluate('window.alhudhudi3D.snapshot().length')>20000,'EMPTY_3D_RENDER'
+                assert await page.locator('#a3-webgl').count()==1
+                assert not errors,errors
+                overflow=await page.evaluate('Math.max(0,document.documentElement.scrollWidth-innerWidth)')
+                assert overflow<10,(width,'overflow',overflow)
+                await page.locator('#ah3d-experience').scroll_into_view_if_needed()
+                await page.wait_for_timeout(250)
+                viewshot=await page.screenshot(type='jpeg',quality=82)
+                if width==390:
+                  screenshot_log('MOBILE_3D',viewshot)
+                  await page.screenshot(path='qa-output/alhudhudi-v5/mobile-3d.png',full_page=False)
+                if width==1440:
+                  screenshot_log('DESKTOP_3D',viewshot)
+                  await page.screenshot(path='qa-output/alhudhudi-v5/desktop-3d.png',full_page=False)
+                  await page.evaluate('window.scrollTo(0,0)')
+                  await page.wait_for_timeout(150)
+                  screenshot_log('DESKTOP_HERO',await page.screenshot(type='jpeg',quality=82))
+                if width==390:
+                  first=await page.evaluate('window.alhudhudi3D.snapshot()')
+                  for k,v in [('palette','pearl'),('layout','banquet'),('aisle','wide'),('light','day'),('hall','moonlight')]:
+                    await page.locator('#ah3d-experience [data-key="'+k+'"][data-val="'+v+'"]').click()
+                  await page.locator('#ah3d-experience [data-view="stage"]').click()
+                  await page.wait_for_timeout(350)
+                  second=await page.evaluate('window.alhudhudi3D.snapshot()')
+                  assert first!=second,'3D PIXELS UNCHANGED'
+                  assert await page.locator('#hly-hall').input_value()=='moonlight'
+                  await page.locator('#hly-men').fill('150')
+                  await page.locator('#hly-women').fill('180')
+                  await page.locator('#hly-date').fill('2026-12-12')
+                  await page.locator('input[data-feature="catering"]').check()
+                  await page.locator('#ahx-notes').fill('Need to confirm guest table spacing')
+                  assert 'اتجاه التصميم' in await page.locator('#ahx-summary').inner_text(),'AR_VISUAL_CONCEPT_BRIEF'
+                  await page.locator('#ahx-lang').click()
+                  assert 'The setting, distinctly yours' in await page.locator('.lux-intro').inner_text()
+                  assert 'Illustrative 3D design direction' in await page.locator('#ahx-summary').inner_text()
+                  link=await page.locator('#ahx-review').get_attribute('href')
+                  assert 'requirements=' in link and 'visual=' in link and 'brief=' in link,link
+                  reviewer=await ctx.new_page()
+                  rr=await reviewer.goto(link,wait_until='domcontentloaded',timeout=50000)
+                  assert rr.status==200
+                  await reviewer.wait_for_function('window.alhudhudi3D?.status()?.ready===true',timeout=50000)
+                  rv=await reviewer.evaluate('window.alhudhudi3D.getState()')
+                  assert rv['palette']=='pearl' and rv['layout']=='banquet' and rv['hall']=='moonlight'
+                  assert await reviewer.locator('#hly-men').input_value()=='150'
+                  assert await reviewer.locator('#hly-women').input_value()=='180'
+                  assert await reviewer.locator('#hly-date').input_value()=='2026-12-12'
+                  assert await reviewer.locator('input[data-feature="catering"]').is_checked()
+                  assert await reviewer.locator('#ahx-notes').input_value()=='Need to confirm guest table spacing'
+                  assert 'Illustrative 3D design direction' in await reviewer.locator('#ahx-summary').inner_text()
+                  await reviewer.screenshot(path='qa-output/alhudhudi-v5/review-mobile.png',full_page=True)
+                  print('FULL_CUSTOMER_TO_MANAGER_REVIEW_PASS')
+                  await reviewer.close()
+                report['results'][str(width)]={'http':r.status,'real_webgl':True,'triangles':stat['triangles'],'js_errors':len(errors),'overflow':overflow}
+                print('PREMIUM_DEVICE_PASS',width,report['results'][str(width)])
+                await ctx.close()
+              await browser.close()
+          asyncio.run(main())
+          with open('qa-output/alhudhudi-v5/report.json','w') as f:json.dump(report,f,indent=2)
+          print('PREMIUM_V5_PUBLIC_QA_PASS',json.dumps(report))
+          PY
+          python /tmp/qa_v5.py
+      - name: Save proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alhudhudi-luxury-v5-qa
+          path: qa-output/alhudhudi-v5/
+          retention-days: 7
