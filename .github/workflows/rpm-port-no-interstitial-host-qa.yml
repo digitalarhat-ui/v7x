@@ -1,0 +1,42 @@
+name: RPM PORT alternate static HTML host diagnosis
+on:
+  push:
+    branches: [rpm-port-makan-v4-review-20261014]
+    paths: ['.github/workflows/rpm-port-no-interstitial-host-qa.yml']
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Diagnose browser-host alternatives without modifying the site
+        shell: bash
+        run: |
+          node <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const urls=[
+              'https://githubraw.com/digitalarhat-ui/v7x/rpm-port-makan-v4-review-20261014/rpm-port-riyadh-makan-v4-review/preview/index.html',
+              'https://cdn.githubraw.com/digitalarhat-ui/v7x/rpm-port-makan-v4-review-20261014/rpm-port-riyadh-makan-v4-review/preview/index.html',
+              'https://rawcdn.githack.com/digitalarhat-ui/v7x/rpm-port-makan-v4-review-20261014/rpm-port-riyadh-makan-v4-review/preview/index.html'
+            ];
+            for(const url of urls){
+              const page=await browser.newPage({viewport:{width:390,height:860}});
+              const errors=[];
+              page.on('pageerror',e=>errors.push('pageerror:'+e.message));
+              try{
+                const resp=await page.goto(url,{waitUntil:'domcontentloaded',timeout:13000});
+                await page.waitForTimeout(2500);
+                const vals=await page.evaluate(()=>({title:document.title,body:document.body.innerText.slice(0,300),app:!!document.querySelector('.hero'),count:document.querySelectorAll('.carCard').length,imgs:[...document.images].slice(0,9).filter(i=>i.complete&&i.naturalWidth>0).length,totalImages:document.images.length}));
+                console.log('HOST_DIAGNOSE',JSON.stringify({url,http:resp?.status(),values:vals,errors}));
+              }catch(e){console.log('HOST_ERROR',JSON.stringify({url,error:e.message.slice(0,200)}))}
+              await page.close();
+            }
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
