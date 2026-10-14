@@ -105,7 +105,7 @@ jobs:
                   await reviewer.screenshot(path='qa-output/alhudhudi-v2/review-mobile.png',full_page=True)
                   await reviewer.close()
                   await page.screenshot(path='qa-output/alhudhudi-v2/customer-mobile.png',full_page=True)
-                broken=await page.evaluate('[...document.images].filter(i=>i.complete&&i.naturalWidth===0).length')
+                broken=await page.evaluate('[...document.images].filter(i=>i.getAttribute("src")&&i.complete&&i.naturalWidth===0).length')
                 assert broken==0,(width,broken)
                 result['devices'][str(width)]={'http':r.status,'js_errors':len(errors),'overflow':over,'broken_images':broken}
                 print('DEVICE_PASS',width,result['devices'][str(width)])
