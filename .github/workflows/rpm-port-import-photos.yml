@@ -1,0 +1,40 @@
+name: RPM PORT stage genuine seller photo bytes
+on:
+  push:
+    branches: [rpm-port-makan-v4-review-20261014]
+    paths: ['.github/workflows/rpm-port-import-photos.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: rpm-port-makan-v4-review-20261014
+      - name: Download and validate two exact source-attributed listing images
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=rpm-port-riyadh-makan-v4-review/assets
+          mkdir -p "$dir"
+          curl --retry 3 --max-time 22 -fsSL -A "Mozilla/5.0" -e 'https://haraj.com.sa/' 'https://postcdn.haraj.com.sa/userfiles30/2026-07-26/1320x1602_7D9F4621-939F-44A1-8FFE-6EDDF36C7C2E.jpg-700.webp' -o "$dir/rpm-defender.webp"
+          curl --retry 3 --max-time 22 -fsSL -A "Mozilla/5.0" -e 'https://haraj.com.sa/' 'https://postcdn.haraj.com.sa/userfiles30/2026-09-17/1600x1200_6CADFAFD-2F74-42BC-8A96-FF7F3B6380AB.jpg-700.webp' -o "$dir/rpm-range.webp"
+          python3 - <<'PY'
+          from pathlib import Path
+          for stem in ('rpm-defender','rpm-range'):
+            p=Path('rpm-port-riyadh-makan-v4-review/assets')/(stem+'.webp')
+            b=p.read_bytes()
+            assert len(b)>20000 and b[:4]==b'RIFF' and b[8:12]==b'WEBP',(str(p),len(b),b[:16])
+            import hashlib
+            print('VERIFIED_SOURCE_IMAGE',stem,'bytes',len(b),'sha256',hashlib.sha256(b).hexdigest())
+          PY
+          git config user.name 'digital-arhat-source-import'
+          git config user.email 'source-import@users.noreply.github.com'
+          git add "$dir/rpm-defender.webp" "$dir/rpm-range.webp"
+          if ! git diff --cached --quiet; then
+            git commit -m 'Add two unmodified seller-attributed RPM PORT image bytes for concept review'
+            git push origin HEAD:rpm-port-makan-v4-review-20261014
+          fi
