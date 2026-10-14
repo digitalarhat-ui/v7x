@@ -1,0 +1,23 @@
+><input type="radio" name="interest" value="no"><span>لا نرى حاجة لها حالياً</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="actions"><button type="button" class="secondary" id="back" hidden>السابق</button><button type="button" class="primary" id="next">التالي</button></div>
+        <div class="statusline" id="formStatus" role="status" aria-live="polite"></div>
+        <div class="qgate"><strong>حد الإثبات:</strong> الإجابات هنا مسودة محلية فقط. تأكيد الجاهزية التجارية يتطلب محادثة حقيقية مع إدارة قصر فينيسيا ومناقشة نطاق التطبيق.</div>
+      </form>
+      <section class="results" id="results" aria-labelledby="resultTitle" hidden>
+        <div class="verdict"><small>قراءة أولية من الإجابات المسجلة محلياً</small><h3 id="resultTitle">—</h3><p id="resultReason"></p></div>
+        <div class="result-panels">
+          <div class="result-panel"><h4>ملخص الملاحظات</h4><p id="feedbackSummary"></p></div>
+          <div class="result-panel"><h4>حالات التحقق — مؤشرات محلية فقط</h4><div class="statuses" id="statusGrid"></div></div>
+          <div class="result-panel data-prompt" id="dataPrompt" hidden><h4>بيانات محددة للنقاش إذا اختارت الإدارة المتابعة</h4><p>قائمة استرشادية غير مرسلة، يحدد نطاقها ما ذكرتم أنه مفيد.</p><ul class="requestitems" id="dataList"></ul></div>
+          <div class="result-panel"><h4>الحد التجاري</h4><p>DEMO_REACTION ليست PAID_VALIDATED. ولا تثبت هذه الواجهة وجود ميزانية أو موافقة أو نية دفع. OFFER_READY = NO إلى حين تحقق ذلك مع الإدارة فعلياً.</p></div>
+        </div>
+        <div class="localwarn">الملاحظات لا تُرسل إلى قصر فينيسيا أو Digital Arhat ولا تُحفظ في CRM. هذا ملخص داخل المتصفح للمراجعة والنسخ اليدوي فقط.</div>
+        <button type="button" class="copy-feedback" id="copyFeedback">نسخ ملخص الملاحظات</button><div class="statusline" id="copyStatus" role="status" aria-live="polite"></div>
+      </section>
+    </section>
+  </div>
+</main>
+<footer><div class="wrap">تجربة تشخيصية غير رسمية خاصة بقصر/قصر فينيسيا
