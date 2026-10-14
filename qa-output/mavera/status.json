@@ -1,7 +1,7 @@
 {
   "lead": "SA-3F-20261014-MAVERA-JEDDAH",
-  "run_id": "38557372452",
-  "tested_utc": "2026-10-14T11:33:44.482868+00:00",
+  "run_id": "38557609094",
+  "tested_utc": "2026-10-14T11:35:54.633402+00:00",
   "url": "https://mavera-jeddah-white-rose-review.vercel.app/",
   "viewports": {
     "390": {
@@ -184,11 +184,11 @@
           "txt": "١ — الفائدة ذات الصلة\n\nنبدأ بما قد يكون مناسباً، وليس بمدى جمال العرض.\n\n١. هل تر",
           "disp": "block",
           "vis": "visible",
-          "opacity": "0.00209128",
-          "height": 849,
+          "opacity": "0.00287904",
+          "height": 848,
           "width": 322,
           "parentClass": "validation ux-reveal",
-          "parentOpacity": "0.00209128",
+          "parentOpacity": "0.00287904",
           "parentDisplay": "block"
         },
         {
@@ -202,7 +202,7 @@
           "height": 611,
           "width": 290,
           "parentClass": "form-panel ux-reveal",
-          "parentOpacity": "0.00209128",
+          "parentOpacity": "0.00287904",
           "parentDisplay": "block"
         },
         {
@@ -342,7 +342,7 @@
           "height": 0,
           "width": 0,
           "parentClass": "form-panel ux-reveal",
-          "parentOpacity": "0.00209128",
+          "parentOpacity": "0.00287904",
           "parentDisplay": "block"
         },
         {
@@ -501,6 +501,12 @@
         }
       ],
       "review_next_button_visible": true,
+      "review_form_after_real_scroll": {
+        "opacity": 1,
+        "cls": "form-panel ux-reveal ux-visible",
+        "parentCls": "validation ux-reveal ux-visible"
+      },
+      "review_form_visually_ready": true,
       "state_before_reload": {
         "guest": "350",
         "date": "2026-11-15",
@@ -763,7 +769,7 @@
           "txt": "١ — الفائدة ذات الصلة\n\nنبدأ بما قد يكون مناسباً، وليس بمدى جمال العرض.\n\n١. هل تر",
           "disp": "block",
           "vis": "visible",
-          "opacity": "0.0028801",
+          "opacity": "0.00287883",
           "height": 838,
           "width": 362,
           "parentClass": "validation ux-reveal ux-visible",
@@ -781,7 +787,7 @@
           "height": 611,
           "width": 322,
           "parentClass": "form-panel ux-reveal",
-          "parentOpacity": "0.0028801",
+          "parentOpacity": "0.00287883",
           "parentDisplay": "block"
         },
         {
@@ -921,7 +927,7 @@
           "height": 0,
           "width": 0,
           "parentClass": "form-panel ux-reveal",
-          "parentOpacity": "0.0028801",
+          "parentOpacity": "0.00287883",
           "parentDisplay": "block"
         },
         {
@@ -1080,6 +1086,12 @@
         }
       ],
       "review_next_button_visible": true,
+      "review_form_after_real_scroll": {
+        "opacity": 1,
+        "cls": "form-panel ux-reveal ux-visible",
+        "parentCls": "validation ux-reveal ux-visible"
+      },
+      "review_form_visually_ready": true,
       "status": "PASS"
     },
     "768": {
@@ -1262,7 +1274,7 @@
           "txt": "١ — الفائدة ذات الصلة\n\nنبدأ بما قد يكون مناسباً، وليس بمدى جمال العرض.\n\n١. هل تر",
           "disp": "block",
           "vis": "visible",
-          "opacity": "0.00209404",
+          "opacity": "0.00209233",
           "height": 798,
           "width": 675,
           "parentClass": "validation ux-reveal ux-visible",
@@ -1280,7 +1292,7 @@
           "height": 590,
           "width": 635,
           "parentClass": "form-panel ux-reveal",
-          "parentOpacity": "0.00209404",
+          "parentOpacity": "0.00209233",
           "parentDisplay": "block"
         },
         {
@@ -1420,7 +1432,7 @@
           "height": 0,
           "width": 0,
           "parentClass": "form-panel ux-reveal",
-          "parentOpacity": "0.00209404",
+          "parentOpacity": "0.00209233",
           "parentDisplay": "block"
         },
         {
@@ -1579,6 +1591,12 @@
         }
       ],
       "review_next_button_visible": true,
+      "review_form_after_real_scroll": {
+        "opacity": 1,
+        "cls": "form-panel ux-reveal ux-visible",
+        "parentCls": "validation ux-reveal ux-visible"
+      },
+      "review_form_visually_ready": true,
       "status": "PASS"
     },
     "1440": {
@@ -1719,7 +1737,7 @@
           "txt": "العميل\nيحدد ما يريده",
           "disp": "flex",
           "vis": "visible",
-          "opacity": "0.0028846",
+          "opacity": "0.0028774",
           "height": 42,
           "width": 476,
           "parentClass": "truth-map",
@@ -1733,7 +1751,7 @@
           "txt": "النموذج\nينظم رغبته في تصور وملخص واضح",
           "disp": "flex",
           "vis": "visible",
-          "opacity": "0.0028846",
+          "opacity": "0.0028774",
           "height": 42,
           "width": 476,
           "parentClass": "truth-map",
@@ -1747,7 +1765,7 @@
           "txt": "ماڤيرا\nتراجع ما يمكن توفيره وتنفيذه فعلياً",
           "disp": "flex",
           "vis": "visible",
-          "opacity": "0.0028846",
+          "opacity": "0.0028774",
           "height": 42,
           "width": 476,
           "parentClass": "truth-map",
@@ -2078,6 +2096,12 @@
         }
       ],
       "review_next_button_visible": true,
+      "review_form_after_real_scroll": {
+        "opacity": 1,
+        "cls": "form-panel ux-reveal ux-visible",
+        "parentCls": "validation ux-reveal ux-visible"
+      },
+      "review_form_visually_ready": true,
       "status": "PASS"
     }
   },
