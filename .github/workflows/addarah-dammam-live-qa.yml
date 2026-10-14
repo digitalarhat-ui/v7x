@@ -1,0 +1,126 @@
+name: ADDARAH Dammam isolated production browser QA
+on:
+  push:
+    branches:
+      - qa/addarah-dammam-live-20261014
+    paths:
+      - .github/workflows/addarah-dammam-live-qa.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned no-secrets headless browser tooling
+        run: |
+          mkdir -p /tmp/addarah-browser addarah-qa-output
+          cd /tmp/addarah-browser
+          npm init -y >/dev/null
+          npm install puppeteer-core@24.19.0 --silent
+      - name: Verify actual production URL at 390 430 768 1440
+        run: |
+          cat >/tmp/addarah-browser/test.mjs <<'NODE'
+          import puppeteer from 'puppeteer-core';
+          import fs from 'node:fs';
+          const ROOT='https://addarah-dammam-white-rose.vercel.app/';
+          const OUT=process.env.GITHUB_WORKSPACE+'/addarah-qa-output';
+          const marks=['قصر السلطان','Qasr Al Sultan','White Rose Wedding Hall','+966 55 557 3141'];
+          const browser=await puppeteer.launch({headless:true,executablePath:'/usr/bin/google-chrome',args:['--no-sandbox','--disable-dev-shm-usage']});
+          const all=[];
+          let failureCount=0;
+          for(const width of [390,430,768,1440]){
+            const item={width,checks:[],errors:[],images:[],reviewImages:[],reviewStatus:''};
+            const check=(name,condition,detail='')=>{const pass=!!condition;item.checks.push({name,pass,detail});if(!pass)failureCount++;};
+            const page=await browser.newPage();
+            await page.setViewport({width,height:width===1440?900:width===768?1024:844,deviceScaleFactor:1});
+            page.on('pageerror',e=>item.errors.push('pageerror: '+e.message));
+            page.on('console',msg=>{if(msg.type()==='error')item.errors.push('console: '+msg.text())});
+            page.on('requestfailed',req=>{if(/qa3at|pbs.twimg|vercel.app/.test(req.url()))item.errors.push('requestfailed: '+req.url()+' '+req.failure()?.errorText)});
+            try{
+              const response=await page.goto(ROOT,{waitUntil:'domcontentloaded',timeout:45000});
+              await new Promise(r=>setTimeout(r,3400));
+              check('homepage_http_200',response?.status()===200,String(response?.status()));
+              const init=await page.evaluate(()=>({
+                title:document.title,
+                logo:document.querySelector('.brand')?.textContent?.trim()||'',
+                lang:document.documentElement.lang,
+                horizontalOverflow:document.documentElement.scrollWidth-window.innerWidth,
+                phone:[...document.querySelectorAll('a[href^="tel:"]')].map(a=>a.getAttribute('href')),
+                imageStates:[...document.images].filter(i=>/qa3at|pbs.twimg/i.test(i.src)).map(i=>({url:i.src,loaded:i.complete&&i.naturalWidth>0,w:i.naturalWidth,h:i.naturalHeight})),
+                heroUrl:getComputedStyle(document.querySelector('.hero-bg')).backgroundImage,
+                text:document.body.innerText.slice(0,1700),
+                script:!!window.WhiteRoseLocale,
+                inputs:['#addarahArea','#addarahSeating','#addarahPartition','#briefArea','#briefSeating','#briefPartition'].every(s=>!!document.querySelector(s))
+              }));
+              item.initial={title:init.title,logo:init.logo,lang:init.lang,overflow:init.horizontalOverflow,phone:init.phone,heroUrl:init.heroUrl,bilingualScript:init.script};
+              item.images=init.imageStates;
+              check('correct_business_brand',init.title.includes('الدارة')&&init.logo.includes('الدارة'),init.title);
+              check('contact_phone_matched',init.phone.includes('tel:+966550844417'),init.phone.join(','));
+              check('no_unrelated_brand',marks.every(m=>!document.documentElement.innerHTML.includes(m)));
+              check('no_horizontal_overflow',init.horizontalOverflow<=2,String(init.horizontalOverflow));
+              check('bilingual_js_initialized',init.script,init.lang);
+              check('decision_controls_exist',init.inputs);
+              check('genuine_image_loaded',init.imageStates.filter(i=>i.loaded).length>=2,JSON.stringify(init.imageStates));
+              await page.screenshot({path:OUT+'/client-'+width+'.png',fullPage:false});
+              if(width===390||width===1440)await page.screenshot({path:OUT+'/client-'+width+'-full.png',fullPage:true});
+              await page.click('#eventChips .chip');
+              await page.click('#addarahArea .chip:first-child');
+              await page.click('#addarahSeating .chip:nth-child(2)');
+              await page.click('#addarahPartition .chip:nth-child(2)');
+              await page.$eval('#guestInput',el=>{el.value='180';el.dispatchEvent(new Event('input',{bubbles:true}))});
+              const choice=await page.evaluate(()=>({
+                area:document.querySelector('#briefArea')?.textContent?.trim(),
+                seating:document.querySelector('#briefSeating')?.textContent?.trim(),
+                partition:document.querySelector('#briefPartition')?.textContent?.trim(),
+                guest:document.querySelector('#briefGuests')?.textContent?.trim(),
+                pressed:document.querySelector('#addarahPartition .chip[aria-pressed="true"]')?.dataset.value||''
+              }));
+              item.choice=choice;
+              check('room_seating_partition_persist',choice.area==='القاعة الرئيسية'&&choice.seating==='مسرح أو صفوف'&&choice.partition==='تقسيم إلى أقسام'&&choice.pressed==='تقسيم إلى أقسام',JSON.stringify(choice));
+              check('guest_count_brief',choice.guest?.includes('180'),choice.guest);
+              const enBtn=await page.$('#wrLanguage [data-lang="en"]');
+              check('language_toggle_visible',!!enBtn);
+              if(enBtn){
+                await enBtn.click();await new Promise(r=>setTimeout(r,500));
+                const en=await page.evaluate(()=>({lang:document.documentElement.lang,areaText:document.querySelector('.addarah-fit .label b')?.textContent?.trim()||'',h1:document.querySelector('h1')?.textContent?.trim()||'',overflow:document.documentElement.scrollWidth-window.innerWidth}));
+                item.english=en;
+                check('english_switch',en.lang==='en'&&/Event|space|venue|idea/i.test(en.h1),JSON.stringify(en));
+                check('english_room_label',/Venue-specific|Preferred|space/i.test(en.areaText),en.areaText);
+                check('english_no_overflow',en.overflow<=2,String(en.overflow));
+              }
+              const review=await browser.newPage();
+              await review.setViewport({width,height:844});
+              review.on('pageerror',e=>item.errors.push('review pageerror: '+e.message));
+              const rv=await review.goto(ROOT+'review/',{waitUntil:'domcontentloaded',timeout:45000});
+              await new Promise(r=>setTimeout(r,700));
+              const rvInfo=await review.evaluate(()=>({title:document.title,heading:document.querySelector('h1')?.textContent?.trim(),lang:document.documentElement.lang,overflow:document.documentElement.scrollWidth-window.innerWidth,links:[...document.querySelectorAll('a[href]')].map(a=>a.href),script:!!window.WhiteRoseLocale}));
+              item.review=rvInfo;
+              check('review_http_200',rv?.status()===200,String(rv?.status()));
+              check('review_brand',rvInfo.title.includes('الدارة')&&rvInfo.heading.includes('الدارة'));
+              check('review_no_horizontal_overflow',rvInfo.overflow<=2,String(rvInfo.overflow));
+              check('review_language_initialized',rvInfo.script);
+              await review.screenshot({path:OUT+'/review-'+width+'.png',fullPage:false});
+              await review.close();
+            }catch(e){item.errors.push('test_exception: '+String(e?.stack||e));failureCount++}
+            check('no_critical_runtime_errors',item.errors.filter(x=>/pageerror|test_exception/.test(x)).length===0,item.errors.join(' | ').slice(0,400));
+            all.push(item);
+            await page.close();
+            console.log('ADDARAH_VIEWPORT_'+width+': '+JSON.stringify({failedChecks:item.checks.filter(c=>!c.pass),imageStates:item.images,errors:item.errors.slice(0,8)}));
+          }
+          fs.writeFileSync(OUT+'/results.json',JSON.stringify({finalUrl:ROOT,failureCount,results:all},null,2));
+          await browser.close();
+          console.log('ADDARAH_LIVE_E2E_FAILURES='+failureCount);
+          if(failureCount!==0)process.exit(2);
+          console.log('ADDARAH_LIVE_E2E_PASS');
+          NODE
+          node /tmp/addarah-browser/test.mjs
+      - name: Preserve screenshots and JSON even if test fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: addarah-dammam-live-qa
+          path: addarah-qa-output/
+          retention-days: 1
