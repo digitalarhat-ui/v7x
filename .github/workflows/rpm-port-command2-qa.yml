@@ -1,0 +1,65 @@
+name: RPM PORT isolated source QA
+on:
+  push:
+    branches: [rpm-port-makan-v4-review-20261014]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Structural check
+        shell: bash
+        run: |
+          set -e
+          cd rpm-port-riyadh-makan-v4-review
+          node --check assets/showroom.js
+          node --check assets/showroom-en.js
+          ! grep -E "11190078905|0554219127|MAKAN CARS|makan-v4:" assets/showroom.js
+          ! grep -E "11190078905|0554219127|MAKAN CARS|makan-v4:" assets/showroom-en.js
+          grep -q "11185148484" assets/showroom.js
+          grep -q "11188719837" assets/showroom.js
+          grep -q "966533117779" assets/showroom.js
+          echo "BOTH_BUNDLES_PARSE_AND_MATCH_LOCK"
+      - name: Set up isolated browser
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Browser smoke at four requested viewports
+        shell: bash
+        run: |
+          python3 -m http.server 4173 --directory rpm-port-riyadh-makan-v4-review >/tmp/rpm-http.log 2>&1 &
+          node - <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            let errors=[];
+            for(const [width,route,lang] of [[390,'/','ar'],[430,'/','ar'],[768,'/en/','en'],[1440,'/en/','en']]){
+              const page=await browser.newPage({viewport:{width,height:850}});
+              const jsErrors=[];
+              page.on('pageerror',err=>jsErrors.push(String(err)));
+              await page.goto('http://127.0.0.1:4173'+route,{waitUntil:'domcontentloaded'});
+              await page.waitForTimeout(1400);
+              const check=await page.evaluate(()=>{
+                const text=document.body.innerText;
+                return {title:document.title,dir:document.documentElement.dir,html:document.documentElement.lang,scrollWidth:document.documentElement.scrollWidth,width:window.innerWidth,containsOffer:text.includes('RPM PORT'),stale:text.includes('MAKAN CARS'),brokenImgs:[...document.images].filter(i=>!i.complete||!i.naturalWidth).length,totalImgs:document.images.length};
+              });
+              const screenshot='rpm-'+lang+'-'+width+'.png';
+              await page.screenshot({path:screenshot,fullPage:true});
+              if(jsErrors.length||check.stale||check.scrollWidth>check.width||!check.containsOffer)errors.push({width,route,jsErrors,check});
+              console.log(JSON.stringify({width,route,check,jsErrors,screenshot}));
+              await page.close();
+            }
+            await browser.close();
+            if(errors.length){console.error('QA_FAILURE',JSON.stringify(errors));process.exit(1)}
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rpm-port-local-smoke
+          path: rpm-*.png
+          retention-days: 3
