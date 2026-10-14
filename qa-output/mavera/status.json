@@ -1,7 +1,7 @@
 {
   "lead": "SA-3F-20261014-MAVERA-JEDDAH",
-  "run_id": "38556182434",
-  "tested_utc": "2026-10-14T11:23:35.784068+00:00",
+  "run_id": "38557005843",
+  "tested_utc": "2026-10-14T11:30:37.550145+00:00",
   "url": "https://mavera-jeddah-white-rose-review.vercel.app/",
   "viewports": {
     "390": {
@@ -114,14 +114,15 @@
         ]
       },
       "state_after_reload": {
-        "guest": "",
-        "date": "",
+        "guest": "350",
+        "date": "2026-11-15",
         "keys": [
           "maveraInterfaceLanguage"
         ]
       },
-      "saved_guest": false,
-      "saved_date": false,
+      "patch_test_only_not_deployed": true,
+      "saved_guest": true,
+      "saved_date": true,
       "language_buttons": [
         "AR",
         "EN",
