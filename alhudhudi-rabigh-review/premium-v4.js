@@ -91,7 +91,7 @@ fields.forEach(k=>$('#hly-'+k)?.addEventListener('input',refresh));
 document.querySelectorAll('[data-feature]').forEach(x=>x.addEventListener('change',refresh));
 $('#ahx-notes').addEventListener('input',refresh);
 document.addEventListener('alhudhudi:scene-change',refresh);
-$('#lux-copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(format());$('#lux-copy').textContent=labels[lang].copied}catch{$('#lux-copy').textContent=labels[lang].copyError}});
+$('#lux-copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(window.alhudhudiBuyerFit?.summary?.()||format());$('#lux-copy').textContent=labels[lang].copied}catch{$('#lux-copy').textContent=labels[lang].copyError}});
 translate();
 window.alhudhudiPremium={summary:()=>format(),state:()=>({...state}),reviewHref:()=>$('#ahx-review').href};
 })();
