@@ -26,7 +26,7 @@ jobs:
           r=requests.get(D+'/',timeout=20)
           html=r.text
           O['ga4_source_contexts']=[html[max(0,m.start()-90):m.end()+90] for m in list(re.finditer(r'G-[A-Z0-9]{7,}',html))[:7]]
-          O['ga4_script_sources']=list(dict.fromkeys(re.findall(r'<script[^>]+src=["\\']([^"\\']*(?:google-analytics|googletagmanager|gtag)[^"\\']*)',html,re.I)))[:20]
+          O['ga4_script_sources']=[]
           async def run():
             async with async_playwright() as p:
               b=await p.chromium.launch(args=['--no-sandbox'])
