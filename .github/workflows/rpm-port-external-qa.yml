@@ -26,7 +26,7 @@ jobs:
               const page=await browser.newPage({viewport:{width,height:900}});await page.context().addCookies([{name:'__Http-phish',value:'1',domain:'raw.githack.com',path:'/digitalarhat-ui/v7x/',httpOnly:true,secure:true,sameSite:'Lax'}]);
               let errors=[];page.setDefaultTimeout(12000);page.on('pageerror',e=>errors.push(String(e)));await page.route(/fonts\\.googleapis\\.com|fonts\\.gstatic\\.com/,route=>route.abort());
               const res=await page.goto(base+path,{waitUntil:'domcontentloaded',timeout:20000});
-              await page.waitForSelector('.hero',{timeout:15000});await page.waitForTimeout(250);
+              await page.waitForSelector('.hero',{timeout:15000});await page.evaluate(()=>{for(const im of document.images)im.loading='eager'});await page.waitForFunction(()=>[...document.images].every(im=>im.complete&&im.naturalWidth>0),null,{timeout:20000}).catch(()=>{});
               const check=await page.evaluate(()=>({rendered:!!document.querySelector('.hero'),direction:document.documentElement.dir,overflow:document.documentElement.scrollWidth>innerWidth,imgs:[...document.images].map(img=>({ok:img.complete&&img.naturalWidth>0,src:img.currentSrc.slice(-25)})),lang:document.documentElement.lang,text:document.body.innerText}));
               const failed=[];
               if(res.status()!==200)failed.push('HTTP '+res.status());
