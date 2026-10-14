@@ -32,6 +32,34 @@ let target=new THREE.Vector3(0,2.8,0),view={theta:.09,phi:1.43,radius:23},frames
 const m=(hex,metalness=0,roughness=.6)=>new THREE.MeshStandardMaterial({color:hex,metalness,roughness});
 function mesh(geo,material,group,x=0,y=0,z=0){const item=new THREE.Mesh(geo,material);item.position.set(x,y,z);item.receiveShadow=true;group.add(item);return item}
 function box(w,h,d,ma,g,x,y,z){return mesh(new THREE.BoxGeometry(w,h,d),ma,g,x,y,z)}
+function grounding(parent,x,z,rx,rz,strength=.26){
+ const shadow=new THREE.Mesh(new THREE.PlaneGeometry(rx*2,rz*2),
+ new THREE.MeshBasicMaterial({map:materials.shadow,transparent:true,depthWrite:false,opacity:strength,polygonOffset:true,polygonOffsetFactor:-1}));
+ shadow.rotation.x=-Math.PI/2;shadow.position.set(x,-.022,z);parent.add(shadow);return shadow
+}
+function taperCurtain(g,x,z,width,height){
+ const points=[];
+ const bands=18;
+ for(let i=0;i<=bands;i++){
+  const u=i/bands,px=-width/2+width*u,pleat=Math.sin(u*Math.PI*12)*.065;
+  points.push(new THREE.Vector3(px,0,pleat));
+ }
+ const verts=[],uv=[],indices=[];
+ for(let j=0;j<18;j++){const t=j/17;
+  for(let i=0;i<=bands;i++){const p=points[i],soft=Math.sin(t*Math.PI)*.028;
+   verts.push(p.x+Math.sin(t*3+i*.4)*soft,height*t,.03+p.z+(1-t)*.11);
+   uv.push(i/bands,t)
+  }
+ }
+ for(let j=0;j<17;j++)for(let i=0;i<bands;i++){const q=j*(bands+1)+i;indices.push(q,q+1,q+bands+1,q+1,q+bands+2,q+bands+1)}
+ const geom=new THREE.BufferGeometry();geom.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));geom.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));geom.setIndex(indices);geom.computeVertexNormals();
+ const veil=mesh(geom,materials.curtain,g,x,0,z);veil.material.side=THREE.DoubleSide;return veil;
+}
+function radialShadowTexture(){
+ const c=document.createElement('canvas');c.width=c.height=128;const cx=c.getContext('2d');
+ const gr=cx.createRadialGradient(64,64,4,64,64,64);gr.addColorStop(0,'rgba(18,12,9,.72)');gr.addColorStop(.36,'rgba(22,16,13,.45)');gr.addColorStop(1,'rgba(18,12,9,0)');
+ cx.fillStyle=gr;cx.fillRect(0,0,128,128);return new THREE.CanvasTexture(c);
+}
 function cyl(rad,h,ma,g,x,y,z){return mesh(new THREE.CylinderGeometry(rad,rad,h,18),ma,g,x,y,z)}
 function sphere(r,ma,g,x,y,z){return mesh(new THREE.SphereGeometry(r,10,7),ma,g,x,y,z)}
 function torus(r,t,ma,g,x,y,z,horiz=true,arc=Math.PI*2){const item=mesh(new THREE.TorusGeometry(r,t,10,52,arc),ma,g,x,y,z);if(horiz)item.rotation.x=Math.PI/2;return item}
@@ -75,7 +103,7 @@ function paddedPanel(w,h,depth,material,g,x,y,z,radius=.10){
  geom.computeVertexNormals();return mesh(geom,material,g,x,y,z);
 }
 function chair(g,x,z,a){
- const cg=new THREE.Group();g.add(cg);cg.position.set(x,0,z);cg.rotation.y=a;
+ const cg=new THREE.Group();g.add(cg);cg.position.set(x,0,z);cg.rotation.y=a;grounding(g,x,z,.58,.52,.17);
  for(const dx of [-.235,.235])for(const dz of [-.19,.19]){
   const leg=cyl(.025,.46,materials.metal,cg,dx,.24,dz);leg.castShadow=true;
  }
@@ -102,7 +130,7 @@ function chandelier(x,z){const c=new THREE.Group();room.add(c);c.position.set(x,
  for(const [radius,y] of [[1.7,-.48],[1.08,.03]]){
   torus(radius,.10,materials.metal,c,0,y,0,true);
   for(let i=0;i<18;i++){const a=i*Math.PI/9,xx=Math.sin(a)*radius,zz=Math.cos(a)*radius;
-   cyl(.016,.27,materials.metal,c,xx,y-.19,zz);sphere(.10,materials.glow,c,xx,y-.37,zz)}
+   cyl(.012,.30,materials.metal,c,xx,y-.19,zz);const crystal=sphere(.075,materials.glass,c,xx,y-.40,zz);crystal.scale.set(.68,1.55,.68);sphere(.04,materials.glow,c,xx,y-.19,zz)}
  }
  const bulb=new THREE.PointLight('#ffdfad',9,19,2);bulb.position.set(0,-.6,0);c.add(bulb);lights.chand.push(bulb)}
 function build(){
@@ -110,9 +138,9 @@ function build(){
  camera=new THREE.PerspectiveCamera(47,1,.1,150);
  const mobile=innerWidth<800;
  renderer=new THREE.WebGLRenderer({antialias:!mobile,powerPreference:'high-performance',preserveDrawingBuffer:true});
- renderer.setPixelRatio(Math.min(devicePixelRatio||1,mobile?1.35:1.65));
+ renderer.setPixelRatio(Math.min(devicePixelRatio||1,mobile?1.25:1.6));
  renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.06;
- renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+ renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMappingExposure=.91;
  const cv=renderer.domElement;cv.id='a3-webgl';cv.style.touchAction='none';canvasHost.appendChild(cv);
  materials={
  floor:new THREE.MeshStandardMaterial({map:floorTex(),roughness:.55,metalness:.06}),
@@ -120,7 +148,7 @@ function build(){
  curtain:m('#ab866c',.02,.9),chair:m('#94745c',.02,.88),
  cloth:new THREE.MeshStandardMaterial({map:textileTexture('linen'),roughness:.95,metalness:0}),
  runner:new THREE.MeshStandardMaterial({map:textileTexture('carpet'),roughness:.94,metalness:0}),
- velvet:new THREE.MeshStandardMaterial({map:textileTexture('velvet'),roughness:.88,metalness:0}),
+ velvet:new THREE.MeshStandardMaterial({map:textileTexture('velvet'),roughness:.85,metalness:0}),shadow:radialShadowTexture(),
  marble:m('#afa39a',.16,.4),plate:m('#e8e1d5',.02,.28),glass:new THREE.MeshPhysicalMaterial({color:'#dee5e2',roughness:.06,metalness:0,transmission:.68,thickness:.12,transparent:true,opacity:.76,side:THREE.DoubleSide}),
  dark:m('#28221c'),leaf:m('#506448'),petals:[m('#eee1d0'),m('#b78a83')],
  glow:new THREE.MeshStandardMaterial({color:'#ffebbc',emissive:'#efbd7c',emissiveIntensity:.8,roughness:.2})
@@ -149,7 +177,10 @@ function build(){
  for(const z of [-6,-1,4]){box(28.4,.22,.29,materials.trim,room,0,8.79,z);chandelier(0,z)}
  stage=new THREE.Group();room.add(stage);
  box(11.5,.56,3.2,materials.trim,stage,0,.21,-7.23);
- for(let i=-2;i<=2;i++)box(1.8,5.7,.16,i%2?materials.curtain:materials.ivory,stage,i*2.02,3.16,-9.02);
+ for(let i=-2;i<=2;i++){
+  box(1.8,5.7,.16,i%2?materials.curtain:materials.ivory,stage,i*2.02,3.16,-9.02);
+  taperCurtain(stage,i*2.03,-8.75,1.50,5.45);
+ }
  arch(stage,0,-8.65,5.0);
  // Upholstered sweetheart sofa with curved cushions and gold feet.
  const sofa=new THREE.Group();stage.add(sofa);sofa.position.set(0,0,-7.65);
@@ -172,14 +203,25 @@ function build(){
  groups.round=new THREE.Group();groups.banquet=new THREE.Group();groups.runner=new THREE.Group();room.add(groups.round,groups.banquet,groups.runner);
  for(const x of [-10,-5,5,10])for(const z of [-4.4,.7,5.5]){
   const g=new THREE.Group();groups.round.add(g);g.position.set(x,0,z);
-  cyl(1.06,.08,materials.cloth,g,0,.79,0);cyl(.17,.75,materials.metal,g,0,.38,0);floret(g,0,.90,0,.7);
+  grounding(groups.round,x,z,1.5,1.5,.39);
+  cyl(1.06,.075,materials.cloth,g,0,.79,0);
+  const fallingLinen=cyl(1.052,.25,materials.cloth,g,0,.66,0);fallingLinen.castShadow=true;
+  cyl(.17,.75,materials.metal,g,0,.38,0);floret(g,0,.90,0,.7);
+  for(let q=0;q<3;q++){const a=q*Math.PI*2/3;
+    const candleX=Math.cos(a)*.48,candleZ=Math.sin(a)*.48;
+    cyl(.026,.26,materials.metal,g,candleX,.95,candleZ);
+    sphere(.05,materials.glow,g,candleX,1.095,candleZ)
+  }
   for(let j=0;j<7;j++){const a=j*Math.PI*2/7;chair(g,Math.cos(a)*1.60,Math.sin(a)*1.60,-a+Math.PI/2);
  tableSetting(g,Math.cos(a)*.79,.91,Math.sin(a)*.79,a)}
  torus(1.04,.045,materials.metal,g,0,.78,0,true);
  }
  for(const x of [-9,-4.5,4.5,9])for(const z of [-3.3,4.4]){
   const g=new THREE.Group();groups.banquet.add(g);g.position.set(x,0,z);
-  box(2.35,.08,1.14,materials.cloth,g,0,.75,0);box(.18,.74,.18,materials.metal,g,0,.39,0);floret(g,0,.85,0,.55);
+  grounding(groups.banquet,x,z,1.55,.88,.40);
+  box(2.36,.11,1.20,materials.cloth,g,0,.70,0);
+  box(.18,.74,.18,materials.metal,g,0,.36,0);
+  floret(g,0,.82,0,.55);
   for(const xx of [-.85,-.27,.27,.85])for(const zz of [-.94,.94]){
  chair(g,xx,zz,zz>0?Math.PI:0);tableSetting(g,xx,.86,zz>0?.36:-.36,zz>0?Math.PI:0)
  }
@@ -214,10 +256,10 @@ function apply(){
  const p=palettes[state.palette];materials.trim.color.set(p[0]);materials.metal.color.set(p[0]);materials.curtain.color.set(p[1]);materials.chair.color.set(p[2]);materials.runner.color.set(p[3]);scene.background.set(p[4]);
  materials.ivory.color.set(state.hall==='moonlight'?'#c0c9cb':'#d2c7b7');
  lights.hemi.color.set(state.light==='day'?'#e8f3ff':'#ffecd3');
- lights.hemi.intensity=state.light==='day'?1.45:1.1;
+ lights.hemi.intensity=state.light==='day'?1.45:1.02;
  lights.sun.color.set(state.light==='day'?'#ffffff':'#fff0d7');
  for(const lamp of lights.chand){lamp.color.set(state.light==='day'?'#e7f3ff':'#ffdfad');lamp.intensity=state.light==='day'?5.5:9}
- renderer.toneMappingExposure=state.light==='day'?1.20:1.06;
+ renderer.toneMappingExposure=state.light==='day'?1.12:.91;
  groups.round.visible=state.layout==='round';groups.banquet.visible=state.layout==='banquet';runner();
  for(const b of root.querySelectorAll('[data-key]')){const yes=state[b.dataset.key]===b.dataset.val;b.classList.toggle('selected',yes);b.setAttribute('aria-pressed',String(yes))}
  for(const b of root.querySelectorAll('[data-view]'))b.classList.toggle('selected',b.dataset.view===state.camera);
