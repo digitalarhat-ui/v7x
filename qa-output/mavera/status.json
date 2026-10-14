@@ -1,0 +1,233 @@
+{
+  "lead": "SA-3F-20261014-MAVERA-JEDDAH",
+  "run_id": "38555233199",
+  "tested_utc": "2026-10-14T11:15:27.789075+00:00",
+  "url": "https://mavera-jeddah-white-rose-review.vercel.app/",
+  "viewports": {
+    "390": {
+      "width": 390,
+      "http_status": 200,
+      "title": "قاعة ماڤيرا — تصور مناسبتك",
+      "login_page": false,
+      "text_has_mavera": true,
+      "old_brand_visible": false,
+      "overflow_pixels": 0,
+      "script_errors": [],
+      "link_review_count": 0,
+      "all_images": [
+        {
+          "src": "https://qa3at.com/storage/sites/3/O725bMBcQ7wMFoplcVHAtXlJt1fI8bUEuAP5HtH6.jpg",
+          "w": 1080,
+          "h": 1303,
+          "complete": true
+        },
+        {
+          "src": "https://ik.imagekit.io/kfrvcit6d/mavera/Screenshot%202026-01-10%20at%209.19.46%E2%80%AFAM.png?updatedAt=1768036883764",
+          "w": 2780,
+          "h": 1570,
+          "complete": true
+        },
+        {
+          "src": "",
+          "w": 0,
+          "h": 0,
+          "complete": true
+        }
+      ],
+      "broken_image_count": 1,
+      "official_contact": 2,
+      "form_field_count": 9,
+      "language_buttons": [
+        "AR",
+        "EN",
+        "ابدأ تصور مناسبتك",
+        "هادئ",
+        "فاخر",
+        "كلاسيكي",
+        "عصري",
+        "استكمل تصور مناسبتك ←",
+        "زفاف",
+        "ملكة",
+        "مناسبة عائلية",
+        "أخرى",
+        "هادئ",
+        "فاخر",
+        "كلاسيكي",
+        "عصري",
+        "استخدام الألوان المحددة كمرجع",
+        "هادئة",
+        "فاخرة",
+        "دافئة",
+        "رسمية",
+        "عصرية",
+        "كلاسيكية",
+        "فاتح ومحايد",
+        "أبيض وذهبي",
+        "دافئ",
+        "أخضر هادئ",
+        "ألوان داكنة",
+        "ألوان مخصصة",
+        "بسيط",
+        "متوازن",
+        "غني بالتفاصيل",
+        "ناعمة",
+        "دافئة",
+        "درامية",
+        "مشرقة",
+        "الكوشة / منطقة العروس",
+        "الممر",
+        "الطاولات",
+        "الإضاءة",
+        "الألوان",
+        "الجو العام",
+        "قارن اتجاهاتك",
+        "نعم",
+        "ليس الآن",
+        "أناقشها مع الفريق",
+        "راجع ملخص مناسبتك",
+        "نسخ ملخص الطلب",
+        "تعديل التفاصيل"
+      ],
+      "lang_before": "ar",
+      "lang_after_EN": "en",
+      "en_text_observed": true,
+      "localstorage_keys": [
+        "maveraInterfaceLanguage"
+      ],
+      "status": "PASS"
+    },
+    "430": {
+      "width": 430,
+      "http_status": 200,
+      "title": "قاعة ماڤيرا — تصور مناسبتك",
+      "login_page": false,
+      "text_has_mavera": true,
+      "old_brand_visible": false,
+      "overflow_pixels": 0,
+      "script_errors": [],
+      "link_review_count": 0,
+      "all_images": [
+        {
+          "src": "https://qa3at.com/storage/sites/3/O725bMBcQ7wMFoplcVHAtXlJt1fI8bUEuAP5HtH6.jpg",
+          "w": 1080,
+          "h": 1303,
+          "complete": true
+        },
+        {
+          "src": "https://ik.imagekit.io/kfrvcit6d/mavera/Screenshot%202026-01-10%20at%209.19.46%E2%80%AFAM.png?updatedAt=1768036883764",
+          "w": 2780,
+          "h": 1570,
+          "complete": true
+        },
+        {
+          "src": "",
+          "w": 0,
+          "h": 0,
+          "complete": true
+        }
+      ],
+      "broken_image_count": 1,
+      "official_contact": 2,
+      "form_field_count": 9,
+      "status": "PASS"
+    },
+    "768": {
+      "width": 768,
+      "http_status": 200,
+      "title": "قاعة ماڤيرا — تصور مناسبتك",
+      "login_page": false,
+      "text_has_mavera": true,
+      "old_brand_visible": false,
+      "overflow_pixels": 0,
+      "script_errors": [],
+      "link_review_count": 0,
+      "all_images": [
+        {
+          "src": "https://qa3at.com/storage/sites/3/O725bMBcQ7wMFoplcVHAtXlJt1fI8bUEuAP5HtH6.jpg",
+          "w": 1080,
+          "h": 1303,
+          "complete": true
+        },
+        {
+          "src": "https://ik.imagekit.io/kfrvcit6d/mavera/Screenshot%202026-01-10%20at%209.19.46%E2%80%AFAM.png?updatedAt=1768036883764",
+          "w": 2780,
+          "h": 1570,
+          "complete": true
+        },
+        {
+          "src": "",
+          "w": 0,
+          "h": 0,
+          "complete": true
+        }
+      ],
+      "broken_image_count": 1,
+      "official_contact": 2,
+      "form_field_count": 9,
+      "status": "PASS"
+    },
+    "1440": {
+      "width": 1440,
+      "http_status": 200,
+      "title": "قاعة ماڤيرا — تصور مناسبتك",
+      "login_page": false,
+      "text_has_mavera": true,
+      "old_brand_visible": false,
+      "overflow_pixels": 0,
+      "script_errors": [],
+      "link_review_count": 0,
+      "all_images": [
+        {
+          "src": "https://qa3at.com/storage/sites/3/O725bMBcQ7wMFoplcVHAtXlJt1fI8bUEuAP5HtH6.jpg",
+          "w": 1080,
+          "h": 1303,
+          "complete": true
+        },
+        {
+          "src": "https://ik.imagekit.io/kfrvcit6d/mavera/Screenshot%202026-01-10%20at%209.19.46%E2%80%AFAM.png?updatedAt=1768036883764",
+          "w": 2780,
+          "h": 1570,
+          "complete": true
+        },
+        {
+          "src": "",
+          "w": 0,
+          "h": 0,
+          "complete": true
+        }
+      ],
+      "broken_image_count": 1,
+      "official_contact": 2,
+      "form_field_count": 9,
+      "status": "PASS"
+    }
+  },
+  "media": {
+    "image_1": {
+      "url": "https://ik.imagekit.io/kfrvcit6d/mavera/Screenshot%202026-01-10%20at%209.19.46%E2%80%AFAM.png?updatedAt=1768036883764",
+      "result": {
+        "status": "LOADED",
+        "naturalWidth": 2780,
+        "naturalHeight": 1570
+      }
+    },
+    "image_2": {
+      "url": "https://qa3at.com/storage/sites/3/O725bMBcQ7wMFoplcVHAtXlJt1fI8bUEuAP5HtH6.jpg",
+      "result": {
+        "status": "LOADED",
+        "naturalWidth": 1080,
+        "naturalHeight": 1303
+      }
+    }
+  },
+  "review": {
+    "http_status": 200,
+    "url": "https://mavera-jeddah-white-rose-review.vercel.app/review/",
+    "title": "عرض الفكرة للإدارة — ماڤيرا",
+    "text_has_mavera": true,
+    "old_brand_visible": false,
+    "error_text": "و\nقاعة ماڤيرا · جدة\nعرض الفكرة للإدارة — نموذج غير رسمي\nتجربة العميل ←\nAR\n/\nEN\nللمناقشة والتحقق — وليس نظام إدارة\nهل تناسب الفكرة طريقة عمل ماڤيرا؟\n\nالتجربة الحالية توضح رغبة العميل قبل التواصل. هذا العرض يساعدكم في تحديد ما إذا كان لها دور فعلي في عمل القاعة، وما الذي لا يعكس الواقع.\n\nالعميل\nيحدد ما يريده\nالنموذج\nينظم رغبته في تصور وملخص واضح\nماڤيرا\nتراجع ما يمكن توفيره وتنفيذه فعلياً\n\nلا يتحقق النموذج من السعة أو التوفر أو الخيارات الفعلية أو الأسعار أو قابلية التنفيذ. لا يرسل بيانات إلى القاعة.\n\nتجربة العميل الأساسية لم تتغير. يُفضّل عرضها أولاً ثم مناقشة هذه الأسئلة.\n\nافتح تجربة العميل ↗\nتحقق إداري · إجابات محلية فقط\nما الذي نحتاج تأكيده منكم؟\n\nثلاث مجموعات قصيرة. يمكن تعديل الإجابات في "
+  },
+  "overall": "PASS",
+  "errors": []
+}
