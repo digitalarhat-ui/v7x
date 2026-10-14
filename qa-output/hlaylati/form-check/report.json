@@ -1,5 +1,5 @@
 {
-  "utc": "2026-10-14T17:31:15.028553+00:00",
+  "utc": "2026-10-14T17:32:23.315291+00:00",
   "pages": {
     "390:/contact": {
       "forms": [
@@ -75,7 +75,7 @@
             {
               "tag": "INPUT",
               "type": "text",
-              "name": "message-yui_5d782263-e205-45ab-9029-1f217ec6e06e-field",
+              "name": "message-yui_53230830-188d-4afa-9501-266ac2866897-field",
               "id": "message-field",
               "required": false,
               "placeholder": "",
@@ -231,7 +231,7 @@
             {
               "tag": "INPUT",
               "type": "text",
-              "name": "message-yui_9b866589-34a4-471f-87e9-9ab5f4dce24b-field",
+              "name": "message-yui_9f67b51d-7120-4c1d-ab32-51ef925d3c3c-field",
               "id": "message-field",
               "required": false,
               "placeholder": "",
@@ -377,6 +377,452 @@
       "copyright": null,
       "observed_analytics_requests": [],
       "menu_after_click": {
-        "buttons": [
-          {
-            "aria": 
+        "buttons": "menu opened",
+        "contact_links_visible": 0,
+        "nav": "Skip to Content\nH Laylati LLC.\nClose Menu"
+      }
+    },
+    "1440:/contact": {
+      "forms": [
+        {
+          "action": null,
+          "method": null,
+          "name": null,
+          "id": "",
+          "html_excerpt": "<form autocomplete=\"on\" class=\"react-form-contents\" novalidate=\"\" data-success-redirect=\"\"><div tabindex=\"-1\"></div><div class=\"field-list\"><fieldset class=\"form-item fields Dvz7hGDGST0ttUYu name\" id=\"name-yui_3_17_2_1_1553888888520_3744\" data-dynamic-strings=\"\"><legend id=\"name-yui_3_17_2_1_1553888888520_3744-field-wrapper\"><div class=\"title\"><div",
+          "labels": [
+            {
+              "text": "First Name\n(required)",
+              "for": "name-yui_3_17_2_1_1553888888520_3744-fname-field"
+            },
+            {
+              "text": "Last Name\n(required)",
+              "for": "name-yui_3_17_2_1_1553888888520_3744-lname-field"
+            },
+            {
+              "text": "Email\n(required)",
+              "for": "email-yui_3_17_2_1_1553888888520_3745-field"
+            },
+            {
+              "text": "Message\n(required)",
+              "for": "textarea-yui_3_17_2_1_1553888888520_3747-field"
+            }
+          ],
+          "fields": [
+            {
+              "tag": "INPUT",
+              "type": "text",
+              "name": "fname",
+              "id": "name-yui_3_17_2_1_1553888888520_3744-fname-field",
+              "required": false,
+              "placeholder": "",
+              "autocomplete": "given-name",
+              "aria": null,
+              "innerText": ""
+            },
+            {
+              "tag": "INPUT",
+              "type": "text",
+              "name": "lname",
+              "id": "name-yui_3_17_2_1_1553888888520_3744-lname-field",
+              "required": false,
+              "placeholder": "",
+              "autocomplete": "family-name",
+              "aria": null,
+              "innerText": ""
+            },
+            {
+              "tag": "INPUT",
+              "type": "email",
+              "name": "",
+              "id": "email-yui_3_17_2_1_1553888888520_3745-field",
+              "required": false,
+              "placeholder": "",
+              "autocomplete": "",
+              "aria": null,
+              "innerText": ""
+            },
+            {
+              "tag": "TEXTAREA",
+              "type": "textarea",
+              "name": "",
+              "id": "textarea-yui_3_17_2_1_1553888888520_3747-field",
+              "required": false,
+              "placeholder": "",
+              "autocomplete": "",
+              "aria": null,
+              "innerText": ""
+            },
+            {
+              "tag": "INPUT",
+              "type": "text",
+              "name": "message-yui_fbbe08c5-3117-4377-8775-d6901a1dcac4-field",
+              "id": "message-field",
+              "required": false,
+              "placeholder": "",
+              "autocomplete": "new-password",
+              "aria": null,
+              "innerText": ""
+            }
+          ],
+          "button": [
+            {
+              "text": "أرسال",
+              "type": "submit"
+            }
+          ]
+        }
+      ],
+      "actualGTag": [],
+      "linkNav": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/contact#page"
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/"
+        },
+        {
+          "text": "! مشاهدة القاعات من مكانك",
+          "href": "https://www.h-laylati.com/services"
+        },
+        {
+          "text": "من نحن؟",
+          "href": "https://www.h-laylati.com/about"
+        },
+        {
+          "text": "التواصل",
+          "href": "https://www.h-laylati.com/contact"
+        },
+        {
+          "text": "للتوظيف",
+          "href": "https://www.h-laylati.com/704825207487"
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg"
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6"
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84"
+        }
+      ],
+      "monthTexts": "Skip to Content\nH Laylati LLC.\n! مشاهدة القاعات من مكانك\nمن نحن؟\nالتواصل\nللتوظيف\nتواصل معنا \n\n..نحن هنا لمساعدتك في أي استفسار أو ملاحظة تود مشاركتها معنا , لاتتردد في التواصل معنا\n\n.وسنكون سعداء بخدمتك \n\n\nName\nFirst Name\n(required)\nLast Name\n(required)\nEmail\n(required)\nMessage\n(required)\nأرسال\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "main": {
+        "text": "تواصل معنا \n\n..نحن هنا لمساعدتك في أي استفسار أو ملاحظة تود مشاركتها معنا , لاتتردد في التواصل معنا\n\n.وسنكون سعداء بخدمتك \n\n\nName\nFirst Name\n(required)\nLast Name\n(required)\nEmail\n(required)\nMessage\n(required)\nأرسال",
+        "role": "main"
+      },
+      "copyright": null,
+      "observed_analytics_requests": [],
+      "novalidate": "",
+      "valid_blank": true,
+      "required_count": 0,
+      "submit_exists": 1
+    },
+    "1440:/704825207487": {
+      "forms": [
+        {
+          "action": null,
+          "method": null,
+          "name": null,
+          "id": "",
+          "html_excerpt": "<form autocomplete=\"on\" class=\"react-form-contents\" novalidate=\"\"><div tabindex=\"-1\"></div><div class=\"field-list\"><fieldset class=\"form-item fields Dvz7hGDGST0ttUYu name\" id=\"name-yui_3_17_2_1_1691436989914_4131\" data-dynamic-strings=\"\"><legend id=\"name-yui_3_17_2_1_1691436989914_4131-field-wrapper\"><div class=\"title\"><div class=\"s9aw5DV2uY72CSBH\"",
+          "labels": [
+            {
+              "text": "First Name\n(required)",
+              "for": "name-yui_3_17_2_1_1691436989914_4131-fname-field"
+            },
+            {
+              "text": "Last Name\n(required)",
+              "for": "name-yui_3_17_2_1_1691436989914_4131-lname-field"
+            },
+            {
+              "text": "الايميل\n(required)",
+              "for": "email-yui_3_17_2_1_1691436989914_4132-field"
+            },
+            {
+              "text": "",
+              "for": "phone-f8f692d7-2156-4333-aab2-e6113e969dd6-input-field"
+            },
+            {
+              "text": "القسم او التخصص",
+              "for": "select-a9e1468a-2904-4196-8c9e-752446972b89-field"
+            },
+            {
+              "text": "رسالة\n(required)",
+              "for": "textarea-yui_3_17_2_1_1691436989914_4134-field"
+            }
+          ],
+          "fields": [
+            {
+              "tag": "INPUT",
+              "type": "text",
+              "name": "fname",
+              "id": "name-yui_3_17_2_1_1691436989914_4131-fname-field",
+              "required": false,
+              "placeholder": "",
+              "autocomplete": "given-name",
+              "aria": null,
+              "innerText": ""
+            },
+            {
+              "tag": "INPUT",
+              "type": "text",
+              "name": "lname",
+              "id": "name-yui_3_17_2_1_1691436989914_4131-lname-field",
+              "required": false,
+              "placeholder": "",
+              "autocomplete": "family-name",
+              "aria": null,
+              "innerText": ""
+            },
+            {
+              "tag": "INPUT",
+              "type": "email",
+              "name": "",
+              "id": "email-yui_3_17_2_1_1691436989914_4132-field",
+              "required": false,
+              "placeholder": "",
+              "autocomplete": "",
+              "aria": null,
+              "innerText": ""
+            },
+            {
+              "tag": "INPUT",
+              "type": "text",
+              "name": "",
+              "id": "phone-f8f692d7-2156-4333-aab2-e6113e969dd6-input-field",
+              "required": false,
+              "placeholder": "",
+              "autocomplete": "tel-national",
+              "aria": null,
+              "innerText": ""
+            },
+            {
+              "tag": "SELECT",
+              "type": "select-one",
+              "name": "",
+              "id": "select-a9e1468a-2904-4196-8c9e-752446972b89-field",
+              "required": false,
+              "placeholder": null,
+              "autocomplete": "",
+              "aria": "القسم او التخصص",
+              "innerText": "Select an option\nاداري\nتشغيلي"
+            },
+            {
+              "tag": "TEXTAREA",
+              "type": "textarea",
+              "name": "",
+              "id": "textarea-yui_3_17_2_1_1691436989914_4134-field",
+              "required": false,
+              "placeholder": "",
+              "autocomplete": "",
+              "aria": null,
+              "innerText": ""
+            },
+            {
+              "tag": "INPUT",
+              "type": "text",
+              "name": "message-yui_8f6ef3a4-0166-49a1-894c-3096b78505ec-field",
+              "id": "message-field",
+              "required": false,
+              "placeholder": "",
+              "autocomplete": "new-password",
+              "aria": null,
+              "innerText": ""
+            }
+          ],
+          "button": [
+            {
+              "text": "ارسال",
+              "type": "submit"
+            }
+          ]
+        }
+      ],
+      "actualGTag": [],
+      "linkNav": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/704825207487#page"
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/"
+        },
+        {
+          "text": "! مشاهدة القاعات من مكانك",
+          "href": "https://www.h-laylati.com/services"
+        },
+        {
+          "text": "من نحن؟",
+          "href": "https://www.h-laylati.com/about"
+        },
+        {
+          "text": "التواصل",
+          "href": "https://www.h-laylati.com/contact"
+        },
+        {
+          "text": "للتوظيف",
+          "href": "https://www.h-laylati.com/704825207487"
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg"
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6"
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84"
+        }
+      ],
+      "monthTexts": "Skip to Content\nH Laylati LLC.\n! مشاهدة القاعات من مكانك\nمن نحن؟\nالتواصل\nللتوظيف\nللتوظيف\nالاسم\nFirst Name\n(required)\nLast Name\n(required)\nالايميل\n(required)\nالجوال\nالقسم او التخصص\nSelect an option\nاداري\nتشغيلي\nرسالة\n(required)\nارسال\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "main": {
+        "text": "للتوظيف\nالاسم\nFirst Name\n(required)\nLast Name\n(required)\nالايميل\n(required)\nالجوال\nالقسم او التخصص\nSelect an option\nاداري\nتشغيلي\nرسالة\n(required)\nارسال",
+        "role": "main"
+      },
+      "copyright": null,
+      "observed_analytics_requests": []
+    },
+    "1440:/services": {
+      "forms": [],
+      "actualGTag": [],
+      "linkNav": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/services#page"
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/"
+        },
+        {
+          "text": "! مشاهدة القاعات من مكانك",
+          "href": "https://www.h-laylati.com/services"
+        },
+        {
+          "text": "من نحن؟",
+          "href": "https://www.h-laylati.com/about"
+        },
+        {
+          "text": "التواصل",
+          "href": "https://www.h-laylati.com/contact"
+        },
+        {
+          "text": "للتوظيف",
+          "href": "https://www.h-laylati.com/704825207487"
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=q6LCks19oDu"
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=wERuBbYLKdP"
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=iCwo26Bo7XH"
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=HUJFxwkL1R4"
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=f2PpZrQNoW7"
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg"
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6"
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84"
+        }
+      ],
+      "monthTexts": "Skip to Content\nH Laylati LLC.\n! مشاهدة القاعات من مكانك\nمن نحن؟\nالتواصل\nللتوظيف\n\nمشاهدة القاعات\n\n3D\n\nأضغط هنــا\n\nقسم الرجال - قاعة بدره \n\nأضغط هنــا\n\nكبار الشخصيات - قاعة هذه ليلتي  \n\nأضغط هنــا\n\nقسم النساء - قاعة هذه ليلتي \n\nأضغط هنــا\n\nقسم الرجال - قاعة هذه ليلتي \n\nأضغط هنــا\n\nقسم النساء - قاعة بدره \n\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "main": {
+        "text": "مشاهدة القاعات\n\n3D\n\nأضغط هنــا\n\nقسم الرجال - قاعة بدره \n\nأضغط هنــا\n\nكبار الشخصيات - قاعة هذه ليلتي  \n\nأضغط هنــا\n\nقسم النساء - قاعة هذه ليلتي \n\nأضغط هنــا\n\nقسم الرجال - قاعة هذه ليلتي \n\nأضغط هنــا\n\nقسم النساء - قاعة بدره ",
+        "role": "main"
+      },
+      "copyright": null,
+      "observed_analytics_requests": []
+    },
+    "1440:/": {
+      "forms": [],
+      "actualGTag": [],
+      "linkNav": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/#page"
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/"
+        },
+        {
+          "text": "! مشاهدة القاعات من مكانك",
+          "href": "https://www.h-laylati.com/services"
+        },
+        {
+          "text": "من نحن؟",
+          "href": "https://www.h-laylati.com/about"
+        },
+        {
+          "text": "التواصل",
+          "href": "https://www.h-laylati.com/contact"
+        },
+        {
+          "text": "للتوظيف",
+          "href": "https://www.h-laylati.com/704825207487"
+        },
+        {
+          "text": "حفلات خارجية",
+          "href": "https://www.h-laylati.com/s/BP-H-laylati.pdf"
+        },
+        {
+          "text": "قاعة هذه ليلتي",
+          "href": "https://www.h-laylati.com/s/.pdf"
+        },
+        {
+          "text": "بدره",
+          "href": "https://www.h-laylati.com/s/1-ymm2.pdf"
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg"
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6"
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84"
+        }
+      ],
+      "monthTexts": "Skip to Content\nH Laylati LLC.\n! مشاهدة القاعات من مكانك\nمن نحن؟\nالتواصل\nللتوظيف\n\nخدماتـنـــــــا\n\nحفلات خارجية\nقاعة هذه ليلتي\nبدره\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "main": {
+        "text": "خدماتـنـــــــا\n\nحفلات خارجية\nقاعة هذه ليلتي\nبدره",
+        "role": "main"
+      },
+      "copyright": null,
+      "observed_analytics_requests": []
+    }
+  },
+  "ga4_source_contexts": [],
+  "ga4_script_sources": []
+}
