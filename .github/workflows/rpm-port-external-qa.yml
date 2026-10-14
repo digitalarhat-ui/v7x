@@ -1,0 +1,66 @@
+name: RPM PORT external public preview QA
+on:
+  push:
+    branches: [rpm-port-makan-v4-review-20261014]
+    paths: ['.github/workflows/rpm-port-external-qa.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test-public:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Check real public URL Arabic English source images and journey
+        run: |
+          node <<'JS'
+          const {chromium}=require('playwright');
+          const base='https://raw.githack.com/digitalarhat-ui/v7x/rpm-port-makan-v4-review-20261014/rpm-port-riyadh-makan-v4-review/preview/';
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const reports=[];
+            for(const [width,lang,path] of [[390,'ar','index.html'],[430,'ar','index.html'],[768,'en','en.html'],[1440,'en','en.html']]){
+              const page=await browser.newPage({viewport:{width,height:900}});
+              let errors=[];page.on('pageerror',e=>errors.push(String(e)));
+              const res=await page.goto(base+path,{waitUntil:'networkidle',timeout:40000});
+              await page.waitForTimeout(700);
+              const check=await page.evaluate(()=>({rendered:!!document.querySelector('.hero'),direction:document.documentElement.dir,overflow:document.documentElement.scrollWidth>innerWidth,imgs:[...document.images].map(img=>({ok:img.complete&&img.naturalWidth>0,src:img.currentSrc.slice(-25)})),lang:document.documentElement.lang,text:document.body.innerText}));
+              const failed=[];
+              if(res.status()!==200)failed.push('HTTP '+res.status());
+              if(!check.rendered)failed.push('React render unavailable');
+              if(check.direction!==(lang==='ar'?'rtl':'ltr'))failed.push('RTL/LTR');
+              if(check.overflow)failed.push('horizontal overflow');
+              if(check.imgs.length<2||check.imgs.some(x=>!x.ok))failed.push('vehicle photo rendering');
+              if(lang==='en'&&/[\u0600-\u06ff]/.test(check.text.replaceAll('العربية','')))failed.push('untranslated English UI');
+              await page.evaluate(()=>location.hash='#cars');await page.waitForTimeout(220);
+              const carCount=await page.locator('.carCard').count();
+              if(carCount!==2)failed.push('car count '+carCount);
+              const save=page.locator('.carCard .saveBtn');
+              if(await save.count()>=2){await save.nth(0).click();await save.nth(1).click()}else failed.push('save controls');
+              await page.evaluate(()=>location.hash='#compare');await page.waitForTimeout(220);
+              const table=await page.locator('.tableScroll').innerText().catch(()=>'');
+              if(!table.includes('355,000')||!table.includes('328,000'))failed.push('comparison data');
+              await page.evaluate(()=>location.hash='#request');await page.waitForTimeout(220);
+              const submit=page.locator('.requestForm').getByRole('button',{name:lang==='ar'?/جهّز استفسارك/:/Prepare enquiry/i}).last();
+              if(await submit.count())await submit.click();else failed.push('enquiry action');
+              const wa=await page.locator('a[href*="wa.me/966533117779?text="]').first().getAttribute('href').catch(()=>'');
+              if(!wa||!wa.includes('11185148484')||!wa.includes('11188719837'))failed.push('official WhatsApp handoff');
+              if(errors.length)failed.push('runtime errors '+errors.join(';'));
+              await page.screenshot({path:'rpm-public-'+lang+'-'+width+'.png',fullPage:true});
+              reports.push({width,lang,HTTP:res.status(),images:check.imgs.length,photosPass:check.imgs.filter(x=>x.ok).length,carCount,wa:!!wa,failed});
+              await page.close();
+            }
+            await browser.close();
+            console.log('PUBLIC_E2E_REPORT',JSON.stringify(reports));
+            if(reports.some(x=>x.failed.length))process.exit(1);
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rpm-port-public-qa-screenshots
+          path: rpm-public-*.png
+          retention-days: 7
