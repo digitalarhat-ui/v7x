@@ -1,0 +1,27 @@
+{
+  "lead_lock_id": "SA-3F-20261014-RPMPORT-RIYADH",
+  "golden_v4": "dpl_3ywEMtgzoyGmvgHy7Eq2Dm5mdWB4",
+  "golden_unchanged": true,
+  "branch": "rpm-port-makan-v4-review-20261014",
+  "release": "SOURCE_STAGED_NOT_DEPLOYED",
+  "vercel_deploy_block": "HTTP 402 api-deployments-free-per-day 2026-10-14",
+  "business": "RPM PORT",
+  "phone": "+966533117779",
+  "images": [
+    {
+      "listing": "https://haraj.com.sa/11185148484/",
+      "image": "https://postcdn.haraj.com.sa/userfiles30/2026-07-26/1320x1602_7D9F4621-939F-44A1-8FFE-6EDDF36C7C2E.jpg-700.webp",
+      "render_qa": "PENDING_CACHE_MISS",
+      "independent_media_rights": "UNKNOWN"
+    },
+    {
+      "listing": "https://haraj.com.sa/11188719837/",
+      "image": "https://postcdn.haraj.com.sa/userfiles30/2026-09-17/1600x1200_6CADFAFD-2F74-42BC-8A96-FF7F3B6380AB.jpg-700.webp",
+      "render_qa": "PENDING_CACHE_MISS",
+      "independent_media_rights": "UNKNOWN"
+    }
+  ],
+  "buyer_need": "UNKNOWN",
+  "outreach": "NOT_SENT",
+  "unresolved": "English parity, photos browser display, 390/430/768/1440 end-to-end QA, rights and external offer necessity"
+}
