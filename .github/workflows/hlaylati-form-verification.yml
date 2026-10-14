@@ -61,7 +61,7 @@ jobs:
                       menu=page.get_by_role('button',name=re.compile('Open Menu',re.I)).first
                       if await menu.count():
                         await menu.click(timeout=3500)
-                        out['menu_after_click']={'buttons':[{'aria':x.get_attribute('aria-expanded')} for x in await page.locator('button').all()][:2],
+                        out['menu_after_click']={'buttons':'menu opened',
                         'contact_links_visible':sum([await x.is_visible() for x in await page.get_by_role('link',name='التواصل').all()]),
                         'nav':(await page.locator('header').inner_text())[:400]}
                   except Exception as e:out['error']=str(e)[:450]
