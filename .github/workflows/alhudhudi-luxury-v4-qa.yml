@@ -115,7 +115,7 @@ jobs:
                   await page.locator('#hly-date').fill('2026-12-12')
                   await page.locator('input[data-feature="catering"]').check()
                   await page.locator('#ahx-notes').fill('Need to confirm guest table spacing')
-                  assert 'تصور' in await page.locator('#ahx-summary').inner_text()
+                  assert 'اتجاه التصميم' in await page.locator('#ahx-summary').inner_text(),'AR_VISUAL_CONCEPT_BRIEF'
                   await page.locator('#ahx-lang').click()
                   assert 'The setting, distinctly yours' in await page.locator('.lux-intro').inner_text()
                   assert 'Illustrative 3D design direction' in await page.locator('#ahx-summary').inner_text()
