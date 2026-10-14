@@ -1,0 +1,179 @@
+
+/* All rules scoped to Venezia Palace hero only. Zero below-hero CSS modifications. */
+.hero{
+  background:#080706!important;
+  min-height:100svh!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:space-between!important;
+  isolation:isolate!important;
+  overflow:hidden!important;
+}
+.hero .hero-bg{
+  animation:none!important;
+  filter:saturate(1.04) contrast(1.035)!important;
+  transform:scale(1.045)!important;
+  background-position:center 42%!important;
+}
+.hero .wr-cinematic-scene{
+  position:absolute;inset:0;z-index:-3;pointer-events:none;
+  opacity:0;transform:scale(1.045);
+  background:#080706 url("https://akhbrkm.com/wp-content/uploads/2026/07/IMG-20260731-WA0018-1024x520.jpg") center 51% /cover no-repeat;
+  filter:saturate(.99) contrast(1.025);
+}
+.hero::before{
+  background:linear-gradient(180deg,
+    rgba(4,4,4,.33) 0%,
+    rgba(4,4,4,.08) 17%,
+    rgba(4,4,4,.20) 40%,
+    rgba(4,4,4,.37) 65%,
+    rgba(4,4,4,.84) 100%)!important;
+}
+.hero::after{background:radial-gradient(ellipse at 50% 52%,rgba(0,0,0,.06),rgba(0,0,0,.22) 100%)!important}
+.hero .topbar{
+  position:relative!important;
+  z-index:4!important;
+  width:100%!important;
+  padding:20px clamp(18px,3.2vw,58px) 0!important;
+  align-items:center!important;
+}
+.hero .brand{gap:11px!important;align-items:center!important}
+.hero .mark{
+  flex:0 0 47px!important;width:47px!important;height:47px!important;
+  display:grid!important;place-items:center!important;
+  font-family:"Noto Kufi Arabic",serif!important;font-size:23px!important;font-weight:400!important;
+  border:none!important;border-radius:50%!important;
+  position:relative!important;overflow:hidden!important;
+  color:#fff8ee!important;background:rgba(255,255,255,.055)!important;
+  backdrop-filter:blur(7px)!important;-webkit-backdrop-filter:blur(7px)!important;
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.15)!important;
+}
+.hero .mark::before,.hero .place::before,.hero .hero-main .eyebrow::after,
+.hero .hero-actions .primary::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;padding:1.2px;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.52),rgba(255,255,255,.11) 25%,transparent 45%,transparent 62%,rgba(255,255,255,.12) 84%,rgba(255,255,255,.42));
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+}
+.hero .brand b{
+  font-family:"Noto Kufi Arabic","Noto Sans Arabic",sans-serif!important;
+  font-weight:600!important;font-size:12px!important;color:#fff9f0!important;
+}
+.hero .brand small{
+  font-family:"Noto Sans Arabic",sans-serif!important;letter-spacing:.06em!important;
+  font-size:8.5px!important;opacity:.84!important;color:#f0e9da!important;
+}
+.hero .place{
+  border:none!important;border-radius:999px!important;position:relative!important;overflow:hidden!important;
+  background:rgba(255,255,255,.05)!important;
+  backdrop-filter:blur(5px)!important;-webkit-backdrop-filter:blur(5px)!important;
+  padding:11px 14px!important;min-height:41px!important;
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.12)!important;
+  font-size:11px!important;color:#fff9ef!important;
+}
+.hero .hero-main{
+  position:relative!important;z-index:3!important;width:100%!important;
+  max-width:900px!important;margin:auto!important;
+  padding:66px 30px 38px!important;text-align:center!important;
+  display:flex!important;flex-direction:column!important;align-items:center!important;
+}
+.hero .hero-main .eyebrow{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  position:relative!important;overflow:hidden!important;
+  font-family:"Noto Sans Arabic",sans-serif!important;text-transform:none!important;
+  border:none!important;border-radius:999px!important;
+  background:rgba(255,255,255,.055)!important;
+  backdrop-filter:blur(6px)!important;-webkit-backdrop-filter:blur(6px)!important;
+  color:#fff6e7!important;
+  font-size:11.5px!important;font-weight:600!important;letter-spacing:0!important;
+  padding:9px 16px!important;margin:0 0 22px!important;
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.12)!important;
+}
+.hero .hero-main .eyebrow::before{display:none!important}
+.hero .hero-main #hero-title{
+  width:100%!important;max-width:825px!important;
+  font-family:"Noto Kufi Arabic","Noto Sans Arabic",sans-serif!important;
+  font-weight:600!important;font-size:clamp(40px,4vw,59px)!important;
+  line-height:1.57!important;letter-spacing:-.023em!important;
+  color:#fffaf3!important;-webkit-text-fill-color:#fffaf3!important;
+  text-shadow:0 4px 30px rgba(0,0,0,.25)!important;
+  background:none!important;background-image:none!important;
+  margin:0 auto 14px!important;text-align:center!important;text-wrap:balance!important;
+}
+.hero .hero-main .lead{
+  color:rgba(255,250,241,.95)!important;
+  font-family:"Noto Sans Arabic",sans-serif!important;
+  font-weight:400!important;line-height:1.88!important;
+  font-size:clamp(14px,1.25vw,16px)!important;
+  max-width:620px!important;margin:0 auto!important;text-align:center!important;
+  text-shadow:0 2px 13px rgba(0,0,0,.2)!important;
+}
+.hero .hero-main .hero-actions{
+  display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
+  gap:11px!important;margin:24px auto 0!important;
+}
+.hero .hero-actions .primary{
+  position:relative!important;overflow:hidden!important;
+  border:0!important;border-radius:999px!important;
+  color:#191713!important;font-family:"Noto Sans Arabic",sans-serif!important;font-weight:700!important;
+  background:rgba(255,249,238,.92)!important;background-image:none!important;
+  backdrop-filter:blur(40px)!important;-webkit-backdrop-filter:blur(40px)!important;
+  box-shadow:0 12px 28px rgba(0,0,0,.18),inset 0 1px 1px rgba(255,255,255,.35)!important;
+  min-height:53px!important;padding:13px 26px!important;
+  font-size:13px!important;letter-spacing:0!important;
+  transform:none!important;filter:none!important;
+  transition:transform .18s ease,box-shadow .18s ease,background .18s ease!important;
+}
+.hero .hero-actions .primary::before{
+  background:linear-gradient(180deg,rgba(255,255,255,.66),rgba(255,255,255,.19) 30%,transparent 50%,transparent 62%,rgba(255,255,255,.2) 82%,rgba(255,255,255,.55));
+}
+.hero .hero-main .micro{
+  color:rgba(255,250,241,.89)!important;
+  font-family:"Noto Sans Arabic",sans-serif!important;
+  font-size:11px!important;font-weight:500!important;line-height:1.8!important;
+  text-align:center!important;
+}
+.hero .hero-main .truth{
+  max-width:595px!important;width:100%!important;
+  border-top:1px solid rgba(255,255,255,.24)!important;
+  color:rgba(255,250,241,.85)!important;
+  font-size:11px!important;line-height:1.9!important;
+  padding-top:13px!important;margin:16px auto 0!important;text-align:center!important;
+}
+@media(hover:hover) and (pointer:fine){
+ .hero .hero-actions .primary:hover{transform:translateY(-2px)!important;background:rgba(255,252,247,.98)!important;box-shadow:0 18px 35px rgba(0,0,0,.23)!important}
+}
+.hero .hero-actions .primary:active{transform:translateY(1px)!important}
+.hero .hero-main .wr-entrance{animation:wrHeroEnter .75s cubic-bezier(.2,.7,.15,1) both}
+.hero .hero-main .wr-entrance:nth-child(1){animation-delay:.14s}
+.hero .hero-main .wr-entrance:nth-child(2){animation-delay:.26s}
+.hero .hero-main .wr-entrance:nth-child(3){animation-delay:.4s}
+.hero .hero-main .wr-entrance:nth-child(4){animation-delay:.52s}
+.hero .hero-main .wr-entrance:nth-child(5){animation-delay:.63s}
+@keyframes wrHeroEnter{0%{opacity:0;filter:blur(9px);transform:translateY(16px)}100%{opacity:1;filter:blur(0);transform:translateY(0)}}
+@media(max-width:640px){
+ .hero .topbar{padding:15px 15px 0!important;gap:8px!important}
+ .hero .mark{width:42px!important;height:42px!important;flex-basis:42px!important;font-size:20px!important}
+ .hero .brand{gap:9px!important}
+ .hero .brand b{font-size:10.75px!important}
+ .hero .brand small{font-size:7.5px!important}
+ .hero .place{font-size:9.75px!important;min-height:37px!important;padding:8px 11px!important}
+ .hero .hero-main{padding:45px 18px 25px!important}
+ .hero .hero-main .eyebrow{font-size:10px!important;padding:8px 13px!important;margin-bottom:16px!important}
+ .hero .hero-main #hero-title{
+   max-width:395px!important;
+   font-size:clamp(27px,7.4vw,32px)!important;
+   line-height:1.58!important;letter-spacing:-.016em!important;
+   margin-bottom:11px!important;
+ }
+ .hero .hero-main .lead{font-size:13.5px!important;line-height:1.88!important}
+ .hero .hero-main .hero-actions{margin-top:18px!important;gap:9px!important}
+ .hero .hero-actions .primary{min-height:49px!important;font-size:12px!important;padding:11px 22px!important}
+ .hero .hero-main .micro{font-size:10.5px!important}
+ .hero .hero-main .truth{font-size:10.75px!important;line-height:1.86!important;margin-top:13px!important;padding-top:11px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .hero .hero-main .wr-entrance{animation:none!important;opacity:1!important;filter:none!important;transform:none!important}
+ .hero .hero-actions .primary{transition:none!important;transform:none!important}
+ .hero .wr-cinematic-scene{opacity:0!important}
+}
