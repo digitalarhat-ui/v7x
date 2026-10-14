@@ -1,0 +1,23 @@
+ا</span></label>
+              <label class="choice"><input type="radio" name="standard" value="unique"><span>تختلف غالباً</span></label>
+              <label class="choice"><input type="radio" name="standard" value="vendors"><span>تعتمد على الموردين</span></label>
+              <label class="choice"><input type="radio" name="standard" value="unclear"><span>يحتاج توضيح</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="step" id="step3" hidden>
+          <h3>٣ — البيانات والجدوى التجارية</h3><p class="step-intro">الرغبة في متابعة النقاش لا تعني بعدُ استعداداً للدفع.</p>
+          <div class="field"><div class="legend">٦. هل توجد بيانات يمكن مناقشة مشاركتها لبناء نموذج أدق عند الحاجة؟</div>
+            <p class="hint">قد تشمل، حسب النطاق الذي تختارونه لاحقاً، مخطط القاعة أو الأبعاد أو الخيارات الفعلية أو سياسات السعة أو التسعير أو التوفر.</p>
+            <div class="choices" data-group="data">
+              <label class="choice"><input type="radio" name="data" value="yes"><span>يمكن مناقشة بعض البيانات</span></label>
+              <label class="choice"><input type="radio" name="data" value="unclear"><span>يحتاج تحديد النطاق أولاً</span></label>
+              <label class="choice"><input type="radio" name="data" value="no"><span>لا تتوفر / لا يمكن مشاركتها حالياً</span></label>
+            </div>
+          </div>
+          <div class="field"><div class="legend">٧. إذا ثبت أن التجربة تناسب طريقة عملكم، هل ترون مبرراً لتطبيقها فعلياً للقاعة؟</div>
+            <div class="choices" data-group="interest">
+              <label class="choice"><input type="radio" name="interest" value="discussion"><span>نعم، نريد مناقشة التطبيق</span></label>
+              <label class="choice"><input type="radio" name="interest" value="adjust"><span>نحتاج تعديلات قبل الحكم</span></label>
+              <label class="choice"><input type="radio" name="interest" value="useful_no"><span>مفيدة لكن لا نحتاج تطبيقها</span></label>
+              <label class="choice"
