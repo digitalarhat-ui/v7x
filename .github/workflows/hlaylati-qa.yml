@@ -79,7 +79,7 @@ jobs:
                     t["review_http"]=rr.status
                     t["review_values"]=await rev.locator("#hly-summary").inner_text()
                     t["review_propagation"]=all(x in t["review_values"] for x in ("Badrah","145","200","2026-11-20"))
-                    t["review_disclaimer"]= "غير رسمي" in await rev.locator("#hly-warning").inner_text()
+                    t["review_disclaimer"]= "مستقل" in await rev.locator("#hly-warning").inner_text()
                     await rev.screenshot(path=f"{O}/shots/review-390.png",full_page=True,animations="disabled")
                   height=await pg.evaluate("()=>document.documentElement.scrollHeight")
                   for y in range(0,height,420):
