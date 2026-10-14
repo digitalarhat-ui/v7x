@@ -1,0 +1,53 @@
+/* V6 immersive first-paint experience: stage is the hero, never a decorative picture. */
+#ah3d-experience{max-width:1600px!important;padding:0!important;margin:0 auto 22px!important;background:#0b0a09!important}
+#ah3d-experience .a3-grid{grid-template-columns:minmax(0,2.4fr) minmax(280px,.68fr)!important;min-height:min(84vh,795px)!important}
+#ah3d-experience .a3-viewport{height:min(84vh,795px)!important;min-height:680px;isolation:isolate;background:#0b0907!important}
+#ah3d-experience .a3-panel{padding:26px 24px!important}
+#ah3d-experience .a3-viewport #a3-hero-overlay{position:absolute!important;z-index:3!important;inset:0!important;min-height:0!important;height:auto!important;padding:45px 30px 130px!important;margin:0!important;display:flex!important;justify-content:flex-start!important;align-items:center!important;flex-direction:column!important;text-align:center!important;overflow:hidden!important;background:linear-gradient(180deg,rgba(7,7,6,.94),rgba(8,7,6,.70) 21%,rgba(8,7,6,.15) 48%,transparent 76%)!important;border:0!important;pointer-events:none!important;transition:opacity .45s ease,visibility .45s ease}
+#ah3d-experience #a3-hero-overlay:before,#ah3d-experience #a3-hero-overlay:after{display:none!important}
+#ah3d-experience #a3-hero-overlay .lux-hero-content{margin:0 auto!important;max-width:680px!important;pointer-events:none!important;position:relative!important}
+#ah3d-experience #a3-hero-overlay h1{font-size:clamp(29px,3.5vw,52px)!important;line-height:1.65!important;margin:9px 0!important;letter-spacing:-.035em!important;color:#fffaf0!important;text-shadow:0 4px 16px #080604,0 16px 40px #000!important}
+#ah3d-experience #a3-hero-overlay p{max-width:550px!important;margin:3px auto 10px!important;font-size:11px!important;line-height:2!important;color:#e0d3bd!important;text-shadow:0 3px 12px #000}
+#ah3d-experience #a3-hero-overlay .lux-overline{font-size:9px!important;letter-spacing:.24em!important;color:#e9c78f!important}
+#ah3d-experience #a3-hero-overlay .lux-hero-rule{width:36px!important;margin:10px auto 13px!important}
+#ah3d-experience #a3-hero-overlay .lux-hero-actions{gap:14px!important;margin-top:14px!important;pointer-events:auto!important}
+#ah3d-experience #a3-hero-overlay .lux-hero-btn{min-height:42px!important;min-width:220px!important;padding:9px 14px!important;font-size:10px!important}
+#ah3d-experience #a3-hero-overlay .lux-textlink{display:none!important}
+#ah3d-experience #a3-hero-overlay .lux-hero-side,#ah3d-experience #a3-hero-overlay .lux-hero-index{display:none!important}
+#ah3d-experience .a3-viewport:after{content:"";position:absolute;z-index:1;left:0;right:0;bottom:0;height:23%;pointer-events:none;background:linear-gradient(0deg,#100d0b72,transparent)}
+#ah3d-experience .a3-views{z-index:4!important;bottom:39px!important}
+#ah3d-experience .a3-drag{z-index:4!important;bottom:11px!important}
+#ah3d-experience .a3-engine{z-index:4!important;top:auto!important;bottom:100px!important;right:16px!important;font-size:8px!important}
+#ah3d-experience .a3-viewport:before{z-index:4!important;top:auto!important;bottom:122px!important;right:18px!important;font-size:8px!important}
+#ah3d-experience #a3-show-intro{display:none;position:absolute;z-index:6;top:18px;left:17px;background:#1b1611b9;border:1px solid #b89969aa;color:#e9cfa5;padding:10px 15px;font:700 10px 'DM Sans',sans-serif;letter-spacing:.12em;cursor:pointer}
+#ah3d-experience.a3-focused #a3-hero-overlay{opacity:0;visibility:hidden}
+#ah3d-experience.a3-focused #a3-show-intro{display:block}
+#ah3d-experience .a3-panel{position:relative;z-index:3}
+.lux-intro{padding-top:45px!important;padding-bottom:65px!important}
+[dir=ltr] #ah3d-experience #a3-hero-overlay h1{font-family:'Playfair Display',Georgia,serif!important;font-weight:500!important;font-size:clamp(31px,3.7vw,57px)!important;line-height:1.12!important}
+@media(max-width:1050px){
+ #ah3d-experience .a3-grid{grid-template-columns:1fr!important;min-height:0!important}
+ #ah3d-experience .a3-viewport{height:660px!important;min-height:0!important}
+ #ah3d-experience .a3-panel{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:4px 16px!important}
+ #ah3d-experience .a3-panel h4,#ah3d-experience .a3-current,#ah3d-experience .a3-continue{grid-column:1/-1!important}
+}
+@media(max-width:600px){
+ #ah3d-experience{margin-bottom:15px!important}
+ #ah3d-experience .a3-viewport{height:545px!important;min-height:0!important;border:0!important}
+ #ah3d-experience .a3-viewport #a3-hero-overlay{padding:20px 16px 110px!important;background:linear-gradient(180deg,rgba(5,5,5,.94),rgba(6,6,6,.70) 25%,rgba(6,6,6,.2) 49%,transparent 68%)!important}
+ #ah3d-experience #a3-hero-overlay h1{font-size:clamp(25px,7.4vw,35px)!important;line-height:1.6!important;margin:5px auto!important}
+ #ah3d-experience #a3-hero-overlay .lux-overline{font-size:7px!important;letter-spacing:.12em!important}
+ #ah3d-experience #a3-hero-overlay .lux-hero-rule{margin:7px auto 8px!important}
+ #ah3d-experience #a3-hero-overlay p{font-size:9px!important;max-width:325px!important;line-height:1.7!important}
+ #ah3d-experience #a3-hero-overlay .lux-hero-actions{margin-top:8px!important}
+ #ah3d-experience #a3-hero-overlay .lux-hero-btn{min-height:38px!important;min-width:195px!important;padding:7px 12px!important;font-size:9px!important}
+ #ah3d-experience .a3-panel{display:flex!important;padding:15px 16px!important;gap:2px!important}
+ #ah3d-experience .a3-views{bottom:48px!important;gap:1px!important}
+ #ah3d-experience .a3-views button{padding:7px 9px!important;font-size:8px!important}
+ #ah3d-experience .a3-engine{bottom:98px!important;top:auto!important;right:12px!important}
+ #ah3d-experience .a3-viewport:before{bottom:117px!important;right:12px!important}
+ #ah3d-experience .a3-drag{bottom:14px!important}
+ #ah3d-experience #a3-show-intro{font-size:9px!important;padding:7px 12px!important}
+ .lux-intro{padding-top:38px!important;padding-bottom:40px!important}
+}
+@media(prefers-reduced-motion:reduce){#ah3d-experience #a3-hero-overlay{transition:none!important}}
