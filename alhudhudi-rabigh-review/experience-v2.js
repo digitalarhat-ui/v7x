@@ -78,9 +78,15 @@ function getBrief(){
  const stored=readHall(),t=tr[state.lang],val=id=>hly('#hly-'+id)?.value||t.unknown;
  return {hall:stored,men:val('men'),women:val('women'),date:val('date'),occasion:val('occasion'),needs:state.needs.slice(),notes:state.notes};
 }
+function getVisual(){let v={};try{v=JSON.parse(localStorage.getItem('digital_arhat_alhudhudi_3d_v1')||'{}')}catch{}return v&&typeof v==='object'?v:{}}
+function visualSummary(){const v=getVisual(),en=state.lang==='en';const trans=(k,m)=>m[v[k]]||'—';return (en?'3D design concept (unapproved): ':'تصور 3D غير معتمد: ')+[
+trans('palette',{gold:en?'Champagne':'ذهبي',pearl:en?'Pearl':'لؤلؤي',rose:en?'Blush':'وردي'}),
+trans('light',{warm:en?'Warm light':'إضاءة دافئة',day:en?'Daylight':'إضاءة نهارية'}),
+trans('layout',{round:en?'Round tables':'طاولات دائرية',banquet:en?'Banquet tables':'طاولات مستطيلة'}),
+trans('aisle',{classic:en?'Classic aisle':'ممر تقليدي',wide:en?'Wide aisle':'ممر واسع'})].join(' · ')}
 function textSummary(){
  const t=tr[state.lang],b=getBrief(),venue=b.hall==='royal'?t.royal:t.moon;
- return [t.ready,t.hall+': '+venue,t.event+': '+(b.occasion==='other'?(state.lang==='ar'?'مناسبة أخرى':'Other event'):(state.lang==='ar'?'زفاف':'Wedding')),t.date+': '+b.date+' ('+t.dateLine+')',t.men+': '+b.men,t.women+': '+b.women,t.services+': '+(b.needs.length?b.needs.map(n=>t[n]).join(' · '):t.unknown),t.notes+': '+(state.notes||t.unknown),t.notSent].join('\n');
+ return [t.ready,t.hall+': '+venue,t.event+': '+(b.occasion==='other'?(state.lang==='ar'?'مناسبة أخرى':'Other event'):(state.lang==='ar'?'زفاف':'Wedding')),t.date+': '+b.date+' ('+t.dateLine+')',t.men+': '+b.men,t.women+': '+b.women,t.services+': '+(b.needs.length?b.needs.map(n=>t[n]).join(' · '):t.unknown),t.notes+': '+(state.notes||t.unknown),visualSummary(),t.notSent].join('\n');
 }
 function refresh(){
  const t=tr[state.lang];section.dir=state.lang==='ar'?'rtl':'ltr';
@@ -96,6 +102,7 @@ function refresh(){
  url.searchParams.set('brief',btoa(encodeURIComponent(JSON.stringify(brief))));
  url.searchParams.set('requirements',JSON.stringify({needs:b.needs,notes:b.notes}));
  url.searchParams.set('lang',state.lang);
+ url.searchParams.set('visual',JSON.stringify(getVisual()));
  $('#ahx-review').href=url.href;
 }
 section.querySelectorAll('[data-hall]').forEach(btn=>btn.addEventListener('click',()=>{
@@ -106,12 +113,13 @@ section.querySelectorAll('[data-feature]').forEach(cb=>cb.addEventListener('chan
  state.needs=[...section.querySelectorAll('[data-feature]:checked')].map(e=>e.value);save();refresh();
 }));
 $('#ahx-notes').addEventListener('input',e=>{state.notes=e.target.value.slice(0,750);save();$('#ahx-summary').textContent=textSummary();refreshReviewHref()});
-function refreshReviewHref(){const l=$('#ahx-review');const u=new URL(l.href);u.searchParams.set('requirements',JSON.stringify({needs:state.needs,notes:state.notes}));l.href=u.href;}
+function refreshReviewHref(){const l=$('#ahx-review');const u=new URL(l.href);u.searchParams.set('requirements',JSON.stringify({needs:state.needs,notes:state.notes}));u.searchParams.set('visual',JSON.stringify(getVisual()));l.href=u.href;}
 $('#ahx-lang').addEventListener('click',()=>{state.lang=state.lang==='ar'?'en':'ar';save();window.alhudhudiLocale?.setLanguage?.(state.lang);refresh()});
 $('#ahx-copy').addEventListener('click',async()=>{
  try{await navigator.clipboard.writeText(textSummary());$('#ahx-copy').textContent=tr[state.lang].copied}
  catch{$('#ahx-copy').textContent=tr[state.lang].copyFail}
 });
 ['#hly-hall','#hly-men','#hly-women','#hly-date','#hly-occasion'].forEach(id=>hly(id)?.addEventListener('input',refresh));
+document.addEventListener('alhudhudi:scene-change',refresh);
 refresh();
 })();
