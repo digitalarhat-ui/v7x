@@ -95,7 +95,7 @@ jobs:
                     await pg.locator("#hly-lang").click()
                     q["en"]="Venue" in await pg.locator("#hly-title").inner_text()
                     rev=await ctx.new_page()
-                    rv=await rev.goto(link,wait_until="domcontentloaded",timeout=25000)
+                    rv=await rev.goto(__import__('urllib.parse',fromlist=['urljoin']).urljoin(pg.url,link),wait_until="domcontentloaded",timeout=25000)
                     await rev.wait_for_timeout(1250)
                     q["review_http"]=rv.status
                     q["review_propagates"]=all(t in await rev.locator("#hly-summary").inner_text() for t in ["Badrah","150","180","2026-12-05"])
