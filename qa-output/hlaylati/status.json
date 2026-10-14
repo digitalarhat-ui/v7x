@@ -1,7 +1,7 @@
 {
   "lead": "SA-3F-20261014-HLAYLATI-MADINAH",
   "source": "White Rose-derived Mavera client-isolated code",
-  "utc": "2026-10-14T14:25:35.669690+00:00",
+  "utc": "2026-10-14T14:29:30.225371+00:00",
   "local_candidate": true,
   "public_deployment": false,
   "photo_rights_independently_verified": false,
@@ -41,8 +41,8 @@
       "review_http": 200,
       "review_values": "مسودة غير مؤكدة\nالقاعة: بدرة — Badrah\nالرجال: 145\nالنساء: 200\nالتاريخ: 2026-11-20\nنوع اليوم: الجمعة/السبت\nالمناسبة: زفاف\nالسعر الرسمي حسب عرض القاعة (غير محدد)",
       "review_propagation": true,
-      "review_disclaimer": false,
-      "technical_pass": false
+      "review_disclaimer": true,
+      "technical_pass": true
     },
     "430": {
       "http": 200,
@@ -120,5 +120,5 @@
       "technical_pass": true
     }
   },
-  "status": "LOCAL_QA_FAIL"
+  "status": "LOCAL_TECHNICAL_PASS_ONLY"
 }
