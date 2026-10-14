@@ -1,0 +1,5 @@
+# Al Hamd Jeddah · isolated Makan V4 concept
+
+Lead: `SA-3F-20261014-ALHAMD-JEDDAH`. Golden source Vercel `dpl_3ywEMtgzoyGmvgHy7Eq2Dm5mdWB4` is unchanged. This isolated copy builds on Makan's previously compiled/derived source and styling with Al Hamd seller records only. `/review/` is a nonbinding bilingual pre-contract inspection decision brief; stores data only in browser localStorage and sends nothing. Genuine seller-image references point to two Haraj listings; no original bytes downloaded, third-party rights unverified. Images may fail remotely. Seller's official phone +966125118609; WhatsApp functionality not proven. Independent concept, not official endorsement. No generated/stock photos, no VIN/inspection certification, no deposit/payment processing, no automatic outreach, no extra spend.
+
+**QA required:** static source syntax, cross-company brand isolation, anonymous access, photo decode count, viewports 390/430/768/1440, Arabic/English text, state reload persistence, and contact/review paths. No client-ready status without passing all relevant release gates.
