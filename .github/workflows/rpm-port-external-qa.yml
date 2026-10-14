@@ -9,7 +9,7 @@ permissions:
 jobs:
   test-public:
     runs-on: ubuntu-latest
-    timeout-minutes: 14
+    timeout-minutes: 6
     steps:
       - run: |
           npm install --no-save --ignore-scripts playwright@1.56.1
@@ -24,9 +24,9 @@ jobs:
             const reports=[];
             for(const [width,lang,path] of [[390,'ar','index.html'],[430,'ar','index.html'],[768,'en','en.html'],[1440,'en','en.html']]){
               const page=await browser.newPage({viewport:{width,height:900}});
-              let errors=[];page.on('pageerror',e=>errors.push(String(e)));
-              const res=await page.goto(base+path,{waitUntil:'networkidle',timeout:40000});
-              await page.waitForTimeout(700);
+              let errors=[];page.setDefaultTimeout(12000);page.on('pageerror',e=>errors.push(String(e)));await page.route(/fonts\\.googleapis\\.com|fonts\\.gstatic\\.com/,route=>route.abort());
+              const res=await page.goto(base+path,{waitUntil:'domcontentloaded',timeout:20000});
+              await page.waitForSelector('.hero',{timeout:15000});await page.waitForTimeout(250);
               const check=await page.evaluate(()=>({rendered:!!document.querySelector('.hero'),direction:document.documentElement.dir,overflow:document.documentElement.scrollWidth>innerWidth,imgs:[...document.images].map(img=>({ok:img.complete&&img.naturalWidth>0,src:img.currentSrc.slice(-25)})),lang:document.documentElement.lang,text:document.body.innerText}));
               const failed=[];
               if(res.status()!==200)failed.push('HTTP '+res.status());
