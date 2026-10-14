@@ -1,0 +1,128 @@
+name: Mavera independent browser QA
+on:
+  push:
+    branches: [mavera-qa-20261014]
+    paths: ['.github/workflows/mavera-qa.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  production-browser-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mavera-qa-20261014
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Chromium test tools
+        run: |
+          python -m pip install --quiet playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: Test production URL and save evidence
+        shell: bash
+        run: |
+          mkdir -p qa-output/mavera/screenshots
+          cat > /tmp/mavera_qa.py <<'PY'
+          import asyncio,json,os,datetime,traceback
+          from playwright.async_api import async_playwright
+          URL='https://mavera-jeddah-white-rose-review.vercel.app/'
+          IMAGE_URLS=[
+            'https://ik.imagekit.io/kfrvcit6d/mavera/Screenshot%202026-01-10%20at%209.19.46%E2%80%AFAM.png?updatedAt=1768036883764',
+            'https://qa3at.com/storage/sites/3/O725bMBcQ7wMFoplcVHAtXlJt1fI8bUEuAP5HtH6.jpg'
+          ]
+          report={'lead':'SA-3F-20261014-MAVERA-JEDDAH','run_id':os.environ.get('GITHUB_RUN_ID'),'tested_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'url':URL,'viewports':{},'media':{},'review':{},'overall':'PENDING','errors':[]}
+          async def main():
+            async with async_playwright() as p:
+              browser=await p.chromium.launch(headless=True,args=['--no-sandbox'])
+              for width in [390,430,768,1440]:
+                context=await browser.new_context(viewport={'width':width,'height':900},device_scale_factor=1,is_mobile=width<768,has_touch=width<768)
+                page=await context.new_page();js_errors=[]
+                page.on('pageerror',lambda exc: js_errors.append(str(exc)[:500]))
+                result={'width':width}
+                try:
+                  resp=await page.goto(URL,wait_until='domcontentloaded',timeout=35000)
+                  await page.wait_for_timeout(3500)
+                  result['http_status']=resp.status if resp else None
+                  result['title']=await page.title()
+                  result['login_page']=('login' in page.url.lower() or 'vercel authentication' in (await page.title()).lower())
+                  result['text_has_mavera']=await page.evaluate("()=>/ماڤيرا|مافيرا|Mavera/i.test(document.body.innerText)")
+                  result['old_brand_visible']=await page.evaluate("()=>/الوردة البيضاء|White Rose|memoriesforevents/i.test(document.body.innerText)")
+                  result['overflow_pixels']=await page.evaluate("()=>Math.max(0,Math.round(document.documentElement.scrollWidth-innerWidth))")
+                  result['script_errors']=js_errors
+                  result['link_review_count']=await page.locator('a[href*="review"]').count()
+                  result['all_images']=await page.locator('img').evaluate_all("(items)=>items.slice(0,25).map(x=>({src:x.currentSrc.slice(0,180),w:x.naturalWidth,h:x.naturalHeight,complete:x.complete}))")
+                  result['broken_image_count']=sum(1 for x in result['all_images'] if x['complete'] and x['w']==0)
+                  result['official_contact']=await page.locator('a[href*="966550759944"]').count()
+                  result['form_field_count']=await page.locator('input,textarea,select').count()
+                  await page.screenshot(path=f'qa-output/mavera/screenshots/home-{width}.png',full_page=True,animations='disabled')
+                  if width==390:
+                    result['language_buttons']=await page.locator('button').all_inner_texts()
+                    result['lang_before']=await page.locator('html').get_attribute('lang')
+                    loc=page.locator('button').filter(has_text='EN')
+                    if await loc.count() > 0:
+                      await loc.first.click(timeout=4000)
+                      await page.wait_for_timeout(500)
+                      result['lang_after_EN']=await page.locator('html').get_attribute('lang')
+                      result['en_text_observed']=await page.evaluate("()=>/Customer|Planning|Event|Hall|Concept/i.test(document.body.innerText)")
+                    result['localstorage_keys']=await page.evaluate("()=>Object.keys(localStorage).slice(0,20)")
+                  result['status']='PASS' if result['http_status']==200 and result['text_has_mavera'] and not result['old_brand_visible'] and not result['login_page'] and result['overflow_pixels']<5 and not result['script_errors'] else 'FAIL'
+                except Exception as e:
+                  result['status']='FAIL';result['exception']=str(e)[:600]
+                  try: await page.screenshot(path=f'qa-output/mavera/screenshots/error-{width}.png')
+                  except: pass
+                report['viewports'][str(width)]=result
+                await context.close()
+              media_context=await browser.new_context()
+              mp=await media_context.new_page()
+              for i,url in enumerate(IMAGE_URLS):
+                try:
+                  await mp.goto('about:blank')
+                  res=await mp.evaluate("""async (url)=>{
+                    return await new Promise(resolve=>{
+                      const img=new Image();let done=false;const timer=setTimeout(()=>{if(!done){done=true;resolve({status:'TIMEOUT'})}},14000);
+                      img.onload=()=>{if(!done){done=true;clearTimeout(timer);resolve({status:'LOADED',naturalWidth:img.naturalWidth,naturalHeight:img.naturalHeight})}};
+                      img.onerror=()=>{if(!done){done=true;clearTimeout(timer);resolve({status:'ERROR'})}};
+                      img.src=url;
+                    });
+                  }""",url)
+                  report['media'][f'image_{i+1}']={'url':url,'result':res}
+                except Exception as e:report['media'][f'image_{i+1}']={'url':url,'error':str(e)[:300]}
+              try:
+                resp=await mp.goto(URL+'review/',wait_until='domcontentloaded',timeout=35000)
+                await mp.wait_for_timeout(1500)
+                report['review']={'http_status':resp.status if resp else None,'url':mp.url,'title':await mp.title(),'text_has_mavera':await mp.evaluate("()=>/ماڤيرا|مافيرا|Mavera/i.test(document.body.innerText)"),'old_brand_visible':await mp.evaluate("()=>/الوردة البيضاء|White Rose/i.test(document.body.innerText)"),'error_text':(await mp.locator('body').inner_text())[:700]}
+                await mp.screenshot(path='qa-output/mavera/screenshots/review-390.png',full_page=True)
+              except Exception as e:report['review']={'error':str(e)[:400]}
+              await browser.close()
+          try:asyncio.run(main())
+          except Exception as e:report['errors'].append(str(e)+' '+traceback.format_exc()[-800:])
+          vals=list(report['viewports'].values())
+          report['overall']='PASS' if len(vals)==4 and all(x.get('status')=='PASS' for x in vals) and report['review'].get('http_status')==200 and report['review'].get('text_has_mavera') and not report['review'].get('old_brand_visible') and all(x.get('result',{}).get('status')=='LOADED' for x in report['media'].values()) else 'FAIL'
+          with open('qa-output/mavera/status.json','w') as f:json.dump(report,f,indent=2,ensure_ascii=False)
+          print('MAVERA_QA_RESULT',json.dumps({'overall':report['overall'],'viewports':{k:v.get('status') for k,v in report['viewports'].items()},'media':{k:v.get('result',{}).get('status') for k,v in report['media'].items()},'review':report['review'].get('http_status')}))
+          PY
+          python /tmp/mavera_qa.py
+      - name: Upload QA screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mavera-production-qa-${{ github.run_id }}
+          path: qa-output/mavera/
+          if-no-files-found: warn
+      - name: Persist status on dedicated QA branch
+        if: always()
+        shell: bash
+        run: |
+          if [ ! -f qa-output/mavera/status.json ]; then
+            mkdir -p qa-output/mavera
+            printf '{"overall":"QA_JOB_FAILED_BEFORE_BROWSER","lead":"SA-3F-20261014-MAVERA-JEDDAH"}\n' > qa-output/mavera/status.json
+          fi
+          git config user.name 'Digital Arhat QA'
+          git config user.email 'actions@users.noreply.github.com'
+          git add qa-output/mavera/status.json
+          git commit -m 'QA: record real Chromium Mavera result' || true
+          git push origin HEAD:mavera-qa-20261014 || true
