@@ -1,8 +1,8 @@
 {
   "lead": "SA-3F-20261014-HLAYLATI-MADINAH",
-  "url": "https://cdn.githubraw.com/digitalarhat-ui/v7x/8ddef02ee7e6f61dbd8b42ca3d4a1b1c0e14ea76/hlaylati-public-preview/index.html",
-  "commit": "8ddef02ee7e6f61dbd8b42ca3d4a1b1c0e14ea76",
-  "tested_utc": "2026-10-14T16:47:59.116091+00:00",
+  "url": "https://cdn.githubraw.com/digitalarhat-ui/v7x/5f743934c70af308547ecec067bc1f8cb7afcb84/hlaylati-public-preview/index.html",
+  "commit": "5f743934c70af308547ecec067bc1f8cb7afcb84",
+  "tested_utc": "2026-10-14T16:49:23.449599+00:00",
   "rights_independently_confirmed": false,
   "buyer_approved": false,
   "management_review_only": true,
@@ -10,7 +10,7 @@
   "widths": {
     "390": {
       "http": 200,
-      "url": "https://cdn.githubraw.com/digitalarhat-ui/v7x/8ddef02ee7e6f61dbd8b42ca3d4a1b1c0e14ea76/hlaylati-public-preview/index.html",
+      "url": "https://cdn.githubraw.com/digitalarhat-ui/v7x/5f743934c70af308547ecec067bc1f8cb7afcb84/hlaylati-public-preview/index.html",
       "unprotected": true,
       "widget": true,
       "brand": true,
@@ -34,12 +34,13 @@
       "review_link": "./review/index.html?brief=JTdCJTIyaGFsbCUyMiUzQSUyMmJhZHJhaCUyMiUyQyUyMm1lbiUyMiUzQSUyMjE1MCUyMiUyQyUyMndvbWVuJTIyJTNBJTIyMTgwJTIyJTJDJTIyZGF0ZSUyMiUzQSUyMjIwMjYtMTItMDUlMjIlMkMlMjJvY2Nhc2lvbiUyMiUzQSUyMndlZGRpbmclMjIlN0Q%3D",
       "persist": true,
       "en": true,
+      "review_http": 200,
       "PASS": false,
-      "exception": "Page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL\nCall log:\n  - navigating to \"./review/index.html?brief=JTdCJTIyaGFsbCUyMiUzQSUyMmJhZHJhaCUyMiUyQyUyMm1lbiUyMiUzQSUyMjE1MCUyMiUyQyUyMndvbWVuJTIyJTNBJTIyMTgwJTIyJTJDJTIyZGF0ZSUyMiUzQSUyMjIwMjYtMTItMDUlMjIlMkMlMjJvY2Nhc2lvbiUyMiUzQSUyMndlZGRpbmclMjIlN0Q%3D\", waiting until \"domcontentloaded\"\n"
+      "exception": "'async_generator' object is not iterable"
     },
     "430": {
       "http": 200,
-      "url": "https://cdn.githubraw.com/digitalarhat-ui/v7x/8ddef02ee7e6f61dbd8b42ca3d4a1b1c0e14ea76/hlaylati-public-preview/index.html",
+      "url": "https://cdn.githubraw.com/digitalarhat-ui/v7x/5f743934c70af308547ecec067bc1f8cb7afcb84/hlaylati-public-preview/index.html",
       "unprotected": true,
       "widget": true,
       "brand": true,
@@ -64,7 +65,7 @@
     },
     "768": {
       "http": 200,
-      "url": "https://cdn.githubraw.com/digitalarhat-ui/v7x/8ddef02ee7e6f61dbd8b42ca3d4a1b1c0e14ea76/hlaylati-public-preview/index.html",
+      "url": "https://cdn.githubraw.com/digitalarhat-ui/v7x/5f743934c70af308547ecec067bc1f8cb7afcb84/hlaylati-public-preview/index.html",
       "unprotected": true,
       "widget": true,
       "brand": true,
@@ -89,7 +90,7 @@
     },
     "1440": {
       "http": 200,
-      "url": "https://cdn.githubraw.com/digitalarhat-ui/v7x/8ddef02ee7e6f61dbd8b42ca3d4a1b1c0e14ea76/hlaylati-public-preview/index.html",
+      "url": "https://cdn.githubraw.com/digitalarhat-ui/v7x/5f743934c70af308547ecec067bc1f8cb7afcb84/hlaylati-public-preview/index.html",
       "unprotected": true,
       "widget": true,
       "brand": true,
