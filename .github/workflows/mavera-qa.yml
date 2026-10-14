@@ -58,7 +58,26 @@ jobs:
                   result['broken_image_count']=sum(1 for x in result['all_images'] if x['complete'] and x['w']==0)
                   result['official_contact']=await page.locator('a[href*="966550759944"]').count()
                   result['form_field_count']=await page.locator('input,textarea,select').count()
+                  result['inputs_metadata']=await page.locator('input,textarea,select').evaluate_all("(items)=>items.slice(0,24).map(x=>({tag:x.tagName,type:x.type,id:x.id,name:x.name,placeholder:x.placeholder}))")
+                  hh=await page.evaluate("()=>document.documentElement.scrollHeight")
+                  for yy in range(0,hh,350):
+                    await page.evaluate("(y)=>window.scrollTo(0,y)",yy)
+                    await page.wait_for_timeout(90)
+                  await page.wait_for_timeout(450)
+                  await page.evaluate("()=>window.scrollTo(0,0)")
+                  await page.wait_for_timeout(450)
                   await page.screenshot(path=f'qa-output/mavera/screenshots/home-{width}.png',full_page=True,animations='disabled')
+                  try:
+                    rev=await context.new_page()
+                    rr=await rev.goto(URL+'review/',wait_until='domcontentloaded',timeout=30000)
+                    await rev.wait_for_timeout(600)
+                    result['review_status']=rr.status if rr else None
+                    result['review_width_overflow']=await rev.evaluate("()=>Math.max(0,Math.round(document.documentElement.scrollWidth-innerWidth))")
+                    result['review_old_brand']=await rev.evaluate("()=>/White Rose|الوردة البيضاء/i.test(document.body.innerText)")
+                    result['review_has_mavera']=await rev.evaluate("()=>/ماڤيرا|Mavera/i.test(document.body.innerText)")
+                    await rev.screenshot(path=f'qa-output/mavera/screenshots/review-{width}.png',full_page=True,animations='disabled')
+                    await rev.close()
+                  except Exception as err:result['review_test_error']=str(err)[:300]
                   if width==390:
                     result['language_buttons']=await page.locator('button').all_inner_texts()
                     result['lang_before']=await page.locator('html').get_attribute('lang')
@@ -69,7 +88,14 @@ jobs:
                       result['lang_after_EN']=await page.locator('html').get_attribute('lang')
                       result['en_text_observed']=await page.evaluate("()=>/Customer|Planning|Event|Hall|Concept/i.test(document.body.innerText)")
                     result['localstorage_keys']=await page.evaluate("()=>Object.keys(localStorage).slice(0,20)")
-                  result['status']='PASS' if result['http_status']==200 and result['text_has_mavera'] and not result['old_brand_visible'] and not result['login_page'] and result['overflow_pixels']<5 and not result['script_errors'] else 'FAIL'
+                    try:
+                      start=page.get_by_text('ابدأ تصور مناسبتك',exact=False).first
+                      if await start.count():await start.click(timeout=4000)
+                      opt=page.get_by_text('زفاف',exact=True).first
+                      if await opt.count():await opt.click(timeout=4000)
+                      result['post_interaction_storage']=await page.evaluate("()=>Object.keys(localStorage).map(k=>({key:k,size:String(localStorage.getItem(k)||'').length})).slice(0,25)")
+                    except Exception as err:result['interaction_exception']=str(err)[:400]
+                  result['status']='PASS' if result['http_status']==200 and result['text_has_mavera'] and not result['old_brand_visible'] and not result['login_page'] and result['overflow_pixels']<5 and not result['script_errors'] and result.get('review_status')==200 and result.get('review_width_overflow',999)<5 and result.get('review_has_mavera') and not result.get('review_old_brand') else 'FAIL'
                 except Exception as e:
                   result['status']='FAIL';result['exception']=str(e)[:600]
                   try: await page.screenshot(path=f'qa-output/mavera/screenshots/error-{width}.png')
