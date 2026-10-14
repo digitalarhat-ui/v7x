@@ -1,6 +1,6 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
 const KEY='digital_arhat_alhudhudi_3d_v1';
-const valid={hall:['royal','moonlight'],palette:['gold','pearl','rose'],light:['warm','day'],layout:['round','banquet'],aisle:['classic','wide'],camera:['overview','stage','tables']};
+const valid={hall:['royal','moonlight'],palette:['gold','pearl','rose'],light:['warm','day'],layout:['round','banquet'],aisle:['classic','wide'],camera:['overview','aisle','stage','tables']};
 const defaults={hall:'royal',palette:'gold',light:'warm',layout:'round',aisle:'classic',camera:'overview'};
 let stored={};try{stored=JSON.parse(localStorage.getItem(KEY)||'{}')}catch{}
 try{const p=new URLSearchParams(location.search).get('visual');if(p)stored={...stored,...JSON.parse(p)}}catch{}
@@ -10,7 +10,7 @@ const root=document.createElement('section');root.id='ah3d-experience';root.setA
 root.innerHTML=[
 '<div class="a3-header"><div><small>LIVE WEBGL · ORIGINAL 3D DESIGN</small><h3 id="a3-title"></h3><p id="a3-desc"></p></div><span class="a3-pill">3D · INTERACTIVE</span></div>',
 '<div class="a3-grid"><div class="a3-viewport"><div id="a3-canvas"></div><div class="a3-engine" id="a3-engine">LOADING 3D...</div>',
-'<div class="a3-views"><button type="button" data-view="overview" data-tr="overview"></button><button type="button" data-view="stage" data-tr="stage"></button><button type="button" data-view="tables" data-tr="tables"></button></div><small class="a3-drag" id="a3-drag"></small></div>',
+'<div class="a3-views"><button type="button" data-view="overview" data-tr="overview"></button><button type="button" data-view="aisle" data-tr="aisleView"></button><button type="button" data-view="stage" data-tr="stage"></button><button type="button" data-view="tables" data-tr="tables"></button></div><small class="a3-drag" id="a3-drag"></small></div>',
 '<aside class="a3-panel"><h4 data-tr="options"></h4>',
 '<label data-tr="venue"></label><div class="a3-seg"><button type="button" data-key="hall" data-val="royal">ROYAL</button><button type="button" data-key="hall" data-val="moonlight">MOON LIGHT</button></div>',
 '<label data-tr="palette"></label><div class="a3-seg"><button type="button" data-key="palette" data-val="gold" data-tr="gold"></button><button type="button" data-key="palette" data-val="pearl" data-tr="pearl"></button><button type="button" data-key="palette" data-val="rose" data-tr="rose"></button></div>',
@@ -22,10 +22,29 @@ root.innerHTML=[
 '<p class="a3-disclosure" id="a3-disclosure"></p>'
 ].join('');
 attach.insertAdjacentElement('afterend',root);
+/* Cinematic entry: show real-time 3D on the first screen instead of a blank gradient hero. */
+if(document.documentElement.dataset.review!=='true'){
+ const intro=document.querySelector('.lux-intro');
+ const opening=document.querySelector('.lux-opening');
+ if(intro)root.insertAdjacentElement('afterend',intro);
+ if(opening){
+   const viewport=root.querySelector('.a3-viewport');
+   viewport.appendChild(opening);
+   opening.id='a3-hero-overlay';
+   const enter=opening.querySelector('.lux-hero-btn');
+   if(enter){enter.href='#a3-canvas';enter.addEventListener('click',event=>{event.preventDefault();root.classList.add('a3-focused')})}
+   const close=document.createElement('button');
+   close.type='button';close.id='a3-show-intro';close.textContent='✦ INTRO';
+   close.setAttribute('aria-label','Return to introductory heading');
+   close.addEventListener('click',()=>root.classList.remove('a3-focused'));
+   viewport.appendChild(close);
+ }
+}
+
 const $=s=>root.querySelector(s), canvasHost=$('#a3-canvas');
 const langs={
- ar:{title:'صمّم أجواء ليلتك في 3D',desc:'قاعة ثلاثية الأبعاد قابلة للدوران والتخصيص مباشرة، وليست مسحاً أو نسخة هندسية حقيقية لقاعات الهدهدي.',options:'اختياراتك في المشهد',venue:'اختر القاعة',palette:'ألوان الديكور',light:'الإضاءة',layout:'توزيع الطاولات',aisle:'عرض الممر',gold:'ذهبي',pearl:'لؤلؤي',rose:'وردي',warm:'دافئة',day:'نهارية',round:'طاولات دائرية',banquet:'طاولات مستطيلة',classic:'تقليدي',wide:'واسع',overview:'المشهد الكامل',stage:'المنصة',tables:'الضيوف',yourScene:'تصورك الحالي',continue:'أضف اختياراتك إلى طلب المناسبة ↗',drag:'اسحب للتدوير · قرّب بعجلة الماوس أو بإصبعين',disclosure:'هذا مشهد معماري ثلاثي الأبعاد افتراضي أصلي من Digital Arhat، وليس صورة أو مسحاً للقاعة الحقيقية. المقاسات والخدمات والديكور والتوافر تحتاج اعتماد إدارة الهدهدي.',fail:'تعذر تشغيل WebGL في هذا الجهاز. استخدم نموذج الطلب بدلاً منه.'},
- en:{title:'Design your celebration in real 3D',desc:'A live, orbitable and customizable 3D banquet concept — not a scan or measured model of Al-Hudhudi halls.',options:'Personalize the scene',venue:'Venue direction',palette:'Décor palette',light:'Lighting',layout:'Table layout',aisle:'Bridal aisle',gold:'Champagne',pearl:'Pearl',rose:'Blush',warm:'Warm',day:'Daylight',round:'Round tables',banquet:'Banquet tables',classic:'Classic',wide:'Wide',overview:'Overview',stage:'Stage',tables:'Seating',yourScene:'Your selected direction',continue:'Add this direction to your event brief ↗',drag:'Drag to orbit · pinch or scroll to zoom',disclosure:'Original independent conceptual WebGL hall by Digital Arhat. This is not a photograph, 3D scan or approved floorplan of Al-Hudhudi. Materials, dimensions, availability and services require owner approval.',fail:'WebGL is unavailable on this device. You can still complete the event enquiry.'}
+ ar:{title:'صمّم أجواء ليلتك في 3D',desc:'قاعة ثلاثية الأبعاد قابلة للدوران والتخصيص مباشرة، وليست مسحاً أو نسخة هندسية حقيقية لقاعات الهدهدي.',options:'اختياراتك في المشهد',venue:'اختر القاعة',palette:'ألوان الديكور',light:'الإضاءة',layout:'توزيع الطاولات',aisle:'عرض الممر',gold:'ذهبي',pearl:'لؤلؤي',rose:'وردي',warm:'دافئة',day:'نهارية',round:'طاولات دائرية',banquet:'طاولات مستطيلة',classic:'تقليدي',wide:'واسع',overview:'المشهد الكامل',aisleView:'ادخل القاعة',stage:'المنصة',tables:'الضيوف',yourScene:'تصورك الحالي',continue:'أضف اختياراتك إلى طلب المناسبة ↗',drag:'اسحب للتدوير · قرّب بعجلة الماوس أو بإصبعين',disclosure:'هذا مشهد معماري ثلاثي الأبعاد افتراضي أصلي من Digital Arhat، وليس صورة أو مسحاً للقاعة الحقيقية. المقاسات والخدمات والديكور والتوافر تحتاج اعتماد إدارة الهدهدي.',fail:'تعذر تشغيل WebGL في هذا الجهاز. استخدم نموذج الطلب بدلاً منه.'},
+ en:{title:'Design your celebration in real 3D',desc:'A live, orbitable and customizable 3D banquet concept — not a scan or measured model of Al-Hudhudi halls.',options:'Personalize the scene',venue:'Venue direction',palette:'Décor palette',light:'Lighting',layout:'Table layout',aisle:'Bridal aisle',gold:'Champagne',pearl:'Pearl',rose:'Blush',warm:'Warm',day:'Daylight',round:'Round tables',banquet:'Banquet tables',classic:'Classic',wide:'Wide',overview:'Overview',aisleView:'Walk inside',stage:'Stage',tables:'Seating',yourScene:'Your selected direction',continue:'Add this direction to your event brief ↗',drag:'Drag to orbit · pinch or scroll to zoom',disclosure:'Original independent conceptual WebGL hall by Digital Arhat. This is not a photograph, 3D scan or approved floorplan of Al-Hudhudi. Materials, dimensions, availability and services require owner approval.',fail:'WebGL is unavailable on this device. You can still complete the event enquiry.'}
 };
 let lang='ar',renderer,scene,camera,materials={},groups={},lights={},room,stage;
 let target=new THREE.Vector3(0,2.8,0),view={theta:.09,phi:1.43,radius:23},frames=0,triangles=0,ready=false,error='';
@@ -242,6 +261,7 @@ function aim(){if(!camera)return;const {theta,phi,radius}=view;
  camera.position.set(target.x+Math.sin(phi)*Math.sin(theta)*radius,target.y+Math.cos(phi)*radius,target.z+Math.sin(phi)*Math.cos(theta)*radius);camera.lookAt(target);request()}
 function preset(which){const p={
  overview:{theta:.10,phi:1.43,radius:23,target:[0,2.6,-.4]},
+ aisle:{theta:0,phi:1.535,radius:9.5,target:[0,1.95,-4.2]},
  stage:{theta:0,phi:1.40,radius:15.5,target:[0,2.55,-5.1]},
  tables:{theta:.62,phi:1.39,radius:19,target:[0,2.05,1.5]}
  }[which];view={theta:p.theta,phi:p.phi,radius:p.radius};target.set(...p.target);aim()}
