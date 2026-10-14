@@ -36,7 +36,8 @@ jobs:
           grep -q '0559670004' athar-qa-output/source/assets/showroom.js
       - name: Actual Chromium tests at four viewport sizes
         run: |
-          NODE_PATH=/tmp/athar-browser/node_modules node qa/athar-eraaqa-20261014.mjs
+          cp qa/athar-eraaqa-20261014.mjs /tmp/athar-browser/test.mjs
+          node /tmp/athar-browser/test.mjs
       - name: Preserve screenshots and results (even on failure)
         if: always()
         uses: actions/upload-artifact@v4
