@@ -5,14 +5,14 @@ const summary=document.querySelector('#ahx-summary');
 const brief=document.querySelector('#ahx-review');
 if(!p||!summary||!brief)throw new Error('Decision V7 missing canonical planner elements');
 const lang=()=>document.documentElement.lang==='en'?'en':'ar';
-const store='alhudhudi_buyer_fit_v7';
+const store='alhudhudi_buyer_fit_v8';
 let sourceMode='published';try{sourceMode=localStorage.getItem(store)||'published'}catch{}
 const tr={
  ar:{
  kicker:'BUYER CLARITY / 04',
- heading:'هل تناسب المناسبة؟ قبل الاتصال بالقاعات',
- sub:'تحقق من عدد الضيوف وما يجب تأكيده مع موظف الحجوزات. الأرقام التالية منشورة في دليل طرف ثالث، وليست سعة مؤكدة لكل قاعة أو موافقة من الإدارة.',
- published:'معلومات منشورة · غير معتمدة',
+ heading:'السعة المنشورة متضاربة — تأكد قبل الحجز',
+ sub:'دليل زفاف نفسه يذكر تقريباً 350 رجلاً و500 امرأة في الوصف، بينما يذكر 800+ لكل قسم في الأسئلة الشائعة. لا يمكن اعتماد رقم واحد أو تحديد القاعة المناسبة دون تأكيد الإدارة.',
+ published:'مصدر واحد بأرقام متعارضة',
  capacity:'السعة التقريبية المنشورة',
  men:'قسم الرجال',
  women:'قسم النساء',
@@ -20,13 +20,13 @@ const tr={
  guests:'ضيف',
  about:'تقريباً',
  none:'أدخل عدد الضيوف أعلاه',
- within:'ضمن التقدير المنشور، لكن يجب التحقق من القاعة والتاريخ',
- above:'يتجاوز التقدير المنشور — يلزم سؤال الإدارة عن الخيارات',
+ within:'تحت الرقم المذكور في الوصف، لكن السعة الحقيقية والقاعة المناسبة غير معتمدتين',
+ above:'أعلى من رقم الوصف، ولكن صفحة الأسئلة تعرض 800+؛ الحكم معلّق حتى تأكيد الإدارة',
  neutral:'يتطلب تحديد القسم والقاعة من الإدارة',
  source:'المصدر: دليل زفاف (طرف ثالث)',
- note:'الأرقام تخص وصف المجمع وليست توزيعاً مؤكداً بين «رويال» و«مون لايت». الحديقة ليست سعة إضافية مضمونة أو خدمة مشمولة.',
+ note:'تعارض واضح داخل المصدر نفسه: الوصف 350/500، والأسئلة الشائعة 800+ لكلا القسمين. الرقم 300 للحديقة من الوصف فقط. لا تجمع السعات ولا تعتبرها معتمدة أو مخصصة لقاعة بعينها.',
  scenarios:'أسئلة مهمة للمسؤول',
- ask1:'هل هذه السعة تنطبق على القاعة التي اخترتها؟',
+ ask1:'يوجد تعارض 350/500 مقابل 800+ في الدليل؛ ما السعة الرسمية لكل قاعة ولكل قسم؟',
  ask2:'هل العدد والتاريخ المطلوب متاحان؟',
  ask3:'هل الخدمات المختارة مشمولة، وما التكلفة النهائية؟',
  included:'إضافة أسئلة التحقق إلى موجز المناسبة',
@@ -36,9 +36,9 @@ const tr={
  },
  en:{
  kicker:'BUYER CLARITY / 04',
- heading:'Will the celebration fit? Know before you call',
- sub:'Review guest numbers and the questions to confirm with the bookings team. These approximate counts come from third-party directories, not approved capacity figures for each named hall.',
- published:'Published / Not venue-approved',
+ heading:'Published capacity figures conflict — verify before booking',
+ sub:'The same Zafaf listing describes about 350 men and 500 women, yet its FAQ states 800+ for both sections. Neither figure is a certified limit or mapped to Royal versus Moon Light.',
+ published:'Conflicting numbers / Unverified',
  capacity:'Third-party indicative capacity',
  men:'Men’s section',
  women:'Women’s section',
@@ -46,13 +46,13 @@ const tr={
  guests:'guests',
  about:'approximately',
  none:'Enter guest counts above',
- within:'Within published estimate, but hall/date must be verified',
- above:'Above published estimate — ask the team for options',
+ within:'Within the descriptive estimate, but the actual hall capacity is still unverified',
+ above:'Higher than the descriptive estimate, but FAQ says 800+ — management must resolve the discrepancy',
  neutral:'Management must confirm the selected hall and arrangements',
  source:'Source: Zafaf venue directory (third party)',
- note:'These counts describe the venue complex and are NOT verified mappings to Royal vs Moon Light. Garden capacity cannot be automatically added to the indoor hall.',
+ note:'The SAME directory contradicts itself: narrative ~350 men/~500 women, FAQ 800+ for each. Outdoor ~300 is separately mentioned. Do not add capacities or infer which figure applies to Royal/Moon Light.',
  scenarios:'Questions for the bookings team',
- ask1:'Does this capacity apply to my selected hall?',
+ ask1:'The listing says 350/500 in its description but 800+ in its FAQ. What is the official capacity of each hall/section?',
  ask2:'Is my requested guest count/date available?',
  ask3:'Which services are included, and what is the final quote?',
  included:'Add verification questions to the event brief',
@@ -66,6 +66,7 @@ const html=[
 '<div class="buyer-metrics">',
 ...['men','women','outside'].map((item,i)=>'<div class="buyer-metric"><small data-b="'+item+'"></small><strong>'+[350,500,300][i]+'<span>~</span></strong><em data-b="about"></em></div>'),
 '</div>',
+'<div class="buyer-source-conflict" role="note"><strong data-b="published"></strong><span class="buyer-conflict-numbers">350 / 500 <span>≠</span> 800+</span><p data-b="note"></p></div>',
 '<div class="buyer-status-grid"><div class="buyer-check" id="buyer-men"><span data-b="men"></span><strong class="buyer-value">—</strong><small class="buyer-result" data-b="none"></small></div><div class="buyer-check" id="buyer-women"><span data-b="women"></span><strong class="buyer-value">—</strong><small class="buyer-result" data-b="none"></small></div></div>',
 '<div class="buyer-questions"><strong data-b="scenarios"></strong><div class="buyer-question-lines"><p data-b="ask1"></p><p data-b="ask2"></p><p data-b="ask3"></p></div>',
 '<label class="buyer-include"><input id="buyer-include" type="checkbox" checked><span data-b="included"></span></label></div>',
@@ -79,7 +80,7 @@ const cb=root.querySelector('#buyer-include');
 const queryKeys=['#hly-men','#hly-women'];
 const classify=(n,cap,t)=>{
  if(!Number.isFinite(n)||n<0)return {status:'empty',txt:t.none};
- return n>cap?{status:'alert',txt:t.above}:{status:'caution',txt:t.within};
+ return n>cap?{status:'conflicting',txt:t.above}:{status:'unverified',txt:t.within};
 };
 const state=()=>{const t=tr[lang()];return Object.fromEntries(queryKeys.map((sel,i)=>{const input=document.querySelector(sel);const raw=input?.value?.trim();const n=raw!==''&&/^\d+$/.test(raw)?Number(raw):null;const type=i?'women':'men';const s=classify(n,[350,500][i],t);return [type,{value:n,cap:[350,500][i],...s}]}));};
 let enabled=true;
@@ -114,7 +115,7 @@ function beforeExport(){
 function attachDataToReview(){
  const link=brief, url=new URL(link.href);
  url.searchParams.set('buyer_questions',enabled?'yes':'no');
- const v=state();url.searchParams.set('indicative',JSON.stringify({men:v.men.value,women:v.women.value,source:'third_party_directory_not_venue_approved'}));
+ const v=state();url.searchParams.set('indicative',JSON.stringify({men:v.men.value,women:v.women.value,source:'Zafaf_description_vs_FAQ_conflict_NOT_OFFICIAL_CAPACITY'}));
  link.href=url.href;
 }
 const q=new URLSearchParams(location.search);
@@ -131,5 +132,5 @@ if(copy)copy.addEventListener('click',()=>{try{navigator.clipboard.writeText(bef
 const observer=new MutationObserver(()=>{clearTimeout(observer._t);observer._t=setTimeout(()=>{observer.disconnect();refresh();observer.observe(summary,{childList:true,characterData:true})},40)});
 observer.observe(summary,{childList:true,characterData:true});
 refresh();
-window.alhudhudiBuyerFit={state,summary:beforeExport,enabled:()=>enabled,source:'third-party Zafaf approximate figures, NOT a certified hall capacity'};
+window.alhudhudiBuyerFit={state,summary:beforeExport,enabled:()=>enabled,source:'Zafaf narrative ~350/500 conflicts with FAQ 800+; NOT certified for either Royal/Moon Light'};
 })();
