@@ -1,7 +1,7 @@
 {
   "lead": "SA-3F-20261014-MAVERA-JEDDAH",
-  "run_id": "38555820262",
-  "tested_utc": "2026-10-14T11:20:32.688062+00:00",
+  "run_id": "38556182434",
+  "tested_utc": "2026-10-14T11:23:35.784068+00:00",
   "url": "https://mavera-jeddah-white-rose-review.vercel.app/",
   "viewports": {
     "390": {
@@ -106,6 +106,22 @@
       "review_width_overflow": 0,
       "review_old_brand": false,
       "review_has_mavera": true,
+      "state_before_reload": {
+        "guest": "350",
+        "date": "2026-11-15",
+        "keys": [
+          "maveraInterfaceLanguage"
+        ]
+      },
+      "state_after_reload": {
+        "guest": "",
+        "date": "",
+        "keys": [
+          "maveraInterfaceLanguage"
+        ]
+      },
+      "saved_guest": false,
+      "saved_date": false,
       "language_buttons": [
         "AR",
         "EN",
@@ -499,6 +515,22 @@
         "status": "LOADED",
         "naturalWidth": 1080,
         "naturalHeight": 1303
+      }
+    },
+    "image_3": {
+      "url": "https://ik.imagekit.io/kfrvcit6d/mavera/Screenshot%202026-01-10%20at%209.18.28%E2%80%AFAM.png",
+      "result": {
+        "status": "LOADED",
+        "naturalWidth": 2524,
+        "naturalHeight": 1684
+      }
+    },
+    "image_4": {
+      "url": "https://ik.imagekit.io/kfrvcit6d/mavera/Screenshot%202026-01-10%20at%209.18.45%E2%80%AFAM.png",
+      "result": {
+        "status": "LOADED",
+        "naturalWidth": 2502,
+        "naturalHeight": 1590
       }
     }
   },
