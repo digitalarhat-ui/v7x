@@ -1,0 +1,109 @@
+name: Al-Hudhudi Rabigh WHITE_ROSE public concept browser QA
+on:
+  push:
+    branches: [alhudhudi-rabigh-white-rose-20261014]
+    paths:
+      - 'alhudhudi-rabigh-review/**'
+      - '.github/workflows/alhudhudi-rabigh-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Static source / JavaScript syntax and isolation
+        run: |
+          set -e
+          node --check alhudhudi-rabigh-review/alhudhudi-layer.js
+          node --check alhudhudi-rabigh-review/wr-bilingual.js
+          node --check alhudhudi-rabigh-review/alhudhudi-guard.js
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          root=Path('alhudhudi-rabigh-review')
+          paths=['index.html','review/index.html','wr-bilingual.css','wr-bilingual.js','alhudhudi-layer.css','alhudhudi-layer.js','alhudhudi-guard.js']
+          for path in paths:
+            t=(root/path).read_text('utf8')
+            for pattern in (r'H Laylati',r'h-laylati',r'هذه ليلتي',r'Badrah',r'بدرة',r'images\\.squarespace-cdn\\.com',r'my\\.matterport\\.com',r'memoriesforevents',r'White Rose|الوردة البيضاء|ماڤيرا|mavera'):
+              assert not re.search(pattern,t,re.I),(path,pattern)
+          assert 'الهدهدي رويال' in (root/'index.html').read_text('utf8')
+          assert 'مون لايت' in (root/'alhudhudi-layer.js').read_text('utf8')
+          print('SOURCE_ISOLATION_PASS')
+          PY
+      - name: Set immutable CDN target and public access check
+        run: |
+          echo "PUBLIC_URL=https://cdn.githubraw.com/digitalarhat-ui/v7x/${GITHUB_SHA}/alhudhudi-rabigh-review/index.html" >> "$GITHUB_ENV"
+          python - <<'PY'
+          import urllib.request,time,os
+          u='https://cdn.githubraw.com/digitalarhat-ui/v7x/'+os.environ['GITHUB_SHA']+'/alhudhudi-rabigh-review/index.html'
+          for n in range(8):
+            try:
+              with urllib.request.urlopen(urllib.request.Request(u,headers={'User-Agent':'Mozilla/5.0'}),timeout=22) as r:
+                html=r.read(200000).decode('utf8','replace')
+                assert r.status==200 and 'الهدهدي رويال' in html,(r.status,html[:100])
+                print('PUBLIC_HTTP200_PASS',u,r.headers.get('content-type'));break
+            except Exception as e:
+              print('RETRY',n+1,repr(e))
+              if n==7:raise
+              time.sleep(6)
+          PY
+      - name: Install Chromium browser QA
+        run: |
+          pip install -q playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: Real public route bilingual interactive device QA
+        run: |
+          mkdir -p qa-output/alhudhudi
+          cat > /tmp/alhudhudi_qa.py <<'PY'
+          import os,asyncio,json,datetime
+          from playwright.async_api import async_playwright
+          base=os.environ['PUBLIC_URL']; out={'lead':'SA-3F-20261014-ALHUDHUDI-RABIGH','url':base,'sha':os.environ['GITHUB_SHA'],'date_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'photo_rights_confirmed':False,'management_approved':False,'whatsapp_verified':False,'widths':{}}
+          async def main():
+            async with async_playwright() as p:
+              browser=await p.chromium.launch(headless=True,args=['--no-sandbox'])
+              for w in [390,430,768,1440]:
+                ctx=await browser.new_context(viewport={'width':w,'height':900},is_mobile=w<768,has_touch=w<768)
+                page=await ctx.new_page();errs=[]
+                page.on('pageerror',lambda e:errs.append(str(e)))
+                r=await page.goto(base,wait_until='domcontentloaded',timeout=40000)
+                await page.wait_for_timeout(900)
+                q={'http':r.status,'widget':await page.locator('#hly-component').count(),'photo_count':await page.locator('#hly-component .hly-photo img').count(),'error_count':len(errs),'overflow':await page.evaluate('Math.max(0,document.documentElement.scrollWidth-innerWidth)'),'body_ar':await page.evaluate("document.body.innerText.includes('الهدهدي رويال')"),'photography_from_third_party':await page.evaluate("Boolean(document.querySelector('img[src*=squarespace-cdn], img[src*=memoriesforevents]'))")}
+                assert q['http']==200 and q['widget']==1 and q['photo_count']==2 and not errs and q['overflow']<10 and q['body_ar'] and not q['photography_from_third_party'],q
+                if w==390:
+                  await page.locator('#hly-hall').select_option('moonlight')
+                  await page.locator('#hly-men').fill('150')
+                  await page.locator('#hly-women').fill('180')
+                  await page.locator('#hly-date').fill('2026-12-05')
+                  await page.wait_for_timeout(180)
+                  summary=await page.locator('#hly-summary').inner_text()
+                  assert all(v in summary for v in ['150','180','2026-12-05']),summary
+                  await page.reload()
+                  assert await page.locator('#hly-hall').input_value()=='moonlight','PERSISTENCE_FAIL'
+                  link=await page.locator('#hly-review').get_attribute('href')
+                  assert './review/index.html?brief=' in link,link
+                  rr=await page.goto(page.url.rsplit('/',1)[0]+'/review/index.html'+link.split('index.html',1)[1],wait_until='domcontentloaded',timeout=35000)
+                  await page.wait_for_timeout(1000)
+                  assert rr.status==200,'REVIEW_HTTP_FAIL'
+                  assert '150' in await page.locator('#hly-summary').inner_text(),'REVIEW_BRIEF_MISSING'
+                  await page.locator('#hly-lang').click()
+                  assert 'Management review' in await page.locator('#hly-title').inner_text(),'BILINGUAL_REVIEW_FAIL'
+                  q['state_saved']=True;q['review_http']=rr.status;q['review_brief']=True;q['en_language']=True
+                out['widths'][str(w)]=q
+                await page.screenshot(path=f'qa-output/alhudhudi/{w}.png',full_page=True)
+                await ctx.close()
+              await browser.close()
+          asyncio.run(main())
+          with open('qa-output/alhudhudi/qa.json','w') as f:json.dump(out,f,indent=2)
+          print('PASS_ALL_PUBLIC_CHROMIUM_QA',json.dumps(out))
+          PY
+          python /tmp/alhudhudi_qa.py
+      - name: Save QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alhudhudi-public-owner-review-qa
+          path: qa-output/alhudhudi/
+          retention-days: 7
