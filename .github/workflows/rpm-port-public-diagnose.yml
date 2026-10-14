@@ -1,0 +1,42 @@
+name: RPM PORT external host browser diagnosis
+on:
+  push:
+    branches: [rpm-port-makan-v4-review-20261014]
+    paths: ['.github/workflows/rpm-port-public-diagnose.yml']
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - run: |
+          node <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch();
+            for(const file of ['index.html','en.html']){
+              const page=await browser.newPage();
+              const failures=[],responses=[],consoleErrors=[],pageErrors=[];
+              page.on('requestfailed',r=>failures.push({url:r.url().slice(-140),error:r.failure()?.errorText}));
+              page.on('response',r=>{if(/showroom|\.webp|index\.html|en\.html/.test(r.url()))responses.push({status:r.status(),url:r.url().slice(-100),type:r.headers()['content-type']})});
+              page.on('console',m=>{if(m.type()==='error')consoleErrors.push(m.text())});
+              page.on('pageerror',e=>pageErrors.push(String(e)));
+              const url='https://raw.githack.com/digitalarhat-ui/v7x/rpm-port-makan-v4-review-20261014/rpm-port-riyadh-makan-v4-review/preview/'+file;
+              const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:25000});
+              await page.waitForTimeout(3500);
+              console.log('DIAGNOSE',JSON.stringify({file,status:response?.status(),finalURL:page.url(),title:await page.title(),html:await page.evaluate(()=>document.documentElement.outerHTML.slice(0,220)),body:await page.evaluate(()=>document.body.innerText.slice(0,700)),images:await page.locator('img').count(),root:await page.locator('#root').count(),fails:failures,responses,consoleErrors,pageErrors}));
+              await page.screenshot({path:'rpm-diagnose-'+file+'.png'});
+              await page.close();
+            }
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rpm-diagnose-browser
+          path: rpm-diagnose-*.png
