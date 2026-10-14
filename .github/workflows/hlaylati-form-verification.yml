@@ -1,0 +1,91 @@
+name: H Laylati form and analytics forensic browser check
+on:
+  push:
+    branches: [hlaylati-madinah-white-rose-20261014]
+    paths: ['.github/workflows/hlaylati-form-verification.yml']
+permissions: {contents: write}
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: hlaylati-madinah-white-rose-20261014, persist-credentials: true}
+      - run: |
+          pip install --quiet playwright==1.55.0 requests beautifulsoup4
+          python -m playwright install --with-deps chromium
+      - name: Browser inspect only NO form submission
+        shell: bash
+        run: |
+          mkdir -p qa-output/hlaylati/form-check
+          cat >/tmp/confirm_hlaylati.py <<'PY'
+          import asyncio,json,requests,re,datetime
+          from playwright.async_api import async_playwright
+          D='https://www.h-laylati.com'
+          O={'utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'pages':{}}
+          r=requests.get(D+'/',timeout=20)
+          html=r.text
+          O['ga4_source_contexts']=[html[max(0,m.start()-90):m.end()+90] for m in list(re.finditer(r'G-[A-Z0-9]{7,}',html))[:7]]
+          O['ga4_script_sources']=list(dict.fromkeys(re.findall(r'<script[^>]+src=["\\']([^"\\']*(?:google-analytics|googletagmanager|gtag)[^"\\']*)',html,re.I)))[:20]
+          async def run():
+            async with async_playwright() as p:
+              b=await p.chromium.launch(args=['--no-sandbox'])
+              for width in [390,1440]:
+                ctx=await b.new_context(viewport={'width':width,'height':900},is_mobile=width==390,has_touch=width==390)
+                for path in ['/contact','/704825207487','/services','/']:
+                  page=await ctx.new_page();out={}
+                  ga=[];page.on('request',lambda q:ga.append(q.url[:220]) if any(x in q.url.lower() for x in ['google-analytics','googletagmanager','facebook.com/tr','clarity.ms','analytics.google','collect?v=2','gtag/js','meta.com/tr']) else None)
+                  try:
+                    await page.goto(D+path,wait_until='domcontentloaded',timeout=20000);await page.wait_for_timeout(1600)
+                    out=await page.evaluate("""() => ({
+                      forms:[...document.forms].map(f=>({
+                        action:f.getAttribute('action'),method:f.getAttribute('method'),name:f.getAttribute('name'),id:f.id,html_excerpt:f.outerHTML.slice(0,350),
+                        labels:[...f.querySelectorAll('label')].map(l=>({text:l.innerText.trim().slice(0,90),for:l.htmlFor})),
+                        fields:[...f.querySelectorAll('input,textarea,select')].map(x=>({tag:x.tagName,type:x.type,name:x.name,id:x.id,required:x.required,placeholder:x.placeholder,autocomplete:x.autocomplete,aria:x.getAttribute('aria-label'),innerText:x.tagName==='SELECT'?x.innerText.slice(0,90):''})),
+                        button:[...f.querySelectorAll('button')].map(x=>({text:x.innerText.trim(),type:x.type}))})),
+                      actualGTag:[...document.querySelectorAll('script[src]')].filter(s=>/analytics|googletag|gtag|pixel/i.test(s.src)).map(s=>s.src),
+                      linkNav:[...document.querySelectorAll('a[href]')].filter(a=>a.innerText.trim()&&a.getBoundingClientRect().width>0).slice(0,30).map(a=>({text:a.innerText.trim().slice(0,40),href:a.href})),
+                      monthTexts:document.body.innerText.slice(0,1100),
+                      main:{text:document.querySelector('main')?.innerText.slice(0,1100),role:document.querySelector('main')?.getAttribute('role')},
+                      copyright:document.body.innerText.match(/©.{0,50}/g)
+                    })""")
+                    out['observed_analytics_requests']=ga[:15]
+                    if path=='/contact':
+                      form=page.locator('form').first
+                      if await form.count():
+                        out['novalidate']=await form.get_attribute('novalidate')
+                        out['valid_blank']=await form.evaluate('(f)=>f.checkValidity()')
+                        out['required_count']=await form.locator('[required]').count()
+                        out['submit_exists']=await form.locator('[type=submit]').count()
+                    if path=='/' and width==390:
+                      menu=page.get_by_role('button',name=re.compile('Open Menu',re.I)).first
+                      if await menu.count():
+                        await menu.click(timeout=3500)
+                        out['menu_after_click']={'buttons':[{'aria':x.get_attribute('aria-expanded')} for x in await page.locator('button').all()][:2],
+                        'contact_links_visible':sum([await x.is_visible() for x in await page.get_by_role('link',name='التواصل').all()]),
+                        'nav':(await page.locator('header').inner_text())[:400]}
+                  except Exception as e:out['error']=str(e)[:450]
+                  O['pages'][str(width)+':'+path]=out
+                  await page.close()
+                await ctx.close()
+              await b.close()
+          asyncio.run(run())
+          with open('qa-output/hlaylati/form-check/report.json','w') as f:json.dump(O,f,ensure_ascii=False,indent=2)
+          print(json.dumps({k:{'fields':[x['fields'] for x in v.get('forms',[])],'analytics':v.get('observed_analytics_requests'),'error':v.get('error')} for k,v in O['pages'].items()},ensure_ascii=False)[:7500])
+          PY
+          python /tmp/confirm_hlaylati.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hlaylati-form-check-forensic
+          path: qa-output/hlaylati/form-check/
+          if-no-files-found: warn
+      - if: always()
+        shell: bash
+        run: |
+          test -f qa-output/hlaylati/form-check/report.json || exit 0
+          git config user.name "Digital Arhat QA"
+          git config user.email "actions@users.noreply.github.com"
+          git add qa-output/hlaylati/form-check/report.json
+          git commit -m "Verify JS rendered contact forms and analytics without submitting" || true
+          git push origin HEAD:hlaylati-madinah-white-rose-20261014 || true
