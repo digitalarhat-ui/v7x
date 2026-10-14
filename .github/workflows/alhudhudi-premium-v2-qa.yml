@@ -1,0 +1,125 @@
+name: Al-Hudhudi Premium V2 Real Browser QA
+on:
+  push:
+    branches: [alhudhudi-rabigh-premium-experience-v2-20261014]
+    paths:
+      - 'alhudhudi-rabigh-review/**'
+      - '.github/workflows/alhudhudi-premium-v2-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  chromium:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: JS and contamination QA
+        run: |
+          node --check alhudhudi-rabigh-review/experience-v2.js
+          node --check alhudhudi-rabigh-review/alhudhudi-layer.js
+          node --check alhudhudi-rabigh-review/wr-bilingual.js
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('alhudhudi-rabigh-review')
+          for f in ['index.html','review/index.html','experience-v2.js','experience-v2.css']:
+            s=(p/f).read_text('utf8').lower()
+            for bad in ['h laylati','هذه ليلتي','badrah','بدرة','white rose','الوردة البيضاء','my.matterport.com','images.squarespace-cdn.com']:
+              assert bad not in s,(f,bad)
+          assert (p/'index.html').read_text('utf8').count('experience-v2.js')==1
+          assert (p/'review/index.html').read_text('utf8').count('experience-v2.js')==1
+          print('SOURCE_PASS')
+          PY
+      - name: Public immutable CDN HTTP 200
+        run: |
+          echo "PUBLIC_URL=https://cdn.githubraw.com/digitalarhat-ui/v7x/$GITHUB_SHA/alhudhudi-rabigh-review/index.html" >> "$GITHUB_ENV"
+          python - <<'PY'
+          import os,urllib.request,time
+          base='https://cdn.githubraw.com/digitalarhat-ui/v7x/'+os.environ['GITHUB_SHA']+'/alhudhudi-rabigh-review/'
+          for f in ['index.html','review/index.html','experience-v2.js','experience-v2.css']:
+            for n in range(8):
+              try:
+                with urllib.request.urlopen(urllib.request.Request(base+f,headers={'User-Agent':'Mozilla/5.0'}),timeout=20) as r:
+                  assert r.status==200
+                  print('PUBLIC_HTTP200',f,len(r.read()))
+                  break
+              except Exception as e:
+                print('RETRY',f,n,str(e))
+                if n==7:raise
+                time.sleep(5)
+          PY
+      - name: Install Chromium
+        run: |
+          pip install -q playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: End to end browser QA at four widths
+        run: |
+          mkdir -p qa-output/alhudhudi-v2
+          cat >/tmp/check.py <<'PY'
+          import asyncio,json,os
+          from playwright.async_api import async_playwright
+          URL=os.environ['PUBLIC_URL']
+          result={'lead':'SA-3F-20261014-ALHUDHUDI-RABIGH','public_url':URL,'sha':os.environ['GITHUB_SHA'],'client_send_authorized':False,'media_reuse_rights_verified':False,'devices':{}}
+          async def main():
+            async with async_playwright() as p:
+              browser=await p.chromium.launch(headless=True,args=['--no-sandbox'])
+              for width in [390,430,768,1440]:
+                ctx=await browser.new_context(viewport={'width':width,'height':900},is_mobile=width<768,has_touch=width<768)
+                page=await ctx.new_page()
+                errors=[]
+                page.on('pageerror',lambda e:errors.append(str(e)))
+                r=await page.goto(URL,wait_until='domcontentloaded',timeout=45000)
+                await page.wait_for_timeout(1000)
+                assert r.status==200
+                assert await page.locator('#ahx-v2').count()==1
+                assert await page.locator('#hly-component').count()==1
+                assert await page.locator('.ahx-media-card').count()==3
+                assert len(errors)==0,errors
+                over=await page.evaluate('Math.max(0,document.documentElement.scrollWidth-innerWidth)')
+                assert over<10,(width,over)
+                if width==390:
+                  await page.locator('#ahx-v2 button[data-hall="moonlight"]').click()
+                  assert await page.locator('#hly-hall').input_value()=='moonlight'
+                  await page.locator('#hly-men').fill('145')
+                  await page.locator('#hly-women').fill('195')
+                  await page.locator('#hly-date').fill('2026-12-05')
+                  await page.locator('#ahx-v2 input[data-feature="catering"]').check()
+                  await page.locator('#ahx-v2 input[data-feature="audio"]').check()
+                  await page.locator('#ahx-notes').fill('Please verify catering and lighting')
+                  await page.locator('#ahx-lang').click()
+                  assert 'Prepare a package enquiry' in await page.locator('#ahx-v2').inner_text()
+                  link=await page.locator('#ahx-review').get_attribute('href')
+                  assert 'brief=' in link and 'requirements=' in link
+                  reviewer=await ctx.new_page()
+                  rr=await reviewer.goto(link,wait_until='domcontentloaded',timeout=45000)
+                  await reviewer.wait_for_timeout(900)
+                  assert rr.status==200
+                  assert await reviewer.locator('#ahx-v2').count()==1
+                  assert await reviewer.locator('#hly-hall').input_value()=='moonlight'
+                  assert await reviewer.locator('#hly-men').input_value()=='145'
+                  assert await reviewer.locator('#hly-women').input_value()=='195'
+                  assert await reviewer.locator('#hly-date').input_value()=='2026-12-05'
+                  assert await reviewer.locator('#ahx-v2 input[data-feature="catering"]').is_checked()
+                  assert await reviewer.locator('#ahx-v2 input[data-feature="audio"]').is_checked()
+                  assert await reviewer.locator('#ahx-notes').input_value()=='Please verify catering and lighting'
+                  await reviewer.screenshot(path='qa-output/alhudhudi-v2/review-mobile.png',full_page=True)
+                  await reviewer.close()
+                  await page.screenshot(path='qa-output/alhudhudi-v2/customer-mobile.png',full_page=True)
+                broken=await page.evaluate('[...document.images].filter(i=>i.complete&&i.naturalWidth===0).length')
+                assert broken==0,(width,broken)
+                result['devices'][str(width)]={'http':r.status,'js_errors':len(errors),'overflow':over,'broken_images':broken}
+                print('DEVICE_PASS',width,result['devices'][str(width)])
+                await ctx.close()
+              await browser.close()
+          asyncio.run(main())
+          with open('qa-output/alhudhudi-v2/report.json','w') as f:json.dump(result,f,indent=2)
+          print('PREMIUM_V2_PUBLIC_QA_PASS',json.dumps(result))
+          PY
+          python /tmp/check.py
+      - name: Save QA
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alhudhudi-v2-public-qa
+          path: qa-output/alhudhudi-v2/
+          retention-days: 7
