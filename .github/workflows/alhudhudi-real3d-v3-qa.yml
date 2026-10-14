@@ -1,0 +1,144 @@
+name: Al-Hudhudi Real WebGL 3D V3 Browser QA
+on:
+  push:
+    branches: [alhudhudi-rabigh-real3d-v3-20261014]
+    paths:
+      - 'alhudhudi-rabigh-review/**'
+      - '.github/workflows/alhudhudi-real3d-v3-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-3d:
+    runs-on: ubuntu-latest
+    timeout-minutes: 17
+    steps:
+      - uses: actions/checkout@v4
+      - name: Static syntax and isolation QA
+        run: |
+          node --check alhudhudi-rabigh-review/venue-3d.js
+          node --check alhudhudi-rabigh-review/experience-v2.js
+          python - <<'PY'
+          from pathlib import Path
+          folder=Path('alhudhudi-rabigh-review')
+          for p in ('index.html','review/index.html'):
+            text=(folder/p).read_text('utf8')
+            assert text.count('venue-3d.js')==1
+            assert text.count('venue-3d.css')==1
+          for p in ('venue-3d.js','experience-v2.js','venue-3d.css'):
+            txt=(folder/p).read_text('utf8')
+            for forbidden in ('H Laylati','هذه ليلتي','my.matterport.com','Badrah','بدرة','White Rose','الوردة البيضاء'):
+              assert forbidden not in txt,(p,forbidden)
+          assert 'WebGLRenderer' in (folder/'venue-3d.js').read_text('utf8')
+          assert "visualSummary()" in (folder/'experience-v2.js').read_text('utf8')
+          print('STATIC_REAL_WEBGL_SOURCE_PASS')
+          PY
+      - name: Public CDN origin
+        run: |
+          echo "URL=https://cdn.githubraw.com/digitalarhat-ui/v7x/$GITHUB_SHA/alhudhudi-rabigh-review/index.html" >> "$GITHUB_ENV"
+          python - <<'PY'
+          import os,urllib.request,time
+          prefix='https://cdn.githubraw.com/digitalarhat-ui/v7x/'+os.environ['GITHUB_SHA']+'/alhudhudi-rabigh-review/'
+          for f in ('index.html','review/index.html','venue-3d.js','venue-3d.css','experience-v2.js'):
+            for n in range(9):
+              try:
+                with urllib.request.urlopen(urllib.request.Request(prefix+f,headers={'User-Agent':'Mozilla/5.0'}),timeout=25) as r:
+                  assert r.status==200,(f,r.status)
+                  assert len(r.read())>300,(f,'empty')
+                  print('PUBLIC_HTTP_200',f)
+                  break
+              except Exception as e:
+                print('retry',f,n,repr(e))
+                if n==8:raise
+                time.sleep(5)
+          PY
+      - name: Install headless Chromium
+        run: |
+          python -m pip install --quiet playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: Actual WebGL pixels and interaction across devices
+        run: |
+          mkdir -p qa-output/alhudhudi-3d-v3
+          cat >/tmp/check3d.py <<'PY'
+          import asyncio,json,os
+          from playwright.async_api import async_playwright
+          URL=os.environ['URL']
+          report={'lead':'SA-3F-20261014-ALHUDHUDI-RABIGH','url':URL,'sha':os.environ['GITHUB_SHA'],'mode':'OWNER_REVIEW_ONLY','accurate_physical_venue_model':False,'real_webgl':False,'widths':{}}
+          async def main():
+            async with async_playwright() as p:
+              browser=await p.chromium.launch(headless=True,args=['--no-sandbox','--enable-webgl','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
+              for w in (390,430,768,1440):
+                context=await browser.new_context(viewport={'width':w,'height':910},is_mobile=w<768,has_touch=w<768)
+                page=await context.new_page()
+                errs=[];page.on('pageerror',lambda e:errs.append(str(e)))
+                response=await page.goto(URL,wait_until='domcontentloaded',timeout=45000)
+                assert response.status==200
+                await page.wait_for_function('window.alhudhudi3D?.status()?.ready === true',timeout=45000)
+                await page.wait_for_function('window.alhudhudi3D?.status()?.frames >= 1',timeout=20000)
+                status=await page.evaluate('window.alhudhudi3D.status()')
+                assert status['webgl'] and status['canvas'],('FAKE_OR_MISSING_WEBGL',status)
+                assert status['triangles']>1000,('GEOMETRY_TOO_THIN',status)
+                canvas=page.locator('#a3-webgl');assert await canvas.count()==1
+                before=await page.evaluate('window.alhudhudi3D.snapshot().length')
+                assert before>4000,('EMPTY_RENDER',before)
+                assert not errs,('JS_ERRORS',w,errs)
+                overflow=await page.evaluate('Math.max(0,document.documentElement.scrollWidth-innerWidth)')
+                assert overflow<10,('HORIZONTAL_OVERFLOW',w,overflow)
+                if w==390:
+                  shot1=await page.evaluate('window.alhudhudi3D.snapshot()')
+                  await page.locator('#ah3d-experience [data-key="palette"][data-val="pearl"]').click()
+                  await page.locator('#ah3d-experience [data-key="layout"][data-val="banquet"]').click()
+                  await page.locator('#ah3d-experience [data-key="aisle"][data-val="wide"]').click()
+                  await page.locator('#ah3d-experience [data-key="light"][data-val="day"]').click()
+                  await page.locator('#ah3d-experience [data-view="stage"]').click()
+                  await page.locator('#ah3d-experience [data-key="hall"][data-val="moonlight"]').click()
+                  await page.wait_for_timeout(450)
+                  shot2=await page.evaluate('window.alhudhudi3D.snapshot()')
+                  assert shot1!=shot2,('3D_FRAME_STATIC_AFTER_CHANGES',len(shot1),len(shot2))
+                  state=await page.evaluate('window.alhudhudi3D.getState()')
+                  assert state['layout']=='banquet' and state['palette']=='pearl' and state['aisle']=='wide' and state['hall']=='moonlight'
+                  assert await page.locator('#hly-hall').input_value()=='moonlight'
+                  await page.locator('#hly-men').fill('200')
+                  await page.locator('#hly-women').fill('250')
+                  await page.locator('#hly-date').fill('2026-12-12')
+                  await page.locator('#ahx-v2 input[data-feature="catering"]').check()
+                  await page.locator('#ahx-lang').click()
+                  await page.wait_for_timeout(180)
+                  assert '3D design concept' in await page.locator('#ahx-summary').inner_text(),'MISSING_VISUAL_BRIEF'
+                  assert 'Design your celebration' in await page.locator('#a3-title').inner_text(),'3D_EN_LOCALE'
+                  href=await page.locator('#ahx-review').get_attribute('href')
+                  assert 'visual=' in href and 'brief=' in href and 'requirements=' in href,('REVIEW_URL_MISSING_FIELDS',href)
+                  review=await context.new_page()
+                  rr=await review.goto(href,wait_until='domcontentloaded',timeout=45000)
+                  assert rr.status==200
+                  await review.wait_for_function('window.alhudhudi3D?.status()?.ready === true',timeout=45000)
+                  rs=await review.evaluate('window.alhudhudi3D.getState()')
+                  assert rs['layout']=='banquet' and rs['palette']=='pearl' and rs['aisle']=='wide'
+                  assert await review.locator('#hly-hall').input_value()=='moonlight'
+                  assert await review.locator('#hly-men').input_value()=='200'
+                  assert await review.locator('#hly-women').input_value()=='250'
+                  assert await review.locator('#hly-date').input_value()=='2026-12-12'
+                  assert await review.locator('#ahx-v2 input[data-feature="catering"]').is_checked()
+                  await review.screenshot(path='qa-output/alhudhudi-3d-v3/review-mobile.png',full_page=True)
+                  await review.close()
+                  await page.screenshot(path='qa-output/alhudhudi-3d-v3/customer-mobile.png',full_page=True)
+                if w==1440:await page.screenshot(path='qa-output/alhudhudi-3d-v3/customer-desktop.png',full_page=True)
+                broken=await page.evaluate('[...document.images].filter(i=>i.getAttribute("src")&&i.complete&&i.naturalWidth===0).length')
+                assert broken==0,('BROKEN_IMAGE',w,broken)
+                report['widths'][str(w)]={'webgl':status['webgl'],'triangles':status['triangles'],'frames':status['frames'],'shot_bytes':before,'javascript_errors':len(errs),'overflow':overflow,'broken_images':broken}
+                print('DEVICE_WEBGL_QA_PASS',w,report['widths'][str(w)])
+                await context.close()
+              await browser.close()
+          asyncio.run(main())
+          report['real_webgl']=True
+          with open('qa-output/alhudhudi-3d-v3/report.json','w') as f:json.dump(report,f,indent=2)
+          print('REAL_3D_ALL_DEVICES_AND_REVIEW_PASS',json.dumps(report))
+          PY
+          python /tmp/check3d.py
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alhudhudi-3d-v3-evidence
+          path: qa-output/alhudhudi-3d-v3/
+          retention-days: 7
