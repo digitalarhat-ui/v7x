@@ -1,0 +1,38 @@
+name: RPM PORT original Haraj media access preflight
+on:
+  push:
+    branches: [rpm-port-makan-v4-review-20261014]
+    paths: ['.github/workflows/rpm-port-media-preflight.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  remote-media:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Check only source-attributed media with multiple CDN variants
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import requests, urllib.parse
+          images=[
+            ("defender","https://postcdn.haraj.com.sa/userfiles30/2026-07-26/1320x1602_7D9F4621-939F-44A1-8FFE-6EDDF36C7C2E.jpg-700.webp"),
+            ("range","https://postcdn.haraj.com.sa/userfiles30/2026-09-17/1600x1200_6CADFAFD-2F74-42BC-8A96-FF7F3B6380AB.jpg-700.webp"),
+          ]
+          names=["postcdn.haraj.com.sa","img4cdn.haraj.com.sa","mimg4cdn.haraj.com.sa","mimg6cdn.haraj.com.sa","mimg1cdn.haraj.com.sa"]
+          hs=[{"User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36","Referer":"https://haraj.com.sa/"}]
+          for key,orig in images:
+            s=urllib.parse.urlsplit(orig)
+            for host in names:
+              u=orig.replace(s.netloc,host)
+              for variant in ([u,u[:-9]] if u.endswith("-700.webp") else [u]):
+                try:
+                  response=requests.get(variant,headers=hs[0],timeout=8,stream=True,allow_redirects=True)
+                  blob=next(response.iter_content(chunk_size=256),b"") if response.status_code==200 else b""
+                  im=blob.startswith((bytes.fromhex("ffd8ff"),b"RIFF",bytes.fromhex("89504e47")))
+                  print("MEDIA",key,host,variant[-18:],"HTTP",response.status_code,"TYPE",response.headers.get("content-type"),"BYTES",response.headers.get("content-length"),"MAGIC",im,flush=True)
+                  response.close()
+                except Exception as e:
+                  print("MEDIA",key,host,"ERROR",type(e).__name__,str(e)[:120],flush=True)
+          PY
