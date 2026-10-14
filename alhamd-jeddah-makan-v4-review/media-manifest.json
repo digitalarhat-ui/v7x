@@ -1,18 +1,21 @@
 {
   "lead_lock_id": "SA-3F-20261014-ALHAMD-JEDDAH",
-  "golden": "makan V4 dpl_3ywEMtgzoyGmvgHy7Eq2Dm5mdWB4 — unchanged",
-  "owner_attested_concept_permission": true,
-  "independent_rights_verified": false,
-  "genuine_listing_photo_sources": [
+  "original_golden_modified": false,
+  "source_role": "isolated internal concept",
+  "genuine_photo_sources": [
     "https://haraj.com.sa/11187346841/E450_2026/",
     "https://haraj.com.sa/11185636599/S63_AMG_Line_Coupe_2021/"
   ],
-  "image_bytes_locally_downloaded": false,
-  "images_in_browser_verified": false,
-  "whatsapp_operability_verified": false,
-  "public_review_qa": "PENDING",
-  "brand": "آل حمد لاستيراد السيارات",
-  "seller_contact": "+966125118609",
-  "commercial_status": "RESEARCH_QUALIFIED_BUYER_UNKNOWN",
-  "client_send": "HOLD"
+  "genuine_photos_embedded": 0,
+  "placeholder_visual": "/assets/media-permission-pending.svg",
+  "reason": "Haraj public terms prohibit unauthorized copying/republication; no seller photographer/platform independent reproduction permission",
+  "rights_cleared": false,
+  "owner_attested_concept_use": true,
+  "public_anonymous_qa": false,
+  "local_chromium_qa": true,
+  "stage": "CLIENT_SEND_HOLD",
+  "vercel_deployment": "BLOCKED_HTTP402_FREE_DAILY_QUOTA",
+  "railway": "NOT_DEPLOYED_COST_UNVERIFIED",
+  "no_auto_send": true,
+  "no_extra_spend": true
 }
