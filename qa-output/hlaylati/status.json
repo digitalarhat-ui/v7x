@@ -1,0 +1,124 @@
+{
+  "lead": "SA-3F-20261014-HLAYLATI-MADINAH",
+  "source": "White Rose-derived Mavera client-isolated code",
+  "utc": "2026-10-14T14:25:35.669690+00:00",
+  "local_candidate": true,
+  "public_deployment": false,
+  "photo_rights_independently_verified": false,
+  "actual_management_approval": false,
+  "published_package_validity": false,
+  "widths": {
+    "390": {
+      "http": 200,
+      "main_title": "اختيار القاعة والباقات — مسودة للعميل",
+      "hly_brand_present": true,
+      "foreign_brand": false,
+      "overflow": 0,
+      "errors": [],
+      "photo_load": [
+        {
+          "url": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/253a443f-fc3f-4ced-989a-f7ebcfd28b8e/WhatsApp%2BImage%2B2024-01-24%2Bat%2B3.43.35%2BPM.jpeg",
+          "w": 2268,
+          "h": 4032,
+          "complete": true
+        },
+        {
+          "url": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/38c107c7-c48c-48db-90db-4b8ad80d5172/WhatsApp%2BImage%2B2024-01-24%2Bat%2B3.43.32%2BPM%2B%282%29.jpeg",
+          "w": 1179,
+          "h": 784,
+          "complete": true
+        }
+      ],
+      "photo_technical_pass": true,
+      "matterport_links": 5,
+      "review_link": "/review/?brief=JTdCJTIyaGFsbCUyMiUzQSUyMmJhZHJhaCUyMiUyQyUyMm1lbiUyMiUzQSUyMjE0NSUyMiUyQyUyMndvbWVuJTIyJTNBJTIyMjAwJTIyJTJDJTIyZGF0ZSUyMiUzQSUyMjIwMjYtMTEtMjAlMjIlMkMlMjJvY2Nhc2lvbiUyMiUzQSUyMndlZGRpbmclMjIlN0Q%3D",
+      "persist_hall": "badrah",
+      "persist_men": "145",
+      "persist_women": "200",
+      "persist_date": "2026-11-20",
+      "en_heading": "Venue and package decision brief",
+      "lang_en": true,
+      "review_http": 200,
+      "review_values": "مسودة غير مؤكدة\nالقاعة: بدرة — Badrah\nالرجال: 145\nالنساء: 200\nالتاريخ: 2026-11-20\nنوع اليوم: الجمعة/السبت\nالمناسبة: زفاف\nالسعر الرسمي حسب عرض القاعة (غير محدد)",
+      "review_propagation": true,
+      "review_disclaimer": false,
+      "technical_pass": false
+    },
+    "430": {
+      "http": 200,
+      "main_title": "اختيار القاعة والباقات — مسودة للعميل",
+      "hly_brand_present": true,
+      "foreign_brand": false,
+      "overflow": 0,
+      "errors": [],
+      "photo_load": [
+        {
+          "url": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/253a443f-fc3f-4ced-989a-f7ebcfd28b8e/WhatsApp%2BImage%2B2024-01-24%2Bat%2B3.43.35%2BPM.jpeg",
+          "w": 2268,
+          "h": 4032,
+          "complete": true
+        },
+        {
+          "url": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/38c107c7-c48c-48db-90db-4b8ad80d5172/WhatsApp%2BImage%2B2024-01-24%2Bat%2B3.43.32%2BPM%2B%282%29.jpeg",
+          "w": 1179,
+          "h": 784,
+          "complete": true
+        }
+      ],
+      "photo_technical_pass": true,
+      "matterport_links": 5,
+      "technical_pass": true
+    },
+    "768": {
+      "http": 200,
+      "main_title": "اختيار القاعة والباقات — مسودة للعميل",
+      "hly_brand_present": true,
+      "foreign_brand": false,
+      "overflow": 0,
+      "errors": [],
+      "photo_load": [
+        {
+          "url": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/253a443f-fc3f-4ced-989a-f7ebcfd28b8e/WhatsApp%2BImage%2B2024-01-24%2Bat%2B3.43.35%2BPM.jpeg",
+          "w": 2268,
+          "h": 4032,
+          "complete": true
+        },
+        {
+          "url": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/38c107c7-c48c-48db-90db-4b8ad80d5172/WhatsApp%2BImage%2B2024-01-24%2Bat%2B3.43.32%2BPM%2B%282%29.jpeg",
+          "w": 1179,
+          "h": 784,
+          "complete": true
+        }
+      ],
+      "photo_technical_pass": true,
+      "matterport_links": 5,
+      "technical_pass": true
+    },
+    "1440": {
+      "http": 200,
+      "main_title": "اختيار القاعة والباقات — مسودة للعميل",
+      "hly_brand_present": true,
+      "foreign_brand": false,
+      "overflow": 0,
+      "errors": [],
+      "photo_load": [
+        {
+          "url": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/253a443f-fc3f-4ced-989a-f7ebcfd28b8e/WhatsApp%2BImage%2B2024-01-24%2Bat%2B3.43.35%2BPM.jpeg",
+          "w": 2268,
+          "h": 4032,
+          "complete": true
+        },
+        {
+          "url": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/38c107c7-c48c-48db-90db-4b8ad80d5172/WhatsApp%2BImage%2B2024-01-24%2Bat%2B3.43.32%2BPM%2B%282%29.jpeg",
+          "w": 1179,
+          "h": 784,
+          "complete": true
+        }
+      ],
+      "photo_technical_pass": true,
+      "matterport_links": 5,
+      "technical_pass": true
+    }
+  },
+  "status": "LOCAL_QA_FAIL"
+}

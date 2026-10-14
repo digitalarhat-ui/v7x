@@ -1,0 +1,65 @@
+{
+  "lead_lock": "SA-3F-20261014-HLAYLATI-MADINAH",
+  "base": "Mavera client-isolated White Rose derivative; NOT original Golden mutation",
+  "verified_contact": "https://www.h-laylati.com/",
+  "official_3D": [
+    [
+      "Badrah men",
+      "https://my.matterport.com/show/?m=q6LCks19oDu"
+    ],
+    [
+      "H Laylati VIP",
+      "https://my.matterport.com/show/?m=wERuBbYLKdP"
+    ],
+    [
+      "H Laylati women",
+      "https://my.matterport.com/show/?m=iCwo26Bo7XH"
+    ],
+    [
+      "H Laylati men",
+      "https://my.matterport.com/show/?m=HUJFxwkL1R4"
+    ],
+    [
+      "Badrah women",
+      "https://my.matterport.com/show/?m=f2PpZrQNoW7"
+    ]
+  ],
+  "originals_unchanged": true,
+  "no_outreach": true,
+  "production_rights_independently_confirmed": false,
+  "official_current_package_terms_confirmed": false,
+  "real_booking_backend": false,
+  "client_send_ready": false,
+  "fetched": {
+    "index.html": {
+      "source": "https://mavera-jeddah-white-rose-review.vercel.app/",
+      "source_bytes": 138215,
+      "sha256": "abe5439ada80694937fb3dedaacb1b2617009e24bd17e512a360044e8636111e",
+      "written_bytes": 139093
+    },
+    "review/index.html": {
+      "source": "https://mavera-jeddah-white-rose-review.vercel.app/review/",
+      "source_bytes": 31618,
+      "sha256": "1e4b51d2f6860c112b430be5cb2e59a685b1f29de88c128884a021fc08533d3b",
+      "written_bytes": 31808
+    },
+    "wr-bilingual.css": {
+      "source": "https://mavera-jeddah-white-rose-review.vercel.app/wr-bilingual.css",
+      "source_bytes": 2730,
+      "sha256": "ccf3a6434ab09d5d61ca35dad17e919766772a4d356884d9ac26753ecb95b8e1",
+      "written_bytes": 2730
+    },
+    "wr-bilingual.js": {
+      "source": "https://mavera-jeddah-white-rose-review.vercel.app/wr-bilingual.js",
+      "source_bytes": 50153,
+      "sha256": "68d5015b388cfc073002b528bad974a411142cf8ffb3af360b83f0f79db5c9b0",
+      "written_bytes": 50426
+    },
+    "hlaylati-guard.js": {
+      "source": "https://mavera-jeddah-white-rose-review.vercel.app/mavera-guard.js",
+      "source_bytes": 1786,
+      "sha256": "7d94fd65fe3665f4a14a236892c3ce7146cb4486c57bb572e712eba21f165cac",
+      "written_bytes": 1824
+    }
+  }
+}
