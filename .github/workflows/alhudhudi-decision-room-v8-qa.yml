@@ -79,8 +79,13 @@ jobs:
                 ctx=await browser.new_context(viewport={'width':width,'height':900},is_mobile=width<768,has_touch=width<768)
                 page=await ctx.new_page()
                 errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
-                r=await page.goto(url,wait_until='domcontentloaded',timeout=50000)
-                assert r.status==200
+                r=None
+                for retry in range(8):
+                  r=await page.goto(url,wait_until='domcontentloaded',timeout=50000)
+                  print('PUBLIC_BROWSER_NAV',width,retry,r.status)
+                  if r.status==200: break
+                  await page.wait_for_timeout(4500)
+                assert r.status==200,('NON200_PUBLIC_CDN',width,r.status)
                 await page.wait_for_function('window.alhudhudi3D?.status()?.ready===true',timeout=50000)
                 await page.wait_for_function('window.alhudhudi3D?.status()?.frames>=1',timeout=15000)
                 assert await page.locator('#ah3d-experience').count()==1
@@ -173,8 +178,13 @@ jobs:
                   assert 'requirements=' in link and 'visual=' in link and 'brief=' in link,link
                   assert 'buyer_questions=yes' in link,'BUYER_VERIFICATION_STATE_MISSING'
                   reviewer=await ctx.new_page()
-                  rr=await reviewer.goto(link,wait_until='domcontentloaded',timeout=50000)
-                  assert rr.status==200
+                  rr=None
+                  for retry in range(8):
+                    rr=await reviewer.goto(link,wait_until='domcontentloaded',timeout=50000)
+                    print('PUBLIC_BROWSER_REVIEW_NAV',retry,rr.status)
+                    if rr.status==200:break
+                    await reviewer.wait_for_timeout(4500)
+                  assert rr.status==200,('REVIEW_PUBLIC_NON200',rr.status)
                   await reviewer.wait_for_function('window.alhudhudi3D?.status()?.ready===true',timeout=50000)
                   rv=await reviewer.evaluate('window.alhudhudi3D.getState()')
                   assert rv['palette']=='pearl' and rv['layout']=='banquet' and rv['hall']=='moonlight'
