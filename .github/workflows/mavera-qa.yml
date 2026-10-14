@@ -32,7 +32,9 @@ jobs:
           URL='https://mavera-jeddah-white-rose-review.vercel.app/'
           IMAGE_URLS=[
             'https://ik.imagekit.io/kfrvcit6d/mavera/Screenshot%202026-01-10%20at%209.19.46%E2%80%AFAM.png?updatedAt=1768036883764',
-            'https://qa3at.com/storage/sites/3/O725bMBcQ7wMFoplcVHAtXlJt1fI8bUEuAP5HtH6.jpg'
+            'https://qa3at.com/storage/sites/3/O725bMBcQ7wMFoplcVHAtXlJt1fI8bUEuAP5HtH6.jpg',
+            'https://ik.imagekit.io/kfrvcit6d/mavera/Screenshot%202026-01-10%20at%209.18.28%E2%80%AFAM.png',
+            'https://ik.imagekit.io/kfrvcit6d/mavera/Screenshot%202026-01-10%20at%209.18.45%E2%80%AFAM.png'
           ]
           report={'lead':'SA-3F-20261014-MAVERA-JEDDAH','run_id':os.environ.get('GITHUB_RUN_ID'),'tested_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'url':URL,'viewports':{},'media':{},'review':{},'overall':'PENDING','errors':[]}
           async def main():
@@ -79,6 +81,17 @@ jobs:
                     await rev.close()
                   except Exception as err:result['review_test_error']=str(err)[:300]
                   if width==390:
+                    try:
+                      await page.locator('#guestInput').fill('350',timeout=4500)
+                      await page.locator('#dateInput').fill('2026-11-15',timeout=4500)
+                      await page.locator('#notesInput').fill('اختبار داخلي فقط دون إرسال',timeout=4500)
+                      result['state_before_reload']=await page.evaluate("()=>({guest:document.querySelector('#guestInput')?.value,date:document.querySelector('#dateInput')?.value,keys:Object.keys(localStorage)})")
+                      await page.reload(wait_until='domcontentloaded')
+                      await page.wait_for_timeout(900)
+                      result['state_after_reload']=await page.evaluate("()=>({guest:document.querySelector('#guestInput')?.value,date:document.querySelector('#dateInput')?.value,keys:Object.keys(localStorage)})")
+                      result['saved_guest']=result['state_after_reload']['guest']=='350'
+                      result['saved_date']=result['state_after_reload']['date']=='2026-11-15'
+                    except Exception as err: result['state_qa_exception']=str(err)[:350]
                     result['language_buttons']=await page.locator('button').all_inner_texts()
                     result['lang_before']=await page.locator('html').get_attribute('lang')
                     loc=page.locator('button').filter(has_text='EN')
