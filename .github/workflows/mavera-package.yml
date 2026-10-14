@@ -62,9 +62,15 @@ jobs:
                     await pg.wait_for_timeout(1600)
                     v['persist_guest']=await pg.locator('#guestInput').input_value()
                     v['persist_date']=await pg.locator('#dateInput').input_value()
-                    en=pg.get_by_role('button',name='EN',exact=True)
-                    if await en.count():await en.first.click();await pg.wait_for_timeout(350)
-                    v['english']=await pg.locator('html').get_attribute('lang')=='en'
+                    v['language_buttons']=await pg.locator('button').all_inner_texts()
+                    v['lang_before']=await pg.locator('html').get_attribute('lang')
+                    en=pg.get_by_text('EN',exact=True)
+                    v['en_count']=await en.count()
+                    if await en.count():
+                      await en.first.click(timeout=5000)
+                      await pg.wait_for_timeout(650)
+                    v['lang_after']=await pg.locator('html').get_attribute('lang')
+                    v['english']=v['lang_after']=='en'
                   h=await pg.evaluate("()=>document.documentElement.scrollHeight")
                   for y in range(0,h,420):await pg.evaluate("(y)=>scrollTo(0,y)",y);await pg.wait_for_timeout(65)
                   await pg.wait_for_timeout(300)
