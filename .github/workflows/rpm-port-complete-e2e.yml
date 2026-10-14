@@ -1,0 +1,76 @@
+name: RPM PORT real-media bilingual interaction QA
+on:
+  push:
+    branches: [rpm-port-makan-v4-review-20261014]
+    paths: ['.github/workflows/rpm-port-complete-e2e.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  mobile-buyer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Browser user journey and all image bytes
+        run: |
+          python3 -m http.server 4173 --directory rpm-port-riyadh-makan-v4-review > /tmp/rpm-http.log 2>&1 &
+          node <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const all=[];
+            for(const [width,path,lang] of [[390,'/','ar'],[430,'/','ar'],[768,'/en/','en'],[1440,'/en/','en']]){
+              const page=await browser.newPage({viewport:{width,height:900},locale:lang==='ar'?'ar-SA':'en-US'});
+              const errors=[];
+              page.on('pageerror',e=>errors.push(String(e)));
+              await page.goto('http://127.0.0.1:4173'+path,{waitUntil:'networkidle'});
+              await page.waitForTimeout(350);
+              const home=await page.evaluate(()=>({direction:document.documentElement.dir,overflow:document.documentElement.scrollWidth>innerWidth,images:[...document.images].map(x=>({complete:x.complete,width:x.naturalWidth,src:x.currentSrc.split('/').pop()})),title:document.title}));
+              const fail=[];
+              if(home.overflow)fail.push('horizontal overflow');
+              if(home.direction!==(lang==='ar'?'rtl':'ltr'))fail.push('language direction');
+              if(home.images.length<2||home.images.some(i=>!i.complete||!i.width))fail.push('broken listing photos');
+              await page.evaluate(()=>location.hash='#cars');
+              await page.waitForTimeout(300);
+              const cards=await page.locator('.carCard').count();
+              if(cards<2)fail.push('vehicle cards <2:'+cards);
+              const buttons=page.locator('.carCard .saveBtn');
+              if(await buttons.count()>=2){await buttons.nth(0).click();await buttons.nth(1).click();}
+              await page.evaluate(()=>location.hash='#compare');
+              await page.waitForTimeout(300);
+              const compare=await page.locator('.tableScroll').innerText().catch(()=>'');
+              if(!compare.includes('355,000')||!compare.includes('328,000'))fail.push('comparison prices missing');
+              await page.evaluate(()=>location.hash='#request');
+              await page.waitForTimeout(350);
+              const request=page.locator('.requestForm');
+              const inp=request.locator('input');
+              const testCity='Jeddah';
+              if(await inp.count())await inp.last().fill(testCity);
+              const submit=request.getByRole('button',{name:lang==='ar'?/جهّز استفسارك/:/Prepare enquiry/i}).last();
+              if(await submit.count()){await submit.click()}else fail.push('prepare button missing');
+              await page.waitForTimeout(200);
+              const wa=await page.locator('a[href*="wa.me/966533117779?text="]').first().getAttribute('href').catch(()=>'');
+              if(!wa||!wa.includes('11185148484')||!wa.includes('11188719837'))fail.push('WhatsApp summary missing selected vehicles');
+              const preview=await page.locator('.preparedText').innerText().catch(()=>'');
+              if(!preview.includes('355,000')||!preview.includes('328,000'))fail.push('buyer summary price context missing');
+              if(lang==='en'&&/[\u0600-\u06ff]/.test((await page.locator('body').innerText()).replace('العربية','')))fail.push('remaining Arabic body labels in EN');
+              if(errors.length)fail.push(...errors);
+              await page.screenshot({path:'rpm-e2e-'+lang+'-'+width+'.png',fullPage:true});
+              all.push({width,lang,home,cards,comparisonFound:compare.length,whatsapp:wa?.slice(0,90),summaryChars:preview.length,fail});
+              await page.close();
+            }
+            await browser.close();
+            console.log('E2E_REPORT',JSON.stringify(all));
+            if(all.some(x=>x.fail.length))process.exit(1);
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rpm-port-e2e-screenshots
+          path: rpm-e2e-*.png
+          retention-days: 5
