@@ -1,0 +1,173 @@
+name: H Laylati forensic site audit read-only 20261014
+on:
+  push:
+    branches: [hlaylati-madinah-white-rose-20261014]
+    paths: ['.github/workflows/hlaylati-forensic-audit.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  forensic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hlaylati-madinah-white-rose-20261014
+          persist-credentials: true
+      - name: Set up read-only audit dependencies
+        run: |
+          pip install --quiet playwright==1.55.0 beautifulsoup4 requests pypdf
+          python -m playwright install --with-deps chromium
+      - name: Scrutinize every public page, all site links, PDFs, and mobile UX
+        shell: bash
+        run: |
+          mkdir -p qa-output/hlaylati/forensic
+          cat >/tmp/forensic_hlaylati.py <<'PY'
+          import asyncio,json,re,datetime,requests,urllib.parse,hashlib,io,xml.etree.ElementTree as ET,time
+          from bs4 import BeautifulSoup
+          from pypdf import PdfReader
+          from playwright.async_api import async_playwright
+          D='https://www.h-laylati.com'; S=requests.Session();S.headers.update({'User-Agent':'Mozilla/5.0 (compatible; SiteReadOnlyAudit/1.0)'})
+          O={'audit_type':'INDEPENDENT_READ_ONLY_NOT_ANALYTICS','asof_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'pages':{},'links':{},'pdfs':{},'headers':{},'robots':'','sitemap':[],'browser':{},'security_summary':{},'notes':[],'outside':{}}
+          def get(u,timeout=18):
+            try:return S.get(u,timeout=timeout,allow_redirects=True)
+            except Exception as e:return e
+          sitemap=get(D+'/sitemap.xml')
+          if isinstance(sitemap,requests.Response) and sitemap.status_code==200:
+            try:
+              root=ET.fromstring(sitemap.content)
+              O['sitemap']=[{'url':x.findtext('{http://www.sitemaps.org/schemas/sitemap/0.9}loc'),'lastmod':x.findtext('{http://www.sitemaps.org/schemas/sitemap/0.9}lastmod')} for x in root]
+            except Exception as e:O['sitemap_error']=str(e)
+          r=get(D+'/robots.txt')
+          if isinstance(r,requests.Response):O['robots']=r.text[:5000]
+          paths=['/','/home','/about','/services','/contact','/704825207487','/cart','/sitemap.xml','/robots.txt','/nonexistent-audit-path-123431']
+          for x in O['sitemap']:
+            if x['url'] and x['url'].startswith(D):
+              u=urllib.parse.urlparse(x['url'])
+              if u.path not in paths:paths.append(u.path)
+          links=set();pdf_links=set()
+          for path in paths:
+            r=get(D+path)
+            if isinstance(r,Exception):O['pages'][path]={'error':str(r)[:200]};continue
+            mime=r.headers.get('content-type','')
+            z={'http':r.status_code,'url':r.url,'bytes_html':len(r.content),'mime':mime,'redirects':[{'status':a.status_code,'url':a.url,'to':a.headers.get('Location')} for a in r.history],'x_robots':r.headers.get('X-Robots-Tag'),'cache':r.headers.get('Cache-Control')}
+            if 'text/html' in mime:
+              sp=BeautifulSoup(r.content,'html.parser')
+              z.update({'title':sp.title.get_text(' ',strip=True) if sp.title else None,'lang':sp.html.get('lang') if sp.html else None,'dir':sp.html.get('dir') if sp.html else None,'canonical':[c.get('href') for c in sp.select('link[rel~=canonical]')],
+              'h1':[a.get_text(' ',strip=True) for a in sp.select('h1')],'h2':[a.get_text(' ',strip=True) for a in sp.select('h2')],'html_title_len':len(sp.title.get_text(' ',strip=True)) if sp.title else 0,
+              'meta_description':[x.get('content') for x in sp.select('meta[name=description]')],'meta_robots':[x.get('content') for x in sp.select('meta[name=robots]')],
+              'og_image':[x.get('content') for x in sp.select('meta[property="og:image"]')], 'og_description':[x.get('content') for x in sp.select('meta[property="og:description"]')],
+              'twitter_card':[x.get('content') for x in sp.select('meta[name="twitter:card"]')],'hreflang':[(x.get('hreflang'),x.get('href')) for x in sp.select('link[hreflang]')],
+              'jsonld':[x.get_text(' ',strip=True)[:2000] for x in sp.select('script[type="application/ld+json"]')],
+              'images':[{'alt':i.get('alt'),'src':i.get('src')[:220] if i.get('src') else None,'loading':i.get('loading')} for i in sp.select('img')],
+              'image_count':len(sp.select('img')),'form_count':len(sp.select('form')),'button_count':len(sp.select('button')),'main_count':len(sp.select('main')),'nav_count':len(sp.select('nav')),'text_len':len(sp.get_text(' ',strip=True)),
+              'analytics_snippets':{t:bool(re.search(p,r.text,re.I)) for t,p in {'gtm':'GTM-[A-Z0-9]+','ga4':'G-[A-Z0-9]{7,}','meta_pixel':"fbq\\(","gtag_js":"gtag\\(","clarity":"clarity.ms","hotjar":"hotjar"}.items()},
+              'links':[{'t':a.get_text(' ',strip=True)[:65],'href':a.get('href')} for a in sp.select('a[href]')][:180]
+              })
+              for a in sp.select('a[href]'):
+                href=a.get('href')
+                if href and not href.startswith(('#','javascript:','mailto:','tel:')):
+                  full=urllib.parse.urljoin(D+path,href)
+                  links.add(full)
+                  if urllib.parse.urlparse(full).path.lower().endswith('.pdf'):pdf_links.add(full)
+            O['pages'][path]=z
+          for h in ['Content-Security-Policy','Strict-Transport-Security','X-Content-Type-Options','Referrer-Policy','Permissions-Policy','X-Frame-Options','Cache-Control','Content-Type','Content-Language']:
+            r=get(D+'/')
+            if isinstance(r,requests.Response):O['headers'][h]=r.headers.get(h)
+            break
+          if isinstance(r,requests.Response):
+            O['headers']={h:r.headers.get(h) for h in ['Content-Security-Policy','Strict-Transport-Security','X-Content-Type-Options','Referrer-Policy','Permissions-Policy','X-Frame-Options','Cache-Control','Content-Type','Content-Language','Server']}
+          for u in sorted(links):
+            parsed=urllib.parse.urlparse(u)
+            if not parsed.netloc.endswith('h-laylati.com') and not parsed.netloc.endswith('hlaylati.com') and len(O['outside'])>=35:continue
+            if parsed.netloc.endswith('matterport.com'):q={'destination_kind':'matterport'} 
+            elif parsed.netloc.endswith('h-laylati.com'):q={'destination_kind':'firstparty'}
+            else:q={'destination_kind':'external'}
+            try:
+              rr=S.get(u,timeout=10,stream=True,allow_redirects=True);q.update({'http':rr.status_code,'final_url':rr.url,'type':rr.headers.get('content-type'),'length':rr.headers.get('content-length'),'redirects':len(rr.history)});rr.close()
+            except Exception as e:q.update({'error':str(e)[:170]})
+            O['links'][u]=q
+          for url in sorted(pdf_links):
+            rr=get(url,timeout=25)
+            if isinstance(rr,Exception):O['pdfs'][url]={'error':str(rr)[:250]};continue
+            p={'status':rr.status_code,'mime':rr.headers.get('content-type'),'url':rr.url,'bytes':len(rr.content),'sha256_first8':hashlib.sha256(rr.content).hexdigest()[:8]}
+            if rr.status_code==200 and rr.content[:4]==b'%PDF':
+              try:
+                obj=PdfReader(io.BytesIO(rr.content));p['pages']=len(obj.pages)
+                p['page0_text']=(obj.pages[0].extract_text() or '')[:1500]
+                p['last_page_text']=(obj.pages[-1].extract_text() or '')[:650]
+                p['metadata']={str(k):str(v)[:120] for k,v in (obj.metadata or {}).items()}
+                txt=' '.join(x.extract_text() or '' for x in obj.pages)
+                p['phones']=sorted(set(re.findall(r'0[5-9][0-9\s-]{7,14}',txt)))[:20]
+                p['prices_sample']=sorted(set(re.findall(r'[1-9][0-9]{1,2}[,،][0-9]{3}',txt)))[:20]
+                p['has_external_links']=sum(len(x.get('/Annots',[])) for x in obj.pages)
+              except Exception as e:p['parse_error']=str(e)[:180]
+            O['pdfs'][url]=p
+          async def browser():
+            async with async_playwright() as p:
+              b=await p.chromium.launch(args=['--no-sandbox'])
+              for width in [320,390,430,768,1024,1440]:
+                ctx=await b.new_context(viewport={'width':width,'height':900},is_mobile=width<768,has_touch=width<768,device_scale_factor=1)
+                for path in ['/','/services','/about','/contact']:
+                  page=await ctx.new_page();logs=[];fail=[]
+                  page.on('pageerror',lambda e:logs.append(str(e)[:160]))
+                  page.on('requestfailed',lambda r:fail.append({'url':r.url[:140],'failed':r.failure}))
+                  key=str(width)+':'+path
+                  data={}
+                  try:
+                    t0=time.time()
+                    resp=await page.goto(D+path,wait_until='domcontentloaded',timeout=25000)
+                    await page.wait_for_timeout(1250)
+                    data=await page.evaluate("""() => {
+                      const sel=s=>Array.from(document.querySelectorAll(s));
+                      const a=sel('a');
+                      const txt=document.body.innerText;
+                      const pictures=sel('img').map(i=>({src:i.currentSrc.slice(0,150),naturalW:i.naturalWidth,naturalH:i.naturalHeight,alt:i.getAttribute('alt'),isVisible:!!(i.offsetWidth&&i.offsetHeight)}));
+                      const buttons=sel('button').map(x=>({name:x.getAttribute('aria-label')||x.innerText.trim().slice(0,70),text:x.innerText.trim().slice(0,50),disabled:x.disabled,visible:!!(x.offsetWidth&&x.offsetHeight)}));
+                      const alllinks=a.map(x=>({text:x.innerText.trim().slice(0,35),href:x.href,visible:!!(x.offsetWidth&&x.offsetHeight)}));
+                      const noNameButtons=sel('button').filter(x=>!(x.getAttribute('aria-label')||x.innerText.trim()||x.getAttribute('title'))).length;
+                      const noNameAnchors=a.filter(x=>!(x.innerText.trim()||x.getAttribute('aria-label')||x.getAttribute('title')||x.querySelector('img[alt]:not([alt=""])') )).length;
+                      const tapSmall=sel('a,button').filter(x=>{let r=x.getBoundingClientRect();return r.width>0&&r.height>0&&(r.width<24||r.height<24)}).length;
+                      const perf=performance.getEntriesByType('navigation')[0];
+                      return {url:location.href,title:document.title,viewport:innerWidth,docWidth:document.documentElement.scrollWidth,bodyWidth:document.body.scrollWidth,dir:document.documentElement.dir,lang:document.documentElement.lang,h1:sel('h1').map(x=>x.innerText),nav:sel('nav').length,forms:sel('form').length,buttons,linkCount:a.length,internalTel:a.filter(x=>x.getAttribute('href')?.startsWith('tel:')).length,wa:a.filter(x=>/wa\.me|api\.whatsapp\.com/.test(x.href)).length,mail:a.filter(x=>x.getAttribute('href')?.startsWith('mailto:')).length,noNameButtons,noNameAnchors,tapSmall,images:pictures,smallFonts:sel('p,span,a,h1,h2,h3').filter(x=>{let s=getComputedStyle(x);return x.offsetWidth>0&&parseFloat(s.fontSize)<12}).length,bodyExcerpt:txt.slice(0,900),pageHeight:document.body.scrollHeight,resourceCount:performance.getEntriesByType('resource').length,dcl:perf?.domContentLoadedEventEnd,loadEvent:perf?.loadEventEnd,links:alllinks.filter(x=>x.visible).slice(0,45)};
+                    }""")
+                    data.update({'http':resp.status if resp else None,'elapsed':round(time.time()-t0,2),'errors':logs[:8],'requestFailures':fail[:10]})
+                    if width in [390,1440]:
+                      await page.screenshot(path=f'qa-output/hlaylati/forensic/{width}-{path.strip("/") or "home"}.png',full_page=True,timeout=35000)
+                    if width==390 and path=='/':
+                      try:
+                        nav_button=page.get_by_role('button',name=re.compile('Open Menu',re.I)).first
+                        await nav_button.click(timeout=3500)
+                        data['menu_after_click']=(await page.locator('body').inner_text())[:150]
+                        data['menu_nav_visible']=await page.get_by_role('link',name='التواصل').first.is_visible()
+                      except Exception as e:data['menu_test_error']=str(e)[:170]
+                  except Exception as e:data['error']=str(e)[:400]
+                  O['browser'][key]=data
+                  await page.close()
+                await ctx.close()
+              await b.close()
+          try:asyncio.run(browser())
+          except Exception as e:O['fatal_browser']=str(e)[:350]
+          out='qa-output/hlaylati/forensic/report.json'
+          with open(out,'w',encoding='utf8') as f:json.dump(O,f,ensure_ascii=False,indent=2)
+          print('COMPLETED FORENSIC SITE AUDIT',{'pages':len(O['pages']),'sitemap':len(O['sitemap']),'links':len(O['links']),'pdfs':len(O['pdfs']),'browser':len(O['browser'])})
+          PY
+          python /tmp/forensic_hlaylati.py
+      - name: Save browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hlaylati-forensic-audit-mobile-desktop-20261014
+          path: qa-output/hlaylati/forensic/
+          if-no-files-found: warn
+      - name: Save report on audit branch
+        if: always()
+        shell: bash
+        run: |
+          test -f qa-output/hlaylati/forensic/report.json || exit 0
+          git config user.name "Digital Arhat QA"
+          git config user.email "actions@users.noreply.github.com"
+          git add qa-output/hlaylati/forensic/report.json
+          git commit -m "Independent forensic audit of H Laylati public site no customer data" || true
+          git push origin HEAD:hlaylati-madinah-white-rose-20261014 || true
