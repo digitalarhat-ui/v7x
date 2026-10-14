@@ -18,7 +18,7 @@ jobs:
           const {chromium}=require('playwright');
           (async()=>{
             const browser=await chromium.launch({headless:true});
-            const base='https://cdn.githubraw.com/digitalarhat-ui/v7x/f91d7126a6c33d938ad9332c14a40567aa8cb30d/rpm-port-riyadh-makan-v4-review/preview/';
+            const base='https://cdn.githubraw.com/digitalarhat-ui/v7x/8c7c78c38de88cf7fa24d24f0d82c9f2b36cd294/rpm-port-riyadh-makan-v4-review/preview/';
             const reports=[];
             for(const [width,lang,file] of [[390,'ar','index.html'],[430,'ar','index.html'],[768,'en','en.html'],[1440,'en','en.html']]){
               const page=await browser.newPage({viewport:{width,height:870}});page.setDefaultTimeout(14000);
@@ -28,7 +28,7 @@ jobs:
               await page.evaluate(()=>{for(const i of document.images)i.loading='eager'});
               await page.waitForFunction(()=>[...document.images].every(x=>x.complete&&x.naturalWidth>0),null,{timeout:18000}).catch(()=>{});
               const before=await page.evaluate(()=>({title:document.title,lang:document.documentElement.lang,dir:document.documentElement.dir,scroll:document.documentElement.scrollWidth,width:innerWidth,imgs:document.images.length,loaded:[...document.images].filter(i=>i.complete&&i.naturalWidth>0).length,notice:document.body.innerText.includes('External Content Notice')}));
-              const fail=[];
+              const fail=[];const featureText=await page.locator('.featureGrid').innerText();if(featureText.includes('2024'))fail.push('stale Defender 2024');if(lang==='ar'&&!featureText.includes('سنة الموديل تُؤكد'))fail.push('missing Range Rover year caveat');if(lang==='en'&&!featureText.includes('Year TBC'))fail.push('missing Range Rover year caveat');
               if(res.status()!==200)fail.push('HTTP '+res.status());
               if(before.notice||before.title.includes('Notice'))fail.push('interstitial');
               if(before.lang!==lang||before.dir!==(lang==='ar'?'rtl':'ltr'))fail.push('direction');
