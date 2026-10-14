@@ -1,7 +1,7 @@
 {
   "lead": "SA-3F-20261014-MAVERA-JEDDAH",
-  "run_id": "38555233199",
-  "tested_utc": "2026-10-14T11:15:27.789075+00:00",
+  "run_id": "38555820262",
+  "tested_utc": "2026-10-14T11:20:32.688062+00:00",
   "url": "https://mavera-jeddah-white-rose-review.vercel.app/",
   "viewports": {
     "390": {
@@ -37,6 +37,75 @@
       "broken_image_count": 1,
       "official_contact": 2,
       "form_field_count": 9,
+      "inputs_metadata": [
+        {
+          "tag": "INPUT",
+          "type": "date",
+          "id": "dateInput",
+          "name": "",
+          "placeholder": ""
+        },
+        {
+          "tag": "INPUT",
+          "type": "number",
+          "id": "guestInput",
+          "name": "",
+          "placeholder": "مثال: 300"
+        },
+        {
+          "tag": "INPUT",
+          "type": "file",
+          "id": "inspirationInput",
+          "name": "",
+          "placeholder": ""
+        },
+        {
+          "tag": "INPUT",
+          "type": "text",
+          "id": "customPaletteInput",
+          "name": "",
+          "placeholder": "صف الألوان التي تريدها…"
+        },
+        {
+          "tag": "TEXTAREA",
+          "type": "textarea",
+          "id": "inspirationNotesInput",
+          "name": "",
+          "placeholder": "مثلاً: أحب هدوء الألوان أكثر من كثافة التفاصيل…"
+        },
+        {
+          "tag": "TEXTAREA",
+          "type": "textarea",
+          "id": "p3DecisionNote",
+          "name": "",
+          "placeholder": "اكتب ملاحظة قصيرة إن رغبت…"
+        },
+        {
+          "tag": "TEXTAREA",
+          "type": "textarea",
+          "id": "hospitalityInput",
+          "name": "",
+          "placeholder": "اكتب ما يهمك أو اتركها فارغة…"
+        },
+        {
+          "tag": "TEXTAREA",
+          "type": "textarea",
+          "id": "notesInput",
+          "name": "",
+          "placeholder": "أي تفاصيل تريد من الفريق معرفتها عند المراجعة…"
+        },
+        {
+          "tag": "INPUT",
+          "type": "checkbox",
+          "id": "p4CustomerConfirmation",
+          "name": "",
+          "placeholder": ""
+        }
+      ],
+      "review_status": 200,
+      "review_width_overflow": 0,
+      "review_old_brand": false,
+      "review_has_mavera": true,
       "language_buttons": [
         "AR",
         "EN",
@@ -94,6 +163,12 @@
       "localstorage_keys": [
         "maveraInterfaceLanguage"
       ],
+      "post_interaction_storage": [
+        {
+          "key": "maveraInterfaceLanguage",
+          "size": 2
+        }
+      ],
       "status": "PASS"
     },
     "430": {
@@ -129,6 +204,75 @@
       "broken_image_count": 1,
       "official_contact": 2,
       "form_field_count": 9,
+      "inputs_metadata": [
+        {
+          "tag": "INPUT",
+          "type": "date",
+          "id": "dateInput",
+          "name": "",
+          "placeholder": ""
+        },
+        {
+          "tag": "INPUT",
+          "type": "number",
+          "id": "guestInput",
+          "name": "",
+          "placeholder": "مثال: 300"
+        },
+        {
+          "tag": "INPUT",
+          "type": "file",
+          "id": "inspirationInput",
+          "name": "",
+          "placeholder": ""
+        },
+        {
+          "tag": "INPUT",
+          "type": "text",
+          "id": "customPaletteInput",
+          "name": "",
+          "placeholder": "صف الألوان التي تريدها…"
+        },
+        {
+          "tag": "TEXTAREA",
+          "type": "textarea",
+          "id": "inspirationNotesInput",
+          "name": "",
+          "placeholder": "مثلاً: أحب هدوء الألوان أكثر من كثافة التفاصيل…"
+        },
+        {
+          "tag": "TEXTAREA",
+          "type": "textarea",
+          "id": "p3DecisionNote",
+          "name": "",
+          "placeholder": "اكتب ملاحظة قصيرة إن رغبت…"
+        },
+        {
+          "tag": "TEXTAREA",
+          "type": "textarea",
+          "id": "hospitalityInput",
+          "name": "",
+          "placeholder": "اكتب ما يهمك أو اتركها فارغة…"
+        },
+        {
+          "tag": "TEXTAREA",
+          "type": "textarea",
+          "id": "notesInput",
+          "name": "",
+          "placeholder": "أي تفاصيل تريد من الفريق معرفتها عند المراجعة…"
+        },
+        {
+          "tag": "INPUT",
+          "type": "checkbox",
+          "id": "p4CustomerConfirmation",
+          "name": "",
+          "placeholder": ""
+        }
+      ],
+      "review_status": 200,
+      "review_width_overflow": 0,
+      "review_old_brand": false,
+      "review_has_mavera": true,
       "status": "PASS"
     },
     "768": {
@@ -164,6 +308,75 @@
       "broken_image_count": 1,
       "official_contact": 2,
       "form_field_count": 9,
+      "inputs_metadata": [
+        {
+          "tag": "INPUT",
+          "type": "date",
+          "id": "dateInput",
+          "name": "",
+          "placeholder": ""
+        },
+        {
+          "tag": "INPUT",
+          "type": "number",
+          "id": "guestInput",
+          "name": "",
+          "placeholder": "مثال: 300"
+        },
+        {
+          "tag": "INPUT",
+          "type": "file",
+          "id": "inspirationInput",
+          "name": "",
+          "placeholder": ""
+        },
+        {
+          "tag": "INPUT",
+          "type": "text",
+          "id": "customPaletteInput",
+          "name": "",
+          "placeholder": "صف الألوان التي تريدها…"
+        },
+        {
+          "tag": "TEXTAREA",
+          "type": "textarea",
+          "id": "inspirationNotesInput",
+          "name": "",
+          "placeholder": "مثلاً: أحب هدوء الألوان أكثر من كثافة التفاصيل…"
+        },
+        {
+          "tag": "TEXTAREA",
+          "type": "textarea",
+          "id": "p3DecisionNote",
+          "name": "",
+          "placeholder": "اكتب ملاحظة قصيرة إن رغبت…"
+        },
+        {
+          "tag": "TEXTAREA",
+          "type": "textarea",
+          "id": "hospitalityInput",
+          "name": "",
+          "placeholder": "اكتب ما يهمك أو اتركها فارغة…"
+        },
+        {
+          "tag": "TEXTAREA",
+          "type": "textarea",
+          "id": "notesInput",
+          "name": "",
+          "placeholder": "أي تفاصيل تريد من الفريق معرفتها عند المراجعة…"
+        },
+        {
+          "tag": "INPUT",
+          "type": "checkbox",
+          "id": "p4CustomerConfirmation",
+          "name": "",
+          "placeholder": ""
+        }
+      ],
+      "review_status": 200,
+      "review_width_overflow": 0,
+      "review_old_brand": false,
+      "review_has_mavera": true,
       "status": "PASS"
     },
     "1440": {
@@ -199,6 +412,75 @@
       "broken_image_count": 1,
       "official_contact": 2,
       "form_field_count": 9,
+      "inputs_metadata": [
+        {
+          "tag": "INPUT",
+          "type": "date",
+          "id": "dateInput",
+          "name": "",
+          "placeholder": ""
+        },
+        {
+          "tag": "INPUT",
+          "type": "number",
+          "id": "guestInput",
+          "name": "",
+          "placeholder": "مثال: 300"
+        },
+        {
+          "tag": "INPUT",
+          "type": "file",
+          "id": "inspirationInput",
+          "name": "",
+          "placeholder": ""
+        },
+        {
+          "tag": "INPUT",
+          "type": "text",
+          "id": "customPaletteInput",
+          "name": "",
+          "placeholder": "صف الألوان التي تريدها…"
+        },
+        {
+          "tag": "TEXTAREA",
+          "type": "textarea",
+          "id": "inspirationNotesInput",
+          "name": "",
+          "placeholder": "مثلاً: أحب هدوء الألوان أكثر من كثافة التفاصيل…"
+        },
+        {
+          "tag": "TEXTAREA",
+          "type": "textarea",
+          "id": "p3DecisionNote",
+          "name": "",
+          "placeholder": "اكتب ملاحظة قصيرة إن رغبت…"
+        },
+        {
+          "tag": "TEXTAREA",
+          "type": "textarea",
+          "id": "hospitalityInput",
+          "name": "",
+          "placeholder": "اكتب ما يهمك أو اتركها فارغة…"
+        },
+        {
+          "tag": "TEXTAREA",
+          "type": "textarea",
+          "id": "notesInput",
+          "name": "",
+          "placeholder": "أي تفاصيل تريد من الفريق معرفتها عند المراجعة…"
+        },
+        {
+          "tag": "INPUT",
+          "type": "checkbox",
+          "id": "p4CustomerConfirmation",
+          "name": "",
+          "placeholder": ""
+        }
+      ],
+      "review_status": 200,
+      "review_width_overflow": 0,
+      "review_old_brand": false,
+      "review_has_mavera": true,
       "status": "PASS"
     }
   },
