@@ -1,0 +1,71 @@
+name: RPM PORT immutable zero-cost CDN E2E
+on:
+  push:
+    branches: [rpm-port-makan-v4-review-20261014]
+    paths: ['.github/workflows/rpm-port-commit-pinned-e2e.yml']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - run: |
+          node <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const base='https://cdn.githubraw.com/digitalarhat-ui/v7x/f91d7126a6c33d938ad9332c14a40567aa8cb30d/rpm-port-riyadh-makan-v4-review/preview/';
+            const reports=[];
+            for(const [width,lang,file] of [[390,'ar','index.html'],[430,'ar','index.html'],[768,'en','en.html'],[1440,'en','en.html']]){
+              const page=await browser.newPage({viewport:{width,height:870}});page.setDefaultTimeout(14000);
+              const errors=[];page.on('pageerror',e=>errors.push(e.message));
+              const res=await page.goto(base+file,{waitUntil:'domcontentloaded',timeout:18000});
+              await page.waitForSelector('.hero',{timeout:15000});
+              await page.evaluate(()=>{for(const i of document.images)i.loading='eager'});
+              await page.waitForFunction(()=>[...document.images].every(x=>x.complete&&x.naturalWidth>0),null,{timeout:18000}).catch(()=>{});
+              const before=await page.evaluate(()=>({title:document.title,lang:document.documentElement.lang,dir:document.documentElement.dir,scroll:document.documentElement.scrollWidth,width:innerWidth,imgs:document.images.length,loaded:[...document.images].filter(i=>i.complete&&i.naturalWidth>0).length,notice:document.body.innerText.includes('External Content Notice')}));
+              const fail=[];
+              if(res.status()!==200)fail.push('HTTP '+res.status());
+              if(before.notice||before.title.includes('Notice'))fail.push('interstitial');
+              if(before.lang!==lang||before.dir!==(lang==='ar'?'rtl':'ltr'))fail.push('direction');
+              if(before.scroll>width)fail.push('overflow');
+              if(before.imgs<7||before.loaded!==before.imgs)fail.push('images');
+              const original=page.url();
+              await page.locator('a.languageSwitch').first().click();
+              await page.waitForSelector('.hero',{timeout:12000});
+              const switched=await page.evaluate(()=>({lang:document.documentElement.lang,dir:document.documentElement.dir,title:document.title,warning:document.body.innerText.includes('External Content Notice')}));
+              if(switched.lang==lang||switched.warning)fail.push('language button');
+              await page.goto(original,{waitUntil:'domcontentloaded',timeout:18000});
+              await page.waitForSelector('.hero',{timeout:15000});
+              await page.evaluate(()=>location.hash='#cars');await page.waitForTimeout(260);
+              const cards=page.locator('.carCard'),n=await cards.count();
+              if(n!==2)fail.push('car count '+n);
+              if(n===2){await page.locator('.carCard .saveBtn').nth(0).click();await page.locator('.carCard .saveBtn').nth(1).click();}
+              await page.evaluate(()=>location.hash='#compare');await page.waitForTimeout(260);
+              const compare=await page.locator('.tableScroll').innerText().catch(()=>'');
+              if(!compare.includes('355,000')||!compare.includes('328,000'))fail.push('comparison');
+              await page.evaluate(()=>location.hash='#request');await page.waitForTimeout(260);
+              const btn=page.locator('.requestForm').getByRole('button',{name:lang==='ar'?/جهّز استفسارك/:/Prepare enquiry/i}).last();
+              if(await btn.count())await btn.click();else fail.push('request button');
+              const wa=await page.locator('a[href*="wa.me/966533117779?text="]').first().getAttribute('href').catch(()=>null);
+              if(!wa||!wa.includes('11185148484')||!wa.includes('11188719837'))fail.push('WhatsApp handoff');
+              if(errors.length)fail.push(...errors);
+              reports.push({width,lang,status:res.status(),before,switched,carCount:n,wa:!!wa,fail});
+              await page.screenshot({path:'rpm-immutable-'+width+'-'+lang+'.png',fullPage:true});
+              await page.close();
+            }
+            await browser.close();
+            console.log('RPM_IMMUTABLE_E2E',JSON.stringify(reports));
+            if(reports.some(x=>x.fail.length))process.exit(1);
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rpm-port-immutable-e2e
+          path: rpm-immutable-*.png
+          retention-days: 5
