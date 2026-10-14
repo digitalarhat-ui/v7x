@@ -1,0 +1,47 @@
+name: Athar Al-Eraaqa live production browser QA
+on:
+  push:
+    branches:
+      - qa/athar-eraaqa-live-20261014
+    paths:
+      - .github/workflows/athar-eraaqa-live-qa.yml
+      - qa/athar-eraaqa-20261014.mjs
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  production-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install isolated pinned headless browser
+        run: |
+          mkdir -p /tmp/athar-browser athar-qa-output
+          cd /tmp/athar-browser
+          npm init -y >/dev/null
+          npm install puppeteer-core@24.19.0 --silent
+      - name: Save exact delivered source
+        run: |
+          mkdir -p athar-qa-output/source/assets
+          base="https://athar-aleraaqa-riyadh-makan-v4.vercel.app"
+          curl -fsSL --retry 3 "$base/" -o athar-qa-output/source/index.html
+          curl -fsSL --retry 3 "$base/assets/showroom.js" -o athar-qa-output/source/assets/showroom.js
+          curl -fsSL --retry 3 "$base/assets/showroom-en.js" -o athar-qa-output/source/assets/showroom-en.js
+          curl -fsSL --retry 3 "$base/assets/showroom.css" -o athar-qa-output/source/assets/showroom.css
+          curl -fsSL --retry 3 "$base/vehicle-evidence.json" -o athar-qa-output/source/vehicle-evidence.json
+          test "$(wc -c < athar-qa-output/source/assets/showroom.js)" -gt 300000
+          test "$(wc -c < athar-qa-output/source/assets/showroom-en.js)" -gt 300000
+          grep -q 'أثر العراقة' athar-qa-output/source/index.html
+          grep -q '0559670004' athar-qa-output/source/assets/showroom.js
+      - name: Actual Chromium tests at four viewport sizes
+        run: |
+          NODE_PATH=/tmp/athar-browser/node_modules node qa/athar-eraaqa-20261014.mjs
+      - name: Preserve screenshots and results (even on failure)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: athar-eraaqa-20261014-live-qa
+          path: athar-qa-output/
+          if-no-files-found: warn
+          retention-days: 7
