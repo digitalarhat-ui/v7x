@@ -41,7 +41,7 @@ jobs:
           import fs from 'node:fs';
           const ROOT='https://addarah-dammam-white-rose.vercel.app/';
           const OUT=process.env.GITHUB_WORKSPACE+'/addarah-qa-output';
-          const marks=['قصر السلطان','Qasr Al Sultan','White Rose Wedding Hall','+966 55 557 3141'];
+          const marks=['قصر السلطان','Qasr Al Sultan','QASR AL SULTAN','White Rose Wedding Hall','+966 55 557 3141'];
           const browser=await puppeteer.launch({headless:true,executablePath:'/usr/bin/google-chrome',args:['--no-sandbox','--disable-dev-shm-usage']});
           const all=[];
           let failureCount=0;
@@ -49,13 +49,17 @@ jobs:
             const item={width,checks:[],errors:[],images:[],reviewImages:[],reviewStatus:''};
             const check=(name,condition,detail='')=>{const pass=!!condition;item.checks.push({name,pass,detail});if(!pass)failureCount++;};
             const page=await browser.newPage();
+            await page.evaluateOnNewDocument(()=>{try{localStorage.removeItem('addarahDammamLanguage')}catch{}});
             await page.setViewport({width,height:width===1440?900:width===768?1024:844,deviceScaleFactor:1});
             page.on('pageerror',e=>item.errors.push('pageerror: '+e.message));
             page.on('console',msg=>{if(msg.type()==='error')item.errors.push('console: '+msg.text())});
             page.on('requestfailed',req=>{if(/qa3at|pbs.twimg|vercel.app/.test(req.url()))item.errors.push('requestfailed: '+req.url()+' '+req.failure()?.errorText)});
             try{
               const response=await page.goto(ROOT,{waitUntil:'domcontentloaded',timeout:45000});
-              await new Promise(r=>setTimeout(r,3400));
+              await new Promise(r=>setTimeout(r,1600));
+              await page.$eval('.addarah-official img',e=>e.scrollIntoView({block:'center'}));
+              await new Promise(r=>setTimeout(r,1700));
+              await page.evaluate(()=>window.scrollTo(0,0));
               check('homepage_http_200',[200,304].includes(response?.status()),String(response?.status()));
               const init=await page.evaluate(()=>({
                 title:document.title,
@@ -67,7 +71,7 @@ jobs:
                 heroUrl:getComputedStyle(document.querySelector('.hero-bg')).backgroundImage,
                 text:document.body.innerText.slice(0,1700),
                 script:!!window.WhiteRoseLocale,
-                inputs:['#addarahArea','#addarahSeating','#addarahPartition','#briefArea','#briefSeating','#briefPartition'].every(s=>!!document.querySelector(s)), brandLeak:['قصر السلطان','Qasr Al Sultan','+966 55 557 3141'].some(m=>document.documentElement.innerHTML.includes(m))
+                inputs:['#addarahArea','#addarahSeating','#addarahPartition','#briefArea','#briefSeating','#briefPartition'].every(s=>!!document.querySelector(s)), brandLeak:['قصر السلطان','Qasr Al Sultan','QASR AL SULTAN','+966 55 557 3141'].some(m=>document.documentElement.innerHTML.includes(m))
               }));
               item.initial={title:init.title,logo:init.logo,lang:init.lang,overflow:init.horizontalOverflow,phone:init.phone,heroUrl:init.heroUrl,bilingualScript:init.script};
               item.images=init.imageStates;
@@ -105,7 +109,30 @@ jobs:
                 check('english_room_label',/Venue-specific|Preferred|space/i.test(en.areaText),en.areaText);
                 check('english_no_overflow',en.overflow<=2,String(en.overflow));
               }
+              if(width===390||width===1440){
+                await page.click('#wrLanguage [data-lang="ar"]');
+                await page.click('#styleChips .chip:nth-child(2)');
+                for(const selector of ['#atmosphereChips .p2-choice:first-child','#palettePreferenceChips .p2-choice:first-child','#detailChips .p2-choice:first-child','#lightingChips .p2-choice:first-child','#focusChips .p2-choice:nth-child(3)'])await page.click(selector);
+                const genReady=await page.$eval('#generateDirectionsBtn',e=>!e.disabled);
+                check('golden_direction_generator_unlocked',genReady);
+                if(genReady){
+                  await page.click('#generateDirectionsBtn');
+                  await page.waitForSelector('#directionCards .p3-select',{timeout:6500});
+                  await page.click('#directionCards .p3-select');
+                  const finalReady=await page.$eval('#openFinalReview',e=>e.offsetParent!==null);
+                  check('golden_final_review_available',finalReady);
+                  if(finalReady){
+                    await page.click('#openFinalReview');
+                    const final=await page.evaluate(()=>({visible:!document.querySelector('#phase4Review').hidden,content:document.querySelector('#p4ConfirmedDetails')?.innerText||'',contact:document.querySelector('#p4Contact')?.getAttribute('href')||''}));
+                    item.final=final;
+                    check('golden_final_summary_includes_room',final.visible&&final.content.includes('القاعة الرئيسية')&&final.content.includes('تقسيم إلى أقسام'),final.content.slice(0,250));
+                    check('final_review_phone_correct',final.contact==='tel:+966550844417',final.contact);
+                    await page.screenshot({path:OUT+'/client-final-'+width+'.png',fullPage:false});
+                  }
+                }
+              }
               const review=await browser.newPage();
+              await review.evaluateOnNewDocument(()=>{try{localStorage.removeItem('addarahDammamLanguage')}catch{}});
               await review.setViewport({width,height:844});
               review.on('pageerror',e=>item.errors.push('review pageerror: '+e.message));
               const rv=await review.goto(ROOT+'review/',{waitUntil:'domcontentloaded',timeout:45000});
