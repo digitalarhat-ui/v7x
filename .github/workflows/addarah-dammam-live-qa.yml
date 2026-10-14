@@ -20,6 +20,20 @@ jobs:
           cd /tmp/addarah-browser
           npm init -y >/dev/null
           npm install puppeteer-core@24.19.0 --silent
+      - name: Archive exact served source files for repeatable repair
+        run: |
+          mkdir -p addarah-qa-output/source/review
+          base="https://addarah-dammam-white-rose.vercel.app"
+          curl -fsSL --retry 3 -H "Cache-Control: no-cache" "$base/" -o addarah-qa-output/source/index.html
+          curl -fsSL --retry 3 -H "Cache-Control: no-cache" "$base/review/" -o addarah-qa-output/source/review/index.html
+          curl -fsSL --retry 3 -H "Cache-Control: no-cache" "$base/wr-bilingual.js" -o addarah-qa-output/source/wr-bilingual.js
+          curl -fsSL --retry 3 -H "Cache-Control: no-cache" "$base/wr-bilingual.css" -o addarah-qa-output/source/wr-bilingual.css
+          curl -fsSL --retry 3 -H "Cache-Control: no-cache" "$base/robots.txt" -o addarah-qa-output/source/robots.txt
+          curl -fsSL --retry 3 -H "Cache-Control: no-cache" "$base/source-manifest.json" -o addarah-qa-output/source/source-manifest.json
+          test "$(wc -c < addarah-qa-output/source/index.html)" -gt 110000
+          test "$(wc -c < addarah-qa-output/source/wr-bilingual.js)" -gt 30000
+          grep -q 'addarahArea' addarah-qa-output/source/index.html
+          grep -q 'ADDARAH_MAP' addarah-qa-output/source/wr-bilingual.js
       - name: Verify actual production URL at 390 430 768 1440
         run: |
           cat >/tmp/addarah-browser/test.mjs <<'NODE'
