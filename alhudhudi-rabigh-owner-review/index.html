@@ -347,7 +347,7 @@
     }
     @keyframes drift{from{transform:scale(1.025)}to{transform:scale(1.065)}}
   </style>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"><style id="hlaylati-editorial-overhaul">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"><style id="hudhudi-editorial-overhaul">
 :root{--ux-dark:#0C0C0C;--ux-paper:#f5f2eb;--ux-silver:#cbd4dc;--ux-champ:#c9ad7c;--ux-plum:#842d66}
 html{background:#0C0C0C!important}body{background:#0C0C0C!important;overflow-x:clip!important}
 .hero{min-height:100svh!important;background:#0C0C0C!important;overflow:hidden!important}.hero-bg{filter:saturate(.92) contrast(1.04);transform:scale(1.05)!important;will-change:transform}
@@ -381,7 +381,7 @@ html{background:#0C0C0C!important}body{background:#0C0C0C!important;overflow-x:c
 <body><aside id="hudhudi-release-disclosure" role="note" style="position:relative;z-index:20;background:#241f18;color:#f5e5c4;padding:11px 15px;text-align:center;font:600 11px/1.8 system-ui,Tahoma,sans-serif;border-bottom:1px solid #856c46">تصور تجريبي مستقل غير رسمي — قاعات الهدهدي رويال ومون لايت، رابغ. الصور مأخوذة من دليل عام وتتطلب موافقة صاحب الحقوق؛ ولا توجد أسعار أو توفر أو حجز معتمد.</aside>
   <main>
     <section class="hero" aria-labelledby="hero-title">
-<style id="hlaylati-cinematic-glass-hero-v2">
+<style id="hudhudi-cinematic-glass-hero-v2">
 /* All rules scoped to Al-Hudhudi Royal hero only. Zero below-hero CSS modifications. */
 .hero{
   background:#080706!important;
@@ -561,7 +561,7 @@ html{background:#0C0C0C!important}body{background:#0C0C0C!important;overflow-x:c
  .hero .wr-cinematic-scene{opacity:0!important}
 }
 </style>
-<style id="hlaylati-hero-aesthetic-v2-patch">
+<style id="hudhudi-hero-aesthetic-v2-patch">
 /* Visual correction V2 — scoped to the existing hero background and foreground only. */
 .hero .hero-bg{
   background-position:center 42%!important;
@@ -638,7 +638,7 @@ html{background:#0C0C0C!important}body{background:#0C0C0C!important;overflow-x:c
   .hero .hero-main{transform:translateY(-12px)!important}
 }
 </style>
-<style id="hlaylati-30second-reveal-v1">
+<style id="hudhudi-30second-reveal-v1">
 /* First 30 seconds: venue, visual intent, review object. Existing planner untouched. */
 .hero{min-height:min(790px,100svh)!important;height:auto!important;background:#0c0b0a!important}
 .hero .hero-bg,.hero .wr-cinematic-scene{filter:saturate(.91) contrast(1.025)!important;transform:scale(1.02)!important}
@@ -744,7 +744,7 @@ html{background:#0C0C0C!important}body{background:#0C0C0C!important;overflow-x:c
         <div><small>02</small><span>اتجاه بصري<br>وتفضيلات واضحة</span></div>
         <div><small>03</small><span>ملخص منظم<br>لمراجعة الفريق</span></div>
       </div>
-    <script id="hlaylati-hero-cinematic-motion">
+    <script id="hudhudi-hero-cinematic-motion">
 (()=>{
   const hero=document.querySelector(".hero");
   const scene=hero?.querySelector(".wr-cinematic-scene");
@@ -2023,7 +2023,7 @@ html{background:#0C0C0C!important}body{background:#0C0C0C!important;overflow-x:c
       setTimeout(()=>document.querySelector("#eventChips .chip").focus({preventScroll:true}),520);
     });
   </script>
-<script id="hlaylati-editorial-motion">(()=>{const start=()=>{const els=[...document.querySelectorAll('.panel,.phase2-flow,.phase3-flow,.phase4-review,.section-title,.section-copy,.venue-marquee')];els.forEach(el=>el.classList.add('ux-reveal'));const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('ux-visible');io.unobserve(e.target)}}),{threshold:.08,rootMargin:'40px'});els.forEach(el=>io.observe(el));if(matchMedia('(pointer:fine)').matches)document.querySelectorAll('.primary,.p4-contact').forEach(btn=>{btn.classList.add('ux-magnetic');btn.addEventListener('mousemove',e=>{const r=btn.getBoundingClientRect();btn.style.transform='translate3d('+((e.clientX-r.left-r.width/2)/7)+'px,'+((e.clientY-r.top-r.height/2)/7)+'px,0) scale(1.015)'});btn.addEventListener('mouseleave',()=>btn.style.transform='')});let ticking=false;const run=()=>{const y=scrollY||0;const bg=document.querySelector('.hero-bg');if(bg)bg.style.transform='translate3d(0,'+Math.min(y*.08,54)+'px,0) scale(1.06)';document.querySelectorAll('[data-marquee]').forEach((track,i)=>{const rect=track.parentElement.getBoundingClientRect();const off=(innerHeight-rect.top)*.16;track.style.setProperty('--marquee-x',((i===0?1:-1)*off)+'px')});ticking=false};addEventListener('scroll',()=>{if(!ticking){requestAnimationFrame(run);ticking=true}},{passive:true});run()};document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start):start()})();</script><script id="wr-30second-interaction">
+<script id="hudhudi-editorial-motion">(()=>{const start=()=>{const els=[...document.querySelectorAll('.panel,.phase2-flow,.phase3-flow,.phase4-review,.section-title,.section-copy,.venue-marquee')];els.forEach(el=>el.classList.add('ux-reveal'));const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('ux-visible');io.unobserve(e.target)}}),{threshold:.08,rootMargin:'40px'});els.forEach(el=>io.observe(el));if(matchMedia('(pointer:fine)').matches)document.querySelectorAll('.primary,.p4-contact').forEach(btn=>{btn.classList.add('ux-magnetic');btn.addEventListener('mousemove',e=>{const r=btn.getBoundingClientRect();btn.style.transform='translate3d('+((e.clientX-r.left-r.width/2)/7)+'px,'+((e.clientY-r.top-r.height/2)/7)+'px,0) scale(1.015)'});btn.addEventListener('mouseleave',()=>btn.style.transform='')});let ticking=false;const run=()=>{const y=scrollY||0;const bg=document.querySelector('.hero-bg');if(bg)bg.style.transform='translate3d(0,'+Math.min(y*.08,54)+'px,0) scale(1.06)';document.querySelectorAll('[data-marquee]').forEach((track,i)=>{const rect=track.parentElement.getBoundingClientRect();const off=(innerHeight-rect.top)*.16;track.style.setProperty('--marquee-x',((i===0?1:-1)*off)+'px')});ticking=false};addEventListener('scroll',()=>{if(!ticking){requestAnimationFrame(run);ticking=true}},{passive:true});run()};document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start):start()})();</script><script id="wr-30second-interaction">
 (()=>{
   const root=document.getElementById("seeTheIdea");
   if(!root)return;
@@ -2055,5 +2055,5 @@ html{background:#0C0C0C!important}body{background:#0C0C0C!important;overflow-x:c
     setTimeout(()=>document.querySelector("#eventChips .chip")?.focus({preventScroll:true}),480);
   });
 })();
-</script><script src="./wr-bilingual.js" defer></script><script defer src="./hudhudi-guard.js"></script><script defer src="./hudhudi-layer.js"></script><script defer src="./hudhudi-layer.js"></script></body>
+</script><script src="./wr-bilingual.js" defer></script><script defer src="./hudhudi-guard.js"></script><script defer src="./hudhudi-layer.js"></script></body>
 </html>
