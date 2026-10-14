@@ -1,0 +1,112 @@
+name: Mavera corrected candidate Chromium QA
+on:
+  push:
+    branches: [mavera-qa-20261014]
+    paths: ['.github/workflows/mavera-package.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mavera-qa-20261014
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build from previous real deployed Mavera source
+        run: |
+          python patches/build-mavera-candidate.py
+          node --check candidate-mavera/wr-bilingual.js
+          node --check candidate-mavera/mavera-guard.js
+          node --check candidate-mavera/mavera-persist.js
+      - name: Install Chromium
+        run: |
+          pip install --quiet playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: Live-browser test candidate on localhost at 4 breakpoints
+        shell: bash
+        run: |
+          mkdir -p qa-output/mavera/candidate-shots
+          python -m http.server 8765 --directory candidate-mavera > /tmp/mavera-server.log 2>&1 &
+          sleep 2
+          cat > /tmp/mavera-local-qa.py <<'PY'
+          import asyncio,datetime,json,os,traceback
+          from playwright.async_api import async_playwright
+          B='http://127.0.0.1:8765/';OUT='qa-output/mavera'
+          results={'lead':'SA-3F-20261014-MAVERA-JEDDAH','run':os.environ.get('GITHUB_RUN_ID'),'local_candidate':True,'LIVE_VERCEL_DEPLOYED':False,'rights_verified':False,'authoritative_hall_capacities':False,'widths':{},'overall':'PENDING'}
+          async def test():
+            async with async_playwright() as p:
+              browser=await p.chromium.launch(headless=True,args=['--no-sandbox'])
+              for w in [390,430,768,1440]:
+                ctx=await browser.new_context(viewport={'width':w,'height':900},is_mobile=w<768,has_touch=w<768)
+                pg=await ctx.new_page();err=[];pg.on('pageerror',lambda e:err.append(str(e)[:300]));v={}
+                try:
+                  q=await pg.goto(B,wait_until='domcontentloaded',timeout=35000);await pg.wait_for_timeout(1600)
+                  v['HTTP']=q.status;v['mavera']=await pg.evaluate("()=>/ماڤيرا|Mavera/i.test(document.body.innerText)")
+                  v['oldbrand']=await pg.evaluate("()=>/White Rose|الوردة البيضاء/i.test(document.body.innerText)")
+                  v['overflow']=await pg.evaluate("()=>Math.max(0,document.documentElement.scrollWidth-innerWidth)")
+                  v['errors']=err
+                  v['photo_dimensions']=await pg.locator('img[src*="ik.imagekit.io"]').evaluate_all("(xs)=>xs.map(x=>({width:x.naturalWidth,height:x.naturalHeight,url:x.currentSrc}))")
+                  v['firstparty_photos_pass']=len(v['photo_dimensions'])>=2 and all(x['width']>100 for x in v['photo_dimensions'])
+                  v['notice']=await pg.locator('#mavera-concept-notice').is_visible()
+                  if w==390:
+                    await pg.locator('#guestInput').fill('350')
+                    await pg.locator('#dateInput').fill('2026-11-15')
+                    await pg.locator('#notesInput').fill('اختبار داخلي فقط')
+                    await pg.reload(wait_until='domcontentloaded')
+                    await pg.wait_for_timeout(1600)
+                    v['persist_guest']=await pg.locator('#guestInput').input_value()
+                    v['persist_date']=await pg.locator('#dateInput').input_value()
+                    en=pg.get_by_role('button',name='EN',exact=True)
+                    if await en.count():await en.first.click();await pg.wait_for_timeout(350)
+                    v['english']=await pg.locator('html').get_attribute('lang')=='en'
+                  h=await pg.evaluate("()=>document.documentElement.scrollHeight")
+                  for y in range(0,h,420):await pg.evaluate("(y)=>scrollTo(0,y)",y);await pg.wait_for_timeout(65)
+                  await pg.wait_for_timeout(300)
+                  await pg.screenshot(path=f'{OUT}/candidate-shots/home-{w}.png',full_page=True,animations='disabled')
+                  rv=await ctx.new_page();qr=await rv.goto(B+'review/',wait_until='domcontentloaded')
+                  v['review_http']=qr.status
+                  v['review_overflow']=await rv.evaluate("()=>Math.max(0,document.documentElement.scrollWidth-innerWidth)")
+                  await rv.locator('#reviewForm').scroll_into_view_if_needed();await rv.wait_for_timeout(1550)
+                  v['review_opacity']=await rv.evaluate("()=>Number(getComputedStyle(document.getElementById('reviewForm')).opacity)")
+                  await rv.screenshot(path=f'{OUT}/candidate-shots/review-{w}.png',full_page=True,animations='disabled')
+                  v['PASS']=all([v['HTTP']==200,v['mavera'],not v['oldbrand'],v['overflow']<5,not v['errors'],v['firstparty_photos_pass'],v['notice'],v['review_http']==200,v['review_overflow']<5,v['review_opacity']>.9,w!=390 or (v.get('persist_guest')=='350' and v.get('persist_date')=='2026-11-15' and v.get('english'))])
+                except Exception as e:v['PASS']=False;v['exception']=str(e)[:500]
+                results['widths'][str(w)]=v
+                await ctx.close()
+              await browser.close()
+          try:asyncio.run(test())
+          except Exception:results['fatal']=traceback.format_exc()[-1300:]
+          results['overall']='PASS' if len(results['widths'])==4 and all(v.get('PASS') for v in results['widths'].values()) else 'FAIL'
+          with open(OUT+'/candidate-status.json','w') as f:json.dump(results,f,ensure_ascii=False,indent=2)
+          print('CANDIDATE_RESULT '+json.dumps({'overall':results['overall'],'per_width':{k:{'PASS':v.get('PASS'),'guest':v.get('persist_guest'),'date':v.get('persist_date'),'review_opacity':v.get('review_opacity'),'exception':v.get('exception')} for k,v in results['widths'].items()}}))
+          if results['overall']!='PASS':raise SystemExit(1)
+          PY
+          python /tmp/mavera-local-qa.py
+      - name: Retain actual output and browser screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mavera-candidate-browser-artifact
+          path: |
+            candidate-mavera/
+            qa-output/mavera/candidate-status.json
+            qa-output/mavera/candidate-shots/
+          if-no-files-found: warn
+      - name: Persist latest QA result, no live deploy
+        if: always()
+        run: |
+          if [ ! -f qa-output/mavera/candidate-status.json ]; then
+            mkdir -p qa-output/mavera
+            echo '{"overall":"PRETEST_FAILURE","LIVE_VERCEL_DEPLOYED":false}' > qa-output/mavera/candidate-status.json
+          fi
+          git config user.name "Digital Arhat QA"
+          git config user.email "actions@users.noreply.github.com"
+          git add qa-output/mavera/candidate-status.json
+          git commit -m "Mavera local corrected candidate QA" || true
+          git push origin HEAD:mavera-qa-20261014 || true
