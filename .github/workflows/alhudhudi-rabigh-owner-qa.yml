@@ -1,0 +1,77 @@
+name: Al-Hudhudi Rabigh independent preview QA
+on:
+  push:
+    branches: [alhudhudi-rabigh-white-rose-review-20261014]
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check scripts syntax
+        run: |
+          node --check alhudhudi-rabigh-owner-review/hudhudi-layer.js
+          node --check alhudhudi-rabigh-owner-review/hudhudi-guard.js
+          node --check alhudhudi-rabigh-owner-review/wr-bilingual.js
+      - name: Install headless browser
+        run: |
+          npm install --no-save playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Browser QA (all routes, four widths, handoff, no mixed branding)
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 &
+          sleep 2
+          node <<'JS'
+          const { chromium }=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
+            const fails=[];
+            const root='http://127.0.0.1:4173/alhudhudi-rabigh-owner-review/';
+            for(const width of [390,430,768,1440]){
+              const page=await browser.newPage({viewport:{width,height:850}});
+              const errors=[];page.on('pageerror',err=>errors.push(err.message));
+              const result=await page.goto(root,{waitUntil:'domcontentloaded',timeout:30000});
+              await page.waitForTimeout(1000);
+              if(result.status()!==200)fails.push('Main HTTP '+result.status());
+              if(await page.locator('#hudhudi-decision').count()!==1)fails.push(width+' duplicate/missing decision');
+              if(await page.locator('#hd-hall').count()!==1)fails.push(width+' duplicate/missing hall');
+              if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+5))fails.push(width+' overflow');
+              if(errors.length)fails.push(width+' javascript errors: '+errors.slice(0,3).join(' / '));
+              const visible=await page.locator('body').innerText();
+              if(/هذه ليلتي|بدرة|H Laylati|الوردة البيضاء|Madinah|Matterport/i.test(visible))fails.push(width+' cross-prospect branding');
+              const img=await page.evaluate(()=>[...document.images].filter(i=>!i.complete||i.naturalWidth===0).map(i=>i.src));
+              if(img.length)fails.push(width+' broken images: '+img.length);
+              if(width===390){
+                await page.locator('#hd-hall').selectOption('moonlight');
+                await page.locator('#hd-men').fill('150');
+                await page.locator('#hd-women').fill('180');
+                await page.locator('#hd-date').fill('2026-12-05');
+                await page.locator('#hd-notes').fill('Owner to verify actual amenities');
+                const href=await page.locator('#hd-review').getAttribute('href');
+                if(!href.includes('brief='))fails.push('Review missing state payload');
+                const sub=await browser.newPage({viewport:{width:390,height:850}});
+                const rr=await sub.goto(new URL(href,root).href,{waitUntil:'domcontentloaded'});
+                await sub.waitForTimeout(600);
+                if(rr.status()!==200)fails.push('Review HTTP '+rr.status());
+                if(await sub.locator('#hd-hall').inputValue()!=='moonlight')fails.push('Handoff hall lost');
+                if(await sub.locator('#hd-men').inputValue()!=='150')fails.push('Handoff men count lost');
+                if(await sub.locator('#hd-women').inputValue()!=='180')fails.push('Handoff women count lost');
+                if(await sub.locator('#hd-date').inputValue()!=='2026-12-05')fails.push('Handoff date lost');
+                await sub.close();
+                await page.locator('#hd-lang').click();
+                if(!((await page.locator('#hd-title').innerText()).includes('Compare')))fails.push('English addon toggle not translated');
+              }
+              console.log(JSON.stringify({width,errorCount:errors.length,imagesBroken:img.length,decisionPresent:await page.locator('#hudhudi-decision').count()}));
+              await page.close();
+            }
+            await browser.close();
+            if(fails.length){console.error('QA_FAIL',JSON.stringify(fails));process.exit(1);}
+            console.log('QA_TECHNICAL_PASS: owner review ONLY. Media licensing, buyer approval, and public deployment NOT checked.');
+          })().catch(e=>{console.error(e);process.exit(1)})
+          JS
