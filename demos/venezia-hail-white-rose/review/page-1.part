@@ -1,0 +1,22 @@
+ النموذج من السعة أو التوفر أو الخيارات الفعلية أو الأسعار أو قابلية التنفيذ. لا يرسل بيانات إلى القاعة.</p>
+      </div>
+      <div class="demo-bridge"><p>تجربة العميل الأساسية لم تتغير. يُفضّل عرضها أولاً ثم مناقشة هذه الأسئلة.</p><a href="/" target="_blank" rel="noopener">افتح تجربة العميل ↗</a></div>
+    </div>
+    <section class="validation" aria-labelledby="heading">
+      <div class="sectionhead"><small>تحقق إداري · إجابات محلية فقط</small><h2 id="heading">ما الذي نحتاج تأكيده منكم؟</h2><p>ثلاث مجموعات قصيرة. يمكن تعديل الإجابات في أي وقت، ولن تُحفظ أو تُرسل تلقائياً.</p></div>
+      <div class="stage-track" aria-hidden="true"><span class="track-pill active"></span><span class="track-pill"></span><span class="track-pill"></span></div>
+      <form class="form-panel" id="reviewForm" novalidate>
+        <div class="step" id="step1">
+          <h3>١ — الفائدة ذات الصلة</h3><p class="step-intro">نبدأ بما قد يكون مناسباً، وليس بمدى جمال العرض.</p>
+          <div class="field"><div class="legend">١. هل ترون فائدة في أن يصل العميل بهذه الصورة المنظمة قبل مناقشة التفاصيل الفعلية؟</div>
+            <div class="choices" data-group="benefit">
+              <label class="choice"><input type="radio" name="benefit" value="yes"><span>نعم</span></label>
+              <label class="choice"><input type="radio" name="benefit" value="partial"><span>جزئياً</span></label>
+              <label class="choice"><input type="radio" name="benefit" value="no"><span>لا</span></label>
+            </div>
+          </div>
+          <div class="field"><div class="legend">٢. أي جزء من التجربة أقرب لواقع عملكم؟</div>
+            <div class="choices" data-group="useful">
+              <label class="choice"><input type="radio" name="useful" value="intent"><span>توضيح رغبة العميل</span></label>
+              <label class="choice"><input type="radio" name="useful" value="inspiration"><span>الإلهام البصري</span></label>
+              <label class="choice"><input type="radio" name="useful" value="dire
