@@ -28,7 +28,7 @@ const langs={
  en:{title:'Design your celebration in real 3D',desc:'A live, orbitable and customizable 3D banquet concept — not a scan or measured model of Al-Hudhudi halls.',options:'Personalize the scene',venue:'Venue direction',palette:'Décor palette',light:'Lighting',layout:'Table layout',aisle:'Bridal aisle',gold:'Champagne',pearl:'Pearl',rose:'Blush',warm:'Warm',day:'Daylight',round:'Round tables',banquet:'Banquet tables',classic:'Classic',wide:'Wide',overview:'Overview',stage:'Stage',tables:'Seating',yourScene:'Your selected direction',continue:'Add this direction to your event brief ↗',drag:'Drag to orbit · pinch or scroll to zoom',disclosure:'Original independent conceptual WebGL hall by Digital Arhat. This is not a photograph, 3D scan or approved floorplan of Al-Hudhudi. Materials, dimensions, availability and services require owner approval.',fail:'WebGL is unavailable on this device. You can still complete the event enquiry.'}
 };
 let lang='ar',renderer,scene,camera,materials={},groups={},lights={},room,stage;
-let target=new THREE.Vector3(0,2.8,0),view={theta:.45,phi:1.08,radius:29},frames=0,triangles=0,ready=false,error='';
+let target=new THREE.Vector3(0,2.8,0),view={theta:.09,phi:1.43,radius:23},frames=0,triangles=0,ready=false,error='';
 const m=(hex,metalness=0,roughness=.6)=>new THREE.MeshStandardMaterial({color:hex,metalness,roughness});
 function mesh(geo,material,group,x=0,y=0,z=0){const item=new THREE.Mesh(geo,material);item.position.set(x,y,z);item.receiveShadow=true;group.add(item);return item}
 function box(w,h,d,ma,g,x,y,z){return mesh(new THREE.BoxGeometry(w,h,d),ma,g,x,y,z)}
@@ -40,7 +40,7 @@ function floret(g,x,y,z,scale=1){const flower=new THREE.Group();flower.position.
  return flower}
 function floorTex(){
  const c=document.createElement('canvas');c.width=c.height=256;const ctx=c.getContext('2d');
- ctx.fillStyle='#eee9df';ctx.fillRect(0,0,256,256);
+ ctx.fillStyle='#bdb2a4';ctx.fillRect(0,0,256,256);
  for(let i=0;i<30;i++){let yy=(i*71)%256;ctx.beginPath();ctx.moveTo(0,yy);
  for(let x=0;x<256;x+=10)ctx.lineTo(x,yy+Math.sin(x*.045+i)*4+Math.cos(x*.019+i)*8);
  ctx.strokeStyle=i%3?'rgba(149,137,123,.1)':'rgba(128,116,106,.17)';ctx.lineWidth=.9;ctx.stroke()}
@@ -56,24 +56,36 @@ function chandelier(x,z){const c=new THREE.Group();room.add(c);c.position.set(x,
   for(let i=0;i<18;i++){const a=i*Math.PI/9,xx=Math.sin(a)*radius,zz=Math.cos(a)*radius;
    cyl(.016,.27,materials.metal,c,xx,y-.19,zz);sphere(.10,materials.glow,c,xx,y-.37,zz)}
  }
- const bulb=new THREE.PointLight('#ffdfad',43,19,2);bulb.position.set(0,-.6,0);c.add(bulb);lights.chand.push(bulb)}
+ const bulb=new THREE.PointLight('#ffdfad',9,19,2);bulb.position.set(0,-.6,0);c.add(bulb);lights.chand.push(bulb)}
 function build(){
  scene=new THREE.Scene();scene.background=new THREE.Color('#171411');
  camera=new THREE.PerspectiveCamera(47,1,.1,150);
  const mobile=innerWidth<800;
  renderer=new THREE.WebGLRenderer({antialias:!mobile,powerPreference:'high-performance',preserveDrawingBuffer:true});
  renderer.setPixelRatio(Math.min(devicePixelRatio||1,mobile?1.35:1.65));
- renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.52;
+ renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.06;
  renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
  const cv=renderer.domElement;cv.id='a3-webgl';cv.style.touchAction='none';canvasHost.appendChild(cv);
- materials={floor:new THREE.MeshStandardMaterial({map:floorTex(),roughness:.28}),wall:m('#d4c7b6'),trim:m('#b99a69',.78,.24),metal:m('#ceb680',.83,.22),ivory:m('#ece1d1'),curtain:m('#d4b18a'),chair:m('#bc9b69'),cloth:m('#f4eee5'),runner:m('#e3ccaa'),dark:m('#42362e'),leaf:m('#5a7151'),petals:[m('#f9f0e9'),m('#cf9b96')],glow:new THREE.MeshStandardMaterial({color:'#fff9ea',emissive:'#ffcf90',emissiveIntensity:1.15})};
+ materials={floor:new THREE.MeshStandardMaterial({map:floorTex(),roughness:.39,metalness:.05}),wall:m('#a89c88'),trim:m('#b99a69',.78,.24),metal:m('#ceb680',.83,.22),ivory:m('#d2c7b7'),curtain:m('#aa8961'),chair:m('#a78860'),cloth:m('#ded2bf'),runner:m('#ad8760'),dark:m('#2d241c'),leaf:m('#5a7151'),petals:[m('#f9f0e9'),m('#cf9b96')],glow:new THREE.MeshStandardMaterial({color:'#fff9ea',emissive:'#ffcf90',emissiveIntensity:.6})};
  room=new THREE.Group();scene.add(room);
  box(29,.3,20,materials.floor,room,0,-.2,0);
  box(29,8.7,.35,materials.wall,room,0,4.35,-9.6);
  for(const x of [-14.2,14.2])box(.35,8.7,20,materials.wall,room,x,4.35,0);
- box(28.7,.25,19.8,materials.dark,room,0,8.85,0);
+ /* Open-top architectural view: never obscure the hall with a flat opaque ceiling. */
  for(const yy of [1.15,7.9,8.65])box(29,.17,.24,materials.trim,room,0,yy,-9.35);
  for(const x of [-11,-7,-3,1,5,9]){box(3.25,5.0,.09,materials.ivory,room,x,4.2,-9.36);arch(room,x,-9.24,3.1)}
+ // Warm wall uplights and architectural ceiling-edge ribs, with the top open for camera clarity.
+ for(const xx of [-12,-8,-4,0,4,8,12]){
+  const uplight=new THREE.SpotLight('#f6d7a8',8,13,Math.PI/6,.65,1.5);
+  uplight.position.set(xx,1.8,-8.7);uplight.target.position.set(xx,6,-9.2);
+  room.add(uplight,uplight.target);
+  const uplightHousing=cyl(.1,.26,materials.metal,room,xx,1.33,-9.0);
+ }
+ for(const x of [-14,14]){
+  for(const z of [-7.5,-2.5,2.5,7.5]){
+   box(.2,.23,4.8,materials.trim,room,x,8.55,z);
+  }
+ }
  for(const x of [-12.7,12.7])for(const z of [-6.5,-1,4.5]){
   cyl(.36,8.2,materials.wall,room,x,4.1,z);cyl(.53,.30,materials.trim,room,x,.16,z);cyl(.53,.36,materials.trim,room,x,8.33,z)}
  for(const z of [-6,-1,4]){box(28.4,.22,.29,materials.trim,room,0,8.79,z);chandelier(0,z)}
@@ -84,6 +96,14 @@ function build(){
  box(2.4,.5,.65,materials.ivory,stage,0,.95,-7.65);
  box(2.4,1.0,.17,materials.ivory,stage,0,1.52,-7.97);
  floret(stage,-3.1,.55,-6.6,1.7);floret(stage,3.1,.55,-6.6,1.7);
+ // Elegant architectural stage columns and pendant rim accents.
+ for(const x of [-4.3,4.3]){
+  box(.20,5.2,.28,materials.trim,stage,x,3.5,-8.80);
+  sphere(.22,materials.glow,stage,x,6.0,-8.54);
+ }
+ for(const z of [-6.8,-5.8,-4.8]){
+  box(9,.035,.035,materials.metal,stage,0,.53,z);
+ }
  groups.round=new THREE.Group();groups.banquet=new THREE.Group();groups.runner=new THREE.Group();room.add(groups.round,groups.banquet,groups.runner);
  for(const x of [-10,-5,5,10])for(const z of [-4.4,.7,5.5]){
   const g=new THREE.Group();groups.round.add(g);g.position.set(x,0,z);
@@ -96,10 +116,10 @@ function build(){
   for(const xx of [-.85,-.27,.27,.85])for(const zz of [-.94,.94])chair(g,xx,zz,zz>0?Math.PI:0);
  }
  lights.chand=lights.chand||[];
- lights.hemi=new THREE.HemisphereLight('#ffecd3','#3e332c',2.15);scene.add(lights.hemi);
- lights.sun=new THREE.DirectionalLight('#fff0d7',3.45);lights.sun.position.set(10,17,11);lights.sun.castShadow=true;
+ lights.hemi=new THREE.HemisphereLight('#f9e4cb','#343029',1.1);scene.add(lights.hemi);
+ lights.sun=new THREE.DirectionalLight('#fff0d7',2.1);lights.sun.position.set(10,17,11);lights.sun.castShadow=true;
  lights.sun.shadow.mapSize.set(1024,1024);lights.sun.shadow.camera.left=-24;lights.sun.shadow.camera.right=24;lights.sun.shadow.camera.top=24;lights.sun.shadow.camera.bottom=-24;scene.add(lights.sun);
- const fill=new THREE.DirectionalLight('#ffdcb3',1.5);fill.position.set(-12,10,6);scene.add(fill);
+ const fill=new THREE.DirectionalLight('#f7dfbe',.65);fill.position.set(-12,10,6);scene.add(fill);
  const resize=()=>{const w=canvasHost.clientWidth,h=canvasHost.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/Math.max(1,h);camera.updateProjectionMatrix();request()};
  new ResizeObserver(resize).observe(canvasHost);
  resize();controls(cv);
@@ -109,9 +129,9 @@ function request(){if(!renderer||scheduled)return;scheduled=true;requestAnimatio
 function aim(){if(!camera)return;const {theta,phi,radius}=view;
  camera.position.set(target.x+Math.sin(phi)*Math.sin(theta)*radius,target.y+Math.cos(phi)*radius,target.z+Math.sin(phi)*Math.cos(theta)*radius);camera.lookAt(target);request()}
 function preset(which){const p={
- overview:{theta:.45,phi:1.08,radius:29,target:[0,2.8,0]},
- stage:{theta:0,phi:1.20,radius:15,target:[0,2.7,-5.1]},
- tables:{theta:1.10,phi:.90,radius:24,target:[0,1.9,2]}
+ overview:{theta:.10,phi:1.43,radius:23,target:[0,2.6,-.4]},
+ stage:{theta:0,phi:1.40,radius:15.5,target:[0,2.55,-5.1]},
+ tables:{theta:.62,phi:1.39,radius:19,target:[0,2.05,1.5]}
  }[which];view={theta:p.theta,phi:p.phi,radius:p.radius};target.set(...p.target);aim()}
 function runner(){const g=groups.runner;while(g.children.length){const c=g.children[0];g.remove(c);c.geometry?.dispose()}
  const width=state.aisle==='wide'?3.55:2.35;
@@ -122,12 +142,12 @@ function apply(){
  if(!renderer)return;
  const palettes={gold:['#b99a69','#d4b18a','#bc9b69','#e3ccaa','#19120c'],pearl:['#acbdc7','#cbd4db','#afc4cb','#e2e5ed','#111b22'],rose:['#b9858d','#d1a5ad','#be9096','#efcdd0','#201217']};
  const p=palettes[state.palette];materials.trim.color.set(p[0]);materials.metal.color.set(p[0]);materials.curtain.color.set(p[1]);materials.chair.color.set(p[2]);materials.runner.color.set(p[3]);scene.background.set(p[4]);
- materials.ivory.color.set(state.hall==='moonlight'?'#e5eced':'#ece1d1');
+ materials.ivory.color.set(state.hall==='moonlight'?'#c0c9cb':'#d2c7b7');
  lights.hemi.color.set(state.light==='day'?'#e8f3ff':'#ffecd3');
- lights.hemi.intensity=state.light==='day'?2.85:2.15;
+ lights.hemi.intensity=state.light==='day'?1.45:1.1;
  lights.sun.color.set(state.light==='day'?'#ffffff':'#fff0d7');
- for(const lamp of lights.chand){lamp.color.set(state.light==='day'?'#e7f3ff':'#ffdfad');lamp.intensity=state.light==='day'?25:43}
- renderer.toneMappingExposure=state.light==='day'?1.75:1.52;
+ for(const lamp of lights.chand){lamp.color.set(state.light==='day'?'#e7f3ff':'#ffdfad');lamp.intensity=state.light==='day'?5.5:9}
+ renderer.toneMappingExposure=state.light==='day'?1.20:1.06;
  groups.round.visible=state.layout==='round';groups.banquet.visible=state.layout==='banquet';runner();
  for(const b of root.querySelectorAll('[data-key]')){const yes=state[b.dataset.key]===b.dataset.val;b.classList.toggle('selected',yes);b.setAttribute('aria-pressed',String(yes))}
  for(const b of root.querySelectorAll('[data-view]'))b.classList.toggle('selected',b.dataset.view===state.camera);
