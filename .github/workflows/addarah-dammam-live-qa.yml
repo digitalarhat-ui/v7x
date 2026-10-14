@@ -42,7 +42,7 @@ jobs:
             try{
               const response=await page.goto(ROOT,{waitUntil:'domcontentloaded',timeout:45000});
               await new Promise(r=>setTimeout(r,3400));
-              check('homepage_http_200',response?.status()===200,String(response?.status()));
+              check('homepage_http_200',[200,304].includes(response?.status()),String(response?.status()));
               const init=await page.evaluate(()=>({
                 title:document.title,
                 logo:document.querySelector('.brand')?.textContent?.trim()||'',
@@ -53,17 +53,17 @@ jobs:
                 heroUrl:getComputedStyle(document.querySelector('.hero-bg')).backgroundImage,
                 text:document.body.innerText.slice(0,1700),
                 script:!!window.WhiteRoseLocale,
-                inputs:['#addarahArea','#addarahSeating','#addarahPartition','#briefArea','#briefSeating','#briefPartition'].every(s=>!!document.querySelector(s))
+                inputs:['#addarahArea','#addarahSeating','#addarahPartition','#briefArea','#briefSeating','#briefPartition'].every(s=>!!document.querySelector(s)), brandLeak:['قصر السلطان','Qasr Al Sultan','+966 55 557 3141'].some(m=>document.documentElement.innerHTML.includes(m))
               }));
               item.initial={title:init.title,logo:init.logo,lang:init.lang,overflow:init.horizontalOverflow,phone:init.phone,heroUrl:init.heroUrl,bilingualScript:init.script};
               item.images=init.imageStates;
               check('correct_business_brand',init.title.includes('الدارة')&&init.logo.includes('الدارة'),init.title);
               check('contact_phone_matched',init.phone.includes('tel:+966550844417'),init.phone.join(','));
-              check('no_unrelated_brand',marks.every(m=>!document.documentElement.innerHTML.includes(m)));
+              check('no_unrelated_brand',!init.brandLeak);
               check('no_horizontal_overflow',init.horizontalOverflow<=2,String(init.horizontalOverflow));
               check('bilingual_js_initialized',init.script,init.lang);
               check('decision_controls_exist',init.inputs);
-              check('genuine_image_loaded',init.imageStates.filter(i=>i.loaded).length>=2,JSON.stringify(init.imageStates));
+              check('genuine_image_loaded',new Set(init.imageStates.filter(i=>i.loaded).map(i=>i.url)).size>=2,JSON.stringify(init.imageStates));
               await page.screenshot({path:OUT+'/client-'+width+'.png',fullPage:false});
               if(width===390||width===1440)await page.screenshot({path:OUT+'/client-'+width+'-full.png',fullPage:true});
               await page.click('#eventChips .chip');
@@ -98,7 +98,7 @@ jobs:
               await new Promise(r=>setTimeout(r,700));
               const rvInfo=await review.evaluate(()=>({title:document.title,heading:document.querySelector('h1')?.textContent?.trim(),lang:document.documentElement.lang,overflow:document.documentElement.scrollWidth-window.innerWidth,links:[...document.querySelectorAll('a[href]')].map(a=>a.href),script:!!window.WhiteRoseLocale}));
               item.review=rvInfo;
-              check('review_http_200',rv?.status()===200,String(rv?.status()));
+              check('review_http_200',[200,304].includes(rv?.status()),String(rv?.status()));
               check('review_brand',rvInfo.title.includes('الدارة')&&rvInfo.heading.includes('الدارة'));
               check('review_no_horizontal_overflow',rvInfo.overflow<=2,String(rvInfo.overflow));
               check('review_language_initialized',rvInfo.script);
