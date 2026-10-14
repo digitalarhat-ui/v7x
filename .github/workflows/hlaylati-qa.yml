@@ -1,0 +1,127 @@
+name: H Laylati isolated White Rose-derived concept QA
+on:
+  push:
+    branches: [hlaylati-madinah-white-rose-20261014]
+    paths:
+      - '.github/workflows/hlaylati-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  client-isolated-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hlaylati-madinah-white-rose-20261014
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build H Laylati from isolated prior White Rose derivative
+        run: |
+          python patches/build-hlaylati-candidate.py
+          node --check candidate-hlaylati/wr-bilingual.js
+          node --check candidate-hlaylati/hlaylati-guard.js
+          node --check candidate-hlaylati/hlaylati-layer.js
+      - name: Install Chromium
+        run: |
+          python -m pip install --quiet playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: Four-width browser QA with cross-device review-link rehearsal
+        shell: bash
+        run: |
+          mkdir -p qa-output/hlaylati/shots
+          python -m http.server 8765 --directory candidate-hlaylati >/tmp/hlaylati-server.log 2>&1 &
+          sleep 3
+          cat >/tmp/hlaylati-qa.py <<'PY'
+          import asyncio,json,datetime,os,traceback
+          from playwright.async_api import async_playwright
+          B="http://127.0.0.1:8765/";O="qa-output/hlaylati"
+          results={"lead":"SA-3F-20261014-HLAYLATI-MADINAH","source":"White Rose-derived Mavera client-isolated code","utc":datetime.datetime.now(datetime.timezone.utc).isoformat(),
+          "local_candidate":True,"public_deployment":False,"photo_rights_independently_verified":False,
+          "actual_management_approval":False,"published_package_validity":False,"widths":{},"status":"PENDING"}
+          async def test():
+            async with async_playwright() as p:
+              browser=await p.chromium.launch(headless=True,args=["--no-sandbox"])
+              for width in (390,430,768,1440):
+                context=await browser.new_context(viewport={"width":width,"height":900},is_mobile=width<768,has_touch=width<768)
+                pg=await context.new_page();errors=[];pg.on("pageerror",lambda e:errors.append(str(e)[:400]))
+                t={}
+                try:
+                  res=await pg.goto(B,wait_until="domcontentloaded",timeout=35000)
+                  await pg.wait_for_timeout(2600)
+                  t["http"]=res.status
+                  t["main_title"]=await pg.locator("#hly-title").inner_text()
+                  t["hly_brand_present"]=await pg.evaluate("()=>/H LAYLATI|هذه ليلتي/i.test(document.body.innerText)")
+                  t["foreign_brand"]=await pg.evaluate("()=>/Mavera|ماڤيرا|مافيرا|White Rose|الوردة البيضاء|memoriesforevents/i.test(document.body.innerText)")
+                  t["overflow"]=await pg.evaluate("()=>Math.max(0,document.documentElement.scrollWidth-innerWidth)")
+                  t["errors"]=errors[:]
+                  t["photo_load"]=await pg.locator("#hly-component .hly-photo img").evaluate_all("(xs)=>xs.map(x=>({url:x.currentSrc,w:x.naturalWidth,h:x.naturalHeight,complete:x.complete}))")
+                  t["photo_technical_pass"]=len(t["photo_load"])==2 and all(x["w"]>150 for x in t["photo_load"])
+                  t["matterport_links"]=await pg.locator("#hly-tours a[href*='matterport.com/show/']").count()
+                  if width==390:
+                    await pg.locator("#hly-hall").select_option("badrah")
+                    await pg.locator("#hly-men").fill("145")
+                    await pg.locator("#hly-women").fill("200")
+                    await pg.locator("#hly-date").fill("2026-11-20")
+                    t["review_link"]=await pg.locator("#hly-review").get_attribute("href")
+                    await pg.reload(wait_until="domcontentloaded");await pg.wait_for_timeout(1500)
+                    t["persist_hall"]=await pg.locator("#hly-hall").input_value()
+                    t["persist_men"]=await pg.locator("#hly-men").input_value()
+                    t["persist_women"]=await pg.locator("#hly-women").input_value()
+                    t["persist_date"]=await pg.locator("#hly-date").input_value()
+                    await pg.locator("#hly-lang").click()
+                    t["en_heading"]=await pg.locator("#hly-title").inner_text()
+                    t["lang_en"]= "Venue" in t["en_heading"]
+                    rev=await context.new_page();rr=await rev.goto(B+t["review_link"].lstrip("/"),wait_until="domcontentloaded")
+                    t["review_http"]=rr.status
+                    t["review_values"]=await rev.locator("#hly-summary").inner_text()
+                    t["review_propagation"]=all(x in t["review_values"] for x in ("Badrah","145","200","2026-11-20"))
+                    t["review_disclaimer"]= "غير رسمي" in await rev.locator("#hly-warning").inner_text()
+                    await rev.screenshot(path=f"{O}/shots/review-390.png",full_page=True,animations="disabled")
+                  height=await pg.evaluate("()=>document.documentElement.scrollHeight")
+                  for y in range(0,height,420):
+                    await pg.evaluate("(v)=>scrollTo(0,v)",y)
+                    await pg.wait_for_timeout(45)
+                  await pg.wait_for_timeout(500)
+                  await pg.screenshot(path=f"{O}/shots/home-{width}.png",full_page=True,animations="disabled")
+                  # Technical checks independent of rights/buyer approval; do not call PRODUCTION READY.
+                  t["technical_pass"]=all([t["http"]==200,t["hly_brand_present"],not t["foreign_brand"],t["overflow"]<5,
+                      not t["errors"],t["matterport_links"]==5, t["photo_technical_pass"],
+                      width!=390 or (t.get("persist_hall")=="badrah" and t.get("persist_men")=="145" and t.get("persist_women")=="200" and
+                                      t.get("persist_date")=="2026-11-20" and t.get("lang_en") and t.get("review_propagation") and t.get("review_disclaimer"))])
+                except Exception as e:
+                  t["technical_pass"]=False;t["exception"]=str(e)[:450]
+                  try:await pg.screenshot(path=f"{O}/shots/error-{width}.png",full_page=True)
+                  except:pass
+                results["widths"][str(width)]=t
+                await context.close()
+              await browser.close()
+          try:asyncio.run(test())
+          except Exception:results["fatal"]=traceback.format_exc()[-1500:]
+          results["status"]="LOCAL_TECHNICAL_PASS_ONLY" if len(results["widths"])==4 and all(v.get("technical_pass") for v in results["widths"].values()) else "LOCAL_QA_FAIL"
+          open(O+"/status.json","w",encoding="utf8").write(json.dumps(results,ensure_ascii=False,indent=2))
+          print("HLAYLATI_QA "+json.dumps({"status":results["status"],"widths":{k:{y:v.get(y) for y in ("http","foreign_brand","overflow","photo_technical_pass","matterport_links","review_propagation","technical_pass","exception")} for k,v in results["widths"].items()}},ensure_ascii=False))
+          if results["status"]!="LOCAL_TECHNICAL_PASS_ONLY":raise SystemExit(1)
+          PY
+          python /tmp/hlaylati-qa.py
+      - name: Save build and visual evidence regardless of status
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hlaylati-qa-candidate-not-client-ready
+          path: |
+            candidate-hlaylati/
+            qa-output/hlaylati/
+          if-no-files-found: warn
+      - name: Persist source and diagnostic status (no production deployment)
+        if: always()
+        run: |
+          test -f candidate-hlaylati/index.html || exit 0
+          git config user.name "Digital Arhat QA"
+          git config user.email "actions@users.noreply.github.com"
+          git add candidate-hlaylati qa-output/hlaylati/status.json || true
+          git commit -m "H Laylati isolated candidate and QA checkpoint — no client release" || true
+          git push origin HEAD:hlaylati-madinah-white-rose-20261014 || true
