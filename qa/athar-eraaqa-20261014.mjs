@@ -36,7 +36,7 @@ for(const width of [390,430,768,1440]){
      hero:[...document.querySelectorAll('.heroImage img')].map(x=>({src:x.currentSrc,width:x.naturalWidth,complete:x.complete}))
   }));
   out.home=home;
-  check('root_http_200',res?.status()===200,res?.status());
+  check('root_http_200_or_not_modified',[200,304].includes(res?.status()),res?.status());
   check('correct_business',home.title.includes('أثر العراقة')&&home.words.includes('أثر العراقة'));
   check('arabic_rtl',home.lang==='ar'&&home.dir==='rtl',home.lang+'/'+home.dir);
   check('phone_correct',home.links.includes('tel:0559670004'),home.links.join(','));
