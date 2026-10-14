@@ -1,0 +1,5592 @@
+{
+  "audit_type": "INDEPENDENT_READ_ONLY_NOT_ANALYTICS",
+  "asof_utc": "2026-10-14T17:26:56.850237+00:00",
+  "pages": {
+    "/": {
+      "http": 200,
+      "url": "https://www.h-laylati.com/",
+      "bytes_html": 628796,
+      "mime": "text/html;charset=utf-8",
+      "redirects": [],
+      "x_robots": null,
+      "cache": null,
+      "title": "H Laylati LLC.",
+      "lang": "en-US",
+      "dir": null,
+      "canonical": [
+        "https://www.h-laylati.com"
+      ],
+      "h1": [],
+      "h2": [
+        "",
+        "",
+        ""
+      ],
+      "html_title_len": 14,
+      "meta_description": [
+        ""
+      ],
+      "meta_robots": [],
+      "og_image": [],
+      "og_description": [],
+      "twitter_card": [
+        "summary"
+      ],
+      "hreflang": [],
+      "jsonld": [
+        "{\"url\":\"https://www.h-laylati.com\",\"name\":\"H Laylati LLC.\",\"@context\":\"http://schema.org\",\"@type\":\"WebSite\"}"
+      ],
+      "images": [
+        {
+          "alt": "",
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/99999bd8-6ee7-4e4e-b9bd-6043425f22a0/WhatsApp+Image+2024-01-24+at+6.39.50+PM+%281%29.jpeg",
+          "loading": "eager"
+        },
+        {
+          "alt": "",
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/253a443f-fc3f-4ced-989a-f7ebcfd28b8e/WhatsApp+Image+2024-01-24+at+3.43.35+PM.jpeg",
+          "loading": "lazy"
+        },
+        {
+          "alt": "",
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/38c107c7-c48c-48db-90db-4b8ad80d5172/WhatsApp+Image+2024-01-24+at+3.43.32+PM+%282%29.jpeg",
+          "loading": "lazy"
+        },
+        {
+          "alt": "",
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/59c2083a-047f-4981-bf05-a000c80933b8/WhatsApp+Image+2024-01-24+at+3.43.32+PM+%283%29.jpeg",
+          "loading": "lazy"
+        }
+      ],
+      "image_count": 4,
+      "form_count": 0,
+      "button_count": 2,
+      "main_count": 1,
+      "nav_count": 3,
+      "text_len": 501,
+      "analytics_snippets": {
+        "gtm": false,
+        "ga4": true,
+        "meta_pixel": false,
+        "gtag_js": false,
+        "clarity": false,
+        "hotjar": false
+      },
+      "links": [
+        {
+          "t": "0",
+          "href": "/cart"
+        },
+        {
+          "t": "Skip to Content",
+          "href": "#page"
+        },
+        {
+          "t": "H Laylati LLC.",
+          "href": "/"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "H Laylati LLC.",
+          "href": "/"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "حفلات خارجية",
+          "href": "/s/BP-H-laylati.pdf"
+        },
+        {
+          "t": "قاعة هذه ليلتي",
+          "href": "/s/.pdf"
+        },
+        {
+          "t": "بدره",
+          "href": "/s/1-ymm2.pdf"
+        },
+        {
+          "t": "اعـــــــلانـــــات",
+          "href": "/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg"
+        },
+        {
+          "t": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6.",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6"
+        },
+        {
+          "t": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84"
+        }
+      ]
+    },
+    "/home": {
+      "http": 200,
+      "url": "https://www.h-laylati.com/home",
+      "bytes_html": 134662,
+      "mime": "text/html;charset=utf-8",
+      "redirects": [],
+      "x_robots": null,
+      "cache": null,
+      "title": "H Laylati LLC.",
+      "lang": "en-US",
+      "dir": null,
+      "canonical": [
+        "https://www.h-laylati.com"
+      ],
+      "h1": [],
+      "h2": [
+        "",
+        "",
+        ""
+      ],
+      "html_title_len": 14,
+      "meta_description": [
+        ""
+      ],
+      "meta_robots": [],
+      "og_image": [],
+      "og_description": [],
+      "twitter_card": [
+        "summary"
+      ],
+      "hreflang": [],
+      "jsonld": [
+        "{\"url\":\"https://www.h-laylati.com\",\"name\":\"H Laylati LLC.\",\"@context\":\"http://schema.org\",\"@type\":\"WebSite\"}"
+      ],
+      "images": [
+        {
+          "alt": "",
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/99999bd8-6ee7-4e4e-b9bd-6043425f22a0/WhatsApp+Image+2024-01-24+at+6.39.50+PM+%281%29.jpeg",
+          "loading": "eager"
+        },
+        {
+          "alt": "",
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/253a443f-fc3f-4ced-989a-f7ebcfd28b8e/WhatsApp+Image+2024-01-24+at+3.43.35+PM.jpeg",
+          "loading": "lazy"
+        },
+        {
+          "alt": "",
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/38c107c7-c48c-48db-90db-4b8ad80d5172/WhatsApp+Image+2024-01-24+at+3.43.32+PM+%282%29.jpeg",
+          "loading": "lazy"
+        },
+        {
+          "alt": "",
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/59c2083a-047f-4981-bf05-a000c80933b8/WhatsApp+Image+2024-01-24+at+3.43.32+PM+%283%29.jpeg",
+          "loading": "lazy"
+        }
+      ],
+      "image_count": 4,
+      "form_count": 0,
+      "button_count": 2,
+      "main_count": 1,
+      "nav_count": 3,
+      "text_len": 501,
+      "analytics_snippets": {
+        "gtm": false,
+        "ga4": true,
+        "meta_pixel": false,
+        "gtag_js": false,
+        "clarity": false,
+        "hotjar": false
+      },
+      "links": [
+        {
+          "t": "0",
+          "href": "/cart"
+        },
+        {
+          "t": "Skip to Content",
+          "href": "#page"
+        },
+        {
+          "t": "H Laylati LLC.",
+          "href": "/"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "H Laylati LLC.",
+          "href": "/"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "حفلات خارجية",
+          "href": "/s/BP-H-laylati.pdf"
+        },
+        {
+          "t": "قاعة هذه ليلتي",
+          "href": "/s/.pdf"
+        },
+        {
+          "t": "بدره",
+          "href": "/s/1-ymm2.pdf"
+        },
+        {
+          "t": "اعـــــــلانـــــات",
+          "href": "/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg"
+        },
+        {
+          "t": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6.",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6"
+        },
+        {
+          "t": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84"
+        }
+      ]
+    },
+    "/about": {
+      "http": 200,
+      "url": "https://www.h-laylati.com/about",
+      "bytes_html": 122214,
+      "mime": "text/html;charset=utf-8",
+      "redirects": [],
+      "x_robots": null,
+      "cache": null,
+      "title": "About — H Laylati LLC.",
+      "lang": "en-US",
+      "dir": null,
+      "canonical": [
+        "https://www.h-laylati.com/about"
+      ],
+      "h1": [],
+      "h2": [
+        "نبذه عن قاعات هذه ليلتي"
+      ],
+      "html_title_len": 22,
+      "meta_description": [
+        ""
+      ],
+      "meta_robots": [],
+      "og_image": [],
+      "og_description": [],
+      "twitter_card": [
+        "summary"
+      ],
+      "hreflang": [],
+      "jsonld": [
+        "{\"url\":\"https://www.h-laylati.com\",\"name\":\"H Laylati LLC.\",\"@context\":\"http://schema.org\",\"@type\":\"WebSite\"}"
+      ],
+      "images": [
+        {
+          "alt": "",
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/f52173ad-aa29-4706-8936-f9254c60ae0b/WhatsApp+Image+2024-01-28+at+8.22.10+PM.jpg",
+          "loading": null
+        }
+      ],
+      "image_count": 1,
+      "form_count": 0,
+      "button_count": 2,
+      "main_count": 1,
+      "nav_count": 3,
+      "text_len": 961,
+      "analytics_snippets": {
+        "gtm": false,
+        "ga4": true,
+        "meta_pixel": false,
+        "gtag_js": false,
+        "clarity": false,
+        "hotjar": false
+      },
+      "links": [
+        {
+          "t": "0",
+          "href": "/cart"
+        },
+        {
+          "t": "Skip to Content",
+          "href": "#page"
+        },
+        {
+          "t": "H Laylati LLC.",
+          "href": "/"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "H Laylati LLC.",
+          "href": "/"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "اعـــــــلانـــــات",
+          "href": "/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg"
+        },
+        {
+          "t": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6.",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6"
+        },
+        {
+          "t": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84"
+        }
+      ]
+    },
+    "/services": {
+      "http": 200,
+      "url": "https://www.h-laylati.com/services",
+      "bytes_html": 182739,
+      "mime": "text/html;charset=utf-8",
+      "redirects": [],
+      "x_robots": null,
+      "cache": null,
+      "title": "! مشاهدة القاعات من مكانك — H Laylati LLC.",
+      "lang": "en-US",
+      "dir": null,
+      "canonical": [
+        "https://www.h-laylati.com/services"
+      ],
+      "h1": [],
+      "h2": [],
+      "html_title_len": 42,
+      "meta_description": [
+        ""
+      ],
+      "meta_robots": [],
+      "og_image": [],
+      "og_description": [],
+      "twitter_card": [
+        "summary"
+      ],
+      "hreflang": [],
+      "jsonld": [
+        "{\"url\":\"https://www.h-laylati.com\",\"name\":\"H Laylati LLC.\",\"@context\":\"http://schema.org\",\"@type\":\"WebSite\"}"
+      ],
+      "images": [
+        {
+          "alt": "",
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/c4a55f9c-de10-40c1-8360-168188f5265f/WhatsApp+Image+2024-02-06+at+1.25.31+AM.jpeg",
+          "loading": null
+        },
+        {
+          "alt": "",
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/4756fdbc-78e0-4dd2-8049-834d26ad5ead/WhatsApp+Image+2024-02-06+at+1.25.30+AM.jpg",
+          "loading": null
+        },
+        {
+          "alt": "",
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/e698c544-31b0-4b62-a59b-54bc170e58d0/WhatsApp+Image+2024-02-04+at+4.08.00+PM.jpeg",
+          "loading": null
+        },
+        {
+          "alt": "",
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/26ee26bf-0fb0-4e0f-b6bf-0e02ed6de203/WhatsApp+Image+2024-02-06+at+1.25.32+AM.jpeg",
+          "loading": null
+        },
+        {
+          "alt": "",
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/b9a5947b-b6a8-491b-81e6-88e5698b838d/WhatsApp+Image+2024-02-04+at+4.08.00+PM+%281%29.jpeg",
+          "loading": null
+        }
+      ],
+      "image_count": 5,
+      "form_count": 0,
+      "button_count": 2,
+      "main_count": 1,
+      "nav_count": 3,
+      "text_len": 686,
+      "analytics_snippets": {
+        "gtm": false,
+        "ga4": true,
+        "meta_pixel": false,
+        "gtag_js": false,
+        "clarity": false,
+        "hotjar": false
+      },
+      "links": [
+        {
+          "t": "0",
+          "href": "/cart"
+        },
+        {
+          "t": "Skip to Content",
+          "href": "#page"
+        },
+        {
+          "t": "H Laylati LLC.",
+          "href": "/"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "H Laylati LLC.",
+          "href": "/"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "",
+          "href": "https://my.matterport.com/show/?m=RUYuufuYXQH"
+        },
+        {
+          "t": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=q6LCks19oDu"
+        },
+        {
+          "t": "",
+          "href": "https://my.matterport.com/show/?m=3ezBLQghvtd"
+        },
+        {
+          "t": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=wERuBbYLKdP"
+        },
+        {
+          "t": "",
+          "href": "https://my.matterport.com/show/?m=mBcA6k8Ffmg"
+        },
+        {
+          "t": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=iCwo26Bo7XH"
+        },
+        {
+          "t": "",
+          "href": "https://my.matterport.com/show/?m=mBcA6k8Ffmg"
+        },
+        {
+          "t": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=HUJFxwkL1R4"
+        },
+        {
+          "t": "",
+          "href": "https://my.matterport.com/show/?m=RUYuufuYXQH"
+        },
+        {
+          "t": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=f2PpZrQNoW7"
+        },
+        {
+          "t": "اعـــــــلانـــــات",
+          "href": "/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg"
+        },
+        {
+          "t": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6.",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6"
+        },
+        {
+          "t": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84"
+        }
+      ]
+    },
+    "/contact": {
+      "http": 200,
+      "url": "https://www.h-laylati.com/contact",
+      "bytes_html": 192871,
+      "mime": "text/html;charset=utf-8",
+      "redirects": [],
+      "x_robots": null,
+      "cache": null,
+      "title": "Contact — H Laylati LLC.",
+      "lang": "en-US",
+      "dir": null,
+      "canonical": [
+        "https://www.h-laylati.com/contact"
+      ],
+      "h1": [],
+      "h2": [
+        "تواصل معنا"
+      ],
+      "html_title_len": 24,
+      "meta_description": [
+        ""
+      ],
+      "meta_robots": [],
+      "og_image": [
+        "http://static1.squarespace.com/static/65ad1d399c9c5e5e2488bdbb/t/65bd1687a75a601e7db5292a/1759687474278/png-transparent-tiktok-brands-icon.png?format=1500w"
+      ],
+      "og_description": [],
+      "twitter_card": [
+        "summary"
+      ],
+      "hreflang": [],
+      "jsonld": [
+        "{\"url\":\"https://www.h-laylati.com\",\"name\":\"H Laylati LLC.\",\"@context\":\"http://schema.org\",\"@type\":\"WebSite\"}"
+      ],
+      "images": [],
+      "image_count": 0,
+      "form_count": 0,
+      "button_count": 2,
+      "main_count": 1,
+      "nav_count": 3,
+      "text_len": 581,
+      "analytics_snippets": {
+        "gtm": false,
+        "ga4": true,
+        "meta_pixel": false,
+        "gtag_js": false,
+        "clarity": false,
+        "hotjar": false
+      },
+      "links": [
+        {
+          "t": "0",
+          "href": "/cart"
+        },
+        {
+          "t": "Skip to Content",
+          "href": "#page"
+        },
+        {
+          "t": "H Laylati LLC.",
+          "href": "/"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "H Laylati LLC.",
+          "href": "/"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "اعـــــــلانـــــات",
+          "href": "/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg"
+        },
+        {
+          "t": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6.",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6"
+        },
+        {
+          "t": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84"
+        }
+      ]
+    },
+    "/704825207487": {
+      "http": 200,
+      "url": "https://www.h-laylati.com/704825207487",
+      "bytes_html": 161169,
+      "mime": "text/html;charset=utf-8",
+      "redirects": [],
+      "x_robots": null,
+      "cache": null,
+      "title": "للتوظيف — H Laylati LLC.",
+      "lang": "en-US",
+      "dir": null,
+      "canonical": [
+        "https://www.h-laylati.com/704825207487"
+      ],
+      "h1": [
+        "للتوظيف"
+      ],
+      "h2": [],
+      "html_title_len": 24,
+      "meta_description": [
+        ""
+      ],
+      "meta_robots": [],
+      "og_image": [],
+      "og_description": [],
+      "twitter_card": [
+        "summary"
+      ],
+      "hreflang": [],
+      "jsonld": [
+        "{\"url\":\"https://www.h-laylati.com\",\"name\":\"H Laylati LLC.\",\"@context\":\"http://schema.org\",\"@type\":\"WebSite\"}"
+      ],
+      "images": [],
+      "image_count": 0,
+      "form_count": 0,
+      "button_count": 4,
+      "main_count": 1,
+      "nav_count": 3,
+      "text_len": 470,
+      "analytics_snippets": {
+        "gtm": false,
+        "ga4": true,
+        "meta_pixel": false,
+        "gtag_js": false,
+        "clarity": false,
+        "hotjar": false
+      },
+      "links": [
+        {
+          "t": "0",
+          "href": "/cart"
+        },
+        {
+          "t": "Skip to Content",
+          "href": "#page"
+        },
+        {
+          "t": "H Laylati LLC.",
+          "href": "/"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "H Laylati LLC.",
+          "href": "/"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "اعـــــــلانـــــات",
+          "href": "/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg"
+        },
+        {
+          "t": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6.",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6"
+        },
+        {
+          "t": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84"
+        }
+      ]
+    },
+    "/cart": {
+      "http": 200,
+      "url": "https://www.h-laylati.com/cart",
+      "bytes_html": 100994,
+      "mime": "text/html;charset=utf-8",
+      "redirects": [],
+      "x_robots": null,
+      "cache": null,
+      "title": "H Laylati LLC.",
+      "lang": "en-US",
+      "dir": null,
+      "canonical": [],
+      "h1": [],
+      "h2": [],
+      "html_title_len": 14,
+      "meta_description": [
+        ""
+      ],
+      "meta_robots": [],
+      "og_image": [
+        ""
+      ],
+      "og_description": [],
+      "twitter_card": [
+        "summary"
+      ],
+      "hreflang": [],
+      "jsonld": [
+        "{\"url\":\"https://www.h-laylati.com\",\"name\":\"H Laylati LLC.\",\"@context\":\"http://schema.org\",\"@type\":\"WebSite\"}"
+      ],
+      "images": [],
+      "image_count": 0,
+      "form_count": 0,
+      "button_count": 2,
+      "main_count": 1,
+      "nav_count": 3,
+      "text_len": 452,
+      "analytics_snippets": {
+        "gtm": false,
+        "ga4": true,
+        "meta_pixel": false,
+        "gtag_js": false,
+        "clarity": false,
+        "hotjar": false
+      },
+      "links": [
+        {
+          "t": "0",
+          "href": "/cart"
+        },
+        {
+          "t": "Skip to Content",
+          "href": "#page"
+        },
+        {
+          "t": "H Laylati LLC.",
+          "href": "/"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "H Laylati LLC.",
+          "href": "/"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "اعـــــــلانـــــات",
+          "href": "/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg"
+        },
+        {
+          "t": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6.",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6"
+        },
+        {
+          "t": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84"
+        }
+      ]
+    },
+    "/sitemap.xml": {
+      "http": 200,
+      "url": "https://www.h-laylati.com/sitemap.xml",
+      "bytes_html": 3212,
+      "mime": "text/xml;charset=utf-8",
+      "redirects": [],
+      "x_robots": "noindex",
+      "cache": null
+    },
+    "/robots.txt": {
+      "http": 200,
+      "url": "https://www.h-laylati.com/robots.txt",
+      "bytes_html": 1508,
+      "mime": "text/plain;charset=utf-8",
+      "redirects": [],
+      "x_robots": null,
+      "cache": null
+    },
+    "/nonexistent-audit-path-123431": {
+      "http": 404,
+      "url": "https://www.h-laylati.com/nonexistent-audit-path-123431",
+      "bytes_html": 100537,
+      "mime": "text/html;charset=utf-8",
+      "redirects": [],
+      "x_robots": null,
+      "cache": null,
+      "title": "H Laylati LLC.",
+      "lang": "en-US",
+      "dir": null,
+      "canonical": [],
+      "h1": [],
+      "h2": [],
+      "html_title_len": 14,
+      "meta_description": [
+        ""
+      ],
+      "meta_robots": [],
+      "og_image": [
+        ""
+      ],
+      "og_description": [],
+      "twitter_card": [
+        "summary"
+      ],
+      "hreflang": [],
+      "jsonld": [
+        "{\"url\":\"https://www.h-laylati.com\",\"name\":\"H Laylati LLC.\",\"@context\":\"http://schema.org\",\"@type\":\"WebSite\"}"
+      ],
+      "images": [],
+      "image_count": 0,
+      "form_count": 0,
+      "button_count": 2,
+      "main_count": 1,
+      "nav_count": 3,
+      "text_len": 804,
+      "analytics_snippets": {
+        "gtm": false,
+        "ga4": true,
+        "meta_pixel": false,
+        "gtag_js": false,
+        "clarity": false,
+        "hotjar": false
+      },
+      "links": [
+        {
+          "t": "0",
+          "href": "/cart"
+        },
+        {
+          "t": "Skip to Content",
+          "href": "#page"
+        },
+        {
+          "t": "H Laylati LLC.",
+          "href": "/"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "H Laylati LLC.",
+          "href": "/"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "! مشاهدة القاعات من مكانك",
+          "href": "/services"
+        },
+        {
+          "t": "من نحن؟",
+          "href": "/about"
+        },
+        {
+          "t": "التواصل",
+          "href": "/contact"
+        },
+        {
+          "t": "للتوظيف",
+          "href": "/704825207487"
+        },
+        {
+          "t": "",
+          "href": "https://instagram.com/squarespace"
+        },
+        {
+          "t": "",
+          "href": "http://www.snapchat.com/add/Connect to Snapchat"
+        },
+        {
+          "t": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1"
+        },
+        {
+          "t": "clicking here",
+          "href": "/"
+        },
+        {
+          "t": "clicking here",
+          "href": "/search"
+        },
+        {
+          "t": "اعـــــــلانـــــات",
+          "href": "/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg"
+        },
+        {
+          "t": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6.",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6"
+        },
+        {
+          "t": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84"
+        }
+      ]
+    }
+  },
+  "links": {
+    "http://www.snapchat.com/add/Connect to Snapchat": {
+      "destination_kind": "external",
+      "http": 404,
+      "final_url": "https://www.snapchat.com:443/@connect%20to%20snapchat",
+      "type": "text/html; charset=utf-8",
+      "length": null,
+      "redirects": 2
+    },
+    "https://instagram.com/squarespace": {
+      "destination_kind": "external",
+      "http": 200,
+      "final_url": "https://www.instagram.com/accounts/login/?next=https%3A%2F%2Fwww.instagram.com%2Fsquarespace&is_from_rle",
+      "type": "text/html; charset=\"utf-8\"",
+      "length": null,
+      "redirects": 2
+    },
+    "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6": {
+      "destination_kind": "external",
+      "http": 200,
+      "final_url": "https://www.google.com/maps/place/H+laylati+%7C+%D9%87%D8%B0%D9%87+%D9%84%D9%8A%D9%84%D8%AA%D9%8A%E2%80%AD/@24.5019978,39.6014941,17z/data=!3m1!4b1!4m6!3m5!1s0x15bdbe8e2ef423c1:0x8e230ceb6f6035b4!8m2!3d24.5019978!4d39.6014941!16s%2Fg%2F11bzy8h3ks?entry=tts",
+      "type": "text/html; charset=UTF-8",
+      "length": null,
+      "redirects": 1
+    },
+    "https://my.matterport.com/show/?m=3ezBLQghvtd": {
+      "destination_kind": "matterport",
+      "http": 403,
+      "final_url": "https://my.matterport.com/show/?m=3ezBLQghvtd",
+      "type": "text/html; charset=UTF-8",
+      "length": null,
+      "redirects": 0
+    },
+    "https://my.matterport.com/show/?m=HUJFxwkL1R4": {
+      "destination_kind": "matterport",
+      "http": 403,
+      "final_url": "https://my.matterport.com/show/?m=HUJFxwkL1R4",
+      "type": "text/html; charset=UTF-8",
+      "length": null,
+      "redirects": 0
+    },
+    "https://my.matterport.com/show/?m=RUYuufuYXQH": {
+      "destination_kind": "matterport",
+      "http": 403,
+      "final_url": "https://my.matterport.com/show/?m=RUYuufuYXQH",
+      "type": "text/html; charset=UTF-8",
+      "length": null,
+      "redirects": 0
+    },
+    "https://my.matterport.com/show/?m=f2PpZrQNoW7": {
+      "destination_kind": "matterport",
+      "http": 403,
+      "final_url": "https://my.matterport.com/show/?m=f2PpZrQNoW7",
+      "type": "text/html; charset=UTF-8",
+      "length": null,
+      "redirects": 0
+    },
+    "https://my.matterport.com/show/?m=iCwo26Bo7XH": {
+      "destination_kind": "matterport",
+      "http": 403,
+      "final_url": "https://my.matterport.com/show/?m=iCwo26Bo7XH",
+      "type": "text/html; charset=UTF-8",
+      "length": null,
+      "redirects": 0
+    },
+    "https://my.matterport.com/show/?m=mBcA6k8Ffmg": {
+      "destination_kind": "matterport",
+      "http": 403,
+      "final_url": "https://my.matterport.com/show/?m=mBcA6k8Ffmg",
+      "type": "text/html; charset=UTF-8",
+      "length": null,
+      "redirects": 0
+    },
+    "https://my.matterport.com/show/?m=q6LCks19oDu": {
+      "destination_kind": "matterport",
+      "http": 403,
+      "final_url": "https://my.matterport.com/show/?m=q6LCks19oDu",
+      "type": "text/html; charset=UTF-8",
+      "length": null,
+      "redirects": 0
+    },
+    "https://my.matterport.com/show/?m=wERuBbYLKdP": {
+      "destination_kind": "matterport",
+      "http": 403,
+      "final_url": "https://my.matterport.com/show/?m=wERuBbYLKdP",
+      "type": "text/html; charset=UTF-8",
+      "length": null,
+      "redirects": 0
+    },
+    "https://www.h-laylati.com/": {
+      "destination_kind": "firstparty",
+      "http": 200,
+      "final_url": "https://www.h-laylati.com/",
+      "type": "text/html;charset=utf-8",
+      "length": "35799",
+      "redirects": 0
+    },
+    "https://www.h-laylati.com/704825207487": {
+      "destination_kind": "firstparty",
+      "http": 200,
+      "final_url": "https://www.h-laylati.com/704825207487",
+      "type": "text/html;charset=utf-8",
+      "length": "31081",
+      "redirects": 0
+    },
+    "https://www.h-laylati.com/about": {
+      "destination_kind": "firstparty",
+      "http": 200,
+      "final_url": "https://www.h-laylati.com/about",
+      "type": "text/html;charset=utf-8",
+      "length": "25331",
+      "redirects": 0
+    },
+    "https://www.h-laylati.com/cart": {
+      "destination_kind": "firstparty",
+      "http": 200,
+      "final_url": "https://www.h-laylati.com/cart",
+      "type": "text/html;charset=utf-8",
+      "length": null,
+      "redirects": 0
+    },
+    "https://www.h-laylati.com/contact": {
+      "destination_kind": "firstparty",
+      "http": 200,
+      "final_url": "https://www.h-laylati.com/contact",
+      "type": "text/html;charset=utf-8",
+      "length": null,
+      "redirects": 0
+    },
+    "https://www.h-laylati.com/s/.pdf": {
+      "destination_kind": "firstparty",
+      "http": 200,
+      "final_url": "https://static1.squarespace.com/static/65ad1d399c9c5e5e2488bdbb/t/65ce39fc3999be025b81c316/1759687474278/%D8%A8%D9%83%D8%AC%D8%A7%D8%AA+%D8%A8%D8%B0%D8%A8%D8%A7%D9%8A%D9%94%D8%AD.pdf",
+      "type": "application/pdf",
+      "length": "1783471",
+      "redirects": 1
+    },
+    "https://www.h-laylati.com/s/1-ymm2.pdf": {
+      "destination_kind": "firstparty",
+      "http": 200,
+      "final_url": "https://static1.squarespace.com/static/65ad1d399c9c5e5e2488bdbb/t/65ce4283429970293c6358fe/1759687474278/%D8%A8%D9%83%D8%AC%D8%A7%D8%AA+%D8%A8%D8%B0%D8%A8%D8%A7%D9%8A%D9%94%D8%AD+%281%29.pdf",
+      "type": "application/pdf",
+      "length": "1805915",
+      "redirects": 1
+    },
+    "https://www.h-laylati.com/s/BP-H-laylati.pdf": {
+      "destination_kind": "firstparty",
+      "http": 200,
+      "final_url": "https://static1.squarespace.com/static/65ad1d399c9c5e5e2488bdbb/t/65ce2b08d043964682a3a7d0/1759687474278/BP+H+laylati.pdf",
+      "type": "application/pdf",
+      "length": "12059026",
+      "redirects": 1
+    },
+    "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg": {
+      "destination_kind": "firstparty",
+      "http": 200,
+      "final_url": "https://static1.squarespace.com/static/65ad1d399c9c5e5e2488bdbb/t/65fc7be134c5121c47f7b73a/1759687474278/WhatsApp+Image+2024-03-21+at+8.59.36+PM.jpeg",
+      "type": "image/jpeg",
+      "length": "152099",
+      "redirects": 1
+    },
+    "https://www.h-laylati.com/search": {
+      "destination_kind": "firstparty",
+      "http": 200,
+      "final_url": "https://www.h-laylati.com/search",
+      "type": "text/html;charset=utf-8",
+      "length": null,
+      "redirects": 0
+    },
+    "https://www.h-laylati.com/services": {
+      "destination_kind": "firstparty",
+      "http": 200,
+      "final_url": "https://www.h-laylati.com/services",
+      "type": "text/html;charset=utf-8",
+      "length": "29033",
+      "redirects": 0
+    },
+    "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1": {
+      "destination_kind": "external",
+      "http": 200,
+      "final_url": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+      "type": "text/html; charset=utf-8",
+      "length": null,
+      "redirects": 0
+    }
+  },
+  "pdfs": {
+    "https://www.h-laylati.com/s/.pdf": {
+      "status": 200,
+      "mime": "application/pdf",
+      "url": "https://static1.squarespace.com/static/65ad1d399c9c5e5e2488bdbb/t/65ce39fc3999be025b81c316/1759687474278/%D8%A8%D9%83%D8%AC%D8%A7%D8%AA+%D8%A8%D8%B0%D8%A8%D8%A7%D9%8A%D9%94%D8%AD.pdf",
+      "bytes": 1783471,
+      "sha256_first8": "37c73b3d",
+      "pages": 7,
+      "page0_text": " ﻧﻬﺎﻳﺔ اﻷﺳﺒﻮع ﻧﻬﺎﻳﺔ اﻷﺳﺒﻮع 300 - 300\n( ﻧﺴﺎء) ( رﺟﺎل )\n رﻳﺎل89,000\n%15 ﺷﺎﻣﻞ ﻗﻴﻤﺔ اﻟﻀﺮﻳﺒﺔ اﻟﻤﻀﺎﻓﻪ\nﻗﺎﻋﺔ اﻟﻨﺴﺎء\n  اﻟﻌﻤﺮﻧﻘﺪم ﻟﻜﻢ أﺣﺪث اﻟﺘﻘﻨﻴﺎت اﻟﺘﻲ ﺗﺤﺎﻛﻲ ﻟﻜﻢ ﻟﻴﻠﺔ        \n ﺷﺎﺷﺔ ﻛﺒﻴﺮة ﺧﻠﻔﻴﺔ ﻟﻠﻜﻮﺷﺔ\n ﻛﺮﺳﻲ اﻟﻜﻮﺷﺔ و ﻣﻤﺮ ﻋﺮﺳﺎن و ﺷﺎﺷﻪ ﺑﺤﺠﻢ اﻟﻤﻤﺮ\n أﺣﺪث أﺟﻬﺰة اﻟﻠﻴﺰر اﻟﺘﻲ ﺗﻌﻜﺲ ﺟﻤﺎل اﻹﺧﺮاج\nﻫﻨﺪﺳﺔ ﺻﻮﺗﻴﺔ ﻣﺘﻜﺎﻣﻠﺔ ﻣﻊ أﻓﻀﻞ اﻟﻤﻬﻨﺪﺳﻴﻦ .\n اﻟﻜﻮﺷﺔ\n ﻣﻜﻮﻧﺔ ﻣﻦ ﺧﻤﺴﺔ أدوار ﻣﻦ أﺟﻮد اﻷﻧﻮاع  ﻛﻴﻜﺔ اﻟﻌﺮوس\nﻧﻘﺪم ﻟﻜﻢ اﻟﻮرد اﻟﻄﺒﻴﻌﻲ ﻋﻠﻰ ﻃﺎوﻻت اﻟﻀﻴﺎﻓﺔ.\nﻃﺎوﻻت اﻟﻀﻴﺎﻓﺔ و اﻟﻤﻜﻮﻧﺔ ﻣﻦﺗﻘﺪﻳﻢ ﺻﻴﺎﻏﺔ اﻟﺸﻤﻌﺪان ﻋﻠﻰ ﺟﻤﻴﻊ \nأﺟﻮد أﻧﻮاع اﻟﺸﻮﻛﻮﻻﺗﺔ و اﻟﻤﻌﺠﻨﺎت و اﻟﻤﻮاﻟﺢ .\nاﻟﻌﺮﺑﻴﺔ واﻟﻌﺼﺎﺋﺮ اﻟﻄﺎزﺟﺔ.ﺗﻘﺪﻳﻢ أﻓﻀﻞ أﻧﻮاع اﻟﺸﺎي و اﻟﻘﻬﻮة \n اﻟﻀﻴﺎﻓﺔ\nﺧﺪﻣﺔ ﻃﺒﺦ ذﺑﻴﺤﺔ واﺣﺪه ﻟﻠﺒﻮﻓﻴﻪ .\n ( ﺳﺨﺎن رﺋﻴﺴﻲ.35 ) ﺗﻘﺪﻳﻢ ﺑﻮﻓﻴﺔ ﻳﺘﻜﻮن ﻣﻦ\nﺗﻘﺪﻳﻢ أﻓﻀﻞ أﻧﻮاع اﻟﺴﻠﻄﺎت.\nﺗﻘﺪﻳﻢ ﺑﻮﻓﻴﻪ ﻟﻠﺤﻼ واﻟﻔﻮاﻛﺔ اﻟﻄﺎزﺟﺔ.\nاﻟﻌﺸﺎء\nﻗﺎﻋﺔ اﻟﺮﺟﺎل\n ﻧﻘﺪم ﻟﻜﻢ أﻓﻀﻞ أﻧﻮاع اﻟﺸﺎي و اﻟﻘﻬﻮة اﻟﻌﺮﺑﻴﺔ        \nو أﻓﻀﻞ أﻧﻮاع اﻟﺘﻤﺮ . واﻟﻤﻴﺎه  واﻟﻌﺼﺎﺋﺮ اﻟﻄﺎزﺟﺔ        \nﻣﻊ أﺟﻮد أﻧﻮاع اﻷرز . ( ذﺑﺎﺋﺢ وﻃﺒﺨﻬﺎ 8 ) ﺗﻘﺪﻳﻢ\nأرز ﻋﺮﺑﻲ أو ﻋﺮﺑﻲ ﻛﻮزي ﻣﻘﺪم ﻣﻊﻧﻮع اﻟﻄﺒﺦ اﻟﻤﻘﺪم \n )ﺳﻠﻄﺔ - ﺑُﻒ - ﻣﺸﺮوﺑﺎت ﻏﺎزﻳﻪ - ﻣﻴﺎه(        \nﻓﻲ ﺻﺎﻟﺔ اﻟﻄﻌﺎم. ﺗﻘﺪﻳﻢ ﺑﻮﻓﻴﻪ ﻣﻦ اﻟﺤﻼ واﻟﻔﻮاﻛﺔ اﻟﻄﺎزﺟﺔ \n اﻟﻀﻴﺎﻓﺔ\nاﻟﻌﺸﺎء\n0549191090 - 0539255444Info@hlaylati.com H.laylati\nﻗﺎﻋﺔ ﻫﺬه ﻟﻴﻠﺘﻲﻗﺎﻋﺔ ﻫﺬه ﻟﻴﻠﺘﻲ",
+      "last_page_text": " وﺳﻂ اﻷﺳﺒﻮع وﺳﻂ اﻷﺳﺒﻮع 500 - 500\n( ﻧﺴﺎء) ( رﺟﺎل )\n رﻳﺎل115,000\n%15 ﺷﺎﻣﻞ ﻗﻴﻤﺔ اﻟﻀﺮﻳﺒﺔ اﻟﻤﻀﺎﻓﻪ\nﻗﺎﻋﺔ اﻟﻨﺴﺎء\n  اﻟﻌﻤﺮﻧﻘﺪم ﻟﻜﻢ أﺣﺪث اﻟﺘﻘﻨﻴﺎت اﻟﺘﻲ ﺗﺤﺎﻛﻲ ﻟﻜﻢ ﻟﻴﻠﺔ        \n ﺷﺎﺷﺔ ﻛﺒﻴﺮة ﺧﻠﻔﻴﺔ ﻟﻠﻜﻮﺷﺔ\n ﻛﺮﺳﻲ اﻟﻜﻮﺷﺔ و ﻣﻤﺮ ﻋﺮﺳﺎن و ﺷﺎﺷﻪ ﺑﺤﺠﻢ اﻟﻤﻤﺮ\n أﺣﺪث أﺟﻬﺰة اﻟﻠﻴﺰر اﻟﺘﻲ ﺗﻌﻜﺲ ﺟﻤﺎل اﻹﺧﺮاج\nﻫﻨﺪﺳﺔ ﺻﻮﺗﻴﺔ ﻣﺘﻜﺎﻣﻠﺔ ﻣﻊ أﻓﻀﻞ اﻟﻤﻬﻨﺪﺳﻴﻦ .\n اﻟﻜﻮﺷﺔ\n ﻣﻜﻮﻧﺔ ﻣﻦ ﺧﻤﺴﺔ أدوار ﻣﻦ أﺟﻮد اﻷﻧﻮاع  ﻛﻴﻜﺔ اﻟﻌﺮوس\nﻧﻘﺪم ﻟﻜﻢ اﻟﻮرد اﻟﻄﺒﻴﻌﻲ ﻋﻠﻰ ﻃﺎوﻻت اﻟﻀﻴﺎﻓﺔ.\nﻃﺎوﻻت اﻟﻀﻴﺎﻓﺔ و اﻟﻤﻜﻮﻧﺔ ﻣﻦﺗﻘﺪﻳﻢ ﺻﻴﺎﻏﺔ اﻟﺸﻤﻌﺪان ﻋﻠﻰ ﺟﻤﻴﻊ \nأﺟﻮد أﻧﻮاع اﻟﺸﻮﻛﻮﻻﺗﺔ و اﻟﻤﻌﺠﻨﺎت و اﻟﻤﻮاﻟﺢ .\nاﻟﻌﺮﺑﻴﺔ واﻟﻌﺼﺎﺋﺮ اﻟﻄﺎزﺟﺔ.ﺗﻘﺪﻳﻢ أﻓﻀﻞ أﻧﻮاع اﻟﺸﺎي و اﻟﻘﻬﻮة \n اﻟﻀﻴﺎﻓﺔ\nﺧﺪﻣﺔ ﻃﺒﺦ ذﺑﻴﺤﺔ واﺣﺪه ﻟﻠﺒﻮﻓﻴﻪ .\n ( ﺳﺨﺎن رﺋﻴﺴﻲ.52 ) ﺗﻘﺪﻳﻢ ﺑﻮﻓﻴﺔ ﻳﺘﻜﻮن ﻣﻦ\n",
+      "metadata": {
+        "/Creator": "Canva",
+        "/Producer": "Canva",
+        "/CreationDate": "D:20240215161749+00'00'",
+        "/ModDate": "D:20240215161747+00'00'",
+        "/Keywords": "DAF3QEPwUNc,BAErcEFH6K8",
+        "/Author": "rahma",
+        "/Title": "بكجات بذبائح"
+      },
+      "phones": [
+        "0549191090 - 053"
+      ],
+      "prices_sample": [
+        "115,000",
+        "126,000",
+        "131,000",
+        "79,000",
+        "89,000",
+        "99,000"
+      ],
+      "has_external_links": 0
+    },
+    "https://www.h-laylati.com/s/1-ymm2.pdf": {
+      "status": 200,
+      "mime": "application/pdf",
+      "url": "https://static1.squarespace.com/static/65ad1d399c9c5e5e2488bdbb/t/65ce4283429970293c6358fe/1759687474278/%D8%A8%D9%83%D8%AC%D8%A7%D8%AA+%D8%A8%D8%B0%D8%A8%D8%A7%D9%8A%D9%94%D8%AD+%281%29.pdf",
+      "bytes": 1805915,
+      "sha256_first8": "7c9dc1e4",
+      "pages": 8,
+      "page0_text": " وﺳﻂ اﻷﺳﺒﻮع وﺳﻂ اﻷﺳﺒﻮع 100 - 100\n( ﻧﺴﺎء) ( رﺟﺎل )\n رﻳﺎل37,950\n%15 ﺷﺎﻣﻞ ﻗﻴﻤﺔ اﻟﻀﺮﻳﺒﺔ اﻟﻤﻀﺎﻓﻪ\nﻗﺎﻋﺔ اﻟﻨﺴﺎء\n  اﻟﻌﻤﺮﻧﻘﺪم ﻟﻜﻢ أﺣﺪث اﻟﺘﻘﻨﻴﺎت اﻟﺘﻲ ﺗﺤﺎﻛﻲ ﻟﻜﻢ ﻟﻴﻠﺔ        \n ﺷﺎﺷﺔ ﻛﺒﻴﺮة ﺧﻠﻔﻴﺔ ﻟﻠﻜﻮﺷﺔ\n ﻛﺮﺳﻲ اﻟﻜﻮﺷﺔ و ﻣﻤﺮ ﻋﺮﺳﺎن و ﺷﺎﺷﻪ ﺑﺤﺠﻢ اﻟﻤﻤﺮ\n أﺣﺪث أﺟﻬﺰة اﻟﻠﻴﺰر اﻟﺘﻲ ﺗﻌﻜﺲ ﺟﻤﺎل اﻹﺧﺮاج\nﻫﻨﺪﺳﺔ ﺻﻮﺗﻴﺔ ﻣﺘﻜﺎﻣﻠﺔ ﻣﻊ أﻓﻀﻞ اﻟﻤﻬﻨﺪﺳﻴﻦ .\n اﻟﻜﻮﺷﺔ\nﻧﻘﺪم ﻟﻜﻢ اﻟﻮرد اﻟﻄﺒﻴﻌﻲ ﻋﻠﻰ ﻃﺎوﻻت اﻟﻀﻴﺎﻓﺔ.\nﻃﺎوﻻت اﻟﻀﻴﺎﻓﺔ و اﻟﻤﻜﻮﻧﺔ ﻣﻦﺗﻘﺪﻳﻢ ﺻﻴﺎﻏﺔ اﻟﺸﻤﻌﺪان ﻋﻠﻰ ﺟﻤﻴﻊ \nأﺟﻮد أﻧﻮاع اﻟﺸﻮﻛﻮﻻﺗﺔ و اﻟﻤﻌﺠﻨﺎت و اﻟﻤﻮاﻟﺢ .\nاﻟﻌﺮﺑﻴﺔ واﻟﻌﺼﺎﺋﺮ اﻟﻄﺎزﺟﺔ.ﺗﻘﺪﻳﻢ أﻓﻀﻞ أﻧﻮاع اﻟﺸﺎي و اﻟﻘﻬﻮة \n اﻟﻀﻴﺎﻓﺔ\nﺧﺪﻣﺔ ﻃﺒﺦ ذﺑﻴﺤﺔ واﺣﺪه ﻟﻠﺒﻮﻓﻴﻪ .\n ( ﺳﺨﺎن رﺋﻴﺴﻲ.12 ) ﺗﻘﺪﻳﻢ ﺑﻮﻓﻴﺔ ﻳﺘﻜﻮن ﻣﻦ\nﺗﻘﺪﻳﻢ أﻓﻀﻞ أﻧﻮاع اﻟﺴﻠﻄﺎت.\nﺗﻘﺪﻳﻢ ﺑﻮﻓﻴﻪ ﻟﻠﺤﻼ واﻟﻔﻮاﻛﺔ اﻟﻄﺎزﺟﺔ.\nاﻟﻌﺸﺎء\nﻗﺎﻋﺔ اﻟﺮﺟﺎل\n ﻧﻘﺪم ﻟﻜﻢ أﻓﻀﻞ أﻧﻮاع اﻟﺸﺎي و اﻟﻘﻬﻮة اﻟﻌﺮﺑﻴﺔ        \nو أﻓﻀﻞ أﻧﻮاع اﻟﺘﻤﺮ . واﻟﻤﻴﺎه  واﻟﻌﺼﺎﺋﺮ اﻟﻄﺎزﺟﺔ        \nﻣﻊ أﺟﻮد أﻧﻮاع اﻷرز . ( ذﺑﺎﺋﺢ وﻃﺒﺨﻬﺎ 3 ) ﺗﻘﺪﻳﻢ\nأرز ﻋﺮﺑﻲ أو ﻋﺮﺑﻲ ﻛﻮزي ﻣﻘﺪم ﻣﻊﻧﻮع اﻟﻄﺒﺦ اﻟﻤﻘﺪم \n )ﺳﻠﻄﺔ - ﺑُﻒ - ﻣﺸﺮوﺑﺎت ﻏﺎزﻳﻪ - ﻣﻴﺎه(        \nﻓﻲ ﺻﺎﻟﺔ اﻟﻄﻌﺎم. ﺗﻘﺪﻳﻢ ﺑﻮﻓﻴﻪ ﻣﻦ اﻟﺤﻼ واﻟﻔﻮاﻛﺔ اﻟﻄﺎزﺟﺔ \n اﻟﻀﻴﺎﻓﺔ\nاﻟﻌﺸﺎء\n0549191090 - 0539255444Info@hlaylati.com H.laylati\nﻗﺎﻋﺔ ﺑﺪرهﻗﺎﻋﺔ ﺑﺪره",
+      "last_page_text": " ﻧﻬﺎﻳﺔ اﻷﺳﺒﻮع ﻧﻬﺎﻳﺔ اﻷﺳﺒﻮع 250 - 250\n( ﻧﺴﺎء) ( رﺟﺎل )\n رﻳﺎل70,780\n%15 ﺷﺎﻣﻞ ﻗﻴﻤﺔ اﻟﻀﺮﻳﺒﺔ اﻟﻤﻀﺎﻓﻪ\nﻗﺎﻋﺔ اﻟﺮﺟﺎل\n ﻧﻘﺪم ﻟﻜﻢ أﻓﻀﻞ أﻧﻮاع اﻟﺸﺎي و اﻟﻘﻬﻮة اﻟﻌﺮﺑﻴﺔ        \nو أﻓﻀﻞ أﻧﻮاع اﻟﺘﻤﺮ . واﻟﻤﻴﺎه  واﻟﻌﺼﺎﺋﺮ اﻟﻄﺎزﺟﺔ        \nﻣﻊ أﺟﻮد أﻧﻮاع اﻷرز . ( ذﺑﺎﺋﺢ وﻃﺒﺨﻬﺎ 7 ) ﺗﻘﺪﻳﻢ\nأرز ﻋﺮﺑﻲ أو ﻋﺮﺑﻲ ﻛﻮزي ﻣﻘﺪم ﻣﻊﻧﻮع اﻟﻄﺒﺦ اﻟﻤﻘﺪم \n )ﺳﻠﻄﺔ - ﺑُﻒ - ﻣﺸﺮوﺑﺎت ﻏﺎزﻳﻪ - ﻣﻴﺎه(        \nﻓﻲ ﺻﺎﻟﺔ اﻟﻄﻌﺎم. ﺗﻘﺪﻳﻢ ﺑﻮﻓﻴﻪ ﻣﻦ اﻟﺤﻼ واﻟﻔﻮاﻛﺔ اﻟﻄﺎزﺟﺔ \n اﻟﻀﻴﺎﻓﺔ\nاﻟﻌﺸﺎء\n0549191090 - 0539255444Info@hlaylati.com H.laylati\nﻗﺎﻋﺔ ﺑﺪرهﻗﺎﻋﺔ ﺑﺪره\nﻗﺎﻋﺔ اﻟﻨﺴﺎء\n  اﻟﻌﻤﺮﻧﻘﺪم ﻟﻜﻢ أﺣﺪث اﻟﺘﻘﻨﻴﺎت اﻟﺘﻲ ﺗﺤﺎﻛﻲ ﻟﻜﻢ ﻟﻴﻠﺔ        \n ﺷﺎﺷﺔ ﻛﺒﻴﺮة ﺧﻠﻔﻴﺔ ﻟﻠﻜﻮﺷﺔ\n ﻛﺮﺳﻲ اﻟﻜﻮﺷﺔ و ﻣﻤﺮ ﻋﺮﺳﺎن و ﺷﺎﺷﻪ ﺑﺤﺠﻢ اﻟﻤﻤﺮ\n أﺣﺪث أﺟﻬﺰة اﻟﻠﻴﺰر ",
+      "metadata": {
+        "/Creator": "Canva",
+        "/Producer": "Canva",
+        "/CreationDate": "D:20240215161834+00'00'",
+        "/ModDate": "D:20240215161833+00'00'",
+        "/Keywords": "DAF3QEPwUNc,BAErcEFH6K8",
+        "/Author": "rahma",
+        "/Title": "بكجات بذبائح"
+      },
+      "phones": [
+        "0549191090 - 053"
+      ],
+      "prices_sample": [
+        "37,950",
+        "42,950",
+        "45,540",
+        "50,540",
+        "53,130",
+        "58,130",
+        "65,780",
+        "70,780"
+      ],
+      "has_external_links": 0
+    },
+    "https://www.h-laylati.com/s/BP-H-laylati.pdf": {
+      "status": 200,
+      "mime": "application/pdf",
+      "url": "https://static1.squarespace.com/static/65ad1d399c9c5e5e2488bdbb/t/65ce2b08d043964682a3a7d0/1759687474278/BP+H+laylati.pdf",
+      "bytes": 12059026,
+      "sha256_first8": "209ecf63",
+      "pages": 6,
+      "page0_text": "و ﺗﻨﻈﻴـــــــﻢ\nاﻟﺤﻔﻼت اﻟﺨﺎرﺟﻴﺔ\n اﻗﺎﻣـــﺔ\nYour Company\nName\nI NFO@\nHLAYLATI . COM\nOutside catering \n                    & Event planning\nI NFO@\nHLAYLATI . COM",
+      "last_page_text": "0541807188 \nK.hammas@hlaylati.com\nH.Laylati\nﻣﺴﺆول ﻗﺴﻢ اﻷﻏﺬﻳﺔ واﻟﻤﺸﺮوﺑﺎت\nﺧﺎﻟﺪ أﺣﻤﺪ ﺣﻤﺎص\nKhalid Ahmed Hammas\nFood & beverages Manger \nﺑﻴﺎﻧــﺎت اﻟﺘﻮاﺻــﻞ  \nCONTACT INFO",
+      "metadata": {
+        "/Creator": "Canva",
+        "/Producer": "Canva",
+        "/CreationDate": "D:20240126012151+00'00'",
+        "/ModDate": "D:20240126012148+00'00'",
+        "/Keywords": "DAF6idRPyvM,BAErcEFH6K8",
+        "/Author": "rahma",
+        "/Title": "BP H laylati"
+      },
+      "phones": [
+        "0541807188 \n"
+      ],
+      "prices_sample": [],
+      "has_external_links": 0
+    }
+  },
+  "headers": {
+    "Content-Security-Policy": null,
+    "Strict-Transport-Security": "max-age=15552000",
+    "X-Content-Type-Options": "nosniff",
+    "Referrer-Policy": null,
+    "Permissions-Policy": null,
+    "X-Frame-Options": "SAMEORIGIN, SAMEORIGIN",
+    "Cache-Control": null,
+    "Content-Type": "text/html;charset=utf-8",
+    "Content-Language": null,
+    "Server": "Squarespace"
+  },
+  "robots": "# Squarespace Robots Txt\n\nUser-agent: AI2Bot\nUser-agent: Ai2Bot-Dolma\nUser-agent: aiHitBot\nUser-agent: Amazonbot\nUser-agent: anthropic-ai\nUser-agent: Applebot-Extended\nUser-agent: Bytespider\nUser-agent: CCBot\nUser-agent: ClaudeBot\nUser-agent: cohere-ai\nUser-agent: cohere-training-data-crawler\nUser-agent: DuckAssistBot\nUser-agent: FacebookBot\nUser-agent: Google-Extended\nUser-agent: GoogleOther\nUser-agent: GoogleOther-Image\nUser-agent: GoogleOther-Video\nUser-agent: GPTBot\nUser-agent: img2dataset\nUser-agent: Meta-ExternalAgent\nUser-agent: MyCentralAIScraperBot\nUser-agent: omgili\nUser-agent: omgilibot\nUser-agent: Quora-Bot\nUser-agent: TikTokSpider\nUser-agent: YouBot\nUser-agent: AdsBot-Google\nUser-agent: AdsBot-Google-Mobile\nUser-agent: AdsBot-Google-Mobile-Apps\nUser-agent: *\nDisallow: /config\nDisallow: /search\nDisallow: /account$\nDisallow: /account/\nDisallow: /commerce/digital-download/\nDisallow: /api/\nAllow: /api/ui-extensions/\nDisallow: /static/\nDisallow:/*?author=*\nDisallow:/*&author=*\nDisallow:/*?tag=*\nDisallow:/*&tag=*\nDisallow:/*?month=*\nDisallow:/*&month=*\nDisallow:/*?view=*\nDisallow:/*&view=*\nDisallow:/*?format=json\nDisallow:/*&format=json\nDisallow:/*?format=page-context\nDisallow:/*&format=page-context\nDisallow:/*?format=main-content\nDisallow:/*&format=main-content\nDisallow:/*?format=json-pretty\nDisallow:/*&format=json-pretty\nDisallow:/*?format=ical\nDisallow:/*&format=ical\nDisallow:/*?reversePaginate=*\nDisallow:/*&reversePaginate=*\n\nSitemap: https://www.h-laylati.com/sitemap.xml\n",
+  "sitemap": [
+    {
+      "url": "https://www.h-laylati.com/home",
+      "lastmod": "2024-03-25"
+    },
+    {
+      "url": "https://www.h-laylati.com/services",
+      "lastmod": "2025-10-05"
+    },
+    {
+      "url": "https://www.h-laylati.com/about",
+      "lastmod": "2024-02-05"
+    },
+    {
+      "url": "https://www.h-laylati.com/contact",
+      "lastmod": "2024-02-14"
+    },
+    {
+      "url": "https://www.h-laylati.com/704825207487",
+      "lastmod": "2024-03-06"
+    }
+  ],
+  "browser": {
+    "320:/": {
+      "url": "https://www.h-laylati.com/",
+      "title": "H Laylati LLC.",
+      "viewport": 320,
+      "docWidth": 320,
+      "bodyWidth": 320,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 0,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu",
+          "text": "Open Menu",
+          "disabled": false,
+          "visible": true
+        }
+      ],
+      "linkCount": 32,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 4,
+      "tapSmall": 1,
+      "images": [
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/99999bd8-6ee7-4e4e-b9bd-6043425f22a0/WhatsApp+Image+2024-01-24+at+6.39.50+PM+%2",
+          "naturalW": 640,
+          "naturalH": 360,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/253a443f-fc3f-4ced-989a-f7ebcfd28b8e/WhatsApp+Image+2024-01-24+at+3.43.35+PM.jp",
+          "naturalW": 320,
+          "naturalH": 568,
+          "alt": "Placeholder",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/38c107c7-c48c-48db-90db-4b8ad80d5172/WhatsApp+Image+2024-01-24+at+3.43.32+PM+%2",
+          "naturalW": 481,
+          "naturalH": 319,
+          "alt": "Placeholder",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/59c2083a-047f-4981-bf05-a000c80933b8/WhatsApp+Image+2024-01-24+at+3.43.32+PM+%2",
+          "naturalW": 405,
+          "naturalH": 320,
+          "alt": "Placeholder",
+          "isVisible": true
+        }
+      ],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\nOpen Menu\n\nخدماتـنـــــــا\n\nحفلات خارجية\nقاعة هذه ليلتي\nبدره\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 2895,
+      "resourceCount": 48,
+      "dcl": 402.59999999999854,
+      "loadEvent": 480.1999999999971,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "حفلات خارجية",
+          "href": "https://www.h-laylati.com/s/BP-H-laylati.pdf",
+          "visible": true
+        },
+        {
+          "text": "قاعة هذه ليلتي",
+          "href": "https://www.h-laylati.com/s/.pdf",
+          "visible": true
+        },
+        {
+          "text": "بدره",
+          "href": "https://www.h-laylati.com/s/1-ymm2.pdf",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.66,
+      "errors": [],
+      "requestFailures": []
+    },
+    "320:/services": {
+      "url": "https://www.h-laylati.com/services",
+      "title": "! مشاهدة القاعات من مكانك — H Laylati LLC.",
+      "viewport": 320,
+      "docWidth": 320,
+      "bodyWidth": 320,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 0,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu",
+          "text": "Open Menu",
+          "disabled": false,
+          "visible": true
+        }
+      ],
+      "linkCount": 39,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 9,
+      "tapSmall": 1,
+      "images": [
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/c4a55f9c-de10-40c1-8360-168188f5265f/WhatsApp+Image+2024-02-06+at+1.25.31+AM.jp",
+          "naturalW": 320,
+          "naturalH": 266,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/4756fdbc-78e0-4dd2-8049-834d26ad5ead/WhatsApp+Image+2024-02-06+at+1.25.30+AM.jp",
+          "naturalW": 320,
+          "naturalH": 551,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/e698c544-31b0-4b62-a59b-54bc170e58d0/WhatsApp+Image+2024-02-04+at+4.08.00+PM.jp",
+          "naturalW": 320,
+          "naturalH": 179,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/26ee26bf-0fb0-4e0f-b6bf-0e02ed6de203/WhatsApp+Image+2024-02-06+at+1.25.32+AM.jp",
+          "naturalW": 320,
+          "naturalH": 240,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/b9a5947b-b6a8-491b-81e6-88e5698b838d/WhatsApp+Image+2024-02-04+at+4.08.00+PM+%2",
+          "naturalW": 320,
+          "naturalH": 179,
+          "alt": "",
+          "isVisible": true
+        }
+      ],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\nOpen Menu\n\nمشاهدة القاعات\n\n3D\n\nأضغط هنــا\n\nقسم الرجال - قاعة بدره \n\nأضغط هنــا\n\nكبار الشخصيات - قاعة هذه ليلتي  \n\nأضغط هنــا\n\nقسم النساء - قاعة هذه ليلتي \n\nأضغط هنــا\n\nقسم الرجال - قاعة هذه ليلتي \n\nأضغط هنــا\n\nقسم النساء - قاعة بدره \n\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 3430,
+      "resourceCount": 64,
+      "dcl": 253.59999999999854,
+      "loadEvent": 279.1999999999971,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/services#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=RUYuufuYXQH",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=q6LCks19oDu",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=3ezBLQghvtd",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=wERuBbYLKdP",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=mBcA6k8Ffmg",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=iCwo26Bo7XH",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=mBcA6k8Ffmg",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=HUJFxwkL1R4",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=RUYuufuYXQH",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=f2PpZrQNoW7",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.51,
+      "errors": [],
+      "requestFailures": []
+    },
+    "320:/about": {
+      "url": "https://www.h-laylati.com/about",
+      "title": "About — H Laylati LLC.",
+      "viewport": 320,
+      "docWidth": 320,
+      "bodyWidth": 320,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 0,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu",
+          "text": "Open Menu",
+          "disabled": false,
+          "visible": true
+        }
+      ],
+      "linkCount": 29,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 4,
+      "tapSmall": 1,
+      "images": [
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/f52173ad-aa29-4706-8936-f9254c60ae0b/WhatsApp+Image+2024-01-28+at+8.22.10+PM.jp",
+          "naturalW": 320,
+          "naturalH": 200,
+          "alt": "",
+          "isVisible": true
+        }
+      ],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\nOpen Menu\nنبذه عن قاعات هذه ليلتي \n\n افتتحت هذه ليلتي أبوابها في عام 2016 ، تميّزت بالمساحات الواسعة والمرافق الفخمة واستقبلنا خلال عامنا الاول العديد من  الشخصيات و العوائل الكبيرة \n\n افتتحت قاعة بدرة عام 2017 ، بمساحات أصغر تناسب المناسبات الصغيرة بنفس الخدمات والمرافق الفخمة.\n\n توفر كذلك شركة هذه ليلتي خدماتها خارج قاعاتها مثل اقامة المناسبات الخارجية مثل (حفلات غداء , حفلات عشاء, افطار ).\n\n مساحات هذه ليلتي مستعدة لإقامة مناسبات رسمية مثل المعارض والمؤتمرات الكبيرة و لديها القدرة على استيعاب عدد كبير من الضيوف.\n\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 2069,
+      "resourceCount": 57,
+      "dcl": 225.8000000000029,
+      "loadEvent": 247.3000000000029,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/about#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.48,
+      "errors": [],
+      "requestFailures": []
+    },
+    "320:/contact": {
+      "url": "https://www.h-laylati.com/contact",
+      "title": "Contact — H Laylati LLC.",
+      "viewport": 320,
+      "docWidth": 320,
+      "bodyWidth": 320,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 1,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu",
+          "text": "Open Menu",
+          "disabled": false,
+          "visible": true
+        },
+        {
+          "name": "أرسال",
+          "text": "أرسال",
+          "disabled": false,
+          "visible": true
+        }
+      ],
+      "linkCount": 29,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 4,
+      "tapSmall": 1,
+      "images": [],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\nOpen Menu\nتواصل معنا \n\n..نحن هنا لمساعدتك في أي استفسار أو ملاحظة تود مشاركتها معنا , لاتتردد في التواصل معنا\n\n.وسنكون سعداء بخدمتك \n\n\nName\nFirst Name\n(required)\nLast Name\n(required)\nEmail\n(required)\nMessage\n(required)\nأرسال\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 1991,
+      "resourceCount": 61,
+      "dcl": 208.70000000000437,
+      "loadEvent": 857.1000000000058,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/contact#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.47,
+      "errors": [],
+      "requestFailures": []
+    },
+    "390:/": {
+      "url": "https://www.h-laylati.com/",
+      "title": "H Laylati LLC.",
+      "viewport": 390,
+      "docWidth": 390,
+      "bodyWidth": 390,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 0,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu",
+          "text": "Open Menu",
+          "disabled": false,
+          "visible": true
+        }
+      ],
+      "linkCount": 32,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 4,
+      "tapSmall": 1,
+      "images": [
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/99999bd8-6ee7-4e4e-b9bd-6043425f22a0/WhatsApp+Image+2024-01-24+at+6.39.50+PM+%2",
+          "naturalW": 780,
+          "naturalH": 439,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/253a443f-fc3f-4ced-989a-f7ebcfd28b8e/WhatsApp+Image+2024-01-24+at+3.43.35+PM.jp",
+          "naturalW": 390,
+          "naturalH": 693,
+          "alt": "Placeholder",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/38c107c7-c48c-48db-90db-4b8ad80d5172/WhatsApp+Image+2024-01-24+at+3.43.32+PM+%2",
+          "naturalW": 586,
+          "naturalH": 390,
+          "alt": "Placeholder",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/59c2083a-047f-4981-bf05-a000c80933b8/WhatsApp+Image+2024-01-24+at+3.43.32+PM+%2",
+          "naturalW": 493,
+          "naturalH": 390,
+          "alt": "Placeholder",
+          "isVisible": true
+        }
+      ],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\nOpen Menu\n\nخدماتـنـــــــا\n\nحفلات خارجية\nقاعة هذه ليلتي\nبدره\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 3100,
+      "resourceCount": 48,
+      "dcl": 392.5,
+      "loadEvent": 464.5,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "حفلات خارجية",
+          "href": "https://www.h-laylati.com/s/BP-H-laylati.pdf",
+          "visible": true
+        },
+        {
+          "text": "قاعة هذه ليلتي",
+          "href": "https://www.h-laylati.com/s/.pdf",
+          "visible": true
+        },
+        {
+          "text": "بدره",
+          "href": "https://www.h-laylati.com/s/1-ymm2.pdf",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.65,
+      "errors": [],
+      "requestFailures": [],
+      "menu_after_click": "Skip to Content\nH Laylati LLC.\nClose Menu\n\nخدماتـنـــــــا\n\nحفلات خارجية\nقاعة هذه ليلتي\nبدره\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان ب",
+      "menu_nav_visible": false
+    },
+    "390:/services": {
+      "url": "https://www.h-laylati.com/services",
+      "title": "! مشاهدة القاعات من مكانك — H Laylati LLC.",
+      "viewport": 390,
+      "docWidth": 390,
+      "bodyWidth": 390,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 0,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu",
+          "text": "Open Menu",
+          "disabled": false,
+          "visible": true
+        }
+      ],
+      "linkCount": 39,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 9,
+      "tapSmall": 1,
+      "images": [
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/c4a55f9c-de10-40c1-8360-168188f5265f/WhatsApp+Image+2024-02-06+at+1.25.31+AM.jp",
+          "naturalW": 390,
+          "naturalH": 324,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/4756fdbc-78e0-4dd2-8049-834d26ad5ead/WhatsApp+Image+2024-02-06+at+1.25.30+AM.jp",
+          "naturalW": 390,
+          "naturalH": 671,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/e698c544-31b0-4b62-a59b-54bc170e58d0/WhatsApp+Image+2024-02-04+at+4.08.00+PM.jp",
+          "naturalW": 390,
+          "naturalH": 219,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/26ee26bf-0fb0-4e0f-b6bf-0e02ed6de203/WhatsApp+Image+2024-02-06+at+1.25.32+AM.jp",
+          "naturalW": 390,
+          "naturalH": 293,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/b9a5947b-b6a8-491b-81e6-88e5698b838d/WhatsApp+Image+2024-02-04+at+4.08.00+PM+%2",
+          "naturalW": 390,
+          "naturalH": 219,
+          "alt": "",
+          "isVisible": true
+        }
+      ],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\nOpen Menu\n\nمشاهدة القاعات\n\n3D\n\nأضغط هنــا\n\nقسم الرجال - قاعة بدره \n\nأضغط هنــا\n\nكبار الشخصيات - قاعة هذه ليلتي  \n\nأضغط هنــا\n\nقسم النساء - قاعة هذه ليلتي \n\nأضغط هنــا\n\nقسم الرجال - قاعة هذه ليلتي \n\nأضغط هنــا\n\nقسم النساء - قاعة بدره \n\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 3438,
+      "resourceCount": 64,
+      "dcl": 264.8000000000029,
+      "loadEvent": 290.70000000001164,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/services#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=RUYuufuYXQH",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=q6LCks19oDu",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=3ezBLQghvtd",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=wERuBbYLKdP",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=mBcA6k8Ffmg",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=iCwo26Bo7XH",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=mBcA6k8Ffmg",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=HUJFxwkL1R4",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=RUYuufuYXQH",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=f2PpZrQNoW7",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.52,
+      "errors": [],
+      "requestFailures": []
+    },
+    "390:/about": {
+      "url": "https://www.h-laylati.com/about",
+      "title": "About — H Laylati LLC.",
+      "viewport": 390,
+      "docWidth": 390,
+      "bodyWidth": 390,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 0,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu",
+          "text": "Open Menu",
+          "disabled": false,
+          "visible": true
+        }
+      ],
+      "linkCount": 29,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 4,
+      "tapSmall": 1,
+      "images": [
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/f52173ad-aa29-4706-8936-f9254c60ae0b/WhatsApp+Image+2024-01-28+at+8.22.10+PM.jp",
+          "naturalW": 390,
+          "naturalH": 244,
+          "alt": "",
+          "isVisible": true
+        }
+      ],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\nOpen Menu\nنبذه عن قاعات هذه ليلتي \n\n افتتحت هذه ليلتي أبوابها في عام 2016 ، تميّزت بالمساحات الواسعة والمرافق الفخمة واستقبلنا خلال عامنا الاول العديد من  الشخصيات و العوائل الكبيرة \n\n افتتحت قاعة بدرة عام 2017 ، بمساحات أصغر تناسب المناسبات الصغيرة بنفس الخدمات والمرافق الفخمة.\n\n توفر كذلك شركة هذه ليلتي خدماتها خارج قاعاتها مثل اقامة المناسبات الخارجية مثل (حفلات غداء , حفلات عشاء, افطار ).\n\n مساحات هذه ليلتي مستعدة لإقامة مناسبات رسمية مثل المعارض والمؤتمرات الكبيرة و لديها القدرة على استيعاب عدد كبير من الضيوف.\n\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 1980,
+      "resourceCount": 57,
+      "dcl": 244.29999999998836,
+      "loadEvent": 267.59999999999127,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/about#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.5,
+      "errors": [],
+      "requestFailures": []
+    },
+    "390:/contact": {
+      "url": "https://www.h-laylati.com/contact",
+      "title": "Contact — H Laylati LLC.",
+      "viewport": 390,
+      "docWidth": 390,
+      "bodyWidth": 390,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 1,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu",
+          "text": "Open Menu",
+          "disabled": false,
+          "visible": true
+        },
+        {
+          "name": "أرسال",
+          "text": "أرسال",
+          "disabled": false,
+          "visible": true
+        }
+      ],
+      "linkCount": 29,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 4,
+      "tapSmall": 1,
+      "images": [],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\nOpen Menu\nتواصل معنا \n\n..نحن هنا لمساعدتك في أي استفسار أو ملاحظة تود مشاركتها معنا , لاتتردد في التواصل معنا\n\n.وسنكون سعداء بخدمتك \n\n\nName\nFirst Name\n(required)\nLast Name\n(required)\nEmail\n(required)\nMessage\n(required)\nأرسال\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 1996,
+      "resourceCount": 61,
+      "dcl": 230.3000000000029,
+      "loadEvent": 808.3000000000029,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/contact#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.49,
+      "errors": [],
+      "requestFailures": []
+    },
+    "430:/": {
+      "url": "https://www.h-laylati.com/",
+      "title": "H Laylati LLC.",
+      "viewport": 430,
+      "docWidth": 430,
+      "bodyWidth": 430,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 0,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu",
+          "text": "Open Menu",
+          "disabled": false,
+          "visible": true
+        }
+      ],
+      "linkCount": 32,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 4,
+      "tapSmall": 1,
+      "images": [
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/99999bd8-6ee7-4e4e-b9bd-6043425f22a0/WhatsApp+Image+2024-01-24+at+6.39.50+PM+%2",
+          "naturalW": 860,
+          "naturalH": 484,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/253a443f-fc3f-4ced-989a-f7ebcfd28b8e/WhatsApp+Image+2024-01-24+at+3.43.35+PM.jp",
+          "naturalW": 430,
+          "naturalH": 764,
+          "alt": "Placeholder",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/38c107c7-c48c-48db-90db-4b8ad80d5172/WhatsApp+Image+2024-01-24+at+3.43.32+PM+%2",
+          "naturalW": 646,
+          "naturalH": 430,
+          "alt": "Placeholder",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/59c2083a-047f-4981-bf05-a000c80933b8/WhatsApp+Image+2024-01-24+at+3.43.32+PM+%2",
+          "naturalW": 544,
+          "naturalH": 429,
+          "alt": "Placeholder",
+          "isVisible": true
+        }
+      ],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\nOpen Menu\n\nخدماتـنـــــــا\n\nحفلات خارجية\nقاعة هذه ليلتي\nبدره\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 3197,
+      "resourceCount": 48,
+      "dcl": 399.90000000000873,
+      "loadEvent": 466.1000000000058,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "حفلات خارجية",
+          "href": "https://www.h-laylati.com/s/BP-H-laylati.pdf",
+          "visible": true
+        },
+        {
+          "text": "قاعة هذه ليلتي",
+          "href": "https://www.h-laylati.com/s/.pdf",
+          "visible": true
+        },
+        {
+          "text": "بدره",
+          "href": "https://www.h-laylati.com/s/1-ymm2.pdf",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.66,
+      "errors": [],
+      "requestFailures": []
+    },
+    "430:/services": {
+      "url": "https://www.h-laylati.com/services",
+      "title": "! مشاهدة القاعات من مكانك — H Laylati LLC.",
+      "viewport": 430,
+      "docWidth": 430,
+      "bodyWidth": 430,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 0,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu",
+          "text": "Open Menu",
+          "disabled": false,
+          "visible": true
+        }
+      ],
+      "linkCount": 39,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 9,
+      "tapSmall": 1,
+      "images": [
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/c4a55f9c-de10-40c1-8360-168188f5265f/WhatsApp+Image+2024-02-06+at+1.25.31+AM.jp",
+          "naturalW": 430,
+          "naturalH": 357,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/4756fdbc-78e0-4dd2-8049-834d26ad5ead/WhatsApp+Image+2024-02-06+at+1.25.30+AM.jp",
+          "naturalW": 430,
+          "naturalH": 740,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/e698c544-31b0-4b62-a59b-54bc170e58d0/WhatsApp+Image+2024-02-04+at+4.08.00+PM.jp",
+          "naturalW": 430,
+          "naturalH": 241,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/26ee26bf-0fb0-4e0f-b6bf-0e02ed6de203/WhatsApp+Image+2024-02-06+at+1.25.32+AM.jp",
+          "naturalW": 430,
+          "naturalH": 323,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/b9a5947b-b6a8-491b-81e6-88e5698b838d/WhatsApp+Image+2024-02-04+at+4.08.00+PM+%2",
+          "naturalW": 430,
+          "naturalH": 241,
+          "alt": "",
+          "isVisible": true
+        }
+      ],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\nOpen Menu\n\nمشاهدة القاعات\n\n3D\n\nأضغط هنــا\n\nقسم الرجال - قاعة بدره \n\nأضغط هنــا\n\nكبار الشخصيات - قاعة هذه ليلتي  \n\nأضغط هنــا\n\nقسم النساء - قاعة هذه ليلتي \n\nأضغط هنــا\n\nقسم الرجال - قاعة هذه ليلتي \n\nأضغط هنــا\n\nقسم النساء - قاعة بدره \n\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 3422,
+      "resourceCount": 64,
+      "dcl": 268.1000000000058,
+      "loadEvent": 309.40000000000873,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/services#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=RUYuufuYXQH",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=q6LCks19oDu",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=3ezBLQghvtd",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=wERuBbYLKdP",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=mBcA6k8Ffmg",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=iCwo26Bo7XH",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=mBcA6k8Ffmg",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=HUJFxwkL1R4",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=RUYuufuYXQH",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=f2PpZrQNoW7",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.53,
+      "errors": [],
+      "requestFailures": []
+    },
+    "430:/about": {
+      "url": "https://www.h-laylati.com/about",
+      "title": "About — H Laylati LLC.",
+      "viewport": 430,
+      "docWidth": 430,
+      "bodyWidth": 430,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 0,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu",
+          "text": "Open Menu",
+          "disabled": false,
+          "visible": true
+        }
+      ],
+      "linkCount": 29,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 4,
+      "tapSmall": 1,
+      "images": [
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/f52173ad-aa29-4706-8936-f9254c60ae0b/WhatsApp+Image+2024-01-28+at+8.22.10+PM.jp",
+          "naturalW": 430,
+          "naturalH": 269,
+          "alt": "",
+          "isVisible": true
+        }
+      ],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\nOpen Menu\nنبذه عن قاعات هذه ليلتي \n\n افتتحت هذه ليلتي أبوابها في عام 2016 ، تميّزت بالمساحات الواسعة والمرافق الفخمة واستقبلنا خلال عامنا الاول العديد من  الشخصيات و العوائل الكبيرة \n\n افتتحت قاعة بدرة عام 2017 ، بمساحات أصغر تناسب المناسبات الصغيرة بنفس الخدمات والمرافق الفخمة.\n\n توفر كذلك شركة هذه ليلتي خدماتها خارج قاعاتها مثل اقامة المناسبات الخارجية مثل (حفلات غداء , حفلات عشاء, افطار ).\n\n مساحات هذه ليلتي مستعدة لإقامة مناسبات رسمية مثل المعارض والمؤتمرات الكبيرة و لديها القدرة على استيعاب عدد كبير من الضيوف.\n\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 1900,
+      "resourceCount": 57,
+      "dcl": 236.89999999999418,
+      "loadEvent": 276.8999999999942,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/about#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.5,
+      "errors": [],
+      "requestFailures": []
+    },
+    "430:/contact": {
+      "url": "https://www.h-laylati.com/contact",
+      "title": "Contact — H Laylati LLC.",
+      "viewport": 430,
+      "docWidth": 430,
+      "bodyWidth": 430,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 1,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu",
+          "text": "Open Menu",
+          "disabled": false,
+          "visible": true
+        },
+        {
+          "name": "أرسال",
+          "text": "أرسال",
+          "disabled": false,
+          "visible": true
+        }
+      ],
+      "linkCount": 29,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 4,
+      "tapSmall": 1,
+      "images": [],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\nOpen Menu\nتواصل معنا \n\n..نحن هنا لمساعدتك في أي استفسار أو ملاحظة تود مشاركتها معنا , لاتتردد في التواصل معنا\n\n.وسنكون سعداء بخدمتك \n\n\nName\nFirst Name\n(required)\nLast Name\n(required)\nEmail\n(required)\nMessage\n(required)\nأرسال\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 1947,
+      "resourceCount": 61,
+      "dcl": 258.8999999999942,
+      "loadEvent": 894.3000000000029,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/contact#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.52,
+      "errors": [],
+      "requestFailures": []
+    },
+    "768:/": {
+      "url": "https://www.h-laylati.com/",
+      "title": "H Laylati LLC.",
+      "viewport": 768,
+      "docWidth": 768,
+      "bodyWidth": 768,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 0,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu",
+          "text": "Open Menu",
+          "disabled": false,
+          "visible": true
+        }
+      ],
+      "linkCount": 32,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 4,
+      "tapSmall": 1,
+      "images": [
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/99999bd8-6ee7-4e4e-b9bd-6043425f22a0/WhatsApp+Image+2024-01-24+at+6.39.50+PM+%2",
+          "naturalW": 1536,
+          "naturalH": 864,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/253a443f-fc3f-4ced-989a-f7ebcfd28b8e/WhatsApp+Image+2024-01-24+at+3.43.35+PM.jp",
+          "naturalW": 189,
+          "naturalH": 336,
+          "alt": "Placeholder",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/38c107c7-c48c-48db-90db-4b8ad80d5172/WhatsApp+Image+2024-01-24+at+3.43.32+PM+%2",
+          "naturalW": 284,
+          "naturalH": 189,
+          "alt": "Placeholder",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/59c2083a-047f-4981-bf05-a000c80933b8/WhatsApp+Image+2024-01-24+at+3.43.32+PM+%2",
+          "naturalW": 239,
+          "naturalH": 189,
+          "alt": "Placeholder",
+          "isVisible": true
+        }
+      ],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\nOpen Menu\n\nخدماتـنـــــــا\n\nحفلات خارجية\nقاعة هذه ليلتي\nبدره\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 1523,
+      "resourceCount": 48,
+      "dcl": 424.8000000000029,
+      "loadEvent": 571.3999999999942,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "حفلات خارجية",
+          "href": "https://www.h-laylati.com/s/BP-H-laylati.pdf",
+          "visible": true
+        },
+        {
+          "text": "قاعة هذه ليلتي",
+          "href": "https://www.h-laylati.com/s/.pdf",
+          "visible": true
+        },
+        {
+          "text": "بدره",
+          "href": "https://www.h-laylati.com/s/1-ymm2.pdf",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.68,
+      "errors": [],
+      "requestFailures": []
+    },
+    "768:/services": {
+      "url": "https://www.h-laylati.com/services",
+      "title": "! مشاهدة القاعات من مكانك — H Laylati LLC.",
+      "viewport": 768,
+      "docWidth": 768,
+      "bodyWidth": 768,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 0,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu",
+          "text": "Open Menu",
+          "disabled": false,
+          "visible": true
+        }
+      ],
+      "linkCount": 39,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 9,
+      "tapSmall": 1,
+      "images": [
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/c4a55f9c-de10-40c1-8360-168188f5265f/WhatsApp+Image+2024-02-06+at+1.25.31+AM.jp",
+          "naturalW": 625,
+          "naturalH": 520,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/4756fdbc-78e0-4dd2-8049-834d26ad5ead/WhatsApp+Image+2024-02-06+at+1.25.30+AM.jp",
+          "naturalW": 570,
+          "naturalH": 983,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/e698c544-31b0-4b62-a59b-54bc170e58d0/WhatsApp+Image+2024-02-04+at+4.08.00+PM.jp",
+          "naturalW": 767,
+          "naturalH": 431,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/26ee26bf-0fb0-4e0f-b6bf-0e02ed6de203/WhatsApp+Image+2024-02-06+at+1.25.32+AM.jp",
+          "naturalW": 724,
+          "naturalH": 544,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/b9a5947b-b6a8-491b-81e6-88e5698b838d/WhatsApp+Image+2024-02-04+at+4.08.00+PM+%2",
+          "naturalW": 767,
+          "naturalH": 431,
+          "alt": "",
+          "isVisible": true
+        }
+      ],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\nOpen Menu\n\nمشاهدة القاعات\n\n3D\n\nأضغط هنــا\n\nقسم الرجال - قاعة بدره \n\nأضغط هنــا\n\nكبار الشخصيات - قاعة هذه ليلتي  \n\nأضغط هنــا\n\nقسم النساء - قاعة هذه ليلتي \n\nأضغط هنــا\n\nقسم الرجال - قاعة هذه ليلتي \n\nأضغط هنــا\n\nقسم النساء - قاعة بدره \n\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 1378,
+      "resourceCount": 64,
+      "dcl": 251.60000000000582,
+      "loadEvent": 522.8999999999942,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/services#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=RUYuufuYXQH",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=q6LCks19oDu",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=3ezBLQghvtd",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=wERuBbYLKdP",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=mBcA6k8Ffmg",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=iCwo26Bo7XH",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=mBcA6k8Ffmg",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=HUJFxwkL1R4",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=RUYuufuYXQH",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=f2PpZrQNoW7",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.51,
+      "errors": [],
+      "requestFailures": []
+    },
+    "768:/about": {
+      "url": "https://www.h-laylati.com/about",
+      "title": "About — H Laylati LLC.",
+      "viewport": 768,
+      "docWidth": 768,
+      "bodyWidth": 768,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 0,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu",
+          "text": "Open Menu",
+          "disabled": false,
+          "visible": true
+        }
+      ],
+      "linkCount": 29,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 4,
+      "tapSmall": 1,
+      "images": [
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/f52173ad-aa29-4706-8936-f9254c60ae0b/WhatsApp+Image+2024-01-28+at+8.22.10+PM.jp",
+          "naturalW": 767,
+          "naturalH": 481,
+          "alt": "",
+          "isVisible": true
+        }
+      ],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\nOpen Menu\nنبذه عن قاعات هذه ليلتي \n\n افتتحت هذه ليلتي أبوابها في عام 2016 ، تميّزت بالمساحات الواسعة والمرافق الفخمة واستقبلنا خلال عامنا الاول العديد من  الشخصيات و العوائل الكبيرة \n\n افتتحت قاعة بدرة عام 2017 ، بمساحات أصغر تناسب المناسبات الصغيرة بنفس الخدمات والمرافق الفخمة.\n\n توفر كذلك شركة هذه ليلتي خدماتها خارج قاعاتها مثل اقامة المناسبات الخارجية مثل (حفلات غداء , حفلات عشاء, افطار ).\n\n مساحات هذه ليلتي مستعدة لإقامة مناسبات رسمية مثل المعارض والمؤتمرات الكبيرة و لديها القدرة على استيعاب عدد كبير من الضيوف.\n\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 1367,
+      "resourceCount": 57,
+      "dcl": 250.5,
+      "loadEvent": 341,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/about#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.51,
+      "errors": [],
+      "requestFailures": []
+    },
+    "768:/contact": {
+      "url": "https://www.h-laylati.com/contact",
+      "title": "Contact — H Laylati LLC.",
+      "viewport": 768,
+      "docWidth": 768,
+      "bodyWidth": 768,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 1,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu",
+          "text": "Open Menu",
+          "disabled": false,
+          "visible": true
+        },
+        {
+          "name": "أرسال",
+          "text": "أرسال",
+          "disabled": false,
+          "visible": true
+        }
+      ],
+      "linkCount": 29,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 4,
+      "tapSmall": 1,
+      "images": [],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\nOpen Menu\nتواصل معنا \n\n..نحن هنا لمساعدتك في أي استفسار أو ملاحظة تود مشاركتها معنا , لاتتردد في التواصل معنا\n\n.وسنكون سعداء بخدمتك \n\n\nName\nFirst Name\n(required)\nLast Name\n(required)\nEmail\n(required)\nMessage\n(required)\nأرسال\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 1349,
+      "resourceCount": 61,
+      "dcl": 232.60000000000582,
+      "loadEvent": 790.5,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/contact#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.49,
+      "errors": [],
+      "requestFailures": []
+    },
+    "1024:/": {
+      "url": "https://www.h-laylati.com/",
+      "title": "H Laylati LLC.",
+      "viewport": 1024,
+      "docWidth": 1024,
+      "bodyWidth": 1024,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 0,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        }
+      ],
+      "linkCount": 32,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 4,
+      "tapSmall": 3,
+      "images": [
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/99999bd8-6ee7-4e4e-b9bd-6043425f22a0/WhatsApp+Image+2024-01-24+at+6.39.50+PM+%2",
+          "naturalW": 1024,
+          "naturalH": 576,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/253a443f-fc3f-4ced-989a-f7ebcfd28b8e/WhatsApp+Image+2024-01-24+at+3.43.35+PM.jp",
+          "naturalW": 274,
+          "naturalH": 487,
+          "alt": "Placeholder",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/38c107c7-c48c-48db-90db-4b8ad80d5172/WhatsApp+Image+2024-01-24+at+3.43.32+PM+%2",
+          "naturalW": 413,
+          "naturalH": 274,
+          "alt": "Placeholder",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/59c2083a-047f-4981-bf05-a000c80933b8/WhatsApp+Image+2024-01-24+at+3.43.32+PM+%2",
+          "naturalW": 347,
+          "naturalH": 274,
+          "alt": "Placeholder",
+          "isVisible": true
+        }
+      ],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\n! مشاهدة القاعات من مكانك\nمن نحن؟\nالتواصل\nللتوظيف\n\nخدماتـنـــــــا\n\nحفلات خارجية\nقاعة هذه ليلتي\nبدره\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 1647,
+      "resourceCount": 48,
+      "dcl": 374.1999999999971,
+      "loadEvent": 449.1000000000058,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "! مشاهدة القاعات من مكانك",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "من نحن؟",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "التواصل",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "للتوظيف",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "حفلات خارجية",
+          "href": "https://www.h-laylati.com/s/BP-H-laylati.pdf",
+          "visible": true
+        },
+        {
+          "text": "قاعة هذه ليلتي",
+          "href": "https://www.h-laylati.com/s/.pdf",
+          "visible": true
+        },
+        {
+          "text": "بدره",
+          "href": "https://www.h-laylati.com/s/1-ymm2.pdf",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.63,
+      "errors": [],
+      "requestFailures": []
+    },
+    "1024:/services": {
+      "url": "https://www.h-laylati.com/services",
+      "title": "! مشاهدة القاعات من مكانك — H Laylati LLC.",
+      "viewport": 1024,
+      "docWidth": 1024,
+      "bodyWidth": 1024,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 0,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        }
+      ],
+      "linkCount": 39,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 9,
+      "tapSmall": 3,
+      "images": [
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/c4a55f9c-de10-40c1-8360-168188f5265f/WhatsApp+Image+2024-02-06+at+1.25.31+AM.jp",
+          "naturalW": 555,
+          "naturalH": 462,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/4756fdbc-78e0-4dd2-8049-834d26ad5ead/WhatsApp+Image+2024-02-06+at+1.25.30+AM.jp",
+          "naturalW": 507,
+          "naturalH": 873,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/e698c544-31b0-4b62-a59b-54bc170e58d0/WhatsApp+Image+2024-02-04+at+4.08.00+PM.jp",
+          "naturalW": 1024,
+          "naturalH": 576,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/26ee26bf-0fb0-4e0f-b6bf-0e02ed6de203/WhatsApp+Image+2024-02-06+at+1.25.32+AM.jp",
+          "naturalW": 643,
+          "naturalH": 484,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/b9a5947b-b6a8-491b-81e6-88e5698b838d/WhatsApp+Image+2024-02-04+at+4.08.00+PM+%2",
+          "naturalW": 1024,
+          "naturalH": 576,
+          "alt": "",
+          "isVisible": true
+        }
+      ],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\n! مشاهدة القاعات من مكانك\nمن نحن؟\nالتواصل\nللتوظيف\n\nمشاهدة القاعات\n\n3D\n\nأضغط هنــا\n\nقسم الرجال - قاعة بدره \n\nأضغط هنــا\n\nكبار الشخصيات - قاعة هذه ليلتي  \n\nأضغط هنــا\n\nقسم النساء - قاعة هذه ليلتي \n\nأضغط هنــا\n\nقسم الرجال - قاعة هذه ليلتي \n\nأضغط هنــا\n\nقسم النساء - قاعة بدره \n\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 1428,
+      "resourceCount": 64,
+      "dcl": 268.6999999999971,
+      "loadEvent": 307.5,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/services#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "! مشاهدة القاعات من مكانك",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "من نحن؟",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "التواصل",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "للتوظيف",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=RUYuufuYXQH",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=q6LCks19oDu",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=3ezBLQghvtd",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=wERuBbYLKdP",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=mBcA6k8Ffmg",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=iCwo26Bo7XH",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=mBcA6k8Ffmg",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=HUJFxwkL1R4",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=RUYuufuYXQH",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=f2PpZrQNoW7",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.53,
+      "errors": [],
+      "requestFailures": []
+    },
+    "1024:/about": {
+      "url": "https://www.h-laylati.com/about",
+      "title": "About — H Laylati LLC.",
+      "viewport": 1024,
+      "docWidth": 1024,
+      "bodyWidth": 1024,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 0,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        }
+      ],
+      "linkCount": 29,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 4,
+      "tapSmall": 3,
+      "images": [
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/f52173ad-aa29-4706-8936-f9254c60ae0b/WhatsApp+Image+2024-01-28+at+8.22.10+PM.jp",
+          "naturalW": 684,
+          "naturalH": 428,
+          "alt": "",
+          "isVisible": true
+        }
+      ],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\n! مشاهدة القاعات من مكانك\nمن نحن؟\nالتواصل\nللتوظيف\nنبذه عن قاعات هذه ليلتي \n\n افتتحت هذه ليلتي أبوابها في عام 2016 ، تميّزت بالمساحات الواسعة والمرافق الفخمة واستقبلنا خلال عامنا الاول العديد من  الشخصيات و العوائل الكبيرة \n\n افتتحت قاعة بدرة عام 2017 ، بمساحات أصغر تناسب المناسبات الصغيرة بنفس الخدمات والمرافق الفخمة.\n\n توفر كذلك شركة هذه ليلتي خدماتها خارج قاعاتها مثل اقامة المناسبات الخارجية مثل (حفلات غداء , حفلات عشاء, افطار ).\n\n مساحات هذه ليلتي مستعدة لإقامة مناسبات رسمية مثل المعارض والمؤتمرات الكبيرة و لديها القدرة على استيعاب عدد كبير من الضيوف.\n\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 1339,
+      "resourceCount": 57,
+      "dcl": 242,
+      "loadEvent": 300.3999999999942,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/about#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "! مشاهدة القاعات من مكانك",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "من نحن؟",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "التواصل",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "للتوظيف",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.5,
+      "errors": [],
+      "requestFailures": []
+    },
+    "1024:/contact": {
+      "url": "https://www.h-laylati.com/contact",
+      "title": "Contact — H Laylati LLC.",
+      "viewport": 1024,
+      "docWidth": 1024,
+      "bodyWidth": 1024,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 1,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "أرسال",
+          "text": "أرسال",
+          "disabled": false,
+          "visible": true
+        }
+      ],
+      "linkCount": 29,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 4,
+      "tapSmall": 3,
+      "images": [],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\n! مشاهدة القاعات من مكانك\nمن نحن؟\nالتواصل\nللتوظيف\nتواصل معنا \n\n..نحن هنا لمساعدتك في أي استفسار أو ملاحظة تود مشاركتها معنا , لاتتردد في التواصل معنا\n\n.وسنكون سعداء بخدمتك \n\n\nName\nFirst Name\n(required)\nLast Name\n(required)\nEmail\n(required)\nMessage\n(required)\nأرسال\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 1119,
+      "resourceCount": 60,
+      "dcl": 224.60000000000582,
+      "loadEvent": 852.9000000000087,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/contact#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "! مشاهدة القاعات من مكانك",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "من نحن؟",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "التواصل",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "للتوظيف",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.48,
+      "errors": [],
+      "requestFailures": []
+    },
+    "1440:/": {
+      "url": "https://www.h-laylati.com/",
+      "title": "H Laylati LLC.",
+      "viewport": 1440,
+      "docWidth": 1440,
+      "bodyWidth": 1440,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 0,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        }
+      ],
+      "linkCount": 32,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 4,
+      "tapSmall": 3,
+      "images": [
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/99999bd8-6ee7-4e4e-b9bd-6043425f22a0/WhatsApp+Image+2024-01-24+at+6.39.50+PM+%2",
+          "naturalW": 1440,
+          "naturalH": 810,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/253a443f-fc3f-4ced-989a-f7ebcfd28b8e/WhatsApp+Image+2024-01-24+at+3.43.35+PM.jp",
+          "naturalW": 413,
+          "naturalH": 734,
+          "alt": "Placeholder",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/38c107c7-c48c-48db-90db-4b8ad80d5172/WhatsApp+Image+2024-01-24+at+3.43.32+PM+%2",
+          "naturalW": 621,
+          "naturalH": 413,
+          "alt": "Placeholder",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/59c2083a-047f-4981-bf05-a000c80933b8/WhatsApp+Image+2024-01-24+at+3.43.32+PM+%2",
+          "naturalW": 523,
+          "naturalH": 413,
+          "alt": "Placeholder",
+          "isVisible": true
+        }
+      ],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\n! مشاهدة القاعات من مكانك\nمن نحن؟\nالتواصل\nللتوظيف\n\nخدماتـنـــــــا\n\nحفلات خارجية\nقاعة هذه ليلتي\nبدره\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 1939,
+      "resourceCount": 48,
+      "dcl": 386.70000000001164,
+      "loadEvent": 464.8000000000029,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "! مشاهدة القاعات من مكانك",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "من نحن؟",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "التواصل",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "للتوظيف",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "حفلات خارجية",
+          "href": "https://www.h-laylati.com/s/BP-H-laylati.pdf",
+          "visible": true
+        },
+        {
+          "text": "قاعة هذه ليلتي",
+          "href": "https://www.h-laylati.com/s/.pdf",
+          "visible": true
+        },
+        {
+          "text": "بدره",
+          "href": "https://www.h-laylati.com/s/1-ymm2.pdf",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.65,
+      "errors": [],
+      "requestFailures": []
+    },
+    "1440:/services": {
+      "url": "https://www.h-laylati.com/services",
+      "title": "! مشاهدة القاعات من مكانك — H Laylati LLC.",
+      "viewport": 1440,
+      "docWidth": 1440,
+      "bodyWidth": 1440,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 0,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        }
+      ],
+      "linkCount": 39,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 9,
+      "tapSmall": 3,
+      "images": [
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/c4a55f9c-de10-40c1-8360-168188f5265f/WhatsApp+Image+2024-02-06+at+1.25.31+AM.jp",
+          "naturalW": 781,
+          "naturalH": 650,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/4756fdbc-78e0-4dd2-8049-834d26ad5ead/WhatsApp+Image+2024-02-06+at+1.25.30+AM.jp",
+          "naturalW": 713,
+          "naturalH": 1228,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/e698c544-31b0-4b62-a59b-54bc170e58d0/WhatsApp+Image+2024-02-04+at+4.08.00+PM.jp",
+          "naturalW": 1440,
+          "naturalH": 810,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/26ee26bf-0fb0-4e0f-b6bf-0e02ed6de203/WhatsApp+Image+2024-02-06+at+1.25.32+AM.jp",
+          "naturalW": 905,
+          "naturalH": 680,
+          "alt": "",
+          "isVisible": true
+        },
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/b9a5947b-b6a8-491b-81e6-88e5698b838d/WhatsApp+Image+2024-02-04+at+4.08.00+PM+%2",
+          "naturalW": 1440,
+          "naturalH": 810,
+          "alt": "",
+          "isVisible": true
+        }
+      ],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\n! مشاهدة القاعات من مكانك\nمن نحن؟\nالتواصل\nللتوظيف\n\nمشاهدة القاعات\n\n3D\n\nأضغط هنــا\n\nقسم الرجال - قاعة بدره \n\nأضغط هنــا\n\nكبار الشخصيات - قاعة هذه ليلتي  \n\nأضغط هنــا\n\nقسم النساء - قاعة هذه ليلتي \n\nأضغط هنــا\n\nقسم الرجال - قاعة هذه ليلتي \n\nأضغط هنــا\n\nقسم النساء - قاعة بدره \n\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 1724,
+      "resourceCount": 64,
+      "dcl": 263.6000000000058,
+      "loadEvent": 306.6000000000058,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/services#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "! مشاهدة القاعات من مكانك",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "من نحن؟",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "التواصل",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "للتوظيف",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=RUYuufuYXQH",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=q6LCks19oDu",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=3ezBLQghvtd",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=wERuBbYLKdP",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=mBcA6k8Ffmg",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=iCwo26Bo7XH",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=mBcA6k8Ffmg",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=HUJFxwkL1R4",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://my.matterport.com/show/?m=RUYuufuYXQH",
+          "visible": true
+        },
+        {
+          "text": "أضغط هنــا",
+          "href": "https://my.matterport.com/show/?m=f2PpZrQNoW7",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.52,
+      "errors": [],
+      "requestFailures": []
+    },
+    "1440:/about": {
+      "url": "https://www.h-laylati.com/about",
+      "title": "About — H Laylati LLC.",
+      "viewport": 1440,
+      "docWidth": 1440,
+      "bodyWidth": 1440,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 0,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        }
+      ],
+      "linkCount": 29,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 4,
+      "tapSmall": 3,
+      "images": [
+        {
+          "src": "https://images.squarespace-cdn.com/content/v1/65ad1d399c9c5e5e2488bdbb/f52173ad-aa29-4706-8936-f9254c60ae0b/WhatsApp+Image+2024-01-28+at+8.22.10+PM.jp",
+          "naturalW": 961,
+          "naturalH": 602,
+          "alt": "",
+          "isVisible": true
+        }
+      ],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\n! مشاهدة القاعات من مكانك\nمن نحن؟\nالتواصل\nللتوظيف\nنبذه عن قاعات هذه ليلتي \n\n افتتحت هذه ليلتي أبوابها في عام 2016 ، تميّزت بالمساحات الواسعة والمرافق الفخمة واستقبلنا خلال عامنا الاول العديد من  الشخصيات و العوائل الكبيرة \n\n افتتحت قاعة بدرة عام 2017 ، بمساحات أصغر تناسب المناسبات الصغيرة بنفس الخدمات والمرافق الفخمة.\n\n توفر كذلك شركة هذه ليلتي خدماتها خارج قاعاتها مثل اقامة المناسبات الخارجية مثل (حفلات غداء , حفلات عشاء, افطار ).\n\n مساحات هذه ليلتي مستعدة لإقامة مناسبات رسمية مثل المعارض والمؤتمرات الكبيرة و لديها القدرة على استيعاب عدد كبير من الضيوف.\n\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 1549,
+      "resourceCount": 60,
+      "dcl": 253.40000000000873,
+      "loadEvent": 308.3000000000029,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/about#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "! مشاهدة القاعات من مكانك",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "من نحن؟",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "التواصل",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "للتوظيف",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.51,
+      "errors": [],
+      "requestFailures": []
+    },
+    "1440:/contact": {
+      "url": "https://www.h-laylati.com/contact",
+      "title": "Contact — H Laylati LLC.",
+      "viewport": 1440,
+      "docWidth": 1440,
+      "bodyWidth": 1440,
+      "dir": "",
+      "lang": "en-US",
+      "h1": [],
+      "nav": 3,
+      "forms": 1,
+      "buttons": [
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "Open Menu\n    Close Menu",
+          "text": "Open Menu\n    Close Menu",
+          "disabled": false,
+          "visible": false
+        },
+        {
+          "name": "أرسال",
+          "text": "أرسال",
+          "disabled": false,
+          "visible": true
+        }
+      ],
+      "linkCount": 29,
+      "internalTel": 0,
+      "wa": 0,
+      "mail": 1,
+      "noNameButtons": 0,
+      "noNameAnchors": 4,
+      "tapSmall": 3,
+      "images": [],
+      "smallFonts": 0,
+      "bodyExcerpt": "Skip to Content\nH Laylati LLC.\n! مشاهدة القاعات من مكانك\nمن نحن؟\nالتواصل\nللتوظيف\nتواصل معنا \n\n..نحن هنا لمساعدتك في أي استفسار أو ملاحظة تود مشاركتها معنا , لاتتردد في التواصل معنا\n\n.وسنكون سعداء بخدمتك \n\n\nName\nFirst Name\n(required)\nLast Name\n(required)\nEmail\n(required)\nMessage\n(required)\nأرسال\nاعـــــــلانـــــات\nالموقع\n\nالمدينة المنورة ,طريق عثمان بن عفان\n\nhttps://maps.app.goo.gl/vAtej2R7x6VxhEpi6.\nساعات العمل\nطوال أيام الأسبوع\n4 am — 11pm\nللتواصل\n0508909191 - 0539191090\nINFO@HLAYLATI.COM",
+      "pageHeight": 1249,
+      "resourceCount": 61,
+      "dcl": 233,
+      "loadEvent": 906.3000000000029,
+      "links": [
+        {
+          "text": "Skip to Content",
+          "href": "https://www.h-laylati.com/contact#page",
+          "visible": true
+        },
+        {
+          "text": "H Laylati LLC.",
+          "href": "https://www.h-laylati.com/",
+          "visible": true
+        },
+        {
+          "text": "! مشاهدة القاعات من مكانك",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "من نحن؟",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "التواصل",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "للتوظيف",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/services",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/about",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/contact",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.h-laylati.com/704825207487",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://instagram.com/squarespace",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "http://www.snapchat.com/add/Connect%20to%20Snapchat",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://www.tiktok.com/@h.laylati?_t=8jTHiVg2Lxv&_r=1",
+          "visible": true
+        },
+        {
+          "text": "اعـــــــلانـــــات",
+          "href": "https://www.h-laylati.com/s/WhatsApp-Image-2024-03-21-at-85936-PM.jpeg",
+          "visible": true
+        },
+        {
+          "text": "https://maps.app.goo.gl/vAtej2R7x6V",
+          "href": "https://maps.app.goo.gl/vAtej2R7x6VxhEpi6",
+          "visible": true
+        },
+        {
+          "text": "INFO@HLAYLATI.COM",
+          "href": "mailto:INFO@HLAYLATI.COM?subject=%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84",
+          "visible": true
+        },
+        {
+          "text": "",
+          "href": "https://accessibility-widget.pages.dev/",
+          "visible": true
+        }
+      ],
+      "http": 200,
+      "elapsed": 1.5,
+      "errors": [],
+      "requestFailures": []
+    }
+  },
+  "security_summary": {},
+  "notes": [],
+  "outside": {}
+}
