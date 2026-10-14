@@ -1,0 +1,104 @@
+name: H Laylati independent website audit 2026-10-14
+on:
+  workflow_dispatch:
+  push:
+    branches: [hlaylati-madinah-white-rose-20261014]
+    paths: ['.github/workflows/hlaylati-website-audit.yml']
+permissions:
+  contents: write
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 13
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hlaylati-madinah-white-rose-20261014
+          persist-credentials: true
+      - name: Prepare tools
+        run: |
+          pip install --quiet playwright==1.55.0 beautifulsoup4 requests
+          python -m playwright install --with-deps chromium
+      - name: Audit live official website and spelling variations
+        shell: bash
+        run: |
+          mkdir -p qa-output/hlaylati/site-audit
+          cat >/tmp/website_audit.py <<'PY'
+          import requests, json, re, datetime, asyncio, socket, urllib.parse, time, os
+          from bs4 import BeautifulSoup
+          from playwright.async_api import async_playwright
+          domains=['https://www.hlaylati.com/','https://hlaylati.com/','https://www.h-laylati.com/','https://h-laylati.com/']
+          paths=['/','/services','/about','/contact','/robots.txt','/sitemap.xml']
+          result={"timestamp_utc":datetime.datetime.now(datetime.timezone.utc).isoformat(),"domains":{},"pages":{},"browser":{}}
+          hdr={'User-Agent':'Mozilla/5.0 (compatible; DigitalArhatIndependentManualAudit/1.0)'}
+          s=requests.Session();s.headers.update(hdr)
+          for domain in domains:
+            u=urllib.parse.urlparse(domain)
+            try:
+              records=socket.getaddrinfo(u.hostname,443);ips=list(dict.fromkeys(x[4][0] for x in records))
+            except Exception as e: ips=[];dns_err=str(e)
+            try:
+              r=s.get(domain,timeout=16,allow_redirects=True)
+              result['domains'][domain]={"dns_ips":ips,"status":r.status_code,"final_url":r.url,"content_length":len(r.content),"tls":r.url.startswith('https:'),"history":[{'status':x.status_code,'url':x.url,'location':x.headers.get('Location')} for x in r.history]}
+            except Exception as e:result['domains'][domain]={"dns_ips":ips,"error":str(e)[:350]}
+          for path in paths:
+            url='https://www.h-laylati.com'+path
+            try:
+              r=s.get(url,timeout=17,allow_redirects=True)
+              sp=BeautifulSoup(r.content,'html.parser')
+              title=sp.title.get_text(' ',strip=True) if sp.title else None
+              meta=[{'name':a.get('name'),'property':a.get('property'),'content':a.get('content')} for a in sp.find_all('meta') if a.get('name') in ['description','robots','viewport','google-site-verification'] or a.get('property','').startswith('og:')]
+              headings=[{"tag":h.name,"text":h.get_text(' ',strip=True)[:150]} for h in sp.select('h1,h2,h3')]
+              links=[{'text':a.get_text(' ',strip=True)[:70],'href':a.get('href')} for a in sp.select('a[href]')]
+              forms=[{'action':f.get('action'),'method':f.get('method'),'fields':[{'name':x.get('name'),'type':x.get('type')} for x in f.select('input,textarea,select')]} for f in sp.select('form')]
+              img=[{'alt':x.get('alt'),'loading':x.get('loading'),'src':str(x.get('src'))[:100]} for x in sp.select('img')][:20]
+              ld=[str(x.get_text(' ',strip=True))[:750] for x in sp.select('script[type="application/ld+json"]')]
+              result['pages'][path]={'url':url,'status':r.status_code,'final_url':r.url,'content_type':r.headers.get('Content-Type'),'length':len(r.content),'title':title,'lang':sp.html.get('lang') if sp.html else None,'canonical':[x.get('href') for x in sp.select('link[rel="canonical"]')],'meta':meta,'headings':headings[:30],'links':links[:80],'forms':forms,'image_count':len(sp.select('img')),'images_sample':img,'schema_count':len(ld),'schemas':ld,'text_excerpt':sp.get_text(' ',strip=True)[:800],'file_excerpt':r.text[:180] if path in ['/robots.txt','/sitemap.xml'] else ''}
+            except Exception as e:result['pages'][path]={'url':url,'error':str(e)[:350]}
+          async def browser():
+            async with async_playwright() as p:
+              b=await p.chromium.launch(headless=True,args=['--no-sandbox'])
+              for width in (390,1440):
+                ctx=await b.new_context(viewport={'width':width,'height':840},is_mobile=width==390,has_touch=width==390)
+                for path in ['/','/services','/about']:
+                  url='https://www.h-laylati.com'+path
+                  page=await ctx.new_page();errors=[];failed=[]
+                  page.on('pageerror',lambda e: errors.append(str(e)[:200]))
+                  page.on('requestfailed',lambda req: failed.append({'url':req.url[:160],'reason':req.failure}))
+                  key=f'{width}__{path}'
+                  try:
+                    resp=await page.goto(url,wait_until='domcontentloaded',timeout=28000)
+                    await page.wait_for_timeout(1200)
+                    info=await page.evaluate("""()=>({title:document.title,lang:document.documentElement.lang,viewport:innerWidth,docwidth:document.documentElement.scrollWidth,bodyw:document.body.scrollWidth,bodytext:document.body.innerText.slice(0,1500),h1:[...document.querySelectorAll('h1')].map(x=>x.innerText),buttons:[...document.querySelectorAll('button')].map(x=>x.innerText.slice(0,70)).slice(0,15),links:[...document.querySelectorAll('a[href]')].slice(0,50).map(a=>({text:a.innerText.trim().slice(0,70),href:a.href})),contact_clicks:[...document.querySelectorAll('a[href^="tel:"],a[href*="wa.me"],a[href*="api.whatsapp.com"],a[href^="mailto:"]')].map(a=>a.href),forms:document.forms.length,imgs:[...document.querySelectorAll('img')].slice(0,30).map(i=>({loaded:i.complete&&i.naturalWidth>0,w:i.naturalWidth,h:i.naturalHeight,alt:i.alt}))})""")
+                    info.update({"http":resp.status if resp else None,"url":page.url,"page_errors":errors[:10],"requests_failed":failed[:15]})
+                    result['browser'][key]=info
+                    await page.screenshot(path=f'qa-output/hlaylati/site-audit/{width}_{path.strip("/") or "home"}.png',full_page=True,timeout=30000)
+                  except Exception as e:result['browser'][key]={"error":str(e)[:350]}
+                  await page.close()
+                await ctx.close()
+              await b.close()
+          awaitable=browser()
+          try:asyncio.run(awaitable)
+          except Exception as e:result['browser']['fatal']={"error":str(e)[:350]}
+          with open('qa-output/hlaylati/site-audit/report.json','w') as f:json.dump(result,f,indent=2,ensure_ascii=False)
+          print("SITE_AUDIT_REPORT",json.dumps({k:v for k,v in result.items() if k!='browser'},ensure_ascii=False)[:7000])
+          print('BROWSER_SUMMARY',json.dumps({k:{'http':v.get('http'),'error':v.get('error'),'docwidth':v.get('docwidth'),'viewport':v.get('viewport'),'page_errors':v.get('page_errors'),'forms':v.get('forms')} for k,v in result['browser'].items()},ensure_ascii=False))
+          PY
+          python /tmp/website_audit.py
+      - name: Upload site inspection evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hlaylati-live-website-audit-20261014
+          path: qa-output/hlaylati/site-audit/
+          if-no-files-found: warn
+      - name: Save audit report without touching factory or demo
+        if: always()
+        shell: bash
+        run: |
+          test -f qa-output/hlaylati/site-audit/report.json || exit 0
+          git config user.name "Digital Arhat QA"
+          git config user.email "actions@users.noreply.github.com"
+          git add qa-output/hlaylati/site-audit/report.json
+          git commit -m "Capture H Laylati independent live website acquisition and conversion audit" || true
+          git push origin HEAD:hlaylati-madinah-white-rose-20261014 || true
