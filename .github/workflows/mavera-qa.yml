@@ -77,18 +77,28 @@ jobs:
                     result['review_width_overflow']=await rev.evaluate("()=>Math.max(0,Math.round(document.documentElement.scrollWidth-innerWidth))")
                     result['review_old_brand']=await rev.evaluate("()=>/White Rose|الوردة البيضاء/i.test(document.body.innerText)")
                     result['review_has_mavera']=await rev.evaluate("()=>/ماڤيرا|Mavera/i.test(document.body.innerText)")
+                    rh=await rev.evaluate("()=>document.documentElement.scrollHeight")
+                    for ry in range(0,rh,320):
+                      await rev.evaluate("(y)=>window.scrollTo(0,y)",ry)
+                      await rev.wait_for_timeout(60)
+                    await rev.evaluate("()=>window.scrollTo(0,0)")
+                    await rev.wait_for_timeout(400)
                     await rev.screenshot(path=f'qa-output/mavera/screenshots/review-{width}.png',full_page=True,animations='disabled')
                     await rev.close()
                   except Exception as err:result['review_test_error']=str(err)[:300]
                   if width==390:
                     try:
+                      # Validate pending isolated derivative persistence patch without falsely attributing it to current production.
+                      await page.add_script_tag(content=open('patches/mavera-persist.js',encoding='utf-8').read())
                       await page.locator('#guestInput').fill('350',timeout=4500)
                       await page.locator('#dateInput').fill('2026-11-15',timeout=4500)
                       await page.locator('#notesInput').fill('اختبار داخلي فقط دون إرسال',timeout=4500)
                       result['state_before_reload']=await page.evaluate("()=>({guest:document.querySelector('#guestInput')?.value,date:document.querySelector('#dateInput')?.value,keys:Object.keys(localStorage)})")
                       await page.reload(wait_until='domcontentloaded')
+                      await page.add_script_tag(content=open('patches/mavera-persist.js',encoding='utf-8').read())
                       await page.wait_for_timeout(900)
                       result['state_after_reload']=await page.evaluate("()=>({guest:document.querySelector('#guestInput')?.value,date:document.querySelector('#dateInput')?.value,keys:Object.keys(localStorage)})")
+                      result['patch_test_only_not_deployed']=True
                       result['saved_guest']=result['state_after_reload']['guest']=='350'
                       result['saved_date']=result['state_after_reload']['date']=='2026-11-15'
                     except Exception as err: result['state_qa_exception']=str(err)[:350]
@@ -134,7 +144,7 @@ jobs:
                 resp=await mp.goto(URL+'review/',wait_until='domcontentloaded',timeout=35000)
                 await mp.wait_for_timeout(1500)
                 report['review']={'http_status':resp.status if resp else None,'url':mp.url,'title':await mp.title(),'text_has_mavera':await mp.evaluate("()=>/ماڤيرا|مافيرا|Mavera/i.test(document.body.innerText)"),'old_brand_visible':await mp.evaluate("()=>/الوردة البيضاء|White Rose/i.test(document.body.innerText)"),'error_text':(await mp.locator('body').inner_text())[:700]}
-                await mp.screenshot(path='qa-output/mavera/screenshots/review-390.png',full_page=True)
+                await mp.screenshot(path='qa-output/mavera/screenshots/review-default.png',full_page=True)
               except Exception as e:report['review']={'error':str(e)[:400]}
               await browser.close()
           try:asyncio.run(main())
