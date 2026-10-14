@@ -1,0 +1,31 @@
+name: RPM PORT zero-spend hosting preflight
+on:
+  push:
+    branches: [rpm-port-makan-v4-review-20261014]
+    paths: ['.github/workflows/rpm-port-host-preflight.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Inspect existing Pages configuration and deploy credentials without modifying settings
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          set -euo pipefail
+          code=$(curl -sS -o /tmp/pages.json -w '%{http_code}' -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' "https://api.github.com/repos/${GITHUB_REPOSITORY}/pages")
+          echo "PAGES_CONFIG_HTTP=$code"
+          python3 - <<'PY'
+          import json
+          x=json.load(open('/tmp/pages.json'))
+          print('PAGES_URL='+str(x.get('html_url','')))
+          print('PAGES_SOURCE='+str(x.get('source','')))
+          print('PAGES_BUILD_TYPE='+str(x.get('build_type','')))
+          PY
+          echo "NETLIFY_CREDENTIAL_PRESENT=$([ -n "$NETLIFY_AUTH_TOKEN" ] && echo yes || echo no)"
+          echo "VERCEL_CREDENTIAL_PRESENT=$([ -n "$VERCEL_TOKEN" ] && echo yes || echo no)"
