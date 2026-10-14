@@ -1,0 +1,76 @@
+
+/* Visual correction V2 — scoped to the existing hero background and foreground only. */
+.hero .hero-bg{
+  background-position:center 42%!important;
+  filter:saturate(.94) contrast(1.03)!important;
+  transform:scale(1.014)!important;
+}
+.hero .wr-cinematic-scene{
+  background-position:center 51%!important;
+  filter:saturate(.94) contrast(1.025)!important;
+  transform:scale(1.014)!important;
+}
+.hero::before{
+  background:
+    radial-gradient(ellipse 62% 33% at 50% 34%,
+      rgba(6,5,5,.49) 0%,
+      rgba(6,5,5,.31) 48%,
+      transparent 99%),
+    linear-gradient(180deg,
+      rgba(5,4,4,.26) 0%,
+      rgba(5,4,4,.10) 18%,
+      rgba(5,4,4,.22) 42%,
+      rgba(5,4,4,.38) 72%,
+      rgba(5,4,4,.57) 100%)!important;
+}
+.hero::after{
+  background:radial-gradient(ellipse at 50% 54%,transparent 26%,rgba(4,4,4,.15) 100%)!important;
+}
+.hero .hero-main #hero-title{
+  font-size:clamp(42px,3.65vw,53px)!important;
+  max-width:780px!important;
+  line-height:1.45!important;
+  text-shadow:0 3px 22px rgba(0,0,0,.35)!important;
+}
+.hero .hero-main .lead{
+  font-weight:500!important;
+  color:rgba(255,251,245,.95)!important;
+}
+.hero .hero-main .truth{
+  color:rgba(255,252,245,.92)!important;
+  text-shadow:0 1px 10px rgba(0,0,0,.20)!important;
+}
+@media(max-width:640px){
+  .hero .hero-main{transform:translateY(-42px)!important}
+  .hero .hero-main #hero-title{
+    font-size:29px!important;
+    max-width:320px!important;
+    line-height:1.45!important;
+    letter-spacing:-.01em!important;
+    margin-bottom:12px!important;
+  }
+  .hero .hero-main .eyebrow{margin-bottom:16px!important}
+  .hero .hero-main .lead{
+    font-size:14px!important;
+    max-width:335px!important;
+    line-height:1.86!important;
+  }
+  .hero .hero-main .hero-actions{margin-top:18px!important}
+  .hero .hero-main .truth{font-size:11px!important;max-width:345px!important}
+  .hero::before{
+    background:
+      radial-gradient(ellipse 64% 34% at 50% 30%,
+        rgba(5,5,5,.53) 0%,
+        rgba(5,5,5,.31) 51%,
+        transparent 100%),
+      linear-gradient(180deg,
+        rgba(5,4,4,.25) 0%,
+        rgba(5,4,4,.10) 17%,
+        rgba(5,4,4,.20) 43%,
+        rgba(5,4,4,.38) 75%,
+        rgba(5,4,4,.57) 100%)!important;
+  }
+}
+@media(min-width:641px){
+  .hero .hero-main{transform:translateY(-12px)!important}
+}
