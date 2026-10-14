@@ -1,0 +1,67 @@
+name: Al Hamd isolated Makan V4 source QA
+on:
+  push:
+    branches: [alhamd-jeddah-makan-v4-review-20261014]
+    paths:
+      - 'alhamd-jeddah-makan-v4-review/**'
+      - '.github/workflows/alhamd-command2-qa.yml'
+  workflow_dispatch:
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Static and syntax checks
+        run: |
+          set -e
+          cd alhamd-jeddah-makan-v4-review
+          node --check assets/showroom.js
+          node --check assets/showroom-en.js
+          node --check assets/review.js
+          test -f review/index.html && test -f en/index.html && test -f assets/showroom.css
+          ! grep -ri -E "RPM PORT|rpm.port|0533117779|FN Cadena" assets/*.js index.html en/index.html review/index.html
+          grep -q "11187346841" assets/showroom.js
+          grep -q "11185636599" assets/showroom.js
+          grep -q "0125118609" assets/showroom.js
+      - name: Install free browser test dependencies
+        run: |
+          npm install --no-save playwright@1.57.0
+          npx playwright install chromium
+      - name: Local chromium visual and behavior QA
+        run: |
+          python3 -m http.server 8089 --directory alhamd-jeddah-makan-v4-review >/tmp/alhamd-http.log 2>&1 &
+          sleep 2
+          node - <<'NODE'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const b=await chromium.launch({headless:true,args:['--no-sandbox']});
+            let failures=[];
+            for(const width of [390,430,768,1440]){
+              const page=await b.newPage({viewport:{width,height:850}});
+              const errors=[];page.on('pageerror',e=>errors.push(String(e)));
+              await page.goto('http://localhost:8089/',{waitUntil:'domcontentloaded'});
+              await page.waitForTimeout(1400);
+              const visible=await page.locator('body').innerText();
+              if(!visible.includes('آل حمد'))failures.push('AR brand '+width);
+              if(visible.includes('RPM PORT'))failures.push('RPM crossbrand '+width);
+              if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2))failures.push('AR overflow '+width);
+              await page.goto('http://localhost:8089/en/',{waitUntil:'domcontentloaded'});
+              await page.waitForTimeout(700);
+              if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2))failures.push('EN overflow '+width);
+              await page.goto('http://localhost:8089/review/',{waitUntil:'domcontentloaded'});
+              await page.locator('#car').selectOption('11185636599');
+              await page.locator('#questions').fill('Verify mileage 61700 versus 62000');
+              await page.reload({waitUntil:'domcontentloaded'});
+              if(await page.locator('#questions').inputValue()!=='Verify mileage 61700 versus 62000')failures.push('state '+width);
+              await page.locator('#langSwitch').click();
+              if(await page.locator('html').getAttribute('lang')!=='en')failures.push('EN review '+width);
+              if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2))failures.push('review overflow '+width);
+              if(errors.length)failures.push('JS '+width+errors.join('|').slice(0,120));
+              await page.close();
+            }
+            await b.close();
+            console.log('CHROMIUM_QA',JSON.stringify({widths:[390,430,768,1440],failures}));
+            if(failures.length)process.exit(1);
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
