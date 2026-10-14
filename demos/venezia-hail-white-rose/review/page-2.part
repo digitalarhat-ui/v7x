@@ -1,0 +1,26 @@
+ction"><span>اختيار الاتجاه</span></label>
+              <label class="choice"><input type="radio" name="useful" value="brief"><span>ملخص المراجعة</span></label>
+              <label class="choice"><input type="radio" name="useful" value="none"><span>لا شيء مما سبق</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="step" id="step2" hidden>
+          <h3>٢ — ملاءمة الواقع</h3><p class="step-intro">المطلوب تصحيح افتراضاتنا، حتى لو كانت الإجابات سلبية.</p>
+          <div class="field">
+            <div class="legend">٣. أي جزء لا يعكس طريقة عملكم الحالية؟</div>
+            <p class="hint">كيف تصفون مدى ملاءمة المسار المقترح؟</p>
+            <div class="choices" data-group="fit">
+              <label class="choice"><input type="radio" name="fit" value="yes"><span>يتوافق مع عملنا</span></label>
+              <label class="choice"><input type="radio" name="fit" value="partial"><span>يتوافق جزئياً</span></label>
+              <label class="choice"><input type="radio" name="fit" value="no"><span>لا يتوافق</span></label>
+              <label class="choice"><input type="radio" name="fit" value="unknown"><span>لا يمكن الحكم حالياً</span></label>
+            </div>
+            <p class="hint" style="margin-top:10px">ما الذي لا يطابق الواقع؟</p>
+            <textarea name="mismatch" id="mismatch" placeholder="اشرحوا الفرق إن وجد، دون افتراض إجراءات معينة…"></textarea>
+          </div>
+          <div class="field"><div class="legend">٤. ما المعلومات التي يحتاجها فريقكم عادةً قبل مناقشة التفاصيل مع العميل؟</div>
+            <textarea name="needed" id="needed" placeholder="اكتبوا المعلومات الفعلية المستخدمة لديكم…"></textarea>
+          </div>
+          <div class="field"><div class="legend">٥. هل الخيارات البصرية لديكم قابلة للتوحيد جزئياً، أم أن كل مناسبة تُعالج بشكل مختلف؟</div>
+            <div class="choices" data-group="standard">
+              <label class="choice"><input type="radio" name="standard" value="partial"><span>يمكن توحيد جزء منه
