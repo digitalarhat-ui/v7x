@@ -1,0 +1,114 @@
+{
+  "lead": "SA-3F-20261014-MAVERA-JEDDAH",
+  "run": "38566676802",
+  "local_candidate": true,
+  "LIVE_VERCEL_DEPLOYED": false,
+  "rights_verified": false,
+  "authoritative_hall_capacities": false,
+  "widths": {
+    "390": {
+      "HTTP": 200,
+      "mavera": true,
+      "oldbrand": false,
+      "overflow": 0,
+      "errors": [],
+      "photo_dimensions": [
+        {
+          "width": 2524,
+          "height": 1684,
+          "url": "https://ik.imagekit.io/kfrvcit6d/mavera/Screenshot%202026-01-10%20at%209.18.28%E2%80%AFAM.png"
+        },
+        {
+          "width": 2780,
+          "height": 1570,
+          "url": "https://ik.imagekit.io/kfrvcit6d/mavera/Screenshot%202026-01-10%20at%209.19.46%E2%80%AFAM.png?updatedAt=1768036883764"
+        }
+      ],
+      "firstparty_photos_pass": true,
+      "notice": true,
+      "persist_guest": "350",
+      "persist_date": "2026-11-15",
+      "english": false,
+      "review_http": 200,
+      "review_overflow": 0,
+      "review_opacity": 1,
+      "PASS": false
+    },
+    "430": {
+      "HTTP": 200,
+      "mavera": true,
+      "oldbrand": false,
+      "overflow": 0,
+      "errors": [],
+      "photo_dimensions": [
+        {
+          "width": 2524,
+          "height": 1684,
+          "url": "https://ik.imagekit.io/kfrvcit6d/mavera/Screenshot%202026-01-10%20at%209.18.28%E2%80%AFAM.png"
+        },
+        {
+          "width": 2780,
+          "height": 1570,
+          "url": "https://ik.imagekit.io/kfrvcit6d/mavera/Screenshot%202026-01-10%20at%209.19.46%E2%80%AFAM.png?updatedAt=1768036883764"
+        }
+      ],
+      "firstparty_photos_pass": true,
+      "notice": true,
+      "review_http": 200,
+      "review_overflow": 0,
+      "review_opacity": 1,
+      "PASS": true
+    },
+    "768": {
+      "HTTP": 200,
+      "mavera": true,
+      "oldbrand": false,
+      "overflow": 0,
+      "errors": [],
+      "photo_dimensions": [
+        {
+          "width": 2524,
+          "height": 1684,
+          "url": "https://ik.imagekit.io/kfrvcit6d/mavera/Screenshot%202026-01-10%20at%209.18.28%E2%80%AFAM.png"
+        },
+        {
+          "width": 2780,
+          "height": 1570,
+          "url": "https://ik.imagekit.io/kfrvcit6d/mavera/Screenshot%202026-01-10%20at%209.19.46%E2%80%AFAM.png?updatedAt=1768036883764"
+        }
+      ],
+      "firstparty_photos_pass": true,
+      "notice": true,
+      "review_http": 200,
+      "review_overflow": 0,
+      "review_opacity": 1,
+      "PASS": true
+    },
+    "1440": {
+      "HTTP": 200,
+      "mavera": true,
+      "oldbrand": false,
+      "overflow": 0,
+      "errors": [],
+      "photo_dimensions": [
+        {
+          "width": 2524,
+          "height": 1684,
+          "url": "https://ik.imagekit.io/kfrvcit6d/mavera/Screenshot%202026-01-10%20at%209.18.28%E2%80%AFAM.png"
+        },
+        {
+          "width": 2780,
+          "height": 1570,
+          "url": "https://ik.imagekit.io/kfrvcit6d/mavera/Screenshot%202026-01-10%20at%209.19.46%E2%80%AFAM.png?updatedAt=1768036883764"
+        }
+      ],
+      "firstparty_photos_pass": true,
+      "notice": true,
+      "review_http": 200,
+      "review_overflow": 0,
+      "review_opacity": 1,
+      "PASS": true
+    }
+  },
+  "overall": "FAIL"
+}
