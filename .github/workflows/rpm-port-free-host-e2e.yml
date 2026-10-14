@@ -1,0 +1,82 @@
+name: RPM PORT warning-free host four-device final QA
+on:
+  push:
+    branches: [rpm-port-makan-v4-review-20261014]
+    paths: ['.github/workflows/rpm-port-free-host-e2e.yml']
+permissions:
+  contents: read
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Test zero-interstitial public review
+        shell: bash
+        run: |
+          node <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const base='https://githubraw.com/digitalarhat-ui/v7x/rpm-port-makan-v4-review-20261014/rpm-port-riyadh-makan-v4-review/preview/';
+            const result=[];
+            for(const [width,lang,file] of [[390,'ar','index.html'],[430,'ar','index.html'],[768,'en','en.html'],[1440,'en','en.html']]){
+              const page=await browser.newPage({viewport:{width,height:900}});
+              page.setDefaultTimeout(13000);
+              const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('requestfailed',r=>errors.push('request:'+r.url().slice(-80)+':'+r.failure()?.errorText));
+              await page.route(/fonts\\.googleapis\\.com|fonts\\.gstatic\\.com/,r=>r.abort());
+              const url=base+file;
+              const doc=await page.goto(url,{waitUntil:'domcontentloaded',timeout:18000});
+              await page.waitForSelector('.hero',{timeout:18000});
+              await page.evaluate(()=>{for(const x of document.images)x.loading='eager'});
+              await page.waitForFunction(()=>[...document.images].every(x=>x.complete&&x.naturalWidth>0),null,{timeout:15000}).catch(()=>{});
+              const first=await page.evaluate(()=>({title:document.title,lang:document.documentElement.lang,dir:document.documentElement.dir,scrollWidth:document.documentElement.scrollWidth,width:innerWidth,images:document.images.length,loaded:[...document.images].filter(x=>x.complete&&x.naturalWidth>0).length,notice:document.body.innerText.includes('External Content Notice'),copy:document.body.innerText.slice(0,180)}));
+              const fail=[];
+              if(doc.status()!==200)fail.push('status:'+doc.status());
+              if(first.notice||first.title.includes('External Content'))fail.push('interstitial notice');
+              if(first.lang!==lang||first.dir!==(lang==='ar'?'rtl':'ltr'))fail.push('language');
+              if(first.scrollWidth>first.width)fail.push('horizontal overflow');
+              if(first.images<7||first.loaded!==first.images)fail.push('broken image');
+              if(lang==='en'){
+                const body=await page.locator('body').innerText();
+                if(/[\u0600-\u06ff]/.test(body.replaceAll('العربية','')))fail.push('Arabic text on English page');
+              }
+              const switchHref=await page.locator('.languageSwitch').getAttribute('href').catch(()=>null);
+              if(!switchHref||!switchHref.endsWith(lang==='ar'?'en.html':'index.html'))fail.push('language toggle');
+              await page.evaluate(()=>location.hash='#cars');
+              await page.waitForTimeout(250);
+              const cards=page.locator('.carCard');
+              if(await cards.count()!==2)fail.push('wrong vehicle count');
+              const buttons=page.locator('.carCard .saveBtn');
+              if(await buttons.count()===2){await buttons.nth(0).click();await buttons.nth(1).click()}else fail.push('save buttons');
+              await page.evaluate(()=>location.hash='#compare');
+              await page.waitForTimeout(250);
+              const comparison=await page.locator('.tableScroll').innerText().catch(()=>'');
+              if(!comparison.includes('355,000')||!comparison.includes('328,000'))fail.push('price in comparison');
+              await page.evaluate(()=>location.hash='#request');
+              await page.waitForTimeout(250);
+              const button=page.locator('.requestForm').getByRole('button',{name:lang==='ar'?/جهّز استفسارك/:/Prepare enquiry/i}).last();
+              if(await button.count()){await button.click()}else fail.push('draft button');
+              const wa=await page.locator('a[href*="wa.me/966533117779?text="]').first().getAttribute('href').catch(()=>null);
+              if(!wa||!wa.includes('11185148484')||!wa.includes('11188719837'))fail.push('WhatsApp handoff');
+              const preview=await page.locator('.preparedText').innerText().catch(()=>'');
+              if(!preview.includes('355,000')||!preview.includes('328,000'))fail.push('price context in enquiry');
+              const realErrors=errors.filter(x=>!x.includes('fonts.googleapis.com')&&!x.includes('fonts.gstatic.com'));
+              fail.push(...realErrors);
+              await page.screenshot({path:'rpm-clean-'+lang+'-'+width+'.png',fullPage:true});
+              result.push({width,lang,url,first,languageToggle:switchHref,cars:await cards.count(),wa:!!wa,summaryLen:preview.length,fail});
+              await page.close();
+            }
+            await browser.close();
+            console.log('RPM_CLEAN_HOST_E2E',JSON.stringify(result));
+            if(result.some(x=>x.fail.length))process.exit(1);
+          })().catch(e=>{console.error(e);process.exit(1)})
+          JS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rpm-port-clean-host-screenshots
+          path: rpm-clean-*.png
+          retention-days: 5
