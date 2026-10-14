@@ -77,6 +77,8 @@ jobs:
                     result['review_width_overflow']=await rev.evaluate("()=>Math.max(0,Math.round(document.documentElement.scrollWidth-innerWidth))")
                     result['review_old_brand']=await rev.evaluate("()=>/White Rose|الوردة البيضاء/i.test(document.body.innerText)")
                     result['review_has_mavera']=await rev.evaluate("()=>/ماڤيرا|Mavera/i.test(document.body.innerText)")
+                    result['review_form_debug']=await rev.evaluate("""()=>Array.from(document.querySelectorAll('input,textarea,button,[class*="step"],[class*="wizard"],[class*="form"]')).slice(0,28).map(el=>{const z=getComputedStyle(el),r=el.getBoundingClientRect(),p=el.parentElement,ps=p?getComputedStyle(p):null;return {tag:el.tagName,id:el.id,cls:String(el.className).slice(0,120),txt:el.innerText?.slice(0,80),disp:z.display,vis:z.visibility,opacity:z.opacity,height:Math.round(r.height),width:Math.round(r.width),parentClass:p?.className,parentOpacity:ps?.opacity,parentDisplay:ps?.display}})""")
+                    result['review_next_button_visible']=await rev.get_by_text('التالي',exact=True).first.is_visible() if await rev.get_by_text('التالي',exact=True).count() else False
                     rh=await rev.evaluate("()=>document.documentElement.scrollHeight")
                     for ry in range(0,rh,320):
                       await rev.evaluate("(y)=>window.scrollTo(0,y)",ry)
@@ -118,7 +120,7 @@ jobs:
                       if await opt.count():await opt.click(timeout=4000)
                       result['post_interaction_storage']=await page.evaluate("()=>Object.keys(localStorage).map(k=>({key:k,size:String(localStorage.getItem(k)||'').length})).slice(0,25)")
                     except Exception as err:result['interaction_exception']=str(err)[:400]
-                  result['status']='PASS' if result['http_status']==200 and result['text_has_mavera'] and not result['old_brand_visible'] and not result['login_page'] and result['overflow_pixels']<5 and not result['script_errors'] and result.get('review_status')==200 and result.get('review_width_overflow',999)<5 and result.get('review_has_mavera') and not result.get('review_old_brand') else 'FAIL'
+                  result['status']='PASS' if result['http_status']==200 and result['text_has_mavera'] and not result['old_brand_visible'] and not result['login_page'] and result['overflow_pixels']<5 and not result['script_errors'] and result.get('review_status')==200 and result.get('review_width_overflow',999)<5 and result.get('review_has_mavera') and not result.get('review_old_brand') and result.get('review_next_button_visible') else 'FAIL'
                 except Exception as e:
                   result['status']='FAIL';result['exception']=str(e)[:600]
                   try: await page.screenshot(path=f'qa-output/mavera/screenshots/error-{width}.png')
