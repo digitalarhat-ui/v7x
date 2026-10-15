@@ -1,0 +1,98 @@
+name: Al Masah Makan V4 Isolated Browser QA
+on:
+  push:
+    branches:
+      - almasah-alfarida-makan-v4-20261015
+    paths:
+      - '.github/workflows/almasah-makan-v4-qa.yml'
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install local browser test library
+        run: |
+          mkdir -p /tmp/almasah-qa
+          cd /tmp/almasah-qa
+          npm init -y >/dev/null
+          npm install --no-save playwright-core@1.55.0
+      - name: Locate system Chrome
+        run: |
+          CHROME="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)"
+          test -n "$CHROME"
+          echo "CHROME=$CHROME" >> "$GITHUB_ENV"
+          "$CHROME" --version
+      - name: Start isolated static server
+        run: |
+          python3 -m http.server 4173 --directory almasah-alfarida-makan-v4-review > /tmp/almasah-server.log 2>&1 &
+          sleep 2
+          curl -fsS http://127.0.0.1:4173/ >/dev/null
+          curl -fsS http://127.0.0.1:4173/review/ >/dev/null
+      - name: Chromium real browser multi-width journey
+        run: |
+          mkdir -p /tmp/almasah-qa/screenshots
+          cat > /tmp/almasah-qa/check.cjs <<'NODE'
+          const { chromium } = require('playwright-core');
+          const fs = require('fs');
+          (async () => {
+            const b=await chromium.launch({headless:true,executablePath:process.env.CHROME,args:['--no-sandbox','--disable-dev-shm-usage']});
+            const rows=[];
+            for (const width of [390,430,768,1440]) {
+              const c=await b.newContext({viewport:{width,height:900},reducedMotion:'reduce'});
+              const page=await c.newPage();
+              const errs=[];
+              page.on('pageerror',e=>errs.push(String(e)));
+              await page.goto('http://127.0.0.1:4173/',{waitUntil:'domcontentloaded'});
+              await page.waitForFunction(()=>document.querySelector('#root')?.innerText.includes('الماسة الفريدة'),null,{timeout:30000});
+              const data=await page.evaluate(()=>({
+                title:document.title,
+                scrollWidth:document.documentElement.scrollWidth,
+                viewport:innerWidth,
+                dir:document.documentElement.dir,
+                text:document.body.innerText.slice(0,1800),
+                visibleRoot:document.querySelector('#root')?.getBoundingClientRect().width||0,
+                images:[...document.images].map(i=>({alt:i.alt,src:i.src,naturalWidth:i.naturalWidth}))
+              }));
+              await page.screenshot({path:'/tmp/almasah-qa/screenshots/arabic-'+width+'.png',fullPage:false});
+              if (errs.length||data.scrollWidth>width+1||data.visibleRoot<320||!data.text.includes('الماسة الفريدة')||data.text.includes('آل حمد')||data.text.includes('Al Hamd')) throw Error('AR width '+width+' '+JSON.stringify({errs,data}));
+              await page.goto('http://127.0.0.1:4173/en/',{waitUntil:'domcontentloaded'});
+              await page.waitForFunction(()=>document.querySelector('#root')?.innerText.includes('Al Masah Al Farida'),null,{timeout:30000});
+              const en=await page.evaluate(()=>({width:document.documentElement.scrollWidth,text:document.body.innerText.slice(0,1800),dir:document.documentElement.dir}));
+              await page.screenshot({path:'/tmp/almasah-qa/screenshots/english-'+width+'.png',fullPage:false});
+              if (en.width>width+1||en.text.includes('Al Hamd')||!en.text.includes('Al Masah Al Farida')) throw Error('EN width '+width+' '+JSON.stringify(en));
+              await page.goto('http://127.0.0.1:4173/review/',{waitUntil:'domcontentloaded'});
+              await page.waitForSelector('#car');
+              const car=page.locator('#car');
+              await car.selectOption('11188148562');
+              await page.locator('#questions').fill('Please confirm BMW body style and actual mileage.');
+              await page.locator('#generate').click();
+              let summary=await page.locator('#summary').innerText();
+              if(!summary.includes('11188148562')||!summary.includes('Please confirm BMW'))throw Error('REVIEW_SUMMARY '+summary);
+              await page.reload({waitUntil:'domcontentloaded'});
+              summary=await page.locator('#summary').innerText();
+              if(!summary.includes('11188148562')||!summary.includes('Please confirm BMW'))throw Error('PERSISTENCE '+summary);
+              await page.locator('#langSwitch').click();
+              const translated=await page.locator('#summaryTitle').innerText();
+              if(!translated.includes('Brief'))throw Error('REVIEW_EN '+translated);
+              await page.screenshot({path:'/tmp/almasah-qa/screenshots/review-'+width+'.png',fullPage:false});
+              rows.push({width,ar:'PASS',en:'PASS',review:'PASS',storage:'PASS',errors:errs});
+              await c.close();
+            }
+            await b.close();
+            fs.writeFileSync('/tmp/almasah-qa/results.json',JSON.stringify(rows,null,2));
+            console.log('ALMASAH_BROWSER_QA_PASS '+JSON.stringify(rows));
+          })().catch(e=>{console.error('ALMASAH_BROWSER_QA_FAIL',e.stack||String(e));process.exit(1)});
+          NODE
+          node /tmp/almasah-qa/check.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: almasah-makan-v4-qa
+          path: |
+            /tmp/almasah-qa/screenshots
+            /tmp/almasah-qa/results.json
+          if-no-files-found: ignore
+          retention-days: 2
