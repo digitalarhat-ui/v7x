@@ -1,0 +1,22 @@
+{
+  "lead_lock_id": "SA-3F-20261015-BINNASHI-DAMMAM",
+  "business": "معرض بن ناشي للسيارات",
+  "city": "Dammam",
+  "base_factory": "MAKAN_V4_REFERENCED",
+  "golden_factory_unmodified": true,
+  "golden_parity_verified": false,
+  "stage": "OWNER_REVIEW_CONCEPT_ONLY__NOT_CLIENT_SEND_READY",
+  "media_status": "ORIGINAL_SELLER_IMAGES_NOT_HOSTED__UPLOAD_OWNER_LOCAL_PREVIEW_ONLY",
+  "sources": [
+    "https://binnashi.com/",
+    "https://haraj.com.sa/11189016701/",
+    "https://haraj.com.sa/11182023325/",
+    "https://haraj.com.sa/11184901062/"
+  ],
+  "media_republication_rights": "UNVERIFIED",
+  "actual_prospect_approval": "UNKNOWN",
+  "buyer_interest": "UNKNOWN",
+  "budget": "UNKNOWN",
+  "send_automated": false,
+  "additional_spend": false
+}
