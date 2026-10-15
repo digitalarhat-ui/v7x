@@ -5,6 +5,7 @@ on:
       - almasah-alfarida-makan-v4-20261015
     paths:
       - '.github/workflows/almasah-makan-v4-qa.yml'
+      - 'almasah-alfarida-makan-v4-review/**'
 permissions:
   contents: read
 jobs:
@@ -56,7 +57,14 @@ jobs:
                 visibleRoot:document.querySelector('#root')?.getBoundingClientRect().width||0,
                 images:[...document.images].map(i=>({alt:i.alt,src:i.src,naturalWidth:i.naturalWidth}))
               }));
-              await page.screenshot({path:'/tmp/almasah-qa/screenshots/arabic-'+width+'.png',fullPage:false});
+              const hero=await page.evaluate(()=>{
+  const h=document.querySelector('.hero h1'), p=document.querySelector('.heroEvidence');
+  if(!h||!p)return {present:false};
+  const a=h.getBoundingClientRect(),b=p.getBoundingClientRect();
+  return {present:true,head:a.toJSON(),proof:b.toJSON(),collision:!(a.right<=b.left||a.left>=b.right||a.bottom<=b.top||a.top>=b.bottom),proofText:p.innerText.slice(0,400),heroText:h.innerText};
+});
+if(!hero.present||hero.collision||!hero.proofText.includes('BMW 520i')||!hero.proofText.includes('GV80'))throw Error('HERO_OVERLAP_AR '+width+' '+JSON.stringify(hero));
+await page.screenshot({path:'/tmp/almasah-qa/screenshots/arabic-'+width+'.png',fullPage:false});
               if (errs.length||data.scrollWidth>width+1||data.visibleRoot<320||!data.text.includes('الماسة الفريدة')||data.text.includes('آل حمد')||data.text.includes('Al Hamd')) throw Error('AR width '+width+' '+JSON.stringify({errs,data}));
               await page.goto('http://127.0.0.1:4173/en/',{waitUntil:'domcontentloaded'});
               await page.waitForFunction(()=>document.querySelector('#root')?.innerText.includes('Al Masah Al Farida'),null,{timeout:30000});
