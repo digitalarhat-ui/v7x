@@ -37,18 +37,19 @@ jobs:
             for (const base of cdns) {
               let context;
               try {
-                context=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});
+                for(const width of [390,430,768,1440]) {
+                context=await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce'});
                 const page=await context.newPage();
                 const errors=[];
                 page.on('pageerror',e=>errors.push(String(e)));
                 const resp=await page.goto(base+'/index.html',{waitUntil:'domcontentloaded',timeout:40000});
                 await page.waitForFunction(()=>document.querySelector('#root')?.innerText.includes('الماسة الفريدة'),null,{timeout:25000});
                 const ar=await page.evaluate(()=>({width:document.documentElement.scrollWidth,lang:document.documentElement.lang,title:document.title,old:document.body.innerText.includes('آل حمد')}));
-                if(resp.status()!==200||ar.width>392||ar.old||errors.length)throw Error('AR '+JSON.stringify({status:resp.status(),ar,errors}));
+                if(resp.status()!==200||ar.width>width+2||ar.old||errors.length)throw Error('AR '+JSON.stringify({status:resp.status(),ar,errors}));
                 await page.goto(base+'/en/index.html',{waitUntil:'domcontentloaded',timeout:40000});
                 await page.waitForFunction(()=>document.querySelector('#root')?.innerText.includes('Al Masah Al Farida'),null,{timeout:25000});
                 const en=await page.evaluate(()=>({width:document.documentElement.scrollWidth,text:document.body.innerText.slice(0,120)}));
-                if(en.width>392)throw Error('EN overflow '+JSON.stringify(en));
+                if(en.width>width+2)throw Error('EN overflow '+JSON.stringify(en));
                 await page.goto(base+'/review/index.html',{waitUntil:'domcontentloaded',timeout:40000});
                 await page.waitForSelector('#car',{timeout:15000});
                 await page.selectOption('#car','11188148562');
@@ -56,9 +57,13 @@ jobs:
                 await page.click('#generate');
                 let summary=await page.locator('#summary').innerText();
                 if(!summary.includes('CDN technical check'))throw Error('REVIEW '+summary);
-                success.push({base,ar:'PASS',en:'PASS',review:'PASS',localStorage:'checked locally',photoCount:0});
+                await page.reload({waitUntil:'domcontentloaded'});
+                const persisted=await page.locator('#summary').innerText();
+                if(!persisted.includes('CDN technical check'))throw Error('PERSISTENCE width '+width);
+                await context.close(); context=null;
+                }
+                success.push({base,widths:[390,430,768,1440],ar:'PASS',en:'PASS',review:'PASS',localStorage:'PASS',photoCount:0});
                 console.log('PUBLIC_OWNER_REVIEW_ORIGIN_PASS '+base+'/index.html');
-                await context.close();
                 break;
               } catch(e) {
                 failures.push({base,error:String(e).slice(0,900)});
