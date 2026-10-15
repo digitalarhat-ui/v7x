@@ -1,0 +1,76 @@
+name: Bin Nashi owner review browser QA (public zero-cost)
+on:
+  push:
+    branches: [bin-nashi-dammam-owner-review-20261015]
+    paths: ['.github/workflows/bin-nashi-owner-review-qa.yml']
+permissions:
+  contents: read
+jobs:
+  browser-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 13
+    steps:
+      - name: Install test browser
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Real HTTP and mobile/desktop interactive checks
+        run: |
+          node <<'JS'
+          const {chromium}=require('playwright');
+          const base='https://cdn.githubraw.com/digitalarhat-ui/v7x/6f5e8d7d33ee5a11481f3128503e92102664e0c1/bin-nashi-dammam-owner-review/';
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const reports=[];
+            for(const width of [390,430,768,1440]){
+              const page=await browser.newPage({viewport:{width,height:870}});
+              page.setDefaultTimeout(12000);
+              const errs=[]; page.on('pageerror',e=>errs.push(e.message));
+              const res=await page.goto(base+'index.html',{waitUntil:'domcontentloaded',timeout:22000});
+              await page.locator('.hero').waitFor();
+              const measurements=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,width:innerWidth,lang:document.documentElement.lang,dir:document.documentElement.dir}));
+              const fails=[];
+              if(res.status()!==200)fails.push('HTTP '+res.status());
+              if(measurements.scroll>width)fails.push('horizontal overflow');
+              if(measurements.lang!=='ar'||measurements.dir!=='rtl')fails.push('bad default language');
+              if((await page.locator('.card').count())!==3)fails.push('not 3 source vehicles');
+              const body=await page.locator('body').innerText();
+              if(body.includes('RPM PORT')||body.includes('Makan Cars')||body.includes('H Laylati'))fails.push('cross-prospect contamination');
+              await page.locator('[data-select="e200"]').click();
+              await page.locator('[data-select="elantra"]').click();
+              await page.locator('#who').fill('QA only');
+              await page.locator('#notes').fill('Confirm model year and mileage');
+              await page.locator('#briefBtn').click();
+              const brief=await page.locator('#brief').innerText();
+              if(!brief.includes('مرسيدس')||!brief.includes('إلنترا'))fails.push('selection brief');
+              await page.locator('#lang').click();
+              const lang=await page.locator('html').getAttribute('lang');
+              if(lang!=='en')fails.push('language switch');
+              await page.locator('#briefBtn').click();
+              const enBrief=await page.locator('#brief').innerText();
+              if(!enBrief.includes('Mercedes E200'))fails.push('en brief translation');
+              if(errs.length)fails.push('JS '+errs.join(';'));
+              const data=encodeURIComponent(JSON.stringify({selected:['e200','elantra'],purpose:'compare',who:'QA only',notes:'Confirm model year and mileage'}));
+              const review=await page.goto(base+'review/index.html?data='+data,{waitUntil:'domcontentloaded',timeout:20000});
+              await page.locator('#review:not(.hidden)').waitFor();
+              const rows=await page.locator('.reviewtable tr').count();
+              if(rows!==3)fails.push('review state rows '+rows);
+              await page.locator('.confirm').nth(0).check();
+              await page.locator('.confirm').nth(1).check();
+              await page.locator('.confirm').nth(2).check();
+              if(!(await page.locator('#reviewState').innerText()).includes('NOT actual seller approval')&&! (await page.locator('#reviewState').innerText()).includes('لا موافقة رسمية')) fails.push('review approval caveat');
+              reports.push({width,status:res.status(),measurements,lang,rows,briefBytes:brief.length,reviewStatus:review.status(),fails});
+              await page.screenshot({path:'bin-nashi-owner-'+width+'.png',fullPage:true});
+              await page.close();
+            }
+            await browser.close();
+            console.log('BIN_NASHI_OWNER_QA',JSON.stringify(reports));
+            if(reports.some(x=>x.fails.length))process.exit(1);
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bin-nashi-owner-review-qa
+          path: bin-nashi-owner-*.png
+          retention-days: 5
