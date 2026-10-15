@@ -1,0 +1,71 @@
+name: EWAA White Rose concept QA
+on:
+  push:
+    branches:
+      - ewaa-riyadh-white-rose-20261015
+    paths:
+      - 'ewaa-riyadh-white-rose/**'
+      - '.github/workflows/ewaa-white-rose-qa.yml'
+  workflow_dispatch:
+jobs:
+  browser-test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install free browser runner
+        run: |
+          npm install --prefix /tmp/ewaa-qa --no-save playwright@1.56.1
+          /tmp/ewaa-qa/node_modules/.bin/playwright install --with-deps chromium
+      - name: Serve static concept
+        run: |
+          python3 -m http.server 8765 --directory ewaa-riyadh-white-rose > /tmp/ewaa-http.log 2>&1 &
+          sleep 3
+      - name: Browser QA at all requested widths, Arabic and English
+        env:
+          NODE_PATH: /tmp/ewaa-qa/node_modules
+        run: |
+          node <<'NODE'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const issues=[],imgs={};
+            for(const width of [390,430,768,1440]){
+              const page=await browser.newPage({viewport:{width,height:850},deviceScaleFactor:1});
+              const errors=[];page.on('pageerror',e=>errors.push(e.message));
+              await page.goto('http://127.0.0.1:8765/index.html',{waitUntil:'domcontentloaded'});
+              await page.waitForTimeout(2800);
+              const head=await page.locator('h1').first().innerText();
+              if(!head.includes('المناسبة'))issues.push(width+': Arabic hero missing');
+              const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2);
+              if(overflow)issues.push(width+': horizontal overflow');
+              const im=await page.locator('.venuePhoto img').evaluateAll(nodes=>nodes.map(n=>({src:n.src,loaded:n.complete&&n.naturalWidth>0,width:n.naturalWidth})));
+              imgs[width]=im;
+              if(im.filter(x=>x.loaded).length<2)issues.push(width+': venue photographs did not both decode');
+              await page.locator('#eventDate').fill('2026-12-05');
+              await page.locator('#guestCount').fill('90');
+              if(!await page.locator('#validation').innerText().then(x=>x.includes('80')))issues.push(width+': capacity warning missing');
+              await page.locator('#venueSelect').selectOption('grand');
+              if(!await page.locator('#validation').innerText().then(x=>x.includes('80')))issues.push(width+': grand capacity warning missing');
+              await page.locator('#venueSelect').selectOption('ewaa');
+              await page.locator('#langBtn').click();
+              const dir=await page.evaluate(()=>document.documentElement.dir);
+              if(dir!=='ltr')issues.push(width+': LTR missing');
+              if(!(await page.locator('h1').first().innerText()).includes('event'))issues.push(width+': English hero missing');
+              if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2))issues.push(width+': English overflow');
+              await page.locator('#reviewBtn').click();
+              await page.waitForURL(/review\/index\.html#brief=/);
+              if(!(await page.locator('#title').innerText()).includes('review'))issues.push(width+': review translation missing');
+              await page.locator('#approve').click();
+              const status=await page.locator('#status').innerText();
+              if(!status.includes('Simulated'))issues.push(width+': review interaction missing');
+              issues.push(...errors.map(e=>width+': JS: '+e));
+              console.log('WIDTH',width,'PHOTO',im.map(i=>i.loaded+'/'+i.width).join(','),'status',status);
+              await page.close();
+            }
+            await browser.close();
+            console.log('ISSUES',JSON.stringify(issues));
+            if(issues.length)process.exit(1);
+          })().catch(e=>{console.error(e);process.exit(1)})
+          NODE
