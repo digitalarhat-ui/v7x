@@ -1,0 +1,82 @@
+name: Al Masah public CDN owner-review browser QA
+on:
+  push:
+    branches: [almasah-alfarida-makan-v4-20261015]
+    paths:
+      - '.github/workflows/almasah-cdn-owner-review-qa.yml'
+permissions:
+  contents: read
+jobs:
+  cdn:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Install browser inspector (public repository free runner)
+        run: |
+          mkdir -p /tmp/almasah-cdn
+          cd /tmp/almasah-cdn
+          npm init -y >/dev/null
+          npm install --no-save playwright-core@1.55.0
+      - name: Browser-open immutable zero-cost CDN candidates
+        run: |
+          CHROME="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || true)"
+          test -n "$CHROME"
+          export CHROME
+          cat > /tmp/almasah-cdn/check.cjs <<'NODE'
+          const { chromium }=require('playwright-core');
+          const fs=require('fs');
+          const root='almasah-alfarida-makan-v4-review';
+          const cdns=[
+           'https://cdn.githubraw.com/digitalarhat-ui/v7x/34ff2051a727989c1aeb69df151cbe37439cd11c/'+root,
+           'https://raw.githack.com/digitalarhat-ui/v7x/34ff2051a727989c1aeb69df151cbe37439cd11c/'+root,
+           'https://cdn.jsdelivr.net/gh/digitalarhat-ui/v7x@34ff2051a727989c1aeb69df151cbe37439cd11c/'+root
+          ];
+          (async()=>{
+            const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME,args:['--no-sandbox']});
+            const failures=[],success=[];
+            for (const base of cdns) {
+              let context;
+              try {
+                context=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});
+                const page=await context.newPage();
+                const errors=[];
+                page.on('pageerror',e=>errors.push(String(e)));
+                const resp=await page.goto(base+'/index.html',{waitUntil:'domcontentloaded',timeout:40000});
+                await page.waitForFunction(()=>document.querySelector('#root')?.innerText.includes('الماسة الفريدة'),null,{timeout:25000});
+                const ar=await page.evaluate(()=>({width:document.documentElement.scrollWidth,lang:document.documentElement.lang,title:document.title,old:document.body.innerText.includes('آل حمد')}));
+                if(resp.status()!==200||ar.width>392||ar.old||errors.length)throw Error('AR '+JSON.stringify({status:resp.status(),ar,errors}));
+                await page.goto(base+'/en/index.html',{waitUntil:'domcontentloaded',timeout:40000});
+                await page.waitForFunction(()=>document.querySelector('#root')?.innerText.includes('Al Masah Al Farida'),null,{timeout:25000});
+                const en=await page.evaluate(()=>({width:document.documentElement.scrollWidth,text:document.body.innerText.slice(0,120)}));
+                if(en.width>392)throw Error('EN overflow '+JSON.stringify(en));
+                await page.goto(base+'/review/index.html',{waitUntil:'domcontentloaded',timeout:40000});
+                await page.waitForSelector('#car',{timeout:15000});
+                await page.selectOption('#car','11188148562');
+                await page.fill('#questions','CDN technical check');
+                await page.click('#generate');
+                let summary=await page.locator('#summary').innerText();
+                if(!summary.includes('CDN technical check'))throw Error('REVIEW '+summary);
+                success.push({base,ar:'PASS',en:'PASS',review:'PASS',localStorage:'checked locally',photoCount:0});
+                console.log('PUBLIC_OWNER_REVIEW_ORIGIN_PASS '+base+'/index.html');
+                await context.close();
+                break;
+              } catch(e) {
+                failures.push({base,error:String(e).slice(0,900)});
+                console.log('CDN_CANDIDATE_REJECT '+base+' '+String(e).slice(0,500));
+                if(context)await context.close();
+              }
+            }
+            await browser.close();
+            fs.writeFileSync('/tmp/almasah-cdn/results.json',JSON.stringify({success,failures},null,2));
+            console.log('CDN_RESULT '+JSON.stringify({success,failures}));
+            if(!success.length)process.exit(1);
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+          node /tmp/almasah-cdn/check.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: almasah-public-cdn-qa
+          path: /tmp/almasah-cdn/results.json
+          if-no-files-found: ignore
+          retention-days: 2
