@@ -81,7 +81,7 @@ jobs:
           grep -q 'EWAA · CONCEPT STUDIO' /tmp/ewaa-live.html
           grep -q 'EWAA · Review concept' /tmp/ewaa-review.html
           echo "PUBLIC_ORIGIN_GET_PASS main_and_review"
-      - name: Public origin browser QA
+      - name: Public origin four-width bilingual QA and visual snapshots
         env:
           NODE_PATH: /tmp/ewaa-qa/node_modules
           GIT_SHA: ${{ github.sha }}
@@ -91,19 +91,48 @@ jobs:
           (async()=>{
             const browser=await chromium.launch({headless:true});
             const url="https://cdn.githubraw.com/digitalarhat-ui/v7x/"+process.env.GIT_SHA+"/ewaa-riyadh-white-rose/index.html";
-            const page=await browser.newPage({viewport:{width:430,height:900}});
-            const errs=[];page.on('pageerror',e=>errs.push(e.message));
-            const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:45000});
-            await page.waitForTimeout(3000);
-            const imgs=await page.locator(".venuePhoto img").evaluateAll(n=>n.map(x=>x.naturalWidth));
-            await page.locator("#eventDate").fill("2026-12-05");
-            await page.locator("#guestCount").fill("90");
-            await page.locator("#langBtn").click();
-            await page.locator("#reviewBtn").click();
-            await page.waitForURL(/review\/index\.html#brief=/);
-            if(response.status()!==200 || imgs.filter(x=>x>0).length!==2||errs.length)throw new Error("Public QA "+response.status()+" "+imgs+" "+errs.join(";"));
-            if(!await page.locator("#approve").isVisible())throw new Error("Public review missing");
-            console.log("PUBLIC_OWNER_PREVIEW_PASS",response.status(),imgs,url);
+            const issues=[];
+            for(const width of [390,430,768,1440]){
+              const page=await browser.newPage({viewport:{width,height:900},deviceScaleFactor:1});
+              const errors=[];page.on("pageerror",e=>errors.push(e.message));
+              const resp=await page.goto(url,{waitUntil:"domcontentloaded",timeout:60000});
+              await page.waitForTimeout(2200);
+              const images=await page.locator(".venuePhoto img").evaluateAll(n=>n.map(x=>x.complete&&x.naturalWidth>0));
+              const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2);
+              if(resp.status()!==200)issues.push(width+": HTTP "+resp.status());
+              if(images.filter(Boolean).length<2)issues.push(width+": photo decode "+images);
+              if(overflow)issues.push(width+": AR horizontal overflow");
+              if([430,1440].includes(width)){
+                const shot=(await page.screenshot({type:"jpeg",quality:47,fullPage:false})).toString("base64");
+                console.log("VISUAL_SHOT_AR_"+width+"="+shot);
+              }
+              await page.locator("#eventDate").fill("2026-12-05");
+              await page.locator("#guestCount").fill("90");
+              const w=await page.locator("#validation").innerText();
+              if(!w.includes("80"))issues.push(width+": Ewaa capacity caveat absent");
+              await page.locator("#venueSelect").selectOption("grand");
+              const w2=await page.locator("#validation").innerText();
+              if(!w2.includes("80"))issues.push(width+": Grand Plaza 80-guest limit absent");
+              await page.locator("#venueSelect").selectOption("ewaa");
+              await page.locator("#langBtn").click();
+              if(await page.evaluate(()=>document.documentElement.dir)!=="ltr")issues.push(width+": English dir");
+              if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2))issues.push(width+": EN overflow");
+              if(width===430){
+                const shot=(await page.screenshot({type:"jpeg",quality:47,fullPage:false})).toString("base64");
+                console.log("VISUAL_SHOT_EN_"+width+"="+shot);
+              }
+              await page.locator("#reviewBtn").click();
+              await page.waitForURL(/review\/index\.html#brief=/,{timeout:15000});
+              if(!await page.locator("#approve").isVisible())issues.push(width+": /review unavailable");
+              await page.locator("#approve").click();
+              if(!await page.locator("#status").innerText().then(x=>x.includes("Simulated")))issues.push(width+": /review simulation not interactive");
+              if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2))issues.push(width+": review overflow");
+              issues.push(...errors.map(e=>width+": JS "+e));
+              console.log("PUBLIC_WIDTH_PASS",width,"PHOTOS",images.join(","),"REVIEW",true);
+              await page.close();
+            }
+            console.log("PUBLIC_QA_ISSUES",JSON.stringify(issues));
             await browser.close();
+            if(issues.length)process.exit(1);
           })().catch(e=>{console.error(e);process.exit(1)})
           NODE
