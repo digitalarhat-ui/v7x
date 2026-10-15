@@ -69,3 +69,41 @@ jobs:
             if(issues.length)process.exit(1);
           })().catch(e=>{console.error(e);process.exit(1)})
           NODE
+      - name: Verify immutable public owner preview and review routes
+        env:
+          GIT_SHA: ${{ github.sha }}
+        run: |
+          set -e
+          BASE="https://cdn.githubraw.com/digitalarhat-ui/v7x/$GIT_SHA/ewaa-riyadh-white-rose"
+          echo "Testing $BASE"
+          curl --retry 3 --retry-delay 2 --max-time 45 -fLso /tmp/ewaa-live.html "$BASE/index.html"
+          curl --retry 3 --retry-delay 2 --max-time 45 -fLso /tmp/ewaa-review.html "$BASE/review/index.html"
+          grep -q 'EWAA · CONCEPT STUDIO' /tmp/ewaa-live.html
+          grep -q 'EWAA · Review concept' /tmp/ewaa-review.html
+          echo "PUBLIC_ORIGIN_GET_PASS main_and_review"
+      - name: Public origin browser QA
+        env:
+          NODE_PATH: /tmp/ewaa-qa/node_modules
+          GIT_SHA: ${{ github.sha }}
+        run: |
+          node <<'NODE'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const url="https://cdn.githubraw.com/digitalarhat-ui/v7x/"+process.env.GIT_SHA+"/ewaa-riyadh-white-rose/index.html";
+            const page=await browser.newPage({viewport:{width:430,height:900}});
+            const errs=[];page.on('pageerror',e=>errs.push(e.message));
+            const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:45000});
+            await page.waitForTimeout(3000);
+            const imgs=await page.locator(".venuePhoto img").evaluateAll(n=>n.map(x=>x.naturalWidth));
+            await page.locator("#eventDate").fill("2026-12-05");
+            await page.locator("#guestCount").fill("90");
+            await page.locator("#langBtn").click();
+            await page.locator("#reviewBtn").click();
+            await page.waitForURL(/review\/index\.html#brief=/);
+            if(response.status()!==200 || imgs.filter(x=>x>0).length!==2||errs.length)throw new Error("Public QA "+response.status()+" "+imgs+" "+errs.join(";"));
+            if(!await page.locator("#approve").isVisible())throw new Error("Public review missing");
+            console.log("PUBLIC_OWNER_PREVIEW_PASS",response.status(),imgs,url);
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)})
+          NODE
