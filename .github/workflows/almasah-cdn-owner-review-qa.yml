@@ -27,9 +27,9 @@ jobs:
           const fs=require('fs');
           const root='almasah-alfarida-makan-v4-review';
           const cdns=[
-           'https://cdn.githubraw.com/digitalarhat-ui/v7x/972d7358a441fd5569f4eb791eceaca5371a7c56/'+root,
-           'https://raw.githack.com/digitalarhat-ui/v7x/972d7358a441fd5569f4eb791eceaca5371a7c56/'+root,
-           'https://cdn.jsdelivr.net/gh/digitalarhat-ui/v7x@972d7358a441fd5569f4eb791eceaca5371a7c56/'+root
+           'https://cdn.githubraw.com/digitalarhat-ui/v7x/45cac7bdcfa0f60de0a60d0f4a4bd3cdc37aa2fa/'+root,
+           'https://raw.githack.com/digitalarhat-ui/v7x/45cac7bdcfa0f60de0a60d0f4a4bd3cdc37aa2fa/'+root,
+           'https://cdn.jsdelivr.net/gh/digitalarhat-ui/v7x@45cac7bdcfa0f60de0a60d0f4a4bd3cdc37aa2fa/'+root
           ];
           (async()=>{
             const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME,args:['--no-sandbox']});
