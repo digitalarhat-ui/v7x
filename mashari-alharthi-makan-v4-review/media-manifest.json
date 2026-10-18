@@ -1,0 +1,21 @@
+{
+  "lead_lock_id": "SA-3F-20261018-MISHARIALHARTHI-JEDDAH",
+  "factory": "MAKAN_V4",
+  "golden_reference_modified": false,
+  "source_role": "isolated golden-derived compiled derivative",
+  "seller_listing_refs": [
+    "https://haraj.com.sa/11184987459/",
+    "https://haraj.com.sa/11187740674/",
+    "https://haraj.com.sa/11189259915/"
+  ],
+  "source_photos_republished": 0,
+  "photo_rights_cleared": false,
+  "photo_bytes_verified": false,
+  "actual_production_browser_qa": false,
+  "final_client_link_ready": false,
+  "buyer_need": "UNKNOWN",
+  "scope_approved": false,
+  "no_auto_outreach": true,
+  "vercel_attempt": "HTTP402_DAILY_FREE_QUOTA",
+  "owner_only": true
+}
