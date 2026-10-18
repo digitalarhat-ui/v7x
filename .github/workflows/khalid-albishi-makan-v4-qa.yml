@@ -42,6 +42,19 @@ jobs:
               await page.waitForFunction(()=>document.querySelector('#root')?.innerText.includes('مكتب خالد البيشي'),null,{timeout:35000});
               let ar = await page.evaluate(()=>({width:document.documentElement.scrollWidth,text:document.body.innerText,lang:document.documentElement.lang}));
               if(response.status()!==200||ar.width>width+2||!ar.text.includes('كيا سيراتو')||!ar.text.includes('هيونداي')||ar.text.includes('الماسة الفريدة')||ar.text.includes('GV80'))throw Error('AR/identity '+width+' '+JSON.stringify({status:response.status(),scrollWidth:ar.width,sample:ar.text.slice(0,150)}));
+              await page.goto(base+'/index.html#cars',{waitUntil:'domcontentloaded',timeout:45000});
+              await page.waitForSelector('.carGrid .saveBtn',{timeout:25000});
+              await page.locator('.carGrid .saveBtn').first().click();
+              await page.locator('.carGrid .saveBtn').nth(1).click();
+              await page.waitForFunction(()=>JSON.parse(localStorage.getItem('albishi:buyer')||'{}').ids?.length===2);
+              let selected=await page.evaluate(()=>JSON.parse(localStorage.getItem('albishi:buyer')).ids);
+              if(!selected.includes('11179948224')||!selected.includes('11177508018'))throw Error('COMPARISON selection '+width+' '+JSON.stringify(selected));
+              await page.goto(base+'/index.html#compare',{waitUntil:'domcontentloaded',timeout:45000});
+              await page.waitForFunction(()=>document.querySelector('main')?.innerText.includes('كيا سيراتو')&&document.querySelector('main')?.innerText.includes('هيونداي النترا'),null,{timeout:25000});
+              let compareState=await page.evaluate(()=>({count:JSON.parse(localStorage.getItem('albishi:buyer')).ids.length,width:document.documentElement.scrollWidth}));
+              if(compareState.count!==2||compareState.width>width+2)throw Error('COMPARISON output '+width+' '+JSON.stringify(compareState));
+              await page.goto(base+'/index.html',{waitUntil:'domcontentloaded',timeout:45000});
+              await page.waitForFunction(()=>JSON.parse(localStorage.getItem('albishi:buyer')||'{}').ids?.length===2);
               if(width===430)await page.screenshot({path:'/tmp/khalid-qa/ar-mobile-430.png',fullPage:true});
               if(width===1440)await page.screenshot({path:'/tmp/khalid-qa/ar-desktop-1440.png',fullPage:true});
               response=await page.goto(base+'/en/index.html',{waitUntil:'domcontentloaded',timeout:45000});
@@ -61,7 +74,7 @@ jobs:
               if(!reviewText.includes('financing'))throw Error('LOCAL PERSISTENCE not ready '+width);
               if(width===430)await page.screenshot({path:'/tmp/khalid-qa/review-mobile-430.png',fullPage:true});
               if(errors.length)throw Error('JS page errors '+JSON.stringify(errors));
-              results.push({width,ar:'PASS',en:'PASS',review:'PASS',persistence:'PASS',source:base});
+              results.push({width,ar:'PASS',en:'PASS',review:'PASS',comparison:'PASS',persistence:'PASS',source:base});
               console.log('PASS: '+JSON.stringify(results.at(-1)));
               await context.close();
             }
@@ -77,6 +90,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: khalid-albishi-owner-review-qa
-          path: /tmp/khalid-qa/results.json
+          path: /tmp/khalid-qa/
           if-no-files-found: ignore
           retention-days: 2
