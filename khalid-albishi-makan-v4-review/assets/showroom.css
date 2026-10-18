@@ -41,3 +41,20 @@ html[dir="ltr"] .featureOverlay{right:25px;left:27px;align-items:flex-start}
 @media(max-width:1120px){.heroEvidence{width:40vw;padding:18px}.hero h1{max-width:52vw;font-size:clamp(35px,4.4vw,55px)}.heroBody>p{max-width:51vw}}
 @media(max-width:800px){.hero{height:auto;min-height:850px;align-items:flex-start}.heroImage{inset:0}.heroBody{padding:83px 0 425px!important}.hero h1{max-width:100%;font-size:clamp(39px,7vw,58px)}.heroBody>p{max-width:90%}.heroEvidence{top:auto;left:5%;bottom:62px;width:90%;max-width:none;padding:20px}.heroBottom{margin-top:42px}html[dir="ltr"] .heroEvidence{left:5%;right:5%}html[dir="ltr"] .heroBody>p{max-width:100%}}
 @media(max-width:570px){.hero{min-height:870px}.heroBody{padding:75px 0 410px!important}.heroLogo{font-size:19px;margin-top:16px}.heroLogo span{font-size:12px}.hero h1{font-size:clamp(35px,9vw,43px);margin-top:18px;max-width:100%;line-height:1.24}.heroBody>p{font-size:13px;max-width:100%;line-height:1.7;margin:18px 0}.heroButtons .btn{min-width:130px;font-size:12px}.heroEvidence{left:16px;right:16px;width:auto;bottom:60px;padding:17px}.proofEy{font-size:9px;padding-bottom:12px}.proofEy span{font-size:9px}.proofHead{padding:14px 0}.proofNumber{font-size:42px}.proofTitle{font-size:12px}.proofRow{padding:11px 0}.proofRow strong{font-size:13px}.proofFlag{font-size:9px}.heroBottom{margin-top:36px}.heroBottom span:last-child{display:none}html[dir="ltr"] .heroEvidence{left:16px;right:16px}}
+
+/* Direct original-gallery access: no Haraj photographs republished */
+.sourceGallery{height:100%;min-height:240px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:28px 20px;background:radial-gradient(circle at 50% 35%,#334451,#152029 65%,#0c1319);gap:10px;isolation:isolate}
+.sourceGalleryIcon{display:grid;place-items:center;width:57px;height:57px;border:1px solid #d6b989aa;border-radius:50%;font:700 36px/1 Manrope,Arial;color:#d6b989;margin-bottom:2px}
+.sourceGalleryTitle{font-size:clamp(17px,2.2vw,25px);color:#f5e8d0;line-height:1.35}
+.sourceGalleryDescription{font-size:clamp(12px,1.2vw,14px);color:#cad0d2;line-height:1.7;max-width:430px;margin:0}
+.sourcePhotoLink{position:relative;z-index:5;background:#d6b989;color:#11181c;text-decoration:none;border:1px solid #f1d8ac;border-radius:6px;padding:13px 20px;font-weight:800;font-size:14px;display:inline-flex;align-items:center;justify-content:center;max-width:100%;min-height:44px;margin-top:8px;transition:background .2s ease}
+.sourcePhotoLink:hover,.sourcePhotoLink:focus-visible{background:#f5d8a8;color:#141414;outline:2px solid #d6b989;outline-offset:3px}
+.sourceGalleryNote{font:12px/1.7 Manrope,'IBM Plex Sans Arabic',Arial;color:#b9b9b4;max-width:410px}
+.galleryOriginalNote{font-size:13px;color:#c9bdac;line-height:1.65;margin:14px 0 4px}
+.galleryMain{cursor:default}
+.cardPhoto .sourceGallery{padding:14px 17px;gap:9px}
+.cardPhoto .sourceGalleryTitle{font-size:19px}
+.cardPhoto .sourceGalleryDescription{font-size:12px}
+.cardPhoto .sourceGalleryIcon{width:42px;height:42px;font-size:28px}
+.cardPhoto .sourceGalleryNote{font-size:10px}
+@media(max-width:420px){.sourceGallery{padding:16px 10px}.sourceGalleryDescription{font-size:12px}.sourcePhotoLink{padding:11px 12px;font-size:12px}.sourceGalleryNote{font-size:10px}.galleryMain{height:470px}}
