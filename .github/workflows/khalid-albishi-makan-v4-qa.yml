@@ -44,6 +44,9 @@ jobs:
               if(response.status()!==200||ar.width>width+2||!ar.text.includes('كيا سيراتو')||!ar.text.includes('هيونداي')||ar.text.includes('الماسة الفريدة')||ar.text.includes('GV80'))throw Error('AR/identity '+width+' '+JSON.stringify({status:response.status(),scrollWidth:ar.width,sample:ar.text.slice(0,150)}));
               await page.goto(base+'/index.html#cars',{waitUntil:'domcontentloaded',timeout:45000});
               await page.waitForSelector('.carGrid .saveBtn',{timeout:25000});
+              const sellerLinks = await page.locator('.carGrid .sourcePhotoLink').evaluateAll(nodes=>nodes.map(n=>({href:n.href,target:n.target,text:n.textContent.trim()})));
+              if(sellerLinks.length!==2 || !sellerLinks.some(x=>x.href.endsWith('/11179948224/')) || !sellerLinks.some(x=>x.href.endsWith('/11177508018/')) || sellerLinks.some(x=>x.target!=='_blank')) throw Error('Missing genuine seller gallery routes '+width+' '+JSON.stringify(sellerLinks));
+              if(await page.locator('.cardPhoto img[src*="postcdn.haraj.com.sa"]').count())throw Error('Unauthorized inline seller imagery '+width);
               await page.locator('.carGrid .saveBtn').first().click();
               await page.locator('.carGrid .saveBtn').nth(1).click();
               await page.waitForFunction(()=>JSON.parse(localStorage.getItem('albishi:buyer')||'{}').ids?.length===2);
@@ -61,6 +64,7 @@ jobs:
               await page.waitForFunction(()=>document.querySelector('#root')?.innerText.includes('Khalid Al Bishi'),null,{timeout:35000});
               const en=await page.evaluate(()=>({width:document.documentElement.scrollWidth,text:document.body.innerText,lang:document.documentElement.lang}));
               if(response.status()!==200||en.width>width+2||en.text.includes('Al Masah Al Farida')||!en.text.includes('Cerato')||!en.text.includes('Elantra'))throw Error('EN/identity '+width+' '+JSON.stringify({status:response.status(),scrollWidth:en.width,sample:en.text.slice(0,150)}));
+              if(await page.locator('.sourcePhotoLink').count()<2)throw Error('English seller-gallery CTAs missing '+width);
               if(width===430)await page.screenshot({path:'/tmp/khalid-qa/en-mobile-430.png',fullPage:true});
               response=await page.goto(base+'/review/index.html',{waitUntil:'domcontentloaded',timeout:45000});
               await page.waitForSelector('#car',{timeout:25000});
@@ -74,7 +78,7 @@ jobs:
               if(!reviewText.includes('financing'))throw Error('LOCAL PERSISTENCE not ready '+width);
               if(width===430)await page.screenshot({path:'/tmp/khalid-qa/review-mobile-430.png',fullPage:true});
               if(errors.length)throw Error('JS page errors '+JSON.stringify(errors));
-              results.push({width,ar:'PASS',en:'PASS',review:'PASS',comparison:'PASS',persistence:'PASS',source:base});
+              results.push({width,ar:'PASS',en:'PASS',review:'PASS',comparison:'PASS',seller_gallery_links:'PASS',persistence:'PASS',source:base});
               console.log('PASS: '+JSON.stringify(results.at(-1)));
               await context.close();
             }
