@@ -1,0 +1,39 @@
+{
+  "lead_lock_id": "SA-3F-20261018-KHALIDALBISHI-JEDDAH",
+  "factory": "MAKAN_V4",
+  "original_golden_modified": false,
+  "source_role": "isolated Golden-derived compiled owner-review concept",
+  "genuine_photo_sources": [
+    {
+      "listing": "https://haraj.com.sa/11179948224/",
+      "original_photo_bytes_available": false
+    },
+    {
+      "listing": "https://haraj.com.sa/11177508018/",
+      "original_photo_bytes_available": false
+    }
+  ],
+  "genuine_photos_embedded": 0,
+  "placeholder_visual": "/assets/media-permission-pending.svg",
+  "reason": "Haraj source copying/republication restricted; seller-authorized original files and photographer rights not independently established",
+  "rights_cleared": false,
+  "owner_attested_concept_use": false,
+  "public_anonymous_qa": false,
+  "local_chromium_qa": false,
+  "stage": "GOLDEN_DERIVED_INTERNAL_PREVIEW_NOT_CLIENT_READY",
+  "vercel_deployment": "NOT_ATTEMPTED",
+  "no_auto_send": true,
+  "no_extra_spend": true,
+  "technical_qa_viewports": [
+    390,
+    430,
+    768,
+    1440
+  ],
+  "public_qa_run": "NOT_VERIFIED",
+  "local_qa_run": "NOT_VERIFIED",
+  "visual_correction": "Vehicle facts originate from seller Haraj ads. No image bytes reused.",
+  "seller_spec_approval": false,
+  "photo_republication_license": false,
+  "photo_required_for_client_release": true
+}
