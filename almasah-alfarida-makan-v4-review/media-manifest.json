@@ -1,15 +1,15 @@
 {
-  "lead_lock_id": "SA-3F-20261015-ALMASAHALFARIDA-JEDDAH",
+  "lead_lock_id": "SA-3F-20261018-KHALIDALBISHI-JEDDAH",
   "factory": "MAKAN_V4",
   "original_golden_modified": false,
   "source_role": "isolated Golden-derived compiled owner-review concept",
   "genuine_photo_sources": [
     {
-      "listing": "https://haraj.com.sa/11188497709/",
+      "listing": "https://haraj.com.sa/11179948224/",
       "original_photo_bytes_available": false
     },
     {
-      "listing": "https://haraj.com.sa/11188148562/",
+      "listing": "https://haraj.com.sa/11177508018/",
       "original_photo_bytes_available": false
     }
   ],
@@ -17,11 +17,11 @@
   "placeholder_visual": "/assets/media-permission-pending.svg",
   "reason": "Haraj source copying/republication restricted; seller-authorized original files and photographer rights not independently established",
   "rights_cleared": false,
-  "owner_attested_concept_use": true,
-  "public_anonymous_qa": true,
-  "local_chromium_qa": true,
-  "stage": "OWNER_REVIEW_TECH_QA_PASS__CLIENT_SEND_HOLD",
-  "vercel_deployment": "BLOCKED_HTTP402_API_FREE_DAILY_QUOTA",
+  "owner_attested_concept_use": false,
+  "public_anonymous_qa": false,
+  "local_chromium_qa": false,
+  "stage": "GOLDEN_DERIVED_INTERNAL_PREVIEW_NOT_CLIENT_READY",
+  "vercel_deployment": "NOT_ATTEMPTED",
   "no_auto_send": true,
   "no_extra_spend": true,
   "technical_qa_viewports": [
@@ -30,9 +30,9 @@
     768,
     1440
   ],
-  "public_qa_run": "https://github.com/digitalarhat-ui/v7x/actions/runs/38714207293",
-  "local_qa_run": "https://github.com/digitalarhat-ui/v7x/actions/runs/38714148860",
-  "visual_correction": "oversized permission placeholder removed from hero; replaced by two verified source discrepancies, screenshot visually inspected",
+  "public_qa_run": "NOT_VERIFIED",
+  "local_qa_run": "NOT_VERIFIED",
+  "visual_correction": "Vehicle facts originate from seller Haraj ads. No image bytes reused.",
   "seller_spec_approval": false,
   "photo_republication_license": false,
   "photo_required_for_client_release": true
