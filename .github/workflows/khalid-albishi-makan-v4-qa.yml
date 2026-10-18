@@ -1,0 +1,82 @@
+name: Khalid Al Bishi Makan V4 Golden-derived owner-preview Chromium QA
+on:
+  push:
+    branches: [khalid-albishi-makan-v4-owner-20261018]
+    paths:
+      - '.github/workflows/khalid-albishi-makan-v4-qa.yml'
+permissions:
+  contents: read
+jobs:
+  owner-preview-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Playwright runner
+        run: |
+          mkdir -p /tmp/khalid-qa
+          cd /tmp/khalid-qa
+          npm init -y >/dev/null
+          npm install --no-save playwright-core@1.55.0
+      - name: Real browser E2E — 390/430/768/1440 AR, EN, comparison and review
+        env:
+          TEST_SHA: ${{ github.sha }}
+        run: |
+          CHROME="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || true)"
+          test -n "$CHROME"
+          export CHROME
+          cat > /tmp/khalid-qa/check.cjs <<'NODE'
+          const {chromium} = require('playwright-core');
+          const fs = require('fs');
+          const path = 'almasah-alfarida-makan-v4-review';
+          const commit = process.env.TEST_SHA;
+          const base = 'https://cdn.githubraw.com/digitalarhat-ui/v7x/' + commit + '/' + path;
+          (async () => {
+            const browser = await chromium.launch({headless:true,executablePath:process.env.CHROME,args:['--no-sandbox']});
+            const results = [];
+            for (const width of [390,430,768,1440]) {
+              const context = await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce'});
+              const page = await context.newPage();
+              const errors = []; page.on('pageerror',e=>errors.push(String(e)));
+              let response = await page.goto(base+'/index.html',{waitUntil:'domcontentloaded',timeout:45000});
+              await page.waitForFunction(()=>document.querySelector('#root')?.innerText.includes('مكتب خالد البيشي'),null,{timeout:35000});
+              let ar = await page.evaluate(()=>({width:document.documentElement.scrollWidth,text:document.body.innerText,lang:document.documentElement.lang}));
+              if(response.status()!==200||ar.width>width+2||!ar.text.includes('كيا سيراتو')||!ar.text.includes('هيونداي')||ar.text.includes('الماسة الفريدة')||ar.text.includes('GV80'))throw Error('AR/identity '+width+' '+JSON.stringify({status:response.status(),scrollWidth:ar.width,sample:ar.text.slice(0,150)}));
+              if(width===430)await page.screenshot({path:'/tmp/khalid-qa/ar-mobile-430.png',fullPage:true});
+              if(width===1440)await page.screenshot({path:'/tmp/khalid-qa/ar-desktop-1440.png',fullPage:true});
+              response=await page.goto(base+'/en/index.html',{waitUntil:'domcontentloaded',timeout:45000});
+              await page.waitForFunction(()=>document.querySelector('#root')?.innerText.includes('Khalid Al Bishi'),null,{timeout:35000});
+              const en=await page.evaluate(()=>({width:document.documentElement.scrollWidth,text:document.body.innerText,lang:document.documentElement.lang}));
+              if(response.status()!==200||en.width>width+2||en.text.includes('Al Masah Al Farida')||!en.text.includes('Cerato')||!en.text.includes('Elantra'))throw Error('EN/identity '+width+' '+JSON.stringify({status:response.status(),scrollWidth:en.width,sample:en.text.slice(0,150)}));
+              if(width===430)await page.screenshot({path:'/tmp/khalid-qa/en-mobile-430.png',fullPage:true});
+              response=await page.goto(base+'/review/index.html',{waitUntil:'domcontentloaded',timeout:45000});
+              await page.waitForSelector('#car',{timeout:25000});
+              await page.selectOption('#car','11177508018');
+              await page.fill('#questions','Please verify financing and seller inspection.');
+              await page.click('#generate');
+              let reviewText=await page.locator('#summary').innerText();
+              if(!reviewText.includes('financing')||!reviewText.includes('11177508018'))throw Error('REVIEW brief missing '+width+' '+reviewText.slice(0,350));
+              await page.reload({waitUntil:'domcontentloaded',timeout:45000});
+              reviewText=await page.locator('#summary').innerText();
+              if(!reviewText.includes('financing'))throw Error('LOCAL PERSISTENCE not ready '+width);
+              if(width===430)await page.screenshot({path:'/tmp/khalid-qa/review-mobile-430.png',fullPage:true});
+              if(errors.length)throw Error('JS page errors '+JSON.stringify(errors));
+              results.push({width,ar:'PASS',en:'PASS',review:'PASS',persistence:'PASS',source:base});
+              console.log('PASS: '+JSON.stringify(results.at(-1)));
+              await context.close();
+            }
+            await browser.close();
+            fs.writeFileSync('/tmp/khalid-qa/results.json',JSON.stringify({results,source:base,licensedSellerPhotos:0,clientRelease:false},null,2));
+            console.log('ALL_INDEPENDENT_SOURCE_BROWSER_QA_PASS '+JSON.stringify(results));
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+          cd /tmp/khalid-qa
+          node check.cjs
+      - name: Attach QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: khalid-albishi-owner-review-qa
+          path: /tmp/khalid-qa/results.json
+          if-no-files-found: ignore
+          retention-days: 2
