@@ -28,7 +28,7 @@ jobs:
           cat > /tmp/khalid-qa/check.cjs <<'NODE'
           const {chromium} = require('playwright-core');
           const fs = require('fs');
-          const path = 'almasah-alfarida-makan-v4-review';
+          const path = 'khalid-albishi-makan-v4-review';
           const commit = process.env.TEST_SHA;
           const base = 'https://cdn.githubraw.com/digitalarhat-ui/v7x/' + commit + '/' + path;
           (async () => {
